@@ -549,6 +549,11 @@ module Files
       Site.new(response.data, options)
     end
 
+    def self.get_usage(params = {}, options = {})
+      response, options = Api.send_request("/site/usage", :get, params, options)
+      UsageSnapshot.new(response.data, options)
+    end
+
     def self.get_switch_to_plan(params = {}, options = {})
       response, options = Api.send_request("/site/switch_to_plan", :get, params, options)
       Plan.new(response.data, options)
@@ -561,11 +566,6 @@ module Files
 
       response, options = Api.send_request("/site/plan", :get, params, options)
       Plan.new(response.data, options)
-    end
-
-    def self.get_usage(params = {}, options = {})
-      response, options = Api.send_request("/site/usage", :get, params, options)
-      UsageSnapshot.new(response.data, options)
     end
 
     # Parameters:

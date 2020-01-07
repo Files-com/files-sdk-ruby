@@ -228,6 +228,15 @@ Files::Site.get
 
 ---
 
+## Get either the most recent usage snapshot (usage data for billing purposes) for a Site, or optionally get a specific usage snapshot
+
+```
+Files::Site.get_usage
+```
+
+
+---
+
 ## Show plan that will be switched to in the future. (Populated if current plan is deprecated and no longer offered beyond the current billing period.)
 
 ```
@@ -248,15 +257,6 @@ Files::Site.get_plan(
 ### Parameters
 
 * `currency` (string): Currency.
-
-
----
-
-## Get either the most recent usage snapshot (usage data for billing purposes) for a Site, or optionally get a specific usage snapshot
-
-```
-Files::Site.get_usage
-```
 
 
 ---
