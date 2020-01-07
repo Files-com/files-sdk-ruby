@@ -1,0 +1,35 @@
+# IpAddress
+
+## Example IpAddress Object
+
+```
+{
+  "associated_with": "Site",
+  "group_id": 1,
+  "ip_addresses": [
+
+  ]
+}
+```
+
+* `associated_with` (string): The object that this public IP address list is associated with.
+* `group_id` (int64): Group ID
+* `ip_addresses` (array): A list of IP addresses.
+
+
+---
+
+## List Ip Addresses
+
+```
+Files::IpAddress.list(
+  page: 1, 
+  per_page: 1
+)
+```
+
+### Parameters
+
+* `page` (int64): Current page number.
+* `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+* `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
