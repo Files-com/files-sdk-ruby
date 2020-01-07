@@ -1,6 +1,5 @@
 $LOAD_PATH.push File.expand_path('lib', __dir__)
 
-
 Gem::Specification.new do |s|
   s.name        = "files.com"
   s.version     = File.open(File.expand_path('_VERSION', __dir__)).read
