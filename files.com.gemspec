@@ -11,7 +11,6 @@ Gem::Specification.new do |s|
   s.description = "The Files.com Ruby client."
   s.license     = "GPL"
   s.required_ruby_version = ">= 2.3"
-
   s.add_dependency 'faraday', '>= 0.12.0'
 
   s.files         = `find *`.split("\n").uniq.sort.reject(&:empty?)
