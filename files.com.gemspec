@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = [ "files.com" ]
   s.email       = [ "support@files.com" ]
-  s.homepage    = "https://www/files.com"
+  s.homepage    = "https://www.files.com"
   s.summary     = "Files.com Ruby client."
   s.description = "The Files.com Ruby client."
   s.license     = "GPL"
