@@ -27,7 +27,7 @@ module Files
       @attributes[:emoji] = value
     end
 
-    # int64 - User ID. If not provided, this operation will operate on your own user.
+    # int64 - User ID.  Provide a value of `0` to operate the current session's user.
     def user_id
       @attributes[:user_id]
     end
@@ -69,7 +69,7 @@ module Files
     end
 
     # Parameters:
-    #   user_id - integer - User ID. If not provided, this operation will operate on your own user.
+    #   user_id - integer - User ID.  Provide a value of `0` to operate the current session's user.
     #   file_comment_id (required) - integer - ID of file comment to attach reaction to.
     #   emoji (required) - string - Emoji to react with.
     def self.create(params = {}, options = {})

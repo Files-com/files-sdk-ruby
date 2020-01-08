@@ -237,6 +237,15 @@ module Files
       @attributes[:md5] = value
     end
 
+    # string - MIME Type.  This is determined by the filename extension and is not stored separately internally.
+    def mime_type
+      @attributes[:mime_type]
+    end
+
+    def mime_type=(value)
+      @attributes[:mime_type] = value
+    end
+
     # string - Region location
     def region
       @attributes[:region]

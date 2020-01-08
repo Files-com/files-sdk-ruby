@@ -16,6 +16,7 @@ may places where a Ruby File object can be used.
   "provided_mtime": "2000-01-01 01:00:00 UTC",
   "crc32": "70976923",
   "md5": "17c54824e9931a4688ca032d03f6663c",
+  "mime_type": "application/octet-stream",
   "region": "us-east-1",
   "permissions": "rpw",
   "subfolders_locked?": true,
@@ -35,6 +36,7 @@ may places where a Ruby File object can be used.
 * `provided_mtime` (date-time): File last modified date/time, according to the client who set it.  Files.com allows desktop, FTP, SFTP, and WebDAV clients to set modified at times.  This allows Desktop<->Cloud syncing to preserve modified at times.
 * `crc32` (string): File CRC32 checksum. This is sometimes delayed, so if you get a blank response, wait and try again.
 * `md5` (string): File MD5 checksum. This is sometimes delayed, so if you get a blank response, wait and try again.
+* `mime_type` (string): MIME Type.  This is determined by the filename extension and is not stored separately internally.
 * `region` (string): Region location
 * `permissions` (string): A short string representing the current user's permissions.  Can be `r`,`w`,`p`, or any combination
 * `subfolders_locked?` (boolean): Are subfolders locked and unable to be modified?

@@ -11,7 +11,7 @@
 
 * `id` (int64): Reaction ID
 * `emoji` (string): Emoji used in the reaction.
-* `user_id` (int64): User ID. If not provided, this operation will operate on your own user.
+* `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
 * `file_comment_id` (int64): ID of file comment to attach reaction to.
 
 
@@ -29,7 +29,7 @@ Files::FileCommentReaction.create(
 
 ### Parameters
 
-* `user_id` (int64): User ID. If not provided, this operation will operate on your own user.
+* `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
 * `file_comment_id` (int64): Required - ID of file comment to attach reaction to.
 * `emoji` (string): Required - Emoji to react with.
 
