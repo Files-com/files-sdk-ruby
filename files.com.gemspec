@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://www.files.com"
   s.summary     = "Files.com Ruby client."
   s.description = "The Files.com Ruby client."
-  s.license     = "GPL"
+  s.license     = "MIT"
   s.required_ruby_version = ">= 2.3"
   s.add_dependency 'faraday', '>= 0.12.0'
 
