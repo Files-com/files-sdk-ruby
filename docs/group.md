@@ -20,11 +20,11 @@
 ```
 
 * `id` (int64): Group ID
-* `admin_ids` (array): List of user IDs who are group administrators
+* `admin_ids` (array): List of user IDs who are group administrators (separated by commas)
 * `name` (string): Group name
 * `notes` (string): Notes about this group
-* `user_ids` (array): List of user IDs who belong to this group
-* `usernames` (array): List of usernames who belong to this group
+* `user_ids` (array): List of user IDs who belong to this group (separated by commas)
+* `usernames` (array): List of usernames who belong to this group (separated by commas)
 
 
 ---

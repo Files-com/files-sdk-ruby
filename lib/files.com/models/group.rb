@@ -18,7 +18,7 @@ module Files
       @attributes[:id] = value
     end
 
-    # array - List of user IDs who are group administrators
+    # array - List of user IDs who are group administrators (separated by commas)
     def admin_ids
       @attributes[:admin_ids]
     end
@@ -45,7 +45,7 @@ module Files
       @attributes[:notes] = value
     end
 
-    # array - List of user IDs who belong to this group
+    # array - List of user IDs who belong to this group (separated by commas)
     def user_ids
       @attributes[:user_ids]
     end
@@ -54,7 +54,7 @@ module Files
       @attributes[:user_ids] = value
     end
 
-    # array - List of usernames who belong to this group
+    # array - List of usernames who belong to this group (separated by commas)
     def usernames
       @attributes[:usernames]
     end
