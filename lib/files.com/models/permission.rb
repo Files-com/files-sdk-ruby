@@ -85,7 +85,7 @@ module Files
     #
     # Parameters:
     #   group_id - integer - Group ID
-    #   permission - object -  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
+    #   permission - string -  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
     #   recursive - boolean - Apply to subfolders recursively?
     #   user_id - integer - User ID.  Provide `username` or `user_id`
     #   username - string - User username.  Provide `username` or `user_id`
@@ -95,6 +95,7 @@ module Files
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission must be an String") if params.dig(:permission) and !params.dig(:permission).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
 
@@ -140,7 +141,7 @@ module Files
     #
     # Parameters:
     #   group_id - integer - Group ID
-    #   permission - object -  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
+    #   permission - string -  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
     #   recursive - boolean - Apply to subfolders recursively?
     #   user_id - integer - User ID.  Provide `username` or `user_id`
     #   username - string - User username.  Provide `username` or `user_id`
@@ -149,6 +150,7 @@ module Files
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission must be an String") if params.dig(:permission) and !params.dig(:permission).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
 

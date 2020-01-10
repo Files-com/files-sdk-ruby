@@ -68,7 +68,7 @@ Files::Permission.create(path,
 
 * `group_id` (int64): Group ID
 * `path` (string): Folder path
-* `permission` (object):  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
+* `permission` (string):  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
 * `recursive` (boolean): Apply to subfolders recursively?
 * `user_id` (int64): User ID.  Provide `username` or `user_id`
 * `username` (string): User username.  Provide `username` or `user_id`
@@ -106,7 +106,7 @@ permission.create(
 
 * `group_id` (int64): Group ID
 * `path` (string): Folder path
-* `permission` (object):  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
+* `permission` (string):  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
 * `recursive` (boolean): Apply to subfolders recursively?
 * `user_id` (int64): User ID.  Provide `username` or `user_id`
 * `username` (string): User username.  Provide `username` or `user_id`
