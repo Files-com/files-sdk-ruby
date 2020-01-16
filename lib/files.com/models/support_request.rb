@@ -68,15 +68,6 @@ module Files
       @attributes[:email] = value
     end
 
-    # array(file) - Files to send to Customer Success along with this support request
-    def attachments_files
-      @attributes[:attachments_files]
-    end
-
-    def attachments_files=(value)
-      @attributes[:attachments_files] = value
-    end
-
     # Parameters:
     #   customer_success_access - string - Enable Customer Success access to your user account?
     def update(params = {})
@@ -122,14 +113,12 @@ module Files
     #   subject (required) - string - Subject of the support request.
     #   comment (required) - string - Main body of the support request.
     #   priority - string - Priority. Can be `low` (e.g. general or billing/acount questions), `normal` (e.g. the system is impaired), `high` (e.g. a production workflow or business process is impaired), `urgent` (e.g. a production workflow or business process is down), `critical` (e.g. a business-critical workflow or business process is down)
-    #   attachments_files - array - Files to send to Customer Success along with this support request
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: customer_success_access must be an String") if params.dig(:customer_success_access) and !params.dig(:customer_success_access).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: email must be an String") if params.dig(:email) and !params.dig(:email).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subject must be an String") if params.dig(:subject) and !params.dig(:subject).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: comment must be an String") if params.dig(:comment) and !params.dig(:comment).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: priority must be an String") if params.dig(:priority) and !params.dig(:priority).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: attachments_files must be an Array") if params.dig(:attachments_files) and !params.dig(:attachments_files).is_a?(Array)
       raise MissingParameterError.new("Parameter missing: email") unless params.dig(:email)
       raise MissingParameterError.new("Parameter missing: subject") unless params.dig(:subject)
       raise MissingParameterError.new("Parameter missing: comment") unless params.dig(:comment)

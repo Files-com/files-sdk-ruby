@@ -370,6 +370,11 @@ Files::Site.update(
   ldap_domain: "mysite.com", 
   ldap_user_action: "disabled", 
   ldap_group_action: "disabled", 
+  icon16_delete: true, 
+  icon32_delete: true, 
+  icon48_delete: true, 
+  icon128_delete: true, 
+  logo_delete: true, 
   days_until_2fa_required: 1, 
   disable_2fa_with_delay: true, 
   remove_icons: true
@@ -439,11 +444,6 @@ Files::Site.update(
 * `site_header` (string): Custom site header text
 * `site_footer` (string): Custom site footer text
 * `login_help_text` (string): Login help text
-* `icon16` (object): Branded icon 16x16
-* `icon32` (object): Branded icon 32x32
-* `icon48` (object): Branded icon 48x48
-* `icon128` (object): Branded icon 128x128
-* `logo` (object): Branded logo
 * `smtp_address` (string): SMTP server hostname or IP
 * `smtp_authentication` (string): SMTP server authentication type
 * `smtp_from` (string): From address to use when mailing through custom SMTP
@@ -465,6 +465,16 @@ Files::Site.update(
 * `ldap_group_exclusion` (string): Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
 * `ldap_group_inclusion` (string): Comma or newline separated list of group names (with optional wildcards) to include when syncing.
 * `ldap_base_dn` (string): Base DN for looking up users in LDAP server
+* `icon16_file` (file): 
+* `icon16_delete` (boolean): If true, will delete the file stored in icon16
+* `icon32_file` (file): 
+* `icon32_delete` (boolean): If true, will delete the file stored in icon32
+* `icon48_file` (file): 
+* `icon48_delete` (boolean): If true, will delete the file stored in icon48
+* `icon128_file` (file): 
+* `icon128_delete` (boolean): If true, will delete the file stored in icon128
+* `logo_file` (file): 
+* `logo_delete` (boolean): If true, will delete the file stored in logo
 * `days_until_2fa_required` (int64): When enabling 2FA, set this to a delay period in days.
 * `disable_2fa_with_delay` (boolean): If set to true, we will begin the process of disabling 2FA on this site.
 * `ldap_password_change` (string): New LDAP password.

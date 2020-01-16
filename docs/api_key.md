@@ -8,6 +8,7 @@
   "created_at": "2000-01-01 01:00:00 UTC",
   "expires_at": "2000-01-01 01:00:00 UTC",
   "key": "[key]",
+  "last_use_at": "2000-01-01 01:00:00 UTC",
   "name": "My Main API Key",
   "permission_set": "full",
   "platform": "win32",
@@ -19,6 +20,7 @@
 * `created_at` (date-time): Time which API Key was created
 * `expires_at` (date-time): API Key expiration date
 * `key` (string): API Key actual key string
+* `last_use_at` (date-time): API Key last used - note this value is only updated once per 3 hour period, so the 'actual' time of last use may be up to 3 hours later than this timestamp.
 * `name` (string): Internal name for the API Key.  For your use.
 * `permission_set` (string): Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations.)  We hope to offer additional permission sets in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
 * `platform` (string): If this API key represents a Desktop app, what platform was it created on?

@@ -41,6 +41,15 @@ module Files
       @attributes[:key] = value
     end
 
+    # date-time - API Key last used - note this value is only updated once per 3 hour period, so the 'actual' time of last use may be up to 3 hours later than this timestamp.
+    def last_use_at
+      @attributes[:last_use_at]
+    end
+
+    def last_use_at=(value)
+      @attributes[:last_use_at] = value
+    end
+
     # string - Internal name for the API Key.  For your use.
     def name
       @attributes[:name]

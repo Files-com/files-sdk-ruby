@@ -113,7 +113,7 @@ Files::SsoStrategy.create(
 
 ### Parameters
 
-* `provider` (string): Required - One of the following: google, auth0, okta, atlassian, azure, box, dropbox, slack, ubuntu, onelogin, saml
+* `provider` (string): Required - One of the following: google, auth0, okta, atlassian, azure, box, dropbox, slack, ubuntu, onelogin, saml, idaptive
 * `subdomain` (string): Subdomain or domain name for your auth provider.   Example: `https://[subdomain].okta.com/`
 * `client_id` (string): OAuth Client ID for your auth provider.
 * `client_secret` (string): OAuth Client Secret for your auth provider.
@@ -166,7 +166,7 @@ Files::SsoStrategy.update(id,
 ### Parameters
 
 * `id` (int64): Required - Sso Strategy ID.
-* `provider` (string): Required - One of the following: google, auth0, okta, atlassian, azure, box, dropbox, slack, ubuntu, onelogin, saml
+* `provider` (string): Required - One of the following: google, auth0, okta, atlassian, azure, box, dropbox, slack, ubuntu, onelogin, saml, idaptive
 * `subdomain` (string): Subdomain or domain name for your auth provider.   Example: `https://[subdomain].okta.com/`
 * `client_id` (string): OAuth Client ID for your auth provider.
 * `client_secret` (string): OAuth Client Secret for your auth provider.
@@ -233,7 +233,7 @@ sso_strategy.update(
 ### Parameters
 
 * `id` (int64): Required - Sso Strategy ID.
-* `provider` (string): Required - One of the following: google, auth0, okta, atlassian, azure, box, dropbox, slack, ubuntu, onelogin, saml
+* `provider` (string): Required - One of the following: google, auth0, okta, atlassian, azure, box, dropbox, slack, ubuntu, onelogin, saml, idaptive
 * `subdomain` (string): Subdomain or domain name for your auth provider.   Example: `https://[subdomain].okta.com/`
 * `client_id` (string): OAuth Client ID for your auth provider.
 * `client_secret` (string): OAuth Client Secret for your auth provider.
