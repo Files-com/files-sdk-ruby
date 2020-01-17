@@ -688,7 +688,6 @@ module Files
     #   disable_2fa_with_delay - boolean - If set to true, we will begin the process of disabling 2FA on this site.
     #   ldap_password_change - string - New LDAP password.
     #   ldap_password_change_confirmation - string - Confirm new LDAP password.
-    #   remove_icons - boolean - If set to true, icons will be removed.
     #   smtp_password - string - Password for SMTP server.
     def self.update(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)

@@ -376,8 +376,7 @@ Files::Site.update(
   icon128_delete: true, 
   logo_delete: true, 
   days_until_2fa_required: 1, 
-  disable_2fa_with_delay: true, 
-  remove_icons: true
+  disable_2fa_with_delay: true
 )
 ```
 
@@ -479,7 +478,6 @@ Files::Site.update(
 * `disable_2fa_with_delay` (boolean): If set to true, we will begin the process of disabling 2FA on this site.
 * `ldap_password_change` (string): New LDAP password.
 * `ldap_password_change_confirmation` (string): Confirm new LDAP password.
-* `remove_icons` (boolean): If set to true, icons will be removed.
 * `smtp_password` (string): Password for SMTP server.
 
 
