@@ -174,14 +174,14 @@ module Files
     end
 
     # Parameters:
+    #   url (required) - string - URL for testing the webhook.
     #   method - string - HTTP method(GET or POST).
     #   encoding - string - HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    #   test_webhook[url] (required) - string - URL for testing the webhook.
-    #   url - string - URL for testing the webhook.
     def self.webhook_test(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: url must be an String") if params.dig(:url) and !params.dig(:url).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: method must be an String") if params.dig(:method) and !params.dig(:method).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: encoding must be an String") if params.dig(:encoding) and !params.dig(:encoding).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: url must be an String") if params.dig(:url) and !params.dig(:url).is_a?(String)
+      raise MissingParameterError.new("Parameter missing: url") unless params.dig(:url)
 
       response, _options = Api.send_request("/behaviors/webhook/test", :post, params, options)
       response.data
