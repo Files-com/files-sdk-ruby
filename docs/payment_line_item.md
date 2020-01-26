@@ -5,10 +5,10 @@
 ```
 {
   "amount": "",
-  "created_at": "2000-01-01 01:00:00 UTC",
+  "created_at": "2000-01-01T01:00:00Z",
   "invoice_id": 1,
   "payment_id": 1,
-  "updated_at": "2000-01-01 01:00:00 UTC"
+  "updated_at": "2000-01-01T01:00:00Z"
 }
 ```
 

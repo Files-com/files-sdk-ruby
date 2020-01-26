@@ -5,12 +5,12 @@
 ```
 {
   "amount": "",
-  "created_at": "2000-01-01 01:00:00 UTC",
+  "created_at": "2000-01-01T01:00:00Z",
   "description": "Service from 2019-01-01 through 2019-12-31",
   "type": "invoice",
-  "service_end_at": "2000-01-01 01:00:00 UTC",
-  "service_start_at": "2000-01-01 01:00:00 UTC",
-  "updated_at": "2000-01-01 01:00:00 UTC",
+  "service_end_at": "2000-01-01T01:00:00Z",
+  "service_start_at": "2000-01-01T01:00:00Z",
+  "updated_at": "2000-01-01T01:00:00Z",
   "plan": "Enterprise",
   "site": "My site"
 }

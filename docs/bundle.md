@@ -6,9 +6,9 @@
 {
   "id": 1,
   "code": "abc123",
-  "created_at": "2000-01-01 01:00:00 UTC",
+  "created_at": "2000-01-01T01:00:00Z",
   "description": "The public description of the bundle.",
-  "expires_at": "2000-01-01 01:00:00 UTC",
+  "expires_at": "2000-01-01T01:00:00Z",
   "paths": [
 
   ],
@@ -76,7 +76,7 @@ Files::Bundle.create(
   user_id: 1, 
   paths: ["file.txt"], 
   password: "Password", 
-  expires_at: "2000-01-01 01:00:00 UTC", 
+  expires_at: "2000-01-01T01:00:00Z", 
   description: "Public description", 
   note: "Internal Note"
 )

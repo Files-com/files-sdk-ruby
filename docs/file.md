@@ -12,8 +12,8 @@ may places where a Ruby File object can be used.
   "display_name": "file.txt",
   "type": "file",
   "size": 1024,
-  "mtime": "2000-01-01 01:00:00 UTC",
-  "provided_mtime": "2000-01-01 01:00:00 UTC",
+  "mtime": "2000-01-01T01:00:00Z",
+  "provided_mtime": "2000-01-01T01:00:00Z",
   "crc32": "70976923",
   "md5": "17c54824e9931a4688ca032d03f6663c",
   "mime_type": "application/octet-stream",
@@ -84,7 +84,7 @@ Files::File.create(path,
   mkdir_parents: true, 
   part: 1, 
   parts: 1, 
-  provided_mtime: "2000-01-01 01:00:00 UTC", 
+  provided_mtime: "2000-01-01T01:00:00Z", 
   restart: 1, 
   size: 1, 
   with_rename: true
@@ -115,7 +115,7 @@ Files::File.create(path,
 
 ```
 Files::File.update(path, 
-  provided_mtime: "2000-01-01 01:00:00 UTC", 
+  provided_mtime: "2000-01-01T01:00:00Z", 
   priority_color: "red"
 )
 ```
@@ -174,7 +174,7 @@ file.create(
   mkdir_parents: true,
   part: 1,
   parts: 1,
-  provided_mtime: "2000-01-01 01:00:00 UTC",
+  provided_mtime: "2000-01-01T01:00:00Z",
   restart: 1,
   size: 1,
   with_rename: true
@@ -206,7 +206,7 @@ file.create(
 ```
 file = Files::File.find(1)
 file.update(
-  provided_mtime: "2000-01-01 01:00:00 UTC",
+  provided_mtime: "2000-01-01T01:00:00Z",
   priority_color: "red"
 )
 ```

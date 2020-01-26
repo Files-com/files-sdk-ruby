@@ -6,9 +6,9 @@
 {
   "id": 1,
   "protocol_cipher": "TLSv1.2; ECDHE-RSA-AES256-GCM-SHA384",
-  "created_at": "2000-01-01 01:00:00 UTC",
+  "created_at": "2000-01-01T01:00:00Z",
   "interface": "restapi",
-  "updated_at": "2000-01-01 01:00:00 UTC",
+  "updated_at": "2000-01-01T01:00:00Z",
   "user_id": 1
 }
 ```

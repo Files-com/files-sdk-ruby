@@ -7,7 +7,7 @@
   "id": 1,
   "amount": "",
   "balance": "",
-  "created_at": "2000-01-01 01:00:00 UTC",
+  "created_at": "2000-01-01T01:00:00Z",
   "currency": "USD",
   "download_uri": "https://url...",
   "invoice_line_items": [
@@ -17,11 +17,11 @@
   "payment_line_items": [
 
   ],
-  "payment_reversed_at": "2000-01-01 01:00:00 UTC",
+  "payment_reversed_at": "2000-01-01T01:00:00Z",
   "payment_type": "",
   "site_name": "My Site",
   "type": "invoice",
-  "updated_at": "2000-01-01 01:00:00 UTC"
+  "updated_at": "2000-01-01T01:00:00Z"
 }
 ```
 
@@ -39,6 +39,24 @@
 * `site_name` (string): Site name this line item is for
 * `type` (string): Type of line item, either payment or invoice
 * `updated_at` (date-time): Line item updated at
+
+
+---
+
+## List Payments
+
+```
+Files::Payment.list(
+  page: 1, 
+  per_page: 1
+)
+```
+
+### Parameters
+
+* `page` (int64): Current page number.
+* `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+* `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
 
 
 ---

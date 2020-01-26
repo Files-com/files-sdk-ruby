@@ -6,7 +6,7 @@
 {
   "id": 1,
   "path": "path",
-  "when": "2000-01-01 01:00:00 UTC",
+  "when": "2000-01-01T01:00:00Z",
   "destination": "/to_path",
   "display": "Actual text of the action here.",
   "ip": "192.283.128.182",
