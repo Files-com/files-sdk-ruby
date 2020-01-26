@@ -5,16 +5,16 @@
 ```
 {
   "id": 1,
+  "title": "My public key",
   "created_at": "2000-01-01 01:00:00 UTC",
-  "fingerprint": "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8",
-  "title": "My public key"
+  "fingerprint": "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"
 }
 ```
 
 * `id` (int64): Public key ID
+* `title` (string): Public key title
 * `created_at` (date-time): Public key created at date/time
 * `fingerprint` (string): Public key fingerprint
-* `title` (string): Public key title
 * `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
 * `public_key` (string): Actual contents of SSH key.
 

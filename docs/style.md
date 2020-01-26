@@ -4,14 +4,16 @@
 
 ```
 {
-  "logo": "",
+  "id": 1,
   "path": "",
+  "logo": "",
   "thumbnail": ""
 }
 ```
 
-* `logo`: Logo
+* `id` (int64): Style ID
 * `path` (string): Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+* `logo`: Logo
 * `thumbnail`: Logo thumbnail
 * `file` (file): Logo for custom branding.
 

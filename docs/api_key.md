@@ -5,6 +5,7 @@
 ```
 {
   "id": 1,
+  "descriptive_label": "Site-wide API key for https://site.files.com/ (key ID #1)",
   "created_at": "2000-01-01 01:00:00 UTC",
   "expires_at": "2000-01-01 01:00:00 UTC",
   "key": "[key]",
@@ -17,6 +18,7 @@
 ```
 
 * `id` (int64): API Key ID
+* `descriptive_label` (string): Unique label that describes this API key.  Useful for external systems where you may have API keys from multiple accounts and want a human-readable label for each key.
 * `created_at` (date-time): Time which API Key was created
 * `expires_at` (date-time): API Key expiration date
 * `key` (string): API Key actual key string
@@ -45,6 +47,15 @@ Files::ApiKey.list(
 * `page` (int64): Current page number.
 * `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
 * `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+
+
+---
+
+## Show information about current API key.  (Requires current API connection to be using an API key.)
+
+```
+Files::ApiKey.get
+```
 
 
 ---

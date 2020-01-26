@@ -4,18 +4,18 @@
 
 ```
 {
+  "name": "My Group",
   "id": 1,
   "admin": true,
-  "name": "My Group",
   "usernames": [
 
   ]
 }
 ```
 
+* `name` (string): Group name
 * `id` (int64): Group ID
 * `admin` (boolean): Is this user an administrator of this group?
-* `name` (string): Group name
 * `usernames` (array): A list of usernames for users in this group
 * `group_id` (int64): Group ID to add user to.
 * `user_id` (int64): User ID to add to group.

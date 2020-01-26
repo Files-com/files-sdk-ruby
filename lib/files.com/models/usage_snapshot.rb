@@ -14,6 +14,16 @@ module Files
       @attributes[:id]
     end
 
+    # date-time - Site usage report start date/time
+    def start_at
+      @attributes[:start_at]
+    end
+
+    # date-time - Site usage report end date/time
+    def end_at
+      @attributes[:end_at]
+    end
+
     # date-time - Site usage report created at date/time
     def created_at
       @attributes[:created_at]
@@ -24,19 +34,9 @@ module Files
       @attributes[:current_storage]
     end
 
-    # date-time - Site usage report end date/time
-    def end_at
-      @attributes[:end_at]
-    end
-
     # float - Site usage report highest usage in time period
     def high_water_storage
       @attributes[:high_water_storage]
-    end
-
-    # date-time - Site usage report start date/time
-    def start_at
-      @attributes[:start_at]
     end
 
     # int64 - Number of downloads in report time period
@@ -72,6 +72,23 @@ module Files
     # float - Usage for files that are deleted but retained as backups
     def deleted_files_storage
       @attributes[:deleted_files_storage]
+    end
+
+    # Parameters:
+    #   page - integer - Current page number.
+    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+    def self.list(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
+
+      response, options = Api.send_request("/usage_snapshots", :get, params, options)
+      response.data.map { |object| UsageSnapshot.new(object, options) }
+    end
+
+    def self.all(params = {}, options = {})
+      list(params, options)
     end
   end
 end

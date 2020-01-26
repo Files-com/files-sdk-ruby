@@ -9,6 +9,11 @@ module Files
       @options = options || {}
     end
 
+    # string - Unique label for DNS record; used by Zapier and other integrations.
+    def id
+      @attributes[:id]
+    end
+
     # string - DNS record domain name
     def domain
       @attributes[:domain]

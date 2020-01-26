@@ -9,6 +9,15 @@ module Files
       @options = options || {}
     end
 
+    # int64 - Bundle ID
+    def id
+      @attributes[:id]
+    end
+
+    def id=(value)
+      @attributes[:id] = value
+    end
+
     # string - Bundle code.  This code forms the end part of the Public URL.
     def code
       @attributes[:code]
@@ -48,15 +57,6 @@ module Files
 
     def paths=(value)
       @attributes[:paths] = value
-    end
-
-    # int64 - Bundle ID
-    def id
-      @attributes[:id]
-    end
-
-    def id=(value)
-      @attributes[:id] = value
     end
 
     # string - Bundle internal note

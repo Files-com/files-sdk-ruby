@@ -9,6 +9,11 @@ module Files
       @options = options || {}
     end
 
+    # string - Site name
+    def name
+      @attributes[:name]
+    end
+
     # boolean - Is SMS two factor authentication allowed?
     def allowed_2fa_method_sms
       @attributes[:allowed_2fa_method_sms]
@@ -284,11 +289,6 @@ module Files
       @attributes[:max_prior_passwords]
     end
 
-    # string - Site name
-    def name
-      @attributes[:name]
-    end
-
     # float - Next billing amount
     def next_billing_amount
       @attributes[:next_billing_amount]
@@ -529,21 +529,6 @@ module Files
       @attributes[:disable_users_from_inactivity_period_days]
     end
 
-    # Change the current billing plan for the site
-    #
-    # Parameters:
-    #   billing_frequency - integer - The billing frequency for the site.  Must be 1(monthly) or 12(annual).
-    def update_plan(params = {})
-      params ||= {}
-      params[:id] = @attributes[:id]
-      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: billing_frequency must be an Integer") if params.dig(:billing_frequency) and !params.dig(:billing_frequency).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-
-      Api.send_request("/site/plan", :patch, params, @options)
-    end
-
     def self.get(params = {}, options = {})
       response, options = Api.send_request("/site", :get, params, options)
       Site.new(response.data, options)
@@ -552,43 +537,6 @@ module Files
     def self.get_usage(params = {}, options = {})
       response, options = Api.send_request("/site/usage", :get, params, options)
       UsageSnapshot.new(response.data, options)
-    end
-
-    def self.get_switch_to_plan(params = {}, options = {})
-      response, options = Api.send_request("/site/switch_to_plan", :get, params, options)
-      Plan.new(response.data, options)
-    end
-
-    # Parameters:
-    #   currency - string - Currency.
-    def self.get_plan(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: currency must be an String") if params.dig(:currency) and !params.dig(:currency).is_a?(String)
-
-      response, options = Api.send_request("/site/plan", :get, params, options)
-      Plan.new(response.data, options)
-    end
-
-    # Parameters:
-    #   paypal_token (required) - string - Billing token for use with paypal.
-    def self.get_paypal_express_info(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: paypal_token must be an String") if params.dig(:paypal_token) and !params.dig(:paypal_token).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: paypal_token") unless params.dig(:paypal_token)
-
-      response, options = Api.send_request("/site/paypal_express_info", :get, params, options)
-      PaypalExpressInfo.new(response.data, options)
-    end
-
-    # Parameters:
-    #   return_to_url (required) - string - URL that paypal express forwards the user to.
-    #   plan_id (required) - integer - Plan ID to switch to.
-    def self.get_paypal_express(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: return_to_url must be an String") if params.dig(:return_to_url) and !params.dig(:return_to_url).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: plan_id must be an Integer") if params.dig(:plan_id) and !params.dig(:plan_id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: return_to_url") unless params.dig(:return_to_url)
-      raise MissingParameterError.new("Parameter missing: plan_id") unless params.dig(:plan_id)
-
-      response, options = Api.send_request("/site/paypal_express", :get, params, options)
-      PaypalExpressUrl.new(response.data, options)
     end
 
     # Parameters:
@@ -747,21 +695,6 @@ module Files
 
       response, options = Api.send_request("/site", :patch, params, options)
       Site.new(response.data, options)
-    end
-
-    # Change the current billing plan for the site
-    #
-    # Parameters:
-    #   billing_frequency - integer - The billing frequency for the site.  Must be 1(monthly) or 12(annual).
-    def self.update_plan(id, params = {}, options = {})
-      params ||= {}
-      params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: billing_frequency must be an Integer") if params.dig(:billing_frequency) and !params.dig(:billing_frequency).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-
-      response, options = Api.send_request("/site/plan", :patch, params, options)
-      Plan.new(response.data, options)
     end
   end
 end

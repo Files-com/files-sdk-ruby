@@ -9,6 +9,15 @@ module Files
       @options = options || {}
     end
 
+    # string - Group name
+    def name
+      @attributes[:name]
+    end
+
+    def name=(value)
+      @attributes[:name] = value
+    end
+
     # int64 - Group ID
     def id
       @attributes[:id]
@@ -25,15 +34,6 @@ module Files
 
     def admin=(value)
       @attributes[:admin] = value
-    end
-
-    # string - Group name
-    def name
-      @attributes[:name]
-    end
-
-    def name=(value)
-      @attributes[:name] = value
     end
 
     # array - A list of usernames for users in this group

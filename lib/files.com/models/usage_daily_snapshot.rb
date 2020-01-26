@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Files
-  class IpAddress
+  class UsageDailySnapshot
     attr_reader :options, :attributes
 
     def initialize(attributes = {}, options = {})
@@ -9,24 +9,24 @@ module Files
       @options = options || {}
     end
 
-    # string - Unique label for list; used by Zapier and other integrations.
+    # int64 - ID of the usage record
     def id
       @attributes[:id]
     end
 
-    # string - The object that this public IP address list is associated with.
-    def associated_with
-      @attributes[:associated_with]
+    # date - The date of this usage record
+    def date
+      @attributes[:date]
     end
 
-    # int64 - Group ID
-    def group_id
-      @attributes[:group_id]
+    # int64 - The quantity of storage held for this site
+    def current_storage
+      @attributes[:current_storage]
     end
 
-    # array - A list of IP addresses.
-    def ip_addresses
-      @attributes[:ip_addresses]
+    # array - Usage broken down by each top-level folder
+    def usage_by_top_level_dir
+      @attributes[:usage_by_top_level_dir]
     end
 
     # Parameters:
@@ -38,8 +38,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
 
-      response, options = Api.send_request("/ip_addresses", :get, params, options)
-      response.data.map { |object| IpAddress.new(object, options) }
+      response, options = Api.send_request("/usage_daily_snapshots", :get, params, options)
+      response.data.map { |object| UsageDailySnapshot.new(object, options) }
     end
 
     def self.all(params = {}, options = {})

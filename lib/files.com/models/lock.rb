@@ -9,6 +9,15 @@ module Files
       @options = options || {}
     end
 
+    # string - Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    def path
+      @attributes[:path]
+    end
+
+    def path=(value)
+      @attributes[:path] = value
+    end
+
     # int64 - Lock timeout
     def timeout
       @attributes[:timeout]
@@ -34,15 +43,6 @@ module Files
 
     def owner=(value)
       @attributes[:owner] = value
-    end
-
-    # string - Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
-    def path
-      @attributes[:path]
-    end
-
-    def path=(value)
-      @attributes[:path] = value
     end
 
     # string - Lock scope(shared or exclusive)

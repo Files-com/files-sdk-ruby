@@ -14,6 +14,11 @@ module Files
       @attributes[:id]
     end
 
+    # string - Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    def path
+      @attributes[:path]
+    end
+
     # date-time - Action occurrence date/time
     def when
       @attributes[:when]
@@ -24,7 +29,7 @@ module Files
       @attributes[:destination]
     end
 
-    # string - Display format
+    # string - Friendly displayed output
     def display
       @attributes[:display]
     end
@@ -32,11 +37,6 @@ module Files
     # string - IP Address that performed this action
     def ip
       @attributes[:ip]
-    end
-
-    # string - Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
-    def path
-      @attributes[:path]
     end
 
     # string - The source path for this action, if applicable

@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # string - User's username
+    def username
+      @attributes[:username]
+    end
+
+    def username=(value)
+      @attributes[:username] = value
+    end
+
     # array - List of group IDs of which this user is an administrator
     def admin_group_ids
       @attributes[:admin_group_ids]
@@ -363,15 +372,6 @@ module Files
 
     def user_root=(value)
       @attributes[:user_root] = value
-    end
-
-    # string - User's username
-    def username
-      @attributes[:username]
-    end
-
-    def username=(value)
-      @attributes[:username] = value
     end
 
     # file - An image file for your user avatar.

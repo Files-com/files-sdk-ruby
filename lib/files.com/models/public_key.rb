@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # string - Public key title
+    def title
+      @attributes[:title]
+    end
+
+    def title=(value)
+      @attributes[:title] = value
+    end
+
     # date-time - Public key created at date/time
     def created_at
       @attributes[:created_at]
@@ -30,15 +39,6 @@ module Files
 
     def fingerprint=(value)
       @attributes[:fingerprint] = value
-    end
-
-    # string - Public key title
-    def title
-      @attributes[:title]
-    end
-
-    def title=(value)
-      @attributes[:title] = value
     end
 
     # int64 - User ID.  Provide a value of `0` to operate the current session's user.

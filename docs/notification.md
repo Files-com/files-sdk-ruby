@@ -5,11 +5,11 @@
 ```
 {
   "id": 1,
+  "path": "path",
   "group_id": 1,
   "group_name": "",
   "notify_user_actions": true,
   "notify_on_copy": true,
-  "path": "path",
   "send_interval": "fifteen_minutes",
   "unsubscribed": true,
   "unsubscribed_reason": "",
@@ -19,11 +19,11 @@
 ```
 
 * `id` (int64): Notification ID
+* `path` (string): Folder path to notify on This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `group_id` (int64): Notification group id
 * `group_name` (string): Group name if applicable
 * `notify_user_actions` (boolean): Trigger notification on notification user actions?
 * `notify_on_copy` (boolean): Triggers notification when moving or copying files to this path
-* `path` (string): Folder path to notify on This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `send_interval` (string): The time interval that notifications are aggregated to
 * `unsubscribed` (boolean): Is the user unsubscribed from this notification?
 * `unsubscribed_reason` (string): The reason that the user unsubscribed

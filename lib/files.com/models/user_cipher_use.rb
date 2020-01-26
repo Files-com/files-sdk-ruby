@@ -9,24 +9,24 @@ module Files
       @options = options || {}
     end
 
-    # date-time - The earliest recorded use of this combination of interface and protocol and cipher (for this user)
-    def created_at
-      @attributes[:created_at]
-    end
-
     # int64 - UserCipherUse ID
     def id
       @attributes[:id]
     end
 
-    # string - The interface accessed
-    def interface
-      @attributes[:interface]
-    end
-
     # string - The protocol and cipher employed
     def protocol_cipher
       @attributes[:protocol_cipher]
+    end
+
+    # date-time - The earliest recorded use of this combination of interface and protocol and cipher (for this user)
+    def created_at
+      @attributes[:created_at]
+    end
+
+    # string - The interface accessed
+    def interface
+      @attributes[:interface]
     end
 
     # date-time - The most recent use of this combination of interface and protocol and cipher (for this user)

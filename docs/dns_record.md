@@ -4,12 +4,14 @@
 
 ```
 {
+  "id": "customdomain.com-CNAME-site.files.com",
   "domain": "my-custom-domain.com",
   "rrtype": "CNAME",
   "value": "mysite.files.com"
 }
 ```
 
+* `id` (string): Unique label for DNS record; used by Zapier and other integrations.
 * `domain` (string): DNS record domain name
 * `rrtype` (string): DNS record type
 * `value` (string): DNS record value

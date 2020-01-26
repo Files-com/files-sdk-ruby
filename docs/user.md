@@ -5,6 +5,7 @@
 ```
 {
   "id": 1,
+  "username": "user",
   "admin_group_ids": [
 
   ],
@@ -47,12 +48,12 @@
   "externally_managed": true,
   "time_zone": "Pacific Time (US & Canada)",
   "type_of_2fa": "",
-  "user_root": "",
-  "username": "user"
+  "user_root": ""
 }
 ```
 
 * `id` (int64): User ID
+* `username` (string): User's username
 * `admin_group_ids` (array): List of group IDs of which this user is an administrator
 * `allowed_ips` (string): A list of allowed IPs if applicable.  Newline delimited
 * `attachments_permission` (boolean): Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
@@ -92,7 +93,6 @@
 * `time_zone` (string): User time zone
 * `type_of_2fa` (string): Type(s) of 2FA methods in use.  Will be either `sms`, `totp`, `u2f`, `yubi`, or multiple values sorted alphabetically and joined by an underscore.
 * `user_root` (string): Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-* `username` (string): User's username
 * `avatar_file` (file): An image file for your user avatar.
 * `avatar_delete` (boolean): If true, the avatar will be deleted.
 * `change_password` (string): Used for changing a password on an existing user.

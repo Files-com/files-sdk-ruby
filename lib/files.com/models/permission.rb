@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # string - Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    def path
+      @attributes[:path]
+    end
+
+    def path=(value)
+      @attributes[:path] = value
+    end
+
     # int64 - User ID
     def user_id
       @attributes[:user_id]
@@ -52,15 +61,6 @@ module Files
 
     def group_name=(value)
       @attributes[:group_name] = value
-    end
-
-    # string - Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
-    def path
-      @attributes[:path]
-    end
-
-    def path=(value)
-      @attributes[:path] = value
     end
 
     # string - Permission type

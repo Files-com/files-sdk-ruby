@@ -4,6 +4,7 @@
 
 ```
 {
+  "name": "My Site",
   "allowed_2fa_method_sms": true,
   "allowed_2fa_method_totp": true,
   "allowed_2fa_method_u2f": true,
@@ -59,7 +60,6 @@
   "login_help_text": "Login page help text.",
   "logo": "",
   "max_prior_passwords": 1,
-  "name": "My Site",
   "next_billing_amount": "",
   "next_billing_date": "Apr 20",
   "opt_out_global": true,
@@ -111,6 +111,7 @@
 }
 ```
 
+* `name` (string): Site name
 * `allowed_2fa_method_sms` (boolean): Is SMS two factor authentication allowed?
 * `allowed_2fa_method_totp` (boolean): Is TOTP two factor authentication allowed?
 * `allowed_2fa_method_u2f` (boolean): Is U2F two factor authentication allowed?
@@ -166,7 +167,6 @@
 * `login_help_text` (string): Login help text
 * `logo`: Branded logo
 * `max_prior_passwords` (int64): Number of prior passwords to disallow
-* `name` (string): Site name
 * `next_billing_amount` (float): Next billing amount
 * `next_billing_date` (string): Next billing date
 * `opt_out_global` (boolean): Use servers in the USA only?
@@ -228,67 +228,11 @@ Files::Site.get
 
 ---
 
-## Get either the most recent usage snapshot (usage data for billing purposes) for a Site, or optionally get a specific usage snapshot
+## Get the most recent usage snapshot (usage data for billing purposes) for a Site
 
 ```
 Files::Site.get_usage
 ```
-
-
----
-
-## Show plan that will be switched to in the future. (Populated if current plan is deprecated and no longer offered beyond the current billing period.)
-
-```
-Files::Site.get_switch_to_plan
-```
-
-
----
-
-## Show the current billing plan of a site
-
-```
-Files::Site.get_plan(
-  currency: "USD"
-)
-```
-
-### Parameters
-
-* `currency` (string): Currency.
-
-
----
-
-## Complete a PayPal subscription
-
-```
-Files::Site.get_paypal_express_info(
-  paypal_token: "[token]"
-)
-```
-
-### Parameters
-
-* `paypal_token` (string): Required - Billing token for use with paypal.
-
-
----
-
-## Initiate a new PayPal subscription
-
-```
-Files::Site.get_paypal_express(
-  return_to_url: "https://app.files.com/...", 
-  plan_id: 1
-)
-```
-
-### Parameters
-
-* `return_to_url` (string): Required - URL that paypal express forwards the user to.
-* `plan_id` (int64): Required - Plan ID to switch to.
 
 
 ---
@@ -479,36 +423,3 @@ Files::Site.update(
 * `ldap_password_change` (string): New LDAP password.
 * `ldap_password_change_confirmation` (string): Confirm new LDAP password.
 * `smtp_password` (string): Password for SMTP server.
-
-
----
-
-## Change the current billing plan for the site
-
-```
-Files::Site.update_plan(id, 
-  billing_frequency: 1
-)
-```
-
-### Parameters
-
-* `id` (int64): Required - Site ID.
-* `billing_frequency` (int64): The billing frequency for the site.  Must be 1(monthly) or 12(annual).
-
-
----
-
-## Change the current billing plan for the site
-
-```
-site = Files::Site.find(1)
-site.update_plan(
-  billing_frequency: 1
-)
-```
-
-### Parameters
-
-* `id` (int64): Required - Site ID.
-* `billing_frequency` (int64): The billing frequency for the site.  Must be 1(monthly) or 12(annual).

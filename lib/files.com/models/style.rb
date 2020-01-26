@@ -9,13 +9,13 @@ module Files
       @options = options || {}
     end
 
-    # Logo
-    def logo
-      @attributes[:logo]
+    # int64 - Style ID
+    def id
+      @attributes[:id]
     end
 
-    def logo=(value)
-      @attributes[:logo] = value
+    def id=(value)
+      @attributes[:id] = value
     end
 
     # string - Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
@@ -25,6 +25,15 @@ module Files
 
     def path=(value)
       @attributes[:path] = value
+    end
+
+    # Logo
+    def logo
+      @attributes[:logo]
+    end
+
+    def logo=(value)
+      @attributes[:logo] = value
     end
 
     # Logo thumbnail

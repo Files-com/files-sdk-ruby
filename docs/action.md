@@ -5,11 +5,11 @@
 ```
 {
   "id": 1,
+  "path": "path",
   "when": "2000-01-01 01:00:00 UTC",
   "destination": "/to_path",
-  "display": "full",
+  "display": "Actual text of the action here.",
   "ip": "192.283.128.182",
-  "path": "path",
   "source": "/from_path",
   "targets": [
 
@@ -23,11 +23,11 @@
 ```
 
 * `id` (int64): Action ID
+* `path` (string): Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `when` (date-time): Action occurrence date/time
 * `destination` (string): The destination path for this action, if applicable
-* `display` (string): Display format
+* `display` (string): Friendly displayed output
 * `ip` (string): IP Address that performed this action
-* `path` (string): Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `source` (string): The source path for this action, if applicable
 * `targets` (array): Targets
 * `user_id` (int64): User ID

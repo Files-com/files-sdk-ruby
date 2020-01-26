@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # string - Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    def path
+      @attributes[:path]
+    end
+
+    def path=(value)
+      @attributes[:path] = value
+    end
+
     # string - URL for attached file
     def attachment_url
       @attributes[:attachment_url]
@@ -34,15 +43,6 @@ module Files
 
     def behavior=(value)
       @attributes[:behavior] = value
-    end
-
-    # string - Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
-    def path
-      @attributes[:path]
-    end
-
-    def path=(value)
-      @attributes[:path] = value
     end
 
     # object - Settings for this behavior.  See the section above for an example value to provide here.  Formatting is different for each Behavior type.  May be sent as nested JSON or a single JSON-encoded string.  If using XML encoding for the API call, this data must be sent as a JSON-encoded string.

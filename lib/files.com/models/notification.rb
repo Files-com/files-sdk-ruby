@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # string - Folder path to notify on This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    def path
+      @attributes[:path]
+    end
+
+    def path=(value)
+      @attributes[:path] = value
+    end
+
     # int64 - Notification group id
     def group_id
       @attributes[:group_id]
@@ -52,15 +61,6 @@ module Files
 
     def notify_on_copy=(value)
       @attributes[:notify_on_copy] = value
-    end
-
-    # string - Folder path to notify on This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
-    def path
-      @attributes[:path]
-    end
-
-    def path=(value)
-      @attributes[:path] = value
     end
 
     # string - The time interval that notifications are aggregated to

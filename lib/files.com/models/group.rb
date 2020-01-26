@@ -18,15 +18,6 @@ module Files
       @attributes[:id] = value
     end
 
-    # array - List of user IDs who are group administrators (separated by commas)
-    def admin_ids
-      @attributes[:admin_ids]
-    end
-
-    def admin_ids=(value)
-      @attributes[:admin_ids] = value
-    end
-
     # string - Group name
     def name
       @attributes[:name]
@@ -34,6 +25,15 @@ module Files
 
     def name=(value)
       @attributes[:name] = value
+    end
+
+    # array - List of user IDs who are group administrators (separated by commas)
+    def admin_ids
+      @attributes[:admin_ids]
+    end
+
+    def admin_ids=(value)
+      @attributes[:admin_ids] = value
     end
 
     # string - Notes about this group

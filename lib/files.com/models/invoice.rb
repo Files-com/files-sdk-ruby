@@ -9,6 +9,11 @@ module Files
       @options = options || {}
     end
 
+    # int64 - Line item Id
+    def id
+      @attributes[:id]
+    end
+
     # float - Line item amount
     def amount
       @attributes[:amount]
@@ -32,11 +37,6 @@ module Files
     # string - Line item download uri
     def download_uri
       @attributes[:download_uri]
-    end
-
-    # int64 - Line item Id
-    def id
-      @attributes[:id]
     end
 
     # array - Associated invoice line items

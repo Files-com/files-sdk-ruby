@@ -4,12 +4,12 @@
 
 ```
 {
+  "id": 1,
   "amount": "",
   "balance": "",
   "created_at": "2000-01-01 01:00:00 UTC",
   "currency": "USD",
   "download_uri": "https://url...",
-  "id": 1,
   "invoice_line_items": [
 
   ],
@@ -25,12 +25,12 @@
 }
 ```
 
+* `id` (int64): Line item Id
 * `amount` (float): Line item amount
 * `balance` (float): Line item balance
 * `created_at` (date-time): Line item created at
 * `currency` (string): Line item currency
 * `download_uri` (string): Line item download uri
-* `id` (int64): Line item Id
 * `invoice_line_items` (array): Associated invoice line items
 * `method` (string): Line item payment method
 * `payment_line_items` (array): Associated payment line items

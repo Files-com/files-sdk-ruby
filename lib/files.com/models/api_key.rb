@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # string - Unique label that describes this API key.  Useful for external systems where you may have API keys from multiple accounts and want a human-readable label for each key.
+    def descriptive_label
+      @attributes[:descriptive_label]
+    end
+
+    def descriptive_label=(value)
+      @attributes[:descriptive_label] = value
+    end
+
     # date-time - Time which API Key was created
     def created_at
       @attributes[:created_at]
@@ -143,6 +152,11 @@ module Files
 
     def self.all(params = {}, options = {})
       list(params, options)
+    end
+
+    def self.get(params = {}, options = {})
+      response, options = Api.send_request("/api_key", :get, params, options)
+      ApiKey.new(response.data, options)
     end
 
     # Parameters:

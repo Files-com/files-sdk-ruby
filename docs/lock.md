@@ -4,10 +4,10 @@
 
 ```
 {
+  "path": "locked_file",
   "timeout": 43200,
   "depth": "infinity",
   "owner": "user",
-  "path": "locked_file",
   "scope": "shared",
   "token": "17c54824e9931a4688ca032d03f6663c",
   "type": "write",
@@ -16,10 +16,10 @@
 }
 ```
 
+* `path` (string): Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `timeout` (int64): Lock timeout
 * `depth` (string): Lock depth (0 or infinity)
 * `owner` (string): Owner of lock.  This can be any arbitrary string.
-* `path` (string): Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `scope` (string): Lock scope(shared or exclusive)
 * `token` (string): Lock token.  Use to release lock.
 * `type` (string): Lock type

@@ -4,6 +4,7 @@
 
 ```
 {
+  "id": 1,
   "code": "abc123",
   "created_at": "2000-01-01 01:00:00 UTC",
   "description": "The public description of the bundle.",
@@ -11,7 +12,6 @@
   "paths": [
 
   ],
-  "id": 1,
   "note": "The internal note on the bundle.",
   "password_protected": true,
   "url": "https://subdomain.files.com/f/12345678",
@@ -20,12 +20,12 @@
 }
 ```
 
+* `id` (int64): Bundle ID
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
 * `created_at` (date-time): Bundle created at date/time
 * `description` (string): Public description
 * `expires_at` (date-time): Bundle expiration date/time
 * `paths` (array): A list of paths in this bundle
-* `id` (int64): Bundle ID
 * `note` (string): Bundle internal note
 * `password_protected` (boolean): Is this bundle password protected?
 * `url` (string): Public URL of Share Link

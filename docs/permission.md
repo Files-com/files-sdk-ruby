@@ -5,22 +5,22 @@
 ```
 {
   "id": 1,
+  "path": "",
   "user_id": 1,
   "username": "Sser",
   "group_id": 1,
   "group_name": "",
-  "path": "",
   "permission": "full",
   "recursive": true
 }
 ```
 
 * `id` (int64): Permission ID
+* `path` (string): Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `user_id` (int64): User ID
 * `username` (string): User's username
 * `group_id` (int64): Group ID
 * `group_name` (string): Group name if applicable
-* `path` (string): Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `permission` (string): Permission type
 * `recursive` (boolean): Does this permission apply to subfolders?
 

@@ -5,9 +5,9 @@
 ```
 {
   "id": 1,
+  "path": "",
   "attachment_url": "",
   "behavior": "webhook",
-  "path": "",
   "value": {
     "method": "GET"
   }
@@ -15,9 +15,9 @@
 ```
 
 * `id` (int64): Folder behavior ID
+* `path` (string): Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `attachment_url` (string): URL for attached file
 * `behavior` (string): Behavior type.
-* `path` (string): Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `value` (object): Settings for this behavior.  See the section above for an example value to provide here.  Formatting is different for each Behavior type.  May be sent as nested JSON or a single JSON-encoded string.  If using XML encoding for the API call, this data must be sent as a JSON-encoded string.
 * `attachment_file` (file): Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
 
