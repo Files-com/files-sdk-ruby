@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # string - Type of authentication method
+    def authentication_method
+      @attributes[:authentication_method]
+    end
+
+    def authentication_method=(value)
+      @attributes[:authentication_method] = value
+    end
+
     # string - Hostname or IP address
     def hostname
       @attributes[:hostname]

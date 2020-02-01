@@ -5,6 +5,7 @@
 ```
 {
   "id": 1,
+  "authentication_method": "password",
   "hostname": "remote-server.com",
   "name": "My Remote server",
   "port": 1,
@@ -18,6 +19,7 @@
 ```
 
 * `id` (int64): Remote server ID
+* `authentication_method` (string): Type of authentication method
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `port` (int64): Port for remote server.  Not needed for S3.
