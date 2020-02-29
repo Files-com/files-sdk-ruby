@@ -54,6 +54,15 @@ module Files
       @attributes[:port] = value
     end
 
+    # int64 - Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+    def max_connections
+      @attributes[:max_connections]
+    end
+
+    def max_connections=(value)
+      @attributes[:max_connections] = value
+    end
+
     # string - S3 bucket name
     def s3_bucket
       @attributes[:s3_bucket]
@@ -147,17 +156,18 @@ module Files
     # Parameters:
     #   aws_access_key - string - AWS Access Key.
     #   aws_secret_key - string - AWS secret key.
-    #   hostname - string - Hostname.
-    #   name - string - Internal reference name for server.
     #   password - string - Password if needed.
-    #   port - string - Port.
     #   private_key - string - Private key if needed.
-    #   s3_bucket - string - S3 bucket name.
-    #   s3_region - string - S3 region.
-    #   server_certificate - string - Certificate for this server.
-    #   server_type - string - Type of server.  Can be ftp, sftp, or s3.
-    #   ssl - string - SSL requirements.  Can be if_available, require, require_implicit, never.
-    #   username - string - Server username if needed.
+    #   hostname - string - Hostname or IP address
+    #   name - string - Internal name for your reference
+    #   max_connections - integer - Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   port - integer - Port for remote server.  Not needed for S3.
+    #   s3_bucket - string - S3 bucket name
+    #   s3_region - string - S3 region
+    #   server_certificate - string - Remote server certificate
+    #   server_type - string - Remote server type.
+    #   ssl - string - Should we require SSL?
+    #   username - string - Remote server username.  Not needed for S3 buckets.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -165,11 +175,12 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params.dig(:aws_access_key) and !params.dig(:aws_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: port must be an String") if params.dig(:port) and !params.dig(:port).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params.dig(:port) and !params.dig(:port).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params.dig(:s3_bucket) and !params.dig(:s3_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params.dig(:s3_region) and !params.dig(:s3_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params.dig(:server_certificate) and !params.dig(:server_certificate).is_a?(String)
@@ -240,25 +251,27 @@ module Files
     # Parameters:
     #   aws_access_key - string - AWS Access Key.
     #   aws_secret_key - string - AWS secret key.
-    #   hostname - string - Hostname.
-    #   name - string - Internal reference name for server.
     #   password - string - Password if needed.
-    #   port - string - Port.
     #   private_key - string - Private key if needed.
-    #   s3_bucket - string - S3 bucket name.
-    #   s3_region - string - S3 region.
-    #   server_certificate - string - Certificate for this server.
-    #   server_type - string - Type of server.  Can be ftp, sftp, or s3.
-    #   ssl - string - SSL requirements.  Can be if_available, require, require_implicit, never.
-    #   username - string - Server username if needed.
+    #   hostname - string - Hostname or IP address
+    #   name - string - Internal name for your reference
+    #   max_connections - integer - Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   port - integer - Port for remote server.  Not needed for S3.
+    #   s3_bucket - string - S3 bucket name
+    #   s3_region - string - S3 region
+    #   server_certificate - string - Remote server certificate
+    #   server_type - string - Remote server type.
+    #   ssl - string - Should we require SSL?
+    #   username - string - Remote server username.  Not needed for S3 buckets.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params.dig(:aws_access_key) and !params.dig(:aws_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: port must be an String") if params.dig(:port) and !params.dig(:port).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params.dig(:port) and !params.dig(:port).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params.dig(:s3_bucket) and !params.dig(:s3_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params.dig(:s3_region) and !params.dig(:s3_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params.dig(:server_certificate) and !params.dig(:server_certificate).is_a?(String)
@@ -273,28 +286,30 @@ module Files
     # Parameters:
     #   aws_access_key - string - AWS Access Key.
     #   aws_secret_key - string - AWS secret key.
-    #   hostname - string - Hostname.
-    #   name - string - Internal reference name for server.
     #   password - string - Password if needed.
-    #   port - string - Port.
     #   private_key - string - Private key if needed.
-    #   s3_bucket - string - S3 bucket name.
-    #   s3_region - string - S3 region.
-    #   server_certificate - string - Certificate for this server.
-    #   server_type - string - Type of server.  Can be ftp, sftp, or s3.
-    #   ssl - string - SSL requirements.  Can be if_available, require, require_implicit, never.
-    #   username - string - Server username if needed.
+    #   hostname - string - Hostname or IP address
+    #   name - string - Internal name for your reference
+    #   max_connections - integer - Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   port - integer - Port for remote server.  Not needed for S3.
+    #   s3_bucket - string - S3 bucket name
+    #   s3_region - string - S3 region
+    #   server_certificate - string - Remote server certificate
+    #   server_type - string - Remote server type.
+    #   ssl - string - Should we require SSL?
+    #   username - string - Remote server username.  Not needed for S3 buckets.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params.dig(:aws_access_key) and !params.dig(:aws_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: port must be an String") if params.dig(:port) and !params.dig(:port).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params.dig(:port) and !params.dig(:port).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params.dig(:s3_bucket) and !params.dig(:s3_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params.dig(:s3_region) and !params.dig(:s3_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params.dig(:server_certificate) and !params.dig(:server_certificate).is_a?(String)

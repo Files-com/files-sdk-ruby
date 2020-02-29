@@ -9,6 +9,7 @@
   "hostname": "remote-server.com",
   "name": "My Remote server",
   "port": 1,
+  "max_connections": 1,
   "s3_bucket": "my-bucket",
   "s3_region": "us-east-1",
   "server_certificate": "[certificate]",
@@ -23,6 +24,7 @@
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `port` (int64): Port for remote server.  Not needed for S3.
+* `max_connections` (int64): Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
 * `s3_bucket` (string): S3 bucket name
 * `s3_region` (string): S3 region
 * `server_certificate` (string): Remote server certificate
@@ -74,6 +76,7 @@ Files::RemoteServer.find(id)
 Files::RemoteServer.create(
   hostname: "remote-server.com", 
   name: "My Remote server", 
+  max_connections: 1, 
   port: 1, 
   s3_bucket: "my-bucket", 
   s3_region: "us-east-1", 
@@ -88,17 +91,18 @@ Files::RemoteServer.create(
 
 * `aws_access_key` (string): AWS Access Key.
 * `aws_secret_key` (string): AWS secret key.
-* `hostname` (string): Hostname.
-* `name` (string): Internal reference name for server.
 * `password` (string): Password if needed.
-* `port` (string): Port.
 * `private_key` (string): Private key if needed.
-* `s3_bucket` (string): S3 bucket name.
-* `s3_region` (string): S3 region.
-* `server_certificate` (string): Certificate for this server.
-* `server_type` (string): Type of server.  Can be ftp, sftp, or s3.
-* `ssl` (string): SSL requirements.  Can be if_available, require, require_implicit, never.
-* `username` (string): Server username if needed.
+* `hostname` (string): Hostname or IP address
+* `name` (string): Internal name for your reference
+* `max_connections` (int64): Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+* `port` (int64): Port for remote server.  Not needed for S3.
+* `s3_bucket` (string): S3 bucket name
+* `s3_region` (string): S3 region
+* `server_certificate` (string): Remote server certificate
+* `server_type` (string): Remote server type.
+* `ssl` (string): Should we require SSL?
+* `username` (string): Remote server username.  Not needed for S3 buckets.
 
 
 ---
@@ -109,6 +113,7 @@ Files::RemoteServer.create(
 Files::RemoteServer.update(id, 
   hostname: "remote-server.com", 
   name: "My Remote server", 
+  max_connections: 1, 
   port: 1, 
   s3_bucket: "my-bucket", 
   s3_region: "us-east-1", 
@@ -124,17 +129,18 @@ Files::RemoteServer.update(id,
 * `id` (int64): Required - Remote Server ID.
 * `aws_access_key` (string): AWS Access Key.
 * `aws_secret_key` (string): AWS secret key.
-* `hostname` (string): Hostname.
-* `name` (string): Internal reference name for server.
 * `password` (string): Password if needed.
-* `port` (string): Port.
 * `private_key` (string): Private key if needed.
-* `s3_bucket` (string): S3 bucket name.
-* `s3_region` (string): S3 region.
-* `server_certificate` (string): Certificate for this server.
-* `server_type` (string): Type of server.  Can be ftp, sftp, or s3.
-* `ssl` (string): SSL requirements.  Can be if_available, require, require_implicit, never.
-* `username` (string): Server username if needed.
+* `hostname` (string): Hostname or IP address
+* `name` (string): Internal name for your reference
+* `max_connections` (int64): Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+* `port` (int64): Port for remote server.  Not needed for S3.
+* `s3_bucket` (string): S3 bucket name
+* `s3_region` (string): S3 region
+* `server_certificate` (string): Remote server certificate
+* `server_type` (string): Remote server type.
+* `ssl` (string): Should we require SSL?
+* `username` (string): Remote server username.  Not needed for S3 buckets.
 
 
 ---
@@ -159,6 +165,7 @@ remote_server = Files::RemoteServer.find(1)
 remote_server.update(
   hostname: "remote-server.com",
   name: "My Remote server",
+  max_connections: 1,
   port: 1,
   s3_bucket: "my-bucket",
   s3_region: "us-east-1",
@@ -174,17 +181,18 @@ remote_server.update(
 * `id` (int64): Required - Remote Server ID.
 * `aws_access_key` (string): AWS Access Key.
 * `aws_secret_key` (string): AWS secret key.
-* `hostname` (string): Hostname.
-* `name` (string): Internal reference name for server.
 * `password` (string): Password if needed.
-* `port` (string): Port.
 * `private_key` (string): Private key if needed.
-* `s3_bucket` (string): S3 bucket name.
-* `s3_region` (string): S3 region.
-* `server_certificate` (string): Certificate for this server.
-* `server_type` (string): Type of server.  Can be ftp, sftp, or s3.
-* `ssl` (string): SSL requirements.  Can be if_available, require, require_implicit, never.
-* `username` (string): Server username if needed.
+* `hostname` (string): Hostname or IP address
+* `name` (string): Internal name for your reference
+* `max_connections` (int64): Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+* `port` (int64): Port for remote server.  Not needed for S3.
+* `s3_bucket` (string): S3 bucket name
+* `s3_region` (string): S3 region
+* `server_certificate` (string): Remote server certificate
+* `server_type` (string): Remote server type.
+* `ssl` (string): Should we require SSL?
+* `username` (string): Remote server username.  Not needed for S3 buckets.
 
 
 ---
