@@ -32,6 +32,7 @@ module Files
   class InvalidRequestError < Error; end
   class NotImplementedError < Error; end
   class PermissionError < Error; end
+  class RateLimitError < Error; end
   class TooManyRequestsError < Error; end
   class ValidationError < Error; end
 
