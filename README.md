@@ -65,7 +65,9 @@ You can set the following global options directly on the `Files` module:
  * `Files.log_level` - set to `nil`, `info`, or `debug`
  * `Files.open_timeout` - open timeout in seconds (default: 30)
  * `Files.read_timeout` - read timeout in seconds (default: 80)
+ * `Files.initial_network_retry_delay` - initial retry delay in seconds (default: 0.5)
  * `Files.max_network_retries` - max retries (default: 3)
+ * `Files.max_network_retry_delay` - max retry delay in seconds (default: 2)
  * `Files.base_url` - to point this client at an on-premise
    installation of Files.com, set its URL here.
  * `Files.proxy` - proxy configuration (uses Faraday format)
