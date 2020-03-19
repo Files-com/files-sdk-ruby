@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
   s.required_ruby_version = ">= 2.3"
   s.add_dependency 'faraday', '>= 0.12.0'
+  s.add_dependency 'net-http-persistent'
 
   s.files         = `find *`.split("\n").uniq.sort.reject(&:empty?)
   s.executables   = [ "files", "files-console" ]
