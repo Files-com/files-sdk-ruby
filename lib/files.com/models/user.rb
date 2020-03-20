@@ -90,6 +90,15 @@ module Files
       @attributes[:avatar_url] = value
     end
 
+    # boolean - Allow this user to perform operations on the account, payments, and invoices?
+    def billing_permission
+      @attributes[:billing_permission]
+    end
+
+    def billing_permission=(value)
+      @attributes[:billing_permission] = value
+    end
+
     # boolean - Allow this user to skip site-wide IP blacklists?
     def bypass_site_allowed_ips
       @attributes[:bypass_site_allowed_ips]
@@ -504,6 +513,7 @@ module Files
     #   attachments_permission - boolean - Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
     #   authentication_method - string - How is this user authenticated?
+    #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
     #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
     #   dav_permission - boolean - Can the user connect with WebDAV?
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
@@ -638,6 +648,7 @@ module Files
     #   attachments_permission - boolean - Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
     #   authentication_method - string - How is this user authenticated?
+    #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
     #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
     #   dav_permission - boolean - Can the user connect with WebDAV?
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
@@ -736,6 +747,7 @@ module Files
     #   attachments_permission - boolean - Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
     #   authentication_method - string - How is this user authenticated?
+    #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
     #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
     #   dav_permission - boolean - Can the user connect with WebDAV?
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.

@@ -15,6 +15,7 @@
   "authenticate_until": "2000-01-01T01:00:00Z",
   "authentication_method": "password",
   "avatar_url": "",
+  "billing_permission": true,
   "bypass_site_allowed_ips": true,
   "created_at": "2000-01-01T01:00:00Z",
   "dav_permission": true,
@@ -61,6 +62,7 @@
 * `authenticate_until` (date-time): Scheduled Date/Time at which user will be deactivated
 * `authentication_method` (string): How is this user authenticated?
 * `avatar_url` (string): URL holding the user's avatar
+* `billing_permission` (boolean): Allow this user to perform operations on the account, payments, and invoices?
 * `bypass_site_allowed_ips` (boolean): Allow this user to skip site-wide IP blacklists?
 * `created_at` (date-time): When this user was created
 * `dav_permission` (boolean): Can the user connect with WebDAV?
@@ -157,6 +159,7 @@ Files::User.create(
   attachments_permission: true, 
   authenticate_until: "2000-01-01T01:00:00Z", 
   authentication_method: "password", 
+  billing_permission: true, 
   bypass_site_allowed_ips: true, 
   dav_permission: true, 
   disabled: true, 
@@ -198,6 +201,7 @@ Files::User.create(
 * `attachments_permission` (boolean): Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
 * `authenticate_until` (string): Scheduled Date/Time at which user will be deactivated
 * `authentication_method` (string): How is this user authenticated?
+* `billing_permission` (boolean): Allow this user to perform operations on the account, payments, and invoices?
 * `bypass_site_allowed_ips` (boolean): Allow this user to skip site-wide IP blacklists?
 * `dav_permission` (boolean): Can the user connect with WebDAV?
 * `disabled` (boolean): Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
@@ -275,6 +279,7 @@ Files::User.update(id,
   attachments_permission: true, 
   authenticate_until: "2000-01-01T01:00:00Z", 
   authentication_method: "password", 
+  billing_permission: true, 
   bypass_site_allowed_ips: true, 
   dav_permission: true, 
   disabled: true, 
@@ -317,6 +322,7 @@ Files::User.update(id,
 * `attachments_permission` (boolean): Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
 * `authenticate_until` (string): Scheduled Date/Time at which user will be deactivated
 * `authentication_method` (string): How is this user authenticated?
+* `billing_permission` (boolean): Allow this user to perform operations on the account, payments, and invoices?
 * `bypass_site_allowed_ips` (boolean): Allow this user to skip site-wide IP blacklists?
 * `dav_permission` (boolean): Can the user connect with WebDAV?
 * `disabled` (boolean): Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
@@ -411,6 +417,7 @@ user.update(
   attachments_permission: true,
   authenticate_until: "2000-01-01T01:00:00Z",
   authentication_method: "password",
+  billing_permission: true,
   bypass_site_allowed_ips: true,
   dav_permission: true,
   disabled: true,
@@ -453,6 +460,7 @@ user.update(
 * `attachments_permission` (boolean): Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
 * `authenticate_until` (string): Scheduled Date/Time at which user will be deactivated
 * `authentication_method` (string): How is this user authenticated?
+* `billing_permission` (boolean): Allow this user to perform operations on the account, payments, and invoices?
 * `bypass_site_allowed_ips` (boolean): Allow this user to skip site-wide IP blacklists?
 * `dav_permission` (boolean): Can the user connect with WebDAV?
 * `disabled` (boolean): Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.

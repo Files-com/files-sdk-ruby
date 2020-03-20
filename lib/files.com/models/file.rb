@@ -813,6 +813,7 @@ module Files
     #
     # Parameters:
     #   action - string - Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
+    #   id - integer - If provided, lookup the file by id instead of path.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
     def download(params = {})
@@ -821,6 +822,7 @@ module Files
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
       Api.send_request("/files/#{URI.encode_www_form_component(@attributes[:path])}", :get, params, @options)
@@ -905,6 +907,7 @@ module Files
     #
     # Parameters:
     #   action - string - Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
+    #   id - integer - If provided, lookup the file by id instead of path.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
     def self.download(path, params = {}, options = {})
@@ -912,6 +915,7 @@ module Files
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
       response, options = Api.send_request("/files/#{URI.encode_www_form_component(params[:path])}", :get, params, options)
