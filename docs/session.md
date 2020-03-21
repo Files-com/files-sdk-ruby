@@ -46,6 +46,7 @@
 * `username` (string): Username to sign in as
 * `password` (string): Password for sign in
 * `otp` (string): If this user has a 2FA device, provide its OTP or code here.
+* `partial_session_id` (string): Identifier for a partially-completed login
 
 
 ---
@@ -65,6 +66,7 @@ Files::Session.create(
 * `username` (string): Username to sign in as
 * `password` (string): Password for sign in
 * `otp` (string): If this user has a 2FA device, provide its OTP or code here.
+* `partial_session_id` (string): Identifier for a partially-completed login
 
 
 ---
