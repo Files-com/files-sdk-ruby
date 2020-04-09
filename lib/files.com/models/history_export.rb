@@ -145,12 +145,12 @@ module Files
     end
 
     # string - If searching for Histories about login failures, this parameter restricts results to failures of this specific type.  Valid values: `expired_trial`, `account_overdue`, `locked_out`, `ip_mismatch`, `password_mismatch`, `site_mismatch`, `username_not_found`, `none`, `no_ftp_permission`, `no_web_permission`, `no_directory`, `errno_enoent`, `no_sftp_permission`, `no_dav_permission`, `no_restapi_permission`, `key_mismatch`, `region_mismatch`, `expired_access`, `desktop_ip_mismatch`, `desktop_api_key_not_used_quickly_enough`, `disabled`
-    def query_faillure_type
-      @attributes[:query_faillure_type]
+    def query_failure_type
+      @attributes[:query_failure_type]
     end
 
-    def query_faillure_type=(value)
-      @attributes[:query_faillure_type] = value
+    def query_failure_type=(value)
+      @attributes[:query_failure_type] = value
     end
 
     # int64 - If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
@@ -298,7 +298,7 @@ module Files
     #   query_destination - string - Return results that are file moves with this path as destination.
     #   query_ip - string - Filter results by this IP address.
     #   query_username - string - Filter results by this username.
-    #   query_faillure_type - string - If searching for Histories about login failures, this parameter restricts results to failures of this specific type.  Valid values: `expired_trial`, `account_overdue`, `locked_out`, `ip_mismatch`, `password_mismatch`, `site_mismatch`, `username_not_found`, `none`, `no_ftp_permission`, `no_web_permission`, `no_directory`, `errno_enoent`, `no_sftp_permission`, `no_dav_permission`, `no_restapi_permission`, `key_mismatch`, `region_mismatch`, `expired_access`, `desktop_ip_mismatch`, `desktop_api_key_not_used_quickly_enough`, `disabled`
+    #   query_failure_type - string - If searching for Histories about login failures, this parameter restricts results to failures of this specific type.  Valid values: `expired_trial`, `account_overdue`, `locked_out`, `ip_mismatch`, `password_mismatch`, `site_mismatch`, `username_not_found`, `none`, `no_ftp_permission`, `no_web_permission`, `no_directory`, `errno_enoent`, `no_sftp_permission`, `no_dav_permission`, `no_restapi_permission`, `key_mismatch`, `region_mismatch`, `expired_access`, `desktop_ip_mismatch`, `desktop_api_key_not_used_quickly_enough`, `disabled`
     #   query_target_id - integer - If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
     #   query_target_name - string - If searching for Histories about Users, Groups or other objects with names, this parameter restricts results to objects with this name/username.
     #   query_target_permission - string - If searching for Histories about Permisisons, this parameter restricts results to permissions of this level.
@@ -321,7 +321,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: query_destination must be an String") if params.dig(:query_destination) and !params.dig(:query_destination).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_ip must be an String") if params.dig(:query_ip) and !params.dig(:query_ip).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_username must be an String") if params.dig(:query_username) and !params.dig(:query_username).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_faillure_type must be an String") if params.dig(:query_faillure_type) and !params.dig(:query_faillure_type).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_failure_type must be an String") if params.dig(:query_failure_type) and !params.dig(:query_failure_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_target_id must be an Integer") if params.dig(:query_target_id) and !params.dig(:query_target_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: query_target_name must be an String") if params.dig(:query_target_name) and !params.dig(:query_target_name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_target_permission must be an String") if params.dig(:query_target_permission) and !params.dig(:query_target_permission).is_a?(String)
