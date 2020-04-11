@@ -14,7 +14,8 @@
   "unsubscribed": true,
   "unsubscribed_reason": "",
   "user_id": 1,
-  "username": "User"
+  "username": "User",
+  "suppressed_email": "suppressed_email"
 }
 ```
 
@@ -29,6 +30,7 @@
 * `unsubscribed_reason` (string): The reason that the user unsubscribed
 * `user_id` (int64): Notification user ID
 * `username` (string): Notification username
+* `suppressed_email` (boolean): If true, it means that the recipient at this user's email address has manually unsubscribed from all emails, or had their email "hard bounce", which means that we are unable to send mail to this user's current email address. Notifications will resume if the user changes their email address.
 
 
 ---

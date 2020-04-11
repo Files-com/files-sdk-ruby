@@ -108,6 +108,15 @@ module Files
       @attributes[:username] = value
     end
 
+    # boolean - If true, it means that the recipient at this user's email address has manually unsubscribed from all emails, or had their email "hard bounce", which means that we are unable to send mail to this user's current email address. Notifications will resume if the user changes their email address.
+    def suppressed_email
+      @attributes[:suppressed_email]
+    end
+
+    def suppressed_email=(value)
+      @attributes[:suppressed_email] = value
+    end
+
     # Parameters:
     #   notify_on_copy - boolean - If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
     #   notify_user_actions - boolean - If `true` actions initiated by the user will still result in a notification
