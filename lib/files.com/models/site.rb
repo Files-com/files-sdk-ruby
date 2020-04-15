@@ -632,7 +632,6 @@ module Files
     #   icon128_delete - boolean - If true, will delete the file stored in icon128
     #   logo_file - file
     #   logo_delete - boolean - If true, will delete the file stored in logo
-    #   days_until_2fa_required - integer - When enabling 2FA, set this to a delay period in days.
     #   disable_2fa_with_delay - boolean - If set to true, we will begin the process of disabling 2FA on this site.
     #   ldap_password_change - string - New LDAP password.
     #   ldap_password_change_confirmation - string - Confirm new LDAP password.
@@ -688,7 +687,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ldap_group_exclusion must be an String") if params.dig(:ldap_group_exclusion) and !params.dig(:ldap_group_exclusion).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_group_inclusion must be an String") if params.dig(:ldap_group_inclusion) and !params.dig(:ldap_group_inclusion).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_base_dn must be an String") if params.dig(:ldap_base_dn) and !params.dig(:ldap_base_dn).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: days_until_2fa_required must be an Integer") if params.dig(:days_until_2fa_required) and !params.dig(:days_until_2fa_required).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ldap_password_change must be an String") if params.dig(:ldap_password_change) and !params.dig(:ldap_password_change).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_password_change_confirmation must be an String") if params.dig(:ldap_password_change_confirmation) and !params.dig(:ldap_password_change_confirmation).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_password must be an String") if params.dig(:smtp_password) and !params.dig(:smtp_password).is_a?(String)

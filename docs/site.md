@@ -319,7 +319,6 @@ Files::Site.update(
   icon48_delete: true, 
   icon128_delete: true, 
   logo_delete: true, 
-  days_until_2fa_required: 1, 
   disable_2fa_with_delay: true
 )
 ```
@@ -418,7 +417,6 @@ Files::Site.update(
 * `icon128_delete` (boolean): If true, will delete the file stored in icon128
 * `logo_file` (file): 
 * `logo_delete` (boolean): If true, will delete the file stored in logo
-* `days_until_2fa_required` (int64): When enabling 2FA, set this to a delay period in days.
 * `disable_2fa_with_delay` (boolean): If set to true, we will begin the process of disabling 2FA on this site.
 * `ldap_password_change` (string): New LDAP password.
 * `ldap_password_change_confirmation` (string): Confirm new LDAP password.
