@@ -15,7 +15,10 @@
   "server_certificate": "[certificate]",
   "server_type": "s3",
   "ssl": "always",
-  "username": "user"
+  "username": "user",
+  "google_cloud_storage_bucket": "my-bucket",
+  "google_cloud_storage_project_id": "my-project",
+  "google_cloud_storage_credentials_json": "{}"
 }
 ```
 
@@ -24,13 +27,16 @@
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `port` (int64): Port for remote server.  Not needed for S3.
-* `max_connections` (int64): Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+* `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
 * `s3_bucket` (string): S3 bucket name
 * `s3_region` (string): S3 region
 * `server_certificate` (string): Remote server certificate
 * `server_type` (string): Remote server type.
 * `ssl` (string): Should we require SSL?
 * `username` (string): Remote server username.  Not needed for S3 buckets.
+* `google_cloud_storage_bucket` (string): Google Cloud Storage bucket name
+* `google_cloud_storage_project_id` (string): Google Cloud Project ID
+* `google_cloud_storage_credentials_json` (string): A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
 * `aws_access_key` (string): AWS Access Key.
 * `aws_secret_key` (string): AWS secret key.
 * `password` (string): Password if needed.
@@ -83,7 +89,10 @@ Files::RemoteServer.create(
   server_certificate: "[certificate]", 
   server_type: "s3", 
   ssl: "always", 
-  username: "user"
+  username: "user", 
+  google_cloud_storage_bucket: "my-bucket", 
+  google_cloud_storage_project_id: "my-project", 
+  google_cloud_storage_credentials_json: "{}"
 )
 ```
 
@@ -95,7 +104,7 @@ Files::RemoteServer.create(
 * `private_key` (string): Private key if needed.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
-* `max_connections` (int64): Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+* `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
 * `port` (int64): Port for remote server.  Not needed for S3.
 * `s3_bucket` (string): S3 bucket name
 * `s3_region` (string): S3 region
@@ -103,6 +112,9 @@ Files::RemoteServer.create(
 * `server_type` (string): Remote server type.
 * `ssl` (string): Should we require SSL?
 * `username` (string): Remote server username.  Not needed for S3 buckets.
+* `google_cloud_storage_bucket` (string): Google Cloud Storage bucket name
+* `google_cloud_storage_project_id` (string): Google Cloud Project ID
+* `google_cloud_storage_credentials_json` (string): A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
 
 
 ---
@@ -120,7 +132,10 @@ Files::RemoteServer.update(id,
   server_certificate: "[certificate]", 
   server_type: "s3", 
   ssl: "always", 
-  username: "user"
+  username: "user", 
+  google_cloud_storage_bucket: "my-bucket", 
+  google_cloud_storage_project_id: "my-project", 
+  google_cloud_storage_credentials_json: "{}"
 )
 ```
 
@@ -133,7 +148,7 @@ Files::RemoteServer.update(id,
 * `private_key` (string): Private key if needed.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
-* `max_connections` (int64): Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+* `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
 * `port` (int64): Port for remote server.  Not needed for S3.
 * `s3_bucket` (string): S3 bucket name
 * `s3_region` (string): S3 region
@@ -141,6 +156,9 @@ Files::RemoteServer.update(id,
 * `server_type` (string): Remote server type.
 * `ssl` (string): Should we require SSL?
 * `username` (string): Remote server username.  Not needed for S3 buckets.
+* `google_cloud_storage_bucket` (string): Google Cloud Storage bucket name
+* `google_cloud_storage_project_id` (string): Google Cloud Project ID
+* `google_cloud_storage_credentials_json` (string): A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
 
 
 ---
@@ -172,7 +190,10 @@ remote_server.update(
   server_certificate: "[certificate]",
   server_type: "s3",
   ssl: "always",
-  username: "user"
+  username: "user",
+  google_cloud_storage_bucket: "my-bucket",
+  google_cloud_storage_project_id: "my-project",
+  google_cloud_storage_credentials_json: "{}"
 )
 ```
 
@@ -185,7 +206,7 @@ remote_server.update(
 * `private_key` (string): Private key if needed.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
-* `max_connections` (int64): Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+* `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
 * `port` (int64): Port for remote server.  Not needed for S3.
 * `s3_bucket` (string): S3 bucket name
 * `s3_region` (string): S3 region
@@ -193,6 +214,9 @@ remote_server.update(
 * `server_type` (string): Remote server type.
 * `ssl` (string): Should we require SSL?
 * `username` (string): Remote server username.  Not needed for S3 buckets.
+* `google_cloud_storage_bucket` (string): Google Cloud Storage bucket name
+* `google_cloud_storage_project_id` (string): Google Cloud Project ID
+* `google_cloud_storage_credentials_json` (string): A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
 
 
 ---

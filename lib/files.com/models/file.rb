@@ -248,7 +248,7 @@ module Files
           "size": @bytes_written
         }
 
-        file = File.create(path, end_options)
+        file = File.create(path, end_options, @options)
         @attributes = file.attributes
         @upload = nil
       end
@@ -360,7 +360,8 @@ module Files
 
     def flush(*_args)
       if mode.include? "w"
-        @write_io.rewind
+        @write_io.rewind if @write_io.is_a?(StringIO)
+
         @bytes_written += @write_io.size
         @upload, @etags = File.upload_chunks(@write_io, path, options, @upload, @etags)
       elsif mode.include? "a"
@@ -568,7 +569,13 @@ module Files
     end
 
     def write(*args)
-      @write_io.write *args
+      @mode ||= 'w'
+      if args[0].respond_to?(:read)
+        flush if @write_io.size > 0
+        @write_io = args[0]
+      else
+        @write_io.write *args
+      end
     end
 
     def write_nonblock(*args)

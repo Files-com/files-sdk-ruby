@@ -54,7 +54,7 @@ module Files
       @attributes[:port] = value
     end
 
-    # int64 - Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+    # int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
     def max_connections
       @attributes[:max_connections]
     end
@@ -117,6 +117,33 @@ module Files
       @attributes[:username] = value
     end
 
+    # string - Google Cloud Storage bucket name
+    def google_cloud_storage_bucket
+      @attributes[:google_cloud_storage_bucket]
+    end
+
+    def google_cloud_storage_bucket=(value)
+      @attributes[:google_cloud_storage_bucket] = value
+    end
+
+    # string - Google Cloud Project ID
+    def google_cloud_storage_project_id
+      @attributes[:google_cloud_storage_project_id]
+    end
+
+    def google_cloud_storage_project_id=(value)
+      @attributes[:google_cloud_storage_project_id] = value
+    end
+
+    # string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    def google_cloud_storage_credentials_json
+      @attributes[:google_cloud_storage_credentials_json]
+    end
+
+    def google_cloud_storage_credentials_json=(value)
+      @attributes[:google_cloud_storage_credentials_json] = value
+    end
+
     # string - AWS Access Key.
     def aws_access_key
       @attributes[:aws_access_key]
@@ -160,7 +187,7 @@ module Files
     #   private_key - string - Private key if needed.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
-    #   max_connections - integer - Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   max_connections - integer - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
     #   port - integer - Port for remote server.  Not needed for S3.
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
@@ -168,6 +195,9 @@ module Files
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.  Not needed for S3 buckets.
+    #   google_cloud_storage_bucket - string - Google Cloud Storage bucket name
+    #   google_cloud_storage_project_id - string - Google Cloud Project ID
+    #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -187,6 +217,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params.dig(:server_type) and !params.dig(:server_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params.dig(:ssl) and !params.dig(:ssl).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params.dig(:google_cloud_storage_bucket) and !params.dig(:google_cloud_storage_bucket).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params.dig(:google_cloud_storage_project_id) and !params.dig(:google_cloud_storage_project_id).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params.dig(:google_cloud_storage_credentials_json) and !params.dig(:google_cloud_storage_credentials_json).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/remote_servers/#{@attributes[:id]}", :patch, params, @options)
@@ -255,7 +288,7 @@ module Files
     #   private_key - string - Private key if needed.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
-    #   max_connections - integer - Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   max_connections - integer - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
     #   port - integer - Port for remote server.  Not needed for S3.
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
@@ -263,6 +296,9 @@ module Files
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.  Not needed for S3 buckets.
+    #   google_cloud_storage_bucket - string - Google Cloud Storage bucket name
+    #   google_cloud_storage_project_id - string - Google Cloud Project ID
+    #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params.dig(:aws_access_key) and !params.dig(:aws_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
@@ -278,6 +314,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params.dig(:server_type) and !params.dig(:server_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params.dig(:ssl) and !params.dig(:ssl).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params.dig(:google_cloud_storage_bucket) and !params.dig(:google_cloud_storage_bucket).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params.dig(:google_cloud_storage_project_id) and !params.dig(:google_cloud_storage_project_id).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params.dig(:google_cloud_storage_credentials_json) and !params.dig(:google_cloud_storage_credentials_json).is_a?(String)
 
       response, options = Api.send_request("/remote_servers", :post, params, options)
       RemoteServer.new(response.data, options)
@@ -290,7 +329,7 @@ module Files
     #   private_key - string - Private key if needed.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
-    #   max_connections - integer - Max number of parallel connetions.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   max_connections - integer - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
     #   port - integer - Port for remote server.  Not needed for S3.
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
@@ -298,6 +337,9 @@ module Files
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.  Not needed for S3 buckets.
+    #   google_cloud_storage_bucket - string - Google Cloud Storage bucket name
+    #   google_cloud_storage_project_id - string - Google Cloud Project ID
+    #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -316,6 +358,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params.dig(:server_type) and !params.dig(:server_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params.dig(:ssl) and !params.dig(:ssl).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params.dig(:google_cloud_storage_bucket) and !params.dig(:google_cloud_storage_bucket).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params.dig(:google_cloud_storage_project_id) and !params.dig(:google_cloud_storage_project_id).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params.dig(:google_cloud_storage_credentials_json) and !params.dig(:google_cloud_storage_credentials_json).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}", :patch, params, options)
