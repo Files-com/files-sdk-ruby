@@ -149,7 +149,7 @@ module Files
       @attributes[:ftp_permission] = value
     end
 
-    # array - List of group IDs of which this user is a member
+    # array - Comma-separated list of group IDs of which this user is a member
     def group_ids
       @attributes[:group_ids]
     end

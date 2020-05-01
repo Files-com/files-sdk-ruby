@@ -69,7 +69,7 @@
 * `disabled` (boolean): Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
 * `email` (email): User email address
 * `ftp_permission` (boolean): Can the user access with FTP/FTPS?
-* `group_ids` (array): List of group IDs of which this user is a member
+* `group_ids` (array): Comma-separated list of group IDs of which this user is a member
 * `language` (string): Preferred language
 * `last_login_at` (date-time): User's last login time
 * `last_protocol_cipher` (string): The last protocol and cipher used
