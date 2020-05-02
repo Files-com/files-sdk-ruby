@@ -71,6 +71,7 @@
   "password_require_mixed": true,
   "password_require_number": true,
   "password_require_special": true,
+  "password_require_unbreached": true,
   "password_requirements_apply_to_bundles": true,
   "password_validity_days": 1,
   "phone": "555-555-5555",
@@ -178,6 +179,7 @@
 * `password_require_mixed` (boolean): Require lower and upper case letters in passwords?
 * `password_require_number` (boolean): Require a number in passwords?
 * `password_require_special` (boolean): Require special characters in password?
+* `password_require_unbreached` (boolean): Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
 * `password_requirements_apply_to_bundles` (boolean): Require bundles' passwords to conform to the same requirements as users' passwords?
 * `password_validity_days` (int64): Number of days password is valid
 * `phone` (string): Site phone number
@@ -275,6 +277,7 @@ Files::Site.update(
   password_require_mixed: true, 
   password_require_special: true, 
   password_require_number: true, 
+  password_require_unbreached: true, 
   sftp_user_root_enabled: true, 
   disable_password_reset: true, 
   immutable_files: true, 
@@ -362,6 +365,7 @@ Files::Site.update(
 * `password_require_mixed` (boolean): Require lower and upper case letters in passwords?
 * `password_require_special` (boolean): Require special characters in password?
 * `password_require_number` (boolean): Require a number in passwords?
+* `password_require_unbreached` (boolean): Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
 * `sftp_user_root_enabled` (boolean): Use user FTP roots also for SFTP?
 * `disable_password_reset` (boolean): Is password reset disabled?
 * `immutable_files` (boolean): Are files protected from modification?

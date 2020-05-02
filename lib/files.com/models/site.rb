@@ -344,6 +344,11 @@ module Files
       @attributes[:password_require_special]
     end
 
+    # boolean - Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
+    def password_require_unbreached
+      @attributes[:password_require_unbreached]
+    end
+
     # boolean - Require bundles' passwords to conform to the same requirements as users' passwords?
     def password_requirements_apply_to_bundles
       @attributes[:password_requirements_apply_to_bundles]
@@ -577,6 +582,7 @@ module Files
     #   password_require_mixed - boolean - Require lower and upper case letters in passwords?
     #   password_require_special - boolean - Require special characters in password?
     #   password_require_number - boolean - Require a number in passwords?
+    #   password_require_unbreached - boolean - Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
     #   sftp_user_root_enabled - boolean - Use user FTP roots also for SFTP?
     #   disable_password_reset - boolean - Is password reset disabled?
     #   immutable_files - boolean - Are files protected from modification?
