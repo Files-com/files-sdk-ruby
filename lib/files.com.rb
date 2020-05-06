@@ -10,6 +10,7 @@ require "securerandom"
 require "set"
 require "socket"
 require "uri"
+require "addressable/uri"
 
 $LOAD_PATH.push __dir__
 

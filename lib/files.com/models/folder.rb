@@ -317,7 +317,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      Api.send_request("/folders/#{URI.encode_www_form_component(@attributes[:path])}", :post, params, @options)
+      Api.send_request("/folders/#{Addressable::URI.encode_component(params[:path])}", :post, params, @options)
     end
 
     def save
@@ -353,7 +353,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params.dig(:search) and !params.dig(:search).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/folders/#{URI.encode_www_form_component(params[:path])}", :get, params, options)
+      response, options = Api.send_request("/folders/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
       response.data.map { |object| File.new(object, options) }
     end
 
@@ -364,7 +364,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/folders/#{URI.encode_www_form_component(params[:path])}", :post, params, options)
+      response, options = Api.send_request("/folders/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
       File.new(response.data, options)
     end
   end
