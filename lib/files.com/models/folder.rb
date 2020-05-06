@@ -41,7 +41,7 @@ module Files
     end
 
     def self.entries(path)
-      list(path)
+      list_for(path)
     end
 
     def self.exist?(*args)
@@ -55,7 +55,7 @@ module Files
     def self.find_recursive(path, type = "dir")
       return path if type == "file"
 
-      list(path).map { |c| find_recursive(c.path, c.type) }.flatten.compact
+      list_for(path).map { |c| find_recursive(c.path, c.type) }.flatten.compact
     end
 
     def self.get(path, params = {}, options = {})
@@ -63,7 +63,7 @@ module Files
     end
 
     def self.foreach(path, _encoding)
-      list(path, {}).each { |x| yield x }
+      list_for(path, {}).each { |x| yield x }
     end
 
     def self.getwd(*_args)
@@ -109,7 +109,7 @@ module Files
     def initialize(*args)
       @attributes = (args[0].is_a?(Hash) && args[0]) || {}
       @options = (args[1].is_a?(Hash) && args[1]) || {}
-      @attributes['path'] = args[0] if args[0].is_a?(String)
+      @attributes[:path] = args[0] if args[0].is_a?(String)
     end
 
     def close(*args); end
@@ -123,7 +123,8 @@ module Files
     end
 
     def contents
-      @contents ||= Folder.list(path, {}, @options)
+      puts "contents: path is #{path}"
+      @contents ||= Folder.list_for(path, {}, @options)
     end
 
     def stats

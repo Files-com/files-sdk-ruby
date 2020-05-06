@@ -32,7 +32,9 @@ end
 
 def test_folder_operations
   name = "folder_#{Time.now.to_i}"
-  Files::Folder.create(name)
+  folder_file = Files::Folder.create(name)
+  all_files = Files::Folder['/']
+  top_level_files = Files::Folder.entries('/')
   file = Files::File.find(name)
   file.copy("#{name}_copy")
   file.delete
@@ -40,6 +42,11 @@ def test_folder_operations
   file.move("#{name}_moved_copy")
   file = Files::File.find("#{name}_moved_copy")
   Files::Folder.create("#{file.path}/child")
+  Files::Folder.foreach('/', 'utf-8') { |file_ent| puts file.display_name }
+  folder = Files::Folder.new('/')
+  contents = folder.contents
+
+  # cleanup
   Files::FileUtils.rm_r(file.path)
 end
 
