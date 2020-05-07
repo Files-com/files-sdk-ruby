@@ -353,8 +353,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params.dig(:search) and !params.dig(:search).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/folders/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
-      response.data.map { |object| File.new(object, options) }
+      List.new(File, params) do
+        Api.send_request("/folders/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
+      end
     end
 
     # Create folder
@@ -364,7 +365,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/folders/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
+      response, options = Api.send_request("/folders/#{URI.encode_www_form_component(params[:path])}", :post, params, options)
       File.new(response.data, options)
     end
   end

@@ -169,7 +169,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
 
       response, options = Api.send_request("/notifications", :get, params, options)
-      response.data.map { |object| Notification.new(object, options) }
     end
 
     def self.all(params = {}, options = {})

@@ -22,6 +22,7 @@ require "files.com/errors"
 require "files.com/response"
 require "files.com/system_profiler"
 require "files.com/util"
+require "files.com/list"
 
 require "files.com/models/account_line_item"
 require "files.com/models/action"

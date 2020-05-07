@@ -129,7 +129,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
 
       response, options = Api.send_request("/sso_strategies", :get, params, options)
-      response.data.map { |object| SsoStrategy.new(object, options) }
     end
 
     def self.all(params = {}, options = {})

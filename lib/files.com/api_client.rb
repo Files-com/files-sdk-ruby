@@ -132,6 +132,10 @@ module Files
       end
     end
 
+    def cursor
+      @last_response.http_headers["x-files-cursor"]
+    end
+
     private def api_url(url = "", base_url = nil)
       (base_url || Files.base_url) + "/api/rest/v1" + url
     end
@@ -232,7 +236,7 @@ module Files
         http_headers: resp.http_headers,
         http_status: resp.http_status,
         json_body: resp.data,
-        code: error_data[:code],
+        code: error_data[:code] || resp.http_status,
       }
 
       case resp.http_status

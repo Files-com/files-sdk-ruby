@@ -45,7 +45,7 @@ module Files
     def self.exist?(path, options = {})
       find(path, {}, options)
       true
-    rescue ApiError => e
+    rescue Error => e
       if e.code == 404
         false
       else
@@ -90,8 +90,8 @@ module Files
       new(path).mtime
     end
 
-    def self.open(path, mode = "r", &block)
-      file = new(path, mode)
+    def self.open(path, mode = "r", options={}, &block)
+      file = new(path, mode, options)
       if block
         yield file
         file.close
@@ -187,7 +187,8 @@ module Files
 
     def initialize(*args)
       @attributes = (args[0].is_a?(Hash) && args[0]) || {}
-      @options = (args[1].is_a?(Hash) && args[1]) || {}
+      @options = (args[1].is_a?(Hash) && args[1])
+      @options ||= (args[2].is_a?(Hash) && args[2]) || {}
       @attributes[:path] = args[0] if args[0].is_a?(String)
       @mode = args[1] || 'r' if args[1].is_a?(String)
       @write_io = StringIO.new
@@ -925,7 +926,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
+      response, options = Api.send_request("/files/#{URI.encode_www_form_component(params[:path])}", :get, params, options)
       File.new(response.data, options)
     end
 
@@ -960,7 +961,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: structure must be an String") if params.dig(:structure) and !params.dig(:structure).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
+      response, options = Api.send_request("/files/#{URI.encode_www_form_component(params[:path])}", :post, params, options)
       File.new(response.data, options)
     end
 
@@ -975,7 +976,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if params.dig(:priority_color) and !params.dig(:priority_color).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :patch, params, options)
+      response, options = Api.send_request("/files/#{URI.encode_www_form_component(params[:path])}", :patch, params, options)
       File.new(response.data, options)
     end
 
@@ -987,7 +988,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, _options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :delete, params, options)
+      response, _options = Api.send_request("/files/#{URI.encode_www_form_component(params[:path])}", :delete, params, options)
       response.data
     end
 

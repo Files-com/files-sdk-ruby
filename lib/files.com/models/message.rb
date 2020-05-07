@@ -121,7 +121,6 @@ module Files
       raise MissingParameterError.new("Parameter missing: project_id") unless params.dig(:project_id)
 
       response, options = Api.send_request("/messages", :get, params, options)
-      response.data.map { |object| Message.new(object, options) }
     end
 
     def self.all(params = {}, options = {})

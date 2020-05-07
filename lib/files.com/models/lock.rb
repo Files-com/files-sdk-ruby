@@ -147,8 +147,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/locks/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
-      response.data.map { |object| Lock.new(object, options) }
+      response, options = Api.send_request("/locks/#{URI.encode_www_form_component(params[:path])}", :get, params, options)
     end
 
     # Create Lock
@@ -162,7 +161,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params.dig(:timeout) and !params.dig(:timeout).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/locks/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
+      response, options = Api.send_request("/locks/#{URI.encode_www_form_component(params[:path])}", :post, params, options)
       Lock.new(response.data, options)
     end
 
@@ -176,7 +175,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
       raise MissingParameterError.new("Parameter missing: token") unless params.dig(:token)
 
-      response, _options = Api.send_request("/locks/#{Addressable::URI.encode_component(params[:path])}", :delete, params, options)
+      response, _options = Api.send_request("/locks/#{URI.encode_www_form_component(params[:path])}", :delete, params, options)
       response.data
     end
 

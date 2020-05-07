@@ -112,7 +112,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
 
       response, options = Api.send_request("/behaviors", :get, params, options)
-      response.data.map { |object| Behavior.new(object, options) }
     end
 
     def self.all(params = {}, options = {})
@@ -137,8 +136,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/behaviors/folders/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
-      response.data.map { |object| Behavior.new(object, options) }
+      response, options = Api.send_request("/behaviors/folders/#{URI.encode_www_form_component(params[:path])}", :get, params, options)
     end
 
     # Parameters:
