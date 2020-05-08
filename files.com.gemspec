@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.description = "The Files.com Ruby client."
   s.license     = "MIT"
   s.required_ruby_version = ">= 2.3"
-  s.add_dependency 'faraday', '>= 0.12.0'
+  s.add_dependency 'faraday', '>= 0.17.3'
   s.add_dependency 'net-http-persistent'
   s.add_dependency 'addressable', "~> 2.7.0"
 

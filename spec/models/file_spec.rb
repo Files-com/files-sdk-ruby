@@ -1,4 +1,5 @@
 require "spec_helper"
+require "tempfile"
 
 RSpec.describe Files::File, :with_test_folder do
   describe "#read" do
@@ -11,6 +12,20 @@ RSpec.describe Files::File, :with_test_folder do
     it "returns the body of the file" do
       file = Files::File.find(test_folder.join("read.txt").to_s, {}, options)
       expect(file.read).to eq("contents")
+    end
+  end
+
+  describe "#read_io" do
+    before do
+      Files::File.open(test_folder.join("read.txt").to_s, 'w', options) do |f|
+        f.write("contents")
+      end
+
+      it "returns an IO Object" do
+        file = Files::File.find(test_folder.join("read.txt").to_s, {}, options)
+        expect(file.read_io.class).to eq(IO)
+        expect(file.read_io.read).to eq("contents")
+      end
     end
   end
 
@@ -31,6 +46,22 @@ RSpec.describe Files::File, :with_test_folder do
 
       file = Files::File.find(test_folder.join("write-as-io.txt").to_s, {}, options)
       expect(file.read).to eq("I am a string via IO")
+    end
+
+    it "can take an IO without #size" do
+      temp_file = Tempfile.new("testing_io.txt")
+
+      temp_file.write("I am a string via IO")
+      temp_file.rewind
+      fd = IO.sysopen(temp_file.path)
+      io = IO.new(fd)
+
+      file = Files::File.open(test_folder.join("write-as-io.txt").to_s, 'w', options) do |f|
+        f.write(io)
+      end
+
+      expect(file.read).to eq("I am a string via IO")
+      temp_file.close
     end
   end
 end

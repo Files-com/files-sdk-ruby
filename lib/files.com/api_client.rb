@@ -14,29 +14,41 @@ module Files
       Thread.current[:files_api_client] || default_client
     end
 
+    # net_http_persistent does not support streaming downloads with faraday when directly downloading from S3
+    # falling back to net_http.
+    def self.download_client
+      Thread.current[:files_api_client_download_client] ||= ApiClient.new(download_conn)
+    end
+
+    def self.download_conn
+      Thread.current[:files_api_client_download_conn] ||= build_default_conn(force_net_http: true)
+    end
+
     def self.default_client
       Thread.current[:files_api_client_default_client] ||= ApiClient.new(default_conn)
     end
 
     def self.default_conn
-      Thread.current[:files_api_client_default_conn] ||= begin
-        conn = Faraday.new do |builder|
-          builder.use Faraday::Request::Multipart
-          builder.use Faraday::Request::UrlEncoded
-          builder.use Faraday::Response::RaiseError
+      Thread.current[:files_api_client_default_conn] ||= build_default_conn
+    end
 
-          if Gem.win_platform? || RUBY_PLATFORM == "java"
-            builder.adapter :net_http
-          else
-            builder.adapter :net_http_persistent
-          end
+    def self.build_default_conn(force_net_http: false)
+      conn = Faraday.new do |builder|
+        builder.use Faraday::Request::Multipart
+        builder.use Faraday::Request::UrlEncoded
+        builder.use Faraday::Response::RaiseError
+
+        if Gem.win_platform? || RUBY_PLATFORM == "java" || force_net_http
+          builder.adapter :net_http
+        else
+          builder.adapter :net_http_persistent
         end
-
-        conn.proxy = Files.proxy if Files.proxy
-        conn.ssl.verify = true
-
-        conn
       end
+
+      conn.proxy = Files.proxy if Files.proxy
+      conn.ssl.verify = true
+
+      conn
     end
 
     def self.should_retry?(error, num_retries)
@@ -129,6 +141,19 @@ module Files
           req.options.timeout = Files.read_timeout
           yield(req) if block_given?
         end
+      end
+    end
+
+    def stream_download(uri, io)
+      if conn.adapter == Faraday::Adapter::NetHttp
+        remote_request(:get, uri) do |req|
+          req.options.on_data = proc do |chunk, _overall_received_bytes|
+            io.write(chunk)
+          end
+        end
+      else
+        response = remote_request(:get, download_uri_with_load)
+        io.write(response.body)
       end
     end
 

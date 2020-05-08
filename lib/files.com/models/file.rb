@@ -149,13 +149,15 @@ module Files
 
     def self.upload_chunks(io, path, options, upload = nil, etags = [])
       etags ||= []
+      bytes_written = 0
       loop do
         upload = FileAction.begin_upload(path, { ref: upload&.ref, part: (upload&.part_number || 0) + 1 }, options)
         buf = io.read(upload.partsize) || ""
+        bytes_written += buf.length
         method = upload.http_method.downcase.to_sym
         response = client(options).remote_request(method, upload.upload_uri, { "Content-Length": buf.length.to_s }, buf)
         etags << { etag: response.headers["ETag"], part: upload.part_number }
-        return upload, etags if io.eof?
+        return upload, etags, bytes_written if io.eof?
       end
     end
 
@@ -303,8 +305,7 @@ module Files
     end
 
     def download_content(io)
-      response = client.remote_request(:get, download_uri_with_load)
-      io.write(response.body)
+      Files::ApiClient::download_client.stream_download(download_uri_with_load, io)
     end
 
     def each(*args, &block)
@@ -363,8 +364,8 @@ module Files
       if mode.include? "w"
         @write_io.rewind if @write_io.is_a?(StringIO)
 
-        @bytes_written += @write_io.size
-        @upload, @etags = File.upload_chunks(@write_io, path, options, @upload, @etags)
+        @upload, @etags, bytes_written = File.upload_chunks(@write_io, path, options, @upload, @etags)
+        @bytes_written += bytes_written
       elsif mode.include? "a"
         raise NotImplementedError
       end
@@ -388,11 +389,14 @@ module Files
 
     def read_io
       @read_io ||= begin
-        io = StringIO.new
-        download_content(io)
-        io.rewind
-        io
-      end
+                     r, w = IO.pipe
+                     Thread.new do
+                       download_content(w)
+                     ensure
+                       w.close
+                     end
+                     r
+                   end
     end
 
     def internal_encoding(*_args)
