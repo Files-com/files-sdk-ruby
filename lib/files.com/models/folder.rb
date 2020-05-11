@@ -3,9 +3,8 @@
 module Files
   class Folder
     attr_reader :options, :attributes
-    def self.[](path)
-      subfolders = find_recursive(path.split("*").first || "")
-      subfolders.select { |subfolder| ::File.fnmatch(path, "/" + subfolder) }
+    def self.[](*_)
+      raise NotImplementedError
     end
 
     def self.chdir(path, &block)
@@ -52,12 +51,6 @@ module Files
       File.find(path, params, options)
     end
 
-    def self.find_recursive(path, type = "dir", params = {}, options = {})
-      return path if type == "file"
-
-      list_for(path, params, options).map { |c| find_recursive(c.path, c.type, params, options) }.flatten.compact
-    end
-
     def self.get(path, params = {}, options = {})
       File.get(path, params, options)
     end
@@ -70,8 +63,8 @@ module Files
       pwd
     end
 
-    def self.glob(*args)
-      send(:[], *args)
+    def self.glob(*_)
+      raise NotImplementedError
     end
 
     def self.home(*_args)
