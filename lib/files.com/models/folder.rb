@@ -52,18 +52,18 @@ module Files
       File.find(path, params, options)
     end
 
-    def self.find_recursive(path, type = "dir")
+    def self.find_recursive(path, type = "dir", params = {}, options = {})
       return path if type == "file"
 
-      list(path).map { |c| find_recursive(c.path, c.type) }.flatten.compact
+      list_for(path, params, options).map { |c| find_recursive(c.path, c.type, params, options) }.flatten.compact
     end
 
     def self.get(path, params = {}, options = {})
       File.get(path, params, options)
     end
 
-    def self.foreach(path, _encoding)
-      list(path, {}).each { |x| yield x }
+    def self.foreach(path, _encoding = "", params = {}, options = {})
+      list_for(path, params, options).each { |x| yield x }
     end
 
     def self.getwd(*_args)
