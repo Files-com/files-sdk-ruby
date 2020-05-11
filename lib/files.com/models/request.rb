@@ -115,34 +115,20 @@ module Files
     #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
     #   mine - boolean - Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
-    def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
-
-      response, options = Api.send_request("/requests", :get, params, options)
-    end
-
-    def self.all(params = {}, options = {})
-      list(params, options)
-    end
-
-    # Parameters:
-    #   page - integer - Current page number.
-    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
-    #   path (required) - string - Path to operate on.
-    #   mine - boolean - Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
-    def self.list_for(path, params = {}, options = {})
+    #   path - string - Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory.
+    def self.list(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/requests/folders/#{URI.encode_www_form_component(params[:path])}", :get, params, options)
+      response, options = Api.send_request("/requests", :get, params, options)
+    end
+
+    def self.all(path, params = {}, options = {})
+      list(path, params, options)
     end
 
     # Create Request
