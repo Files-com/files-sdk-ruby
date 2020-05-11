@@ -76,7 +76,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
       raise MissingParameterError.new("Parameter missing: destination") unless params.dig(:destination)
 
-      response, _options = Api.send_request("/file_actions/copy/#{URI.encode_www_form_component(params[:path])}", :post, params, options)
+      response, _options = Api.send_request("/file_actions/copy/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
       response.data
     end
 
@@ -92,7 +92,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
       raise MissingParameterError.new("Parameter missing: destination") unless params.dig(:destination)
 
-      response, _options = Api.send_request("/file_actions/move/#{URI.encode_www_form_component(params[:path])}", :post, params, options)
+      response, _options = Api.send_request("/file_actions/move/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
       response.data
     end
 
@@ -115,7 +115,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params.dig(:restart) and !params.dig(:restart).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/file_actions/begin_upload/#{URI.encode_www_form_component(params[:path])}", :post, params, options)
+      response, options = Api.send_request("/file_actions/begin_upload/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
       FilePartUpload.new(response.data, options)
     end
   end

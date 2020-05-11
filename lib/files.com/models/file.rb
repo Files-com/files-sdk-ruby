@@ -930,7 +930,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/files/#{URI.encode_www_form_component(params[:path])}", :get, params, options)
+      response, options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
       File.new(response.data, options)
     end
 
@@ -965,7 +965,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: structure must be an String") if params.dig(:structure) and !params.dig(:structure).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/files/#{URI.encode_www_form_component(params[:path])}", :post, params, options)
+      response, options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
       File.new(response.data, options)
     end
 
@@ -980,7 +980,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if params.dig(:priority_color) and !params.dig(:priority_color).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/files/#{URI.encode_www_form_component(params[:path])}", :patch, params, options)
+      response, options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :patch, params, options)
       File.new(response.data, options)
     end
 
@@ -992,7 +992,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, _options = Api.send_request("/files/#{URI.encode_www_form_component(params[:path])}", :delete, params, options)
+      response, _options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :delete, params, options)
       response.data
     end
 
