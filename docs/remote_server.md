@@ -18,8 +18,8 @@
   "username": "user",
   "google_cloud_storage_bucket": "my-bucket",
   "google_cloud_storage_project_id": "my-project",
-  "b2_region": "us-west-001",
-  "b2_bucket": "my-bucket",
+  "backblaze_b2_region": "us-west-001",
+  "backblaze_b2_bucket": "my-bucket",
   "wasabi_bucket": "us-west-1",
   "wasabi_region": "my-bucket"
 }
@@ -39,8 +39,8 @@
 * `username` (string): Remote server username.  Not needed for S3 buckets.
 * `google_cloud_storage_bucket` (string): Google Cloud Storage bucket name
 * `google_cloud_storage_project_id` (string): Google Cloud Project ID
-* `b2_region` (string): b2 region
-* `b2_bucket` (string): b2 Bucket name
+* `backblaze_b2_region` (string): b2 region
+* `backblaze_b2_bucket` (string): b2 Bucket name
 * `wasabi_bucket` (string): Wasabi region
 * `wasabi_region` (string): Wasabi Bucket name
 * `aws_access_key` (string): AWS Access Key.
@@ -50,8 +50,8 @@
 * `google_cloud_storage_credentials_json` (string): A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
 * `wasabi_access_key` (string): Wasabi access key.
 * `wasabi_secret_key` (string): Wasabi secret key.
-* `b2_access_key` (string): Backblaze B2 Cloud Storage access key.
-* `b2_secret_key` (string): Backblaze B2 Cloud Storage secret key.
+* `backblaze_b2_access_key` (string): Backblaze B2 Cloud Storage access key.
+* `backblaze_b2_secret_key` (string): Backblaze B2 Cloud Storage secret key.
 
 
 ---
@@ -103,8 +103,8 @@ Files::RemoteServer.create(
   username: "user", 
   google_cloud_storage_bucket: "my-bucket", 
   google_cloud_storage_project_id: "my-project", 
-  b2_bucket: "my-bucket", 
-  b2_region: "us-west-001", 
+  backblaze_b2_bucket: "my-bucket", 
+  backblaze_b2_region: "us-west-001", 
   wasabi_bucket: "us-west-1", 
   wasabi_region: "my-bucket"
 )
@@ -119,8 +119,8 @@ Files::RemoteServer.create(
 * `google_cloud_storage_credentials_json` (string): A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
 * `wasabi_access_key` (string): Wasabi access key.
 * `wasabi_secret_key` (string): Wasabi secret key.
-* `b2_access_key` (string): Backblaze B2 Cloud Storage access key.
-* `b2_secret_key` (string): Backblaze B2 Cloud Storage secret key.
+* `backblaze_b2_access_key` (string): Backblaze B2 Cloud Storage access key.
+* `backblaze_b2_secret_key` (string): Backblaze B2 Cloud Storage secret key.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -133,8 +133,8 @@ Files::RemoteServer.create(
 * `username` (string): Remote server username.  Not needed for S3 buckets.
 * `google_cloud_storage_bucket` (string): Google Cloud Storage bucket name
 * `google_cloud_storage_project_id` (string): Google Cloud Project ID
-* `b2_bucket` (string): b2 Bucket name
-* `b2_region` (string): b2 region
+* `backblaze_b2_bucket` (string): b2 Bucket name
+* `backblaze_b2_region` (string): b2 region
 * `wasabi_bucket` (string): Wasabi region
 * `wasabi_region` (string): Wasabi Bucket name
 
@@ -157,8 +157,8 @@ Files::RemoteServer.update(id,
   username: "user", 
   google_cloud_storage_bucket: "my-bucket", 
   google_cloud_storage_project_id: "my-project", 
-  b2_bucket: "my-bucket", 
-  b2_region: "us-west-001", 
+  backblaze_b2_bucket: "my-bucket", 
+  backblaze_b2_region: "us-west-001", 
   wasabi_bucket: "us-west-1", 
   wasabi_region: "my-bucket"
 )
@@ -174,8 +174,8 @@ Files::RemoteServer.update(id,
 * `google_cloud_storage_credentials_json` (string): A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
 * `wasabi_access_key` (string): Wasabi access key.
 * `wasabi_secret_key` (string): Wasabi secret key.
-* `b2_access_key` (string): Backblaze B2 Cloud Storage access key.
-* `b2_secret_key` (string): Backblaze B2 Cloud Storage secret key.
+* `backblaze_b2_access_key` (string): Backblaze B2 Cloud Storage access key.
+* `backblaze_b2_secret_key` (string): Backblaze B2 Cloud Storage secret key.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -188,8 +188,8 @@ Files::RemoteServer.update(id,
 * `username` (string): Remote server username.  Not needed for S3 buckets.
 * `google_cloud_storage_bucket` (string): Google Cloud Storage bucket name
 * `google_cloud_storage_project_id` (string): Google Cloud Project ID
-* `b2_bucket` (string): b2 Bucket name
-* `b2_region` (string): b2 region
+* `backblaze_b2_bucket` (string): b2 Bucket name
+* `backblaze_b2_region` (string): b2 region
 * `wasabi_bucket` (string): Wasabi region
 * `wasabi_region` (string): Wasabi Bucket name
 
@@ -226,8 +226,8 @@ remote_server.update(
   username: "user",
   google_cloud_storage_bucket: "my-bucket",
   google_cloud_storage_project_id: "my-project",
-  b2_bucket: "my-bucket",
-  b2_region: "us-west-001",
+  backblaze_b2_bucket: "my-bucket",
+  backblaze_b2_region: "us-west-001",
   wasabi_bucket: "us-west-1",
   wasabi_region: "my-bucket"
 )
@@ -243,8 +243,8 @@ remote_server.update(
 * `google_cloud_storage_credentials_json` (string): A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
 * `wasabi_access_key` (string): Wasabi access key.
 * `wasabi_secret_key` (string): Wasabi secret key.
-* `b2_access_key` (string): Backblaze B2 Cloud Storage access key.
-* `b2_secret_key` (string): Backblaze B2 Cloud Storage secret key.
+* `backblaze_b2_access_key` (string): Backblaze B2 Cloud Storage access key.
+* `backblaze_b2_secret_key` (string): Backblaze B2 Cloud Storage secret key.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -257,8 +257,8 @@ remote_server.update(
 * `username` (string): Remote server username.  Not needed for S3 buckets.
 * `google_cloud_storage_bucket` (string): Google Cloud Storage bucket name
 * `google_cloud_storage_project_id` (string): Google Cloud Project ID
-* `b2_bucket` (string): b2 Bucket name
-* `b2_region` (string): b2 region
+* `backblaze_b2_bucket` (string): b2 Bucket name
+* `backblaze_b2_region` (string): b2 region
 * `wasabi_bucket` (string): Wasabi region
 * `wasabi_region` (string): Wasabi Bucket name
 
