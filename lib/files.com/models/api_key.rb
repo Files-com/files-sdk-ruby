@@ -153,7 +153,7 @@ module Files
       list(params, options)
     end
 
-    def self.get(params = {}, options = {})
+    def self.find_current(params = {}, options = {})
       response, options = Api.send_request("/api_key", :get, params, options)
       ApiKey.new(response.data, options)
     end
@@ -193,22 +193,62 @@ module Files
     #   name - string - Internal name for key.  For your reference only.
     #   permission_set - string - Leave blank, or set to `desktop_app` to restrict the key to only desktop app functions.
     #   expires_at - string - Have the key expire at this date/time.
-    def self.update(params = {}, options = {})
+    def self.update_current(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params.dig(:permission_set) and !params.dig(:permission_set).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
 
-      response, options = Api.send_request("/api_key", :patch, params, options)
+      response, options = Api.send_request("/api_key", :put, params, options)
       ApiKey.new(response.data, options)
     end
 
-    def self.delete(params = {}, options = {})
+    # Parameters:
+    #   name - string - Internal name for key.  For your reference only.
+    #   permission_set - string - Leave blank, or set to `desktop_app` to restrict the key to only desktop app functions.
+    #   expires_at - string - Have the key expire at this date/time.
+    def self.update_current(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params.dig(:permission_set) and !params.dig(:permission_set).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
+
+      response, options = Api.send_request("/api_key", :put, params, options)
+      ApiKey.new(response.data, options)
+    end
+
+    # Parameters:
+    #   name - string - Internal name for key.  For your reference only.
+    #   permission_set - string - Leave blank, or set to 'desktop_app' to restrict the key to only desktop app functions.
+    #   expires_at - string - Have the key expire at this date/time.
+    def self.update(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params.dig(:permission_set) and !params.dig(:permission_set).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+
+      response, options = Api.send_request("/api_keys/#{params[:id]}", :patch, params, options)
+      ApiKey.new(response.data, options)
+    end
+
+    def self.delete_current(params = {}, options = {})
       response, _options = Api.send_request("/api_key", :delete, params, options)
       response.data
     end
 
-    def self.destroy(params = {}, options = {})
-      delete(params, options)
+    def self.delete(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+
+      response, _options = Api.send_request("/api_keys/#{params[:id]}", :delete, params, options)
+      response.data
+    end
+
+    def self.destroy(id, params = {}, options = {})
+      delete(id, params, options)
     end
   end
 end

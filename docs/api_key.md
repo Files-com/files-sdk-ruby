@@ -54,7 +54,7 @@ Files::ApiKey.list(
 ## Show information about current API key.  (Requires current API connection to be using an API key.)
 
 ```
-Files::ApiKey.get
+Files::ApiKey.find_current
 ```
 
 
@@ -97,7 +97,7 @@ Files::ApiKey.create(
 ## Update current API key.  (Requires current API connection to be using an API key.)
 
 ```
-Files::ApiKey.update(
+Files::ApiKey.update_current(
   name: "My Key", 
   permission_set: "full", 
   expires_at: "2000-01-01T01:00:00Z"
@@ -113,11 +113,63 @@ Files::ApiKey.update(
 
 ---
 
+## Update current API key.  (Requires current API connection to be using an API key.)
+
+```
+Files::ApiKey.update_current(
+  name: "My Key", 
+  permission_set: "full", 
+  expires_at: "2000-01-01T01:00:00Z"
+)
+```
+
+### Parameters
+
+* `name` (string): Internal name for key.  For your reference only.
+* `permission_set` (string): Leave blank, or set to `desktop_app` to restrict the key to only desktop app functions.
+* `expires_at` (string): Have the key expire at this date/time.
+
+
+---
+
+## Update Api Key
+
+```
+Files::ApiKey.update(id, 
+  name: "My Key", 
+  permission_set: "full", 
+  expires_at: "2000-01-01T01:00:00Z"
+)
+```
+
+### Parameters
+
+* `id` (int64): Required - Api Key ID.
+* `name` (string): Internal name for key.  For your reference only.
+* `permission_set` (string): Leave blank, or set to 'desktop_app' to restrict the key to only desktop app functions.
+* `expires_at` (string): Have the key expire at this date/time.
+
+
+---
+
 ## Delete current API key.  (Requires current API connection to be using an API key.)
 
 ```
-Files::ApiKey.delete
+Files::ApiKey.delete_current
 ```
+
+
+---
+
+## Delete Api Key
+
+```
+Files::ApiKey.delete(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Api Key ID.
 
 
 ---

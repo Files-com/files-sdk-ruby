@@ -81,6 +81,25 @@ module Files
       @attributes[:group_ids] = value
     end
 
+    # List Requests
+    #
+    # Parameters:
+    #   page - integer - Current page number.
+    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+    #   mine - boolean - Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
+    def folders(params = {})
+      params ||= {}
+      params[:path] = @attributes[:path]
+      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
+      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
+
+      Api.send_request("/requests/folders/#{Addressable::URI.encode_component(params[:path])}", :get, params, @options)
+    end
+
     # Create Request
     #
     # Parameters:
@@ -129,6 +148,24 @@ module Files
 
     def self.all(path, params = {}, options = {})
       list(path, params, options)
+    end
+
+    # List Requests
+    #
+    # Parameters:
+    #   page - integer - Current page number.
+    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+    #   mine - boolean - Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
+    def self.folders(path, params = {}, options = {})
+      params ||= {}
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
+
+      response, options = Api.send_request("/requests/folders/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
     end
 
     # Create Request

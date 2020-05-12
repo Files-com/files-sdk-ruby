@@ -46,6 +46,27 @@ Files::Request.list(path,
 
 ---
 
+## List Requests
+
+```
+Files::Request.folders(path, 
+  page: 1, 
+  per_page: 1, 
+  mine: true
+)
+```
+
+### Parameters
+
+* `page` (int64): Current page number.
+* `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+* `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+* `mine` (boolean): Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
+* `path` (string): Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory.
+
+
+---
+
 ## Create Request
 
 ```
@@ -73,6 +94,28 @@ Files::Request.delete(id)
 ### Parameters
 
 * `id` (int64): Required - Request ID.
+
+
+---
+
+## List Requests
+
+```
+request = Files::Request.find(1)
+request.folders(
+  page: 1,
+  per_page: 1,
+  mine: true
+)
+```
+
+### Parameters
+
+* `page` (int64): Current page number.
+* `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+* `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+* `mine` (boolean): Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
+* `path` (string): Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory.
 
 
 ---
