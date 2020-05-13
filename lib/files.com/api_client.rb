@@ -148,11 +148,11 @@ module Files
       if conn.adapter == Faraday::Adapter::NetHttp
         remote_request(:get, uri) do |req|
           req.options.on_data = proc do |chunk, _overall_received_bytes|
-            io.write(chunk)
+            io.write(chunk.encode!)
           end
         end
       else
-        response = remote_request(:get, download_uri_with_load)
+        response = remote_request(:get, uri)
         io.write(response.body)
       end
     end

@@ -20,12 +20,12 @@ RSpec.describe Files::File, :with_test_folder do
       Files::File.open(test_folder.join("read.txt").to_s, 'w', options) do |f|
         f.write("contents")
       end
+    end
 
-      it "returns an IO Object" do
-        file = Files::File.find(test_folder.join("read.txt").to_s, {}, options)
-        expect(file.read_io.class).to eq(IO)
-        expect(file.read_io.read).to eq("contents")
-      end
+    it "returns an IO Object" do
+      file = Files::File.find(test_folder.join("read.txt").to_s, {}, options)
+      expect(file.read_io.class).to eq(IO)
+      expect(file.read_io.read).to eq("contents")
     end
   end
 
