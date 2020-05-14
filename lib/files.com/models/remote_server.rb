@@ -135,16 +135,16 @@ module Files
       @attributes[:google_cloud_storage_project_id] = value
     end
 
-    # string - b2 region
-    def backblaze_b2_region
-      @attributes[:backblaze_b2_region]
+    # string - Backblaze B2 Cloud Storage S3 Endpoint
+    def backblaze_b2_s3_endpoint
+      @attributes[:backblaze_b2_s3_endpoint]
     end
 
-    def backblaze_b2_region=(value)
-      @attributes[:backblaze_b2_region] = value
+    def backblaze_b2_s3_endpoint=(value)
+      @attributes[:backblaze_b2_s3_endpoint] = value
     end
 
-    # string - b2 Bucket name
+    # string - Backblaze B2 Cloud Storage Bucket name
     def backblaze_b2_bucket
       @attributes[:backblaze_b2_bucket]
     end
@@ -234,22 +234,22 @@ module Files
       @attributes[:wasabi_secret_key] = value
     end
 
-    # string - Backblaze B2 Cloud Storage access key.
-    def backblaze_b2_access_key
-      @attributes[:backblaze_b2_access_key]
+    # string - Backblaze B2 Cloud Storage keyID.
+    def backblaze_b2_key_id
+      @attributes[:backblaze_b2_key_id]
     end
 
-    def backblaze_b2_access_key=(value)
-      @attributes[:backblaze_b2_access_key] = value
+    def backblaze_b2_key_id=(value)
+      @attributes[:backblaze_b2_key_id] = value
     end
 
-    # string - Backblaze B2 Cloud Storage secret key.
-    def backblaze_b2_secret_key
-      @attributes[:backblaze_b2_secret_key]
+    # string - Backblaze B2 Cloud Storage applicationKey.
+    def backblaze_b2_application_key
+      @attributes[:backblaze_b2_application_key]
     end
 
-    def backblaze_b2_secret_key=(value)
-      @attributes[:backblaze_b2_secret_key] = value
+    def backblaze_b2_application_key=(value)
+      @attributes[:backblaze_b2_application_key] = value
     end
 
     # Parameters:
@@ -260,8 +260,8 @@ module Files
     #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     #   wasabi_access_key - string - Wasabi access key.
     #   wasabi_secret_key - string - Wasabi secret key.
-    #   backblaze_b2_access_key - string - Backblaze B2 Cloud Storage access key.
-    #   backblaze_b2_secret_key - string - Backblaze B2 Cloud Storage secret key.
+    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
+    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - integer - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -274,8 +274,8 @@ module Files
     #   username - string - Remote server username.  Not needed for S3 buckets.
     #   google_cloud_storage_bucket - string - Google Cloud Storage bucket name
     #   google_cloud_storage_project_id - string - Google Cloud Project ID
-    #   backblaze_b2_bucket - string - b2 Bucket name
-    #   backblaze_b2_region - string - b2 region
+    #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage Bucket name
+    #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
     #   wasabi_bucket - string - Wasabi region
     #   wasabi_region - string - Wasabi Bucket name
     def update(params = {})
@@ -290,8 +290,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params.dig(:google_cloud_storage_credentials_json) and !params.dig(:google_cloud_storage_credentials_json).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params.dig(:wasabi_access_key) and !params.dig(:wasabi_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params.dig(:wasabi_secret_key) and !params.dig(:wasabi_secret_key).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_access_key must be an String") if params.dig(:backblaze_b2_access_key) and !params.dig(:backblaze_b2_access_key).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_secret_key must be an String") if params.dig(:backblaze_b2_secret_key) and !params.dig(:backblaze_b2_secret_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params.dig(:backblaze_b2_key_id) and !params.dig(:backblaze_b2_key_id).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -305,7 +305,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params.dig(:google_cloud_storage_bucket) and !params.dig(:google_cloud_storage_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params.dig(:google_cloud_storage_project_id) and !params.dig(:google_cloud_storage_project_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params.dig(:backblaze_b2_bucket) and !params.dig(:backblaze_b2_bucket).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_region must be an String") if params.dig(:backblaze_b2_region) and !params.dig(:backblaze_b2_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params.dig(:backblaze_b2_s3_endpoint) and !params.dig(:backblaze_b2_s3_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_bucket must be an String") if params.dig(:wasabi_bucket) and !params.dig(:wasabi_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_region must be an String") if params.dig(:wasabi_region) and !params.dig(:wasabi_region).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
@@ -376,8 +376,8 @@ module Files
     #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     #   wasabi_access_key - string - Wasabi access key.
     #   wasabi_secret_key - string - Wasabi secret key.
-    #   backblaze_b2_access_key - string - Backblaze B2 Cloud Storage access key.
-    #   backblaze_b2_secret_key - string - Backblaze B2 Cloud Storage secret key.
+    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
+    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - integer - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -390,8 +390,8 @@ module Files
     #   username - string - Remote server username.  Not needed for S3 buckets.
     #   google_cloud_storage_bucket - string - Google Cloud Storage bucket name
     #   google_cloud_storage_project_id - string - Google Cloud Project ID
-    #   backblaze_b2_bucket - string - b2 Bucket name
-    #   backblaze_b2_region - string - b2 region
+    #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage Bucket name
+    #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
     #   wasabi_bucket - string - Wasabi region
     #   wasabi_region - string - Wasabi Bucket name
     def self.create(params = {}, options = {})
@@ -402,8 +402,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params.dig(:google_cloud_storage_credentials_json) and !params.dig(:google_cloud_storage_credentials_json).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params.dig(:wasabi_access_key) and !params.dig(:wasabi_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params.dig(:wasabi_secret_key) and !params.dig(:wasabi_secret_key).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_access_key must be an String") if params.dig(:backblaze_b2_access_key) and !params.dig(:backblaze_b2_access_key).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_secret_key must be an String") if params.dig(:backblaze_b2_secret_key) and !params.dig(:backblaze_b2_secret_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params.dig(:backblaze_b2_key_id) and !params.dig(:backblaze_b2_key_id).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -417,7 +417,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params.dig(:google_cloud_storage_bucket) and !params.dig(:google_cloud_storage_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params.dig(:google_cloud_storage_project_id) and !params.dig(:google_cloud_storage_project_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params.dig(:backblaze_b2_bucket) and !params.dig(:backblaze_b2_bucket).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_region must be an String") if params.dig(:backblaze_b2_region) and !params.dig(:backblaze_b2_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params.dig(:backblaze_b2_s3_endpoint) and !params.dig(:backblaze_b2_s3_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_bucket must be an String") if params.dig(:wasabi_bucket) and !params.dig(:wasabi_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_region must be an String") if params.dig(:wasabi_region) and !params.dig(:wasabi_region).is_a?(String)
 
@@ -433,8 +433,8 @@ module Files
     #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     #   wasabi_access_key - string - Wasabi access key.
     #   wasabi_secret_key - string - Wasabi secret key.
-    #   backblaze_b2_access_key - string - Backblaze B2 Cloud Storage access key.
-    #   backblaze_b2_secret_key - string - Backblaze B2 Cloud Storage secret key.
+    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
+    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - integer - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -447,8 +447,8 @@ module Files
     #   username - string - Remote server username.  Not needed for S3 buckets.
     #   google_cloud_storage_bucket - string - Google Cloud Storage bucket name
     #   google_cloud_storage_project_id - string - Google Cloud Project ID
-    #   backblaze_b2_bucket - string - b2 Bucket name
-    #   backblaze_b2_region - string - b2 region
+    #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage Bucket name
+    #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
     #   wasabi_bucket - string - Wasabi region
     #   wasabi_region - string - Wasabi Bucket name
     def self.update(id, params = {}, options = {})
@@ -462,8 +462,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params.dig(:google_cloud_storage_credentials_json) and !params.dig(:google_cloud_storage_credentials_json).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params.dig(:wasabi_access_key) and !params.dig(:wasabi_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params.dig(:wasabi_secret_key) and !params.dig(:wasabi_secret_key).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_access_key must be an String") if params.dig(:backblaze_b2_access_key) and !params.dig(:backblaze_b2_access_key).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_secret_key must be an String") if params.dig(:backblaze_b2_secret_key) and !params.dig(:backblaze_b2_secret_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params.dig(:backblaze_b2_key_id) and !params.dig(:backblaze_b2_key_id).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -477,7 +477,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params.dig(:google_cloud_storage_bucket) and !params.dig(:google_cloud_storage_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params.dig(:google_cloud_storage_project_id) and !params.dig(:google_cloud_storage_project_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params.dig(:backblaze_b2_bucket) and !params.dig(:backblaze_b2_bucket).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_region must be an String") if params.dig(:backblaze_b2_region) and !params.dig(:backblaze_b2_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params.dig(:backblaze_b2_s3_endpoint) and !params.dig(:backblaze_b2_s3_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_bucket must be an String") if params.dig(:wasabi_bucket) and !params.dig(:wasabi_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_region must be an String") if params.dig(:wasabi_region) and !params.dig(:wasabi_region).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
