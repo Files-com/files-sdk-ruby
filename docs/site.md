@@ -10,6 +10,7 @@
   "allowed_2fa_method_u2f": true,
   "allowed_2fa_method_yubi": true,
   "admin_user_id": 1,
+  "allow_bundle_names": true,
   "allowed_file_types": "",
   "allowed_ips": "",
   "ask_about_overwrites": true,
@@ -118,6 +119,7 @@
 * `allowed_2fa_method_u2f` (boolean): Is U2F two factor authentication allowed?
 * `allowed_2fa_method_yubi` (boolean): Is yubikey two factor authentication allowed?
 * `admin_user_id` (int64): User ID for the main site administrator
+* `allow_bundle_names` (boolean): Are manual Bundle names allowed?
 * `allowed_file_types` (string): List of allowed file types
 * `allowed_ips` (string): List of allowed IP addresses
 * `ask_about_overwrites` (boolean): If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
@@ -247,6 +249,7 @@ Files::Site.update(
   subdomain: "mysite", 
   domain: "my-custom-domain.com", 
   email: "john.doe@files.com", 
+  allow_bundle_names: true, 
   bundle_expiration: 1, 
   overage_notify: true, 
   welcome_email_enabled: true, 
@@ -332,6 +335,7 @@ Files::Site.update(
 * `subdomain` (string): Site subdomain
 * `domain` (string): Custom domain
 * `email` (string): Main email for this site
+* `allow_bundle_names` (boolean): Are manual Bundle names allowed?
 * `bundle_expiration` (int64): Site-wide Bundle expiration in days
 * `overage_notify` (boolean): Notify site email of overages?
 * `welcome_email_enabled` (boolean): Will the welcome email be sent to new users?

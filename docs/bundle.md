@@ -78,7 +78,8 @@ Files::Bundle.create(
   password: "Password", 
   expires_at: "2000-01-01T01:00:00Z", 
   description: "Public description", 
-  note: "Internal Note"
+  note: "Internal Note", 
+  code: "abc123"
 )
 ```
 
@@ -90,6 +91,7 @@ Files::Bundle.create(
 * `expires_at` (string): Bundle expiration date/time.
 * `description` (string): Bundle public description
 * `note` (string): Bundle internal note
+* `code` (string): Bundle name
 
 
 ---

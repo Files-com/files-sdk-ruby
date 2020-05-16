@@ -39,6 +39,11 @@ module Files
       @attributes[:admin_user_id]
     end
 
+    # boolean - Are manual Bundle names allowed?
+    def allow_bundle_names
+      @attributes[:allow_bundle_names]
+    end
+
     # string - List of allowed file types
     def allowed_file_types
       @attributes[:allowed_file_types]
@@ -549,6 +554,7 @@ module Files
     #   subdomain - string - Site subdomain
     #   domain - string - Custom domain
     #   email - string - Main email for this site
+    #   allow_bundle_names - boolean - Are manual Bundle names allowed?
     #   bundle_expiration - integer - Site-wide Bundle expiration in days
     #   overage_notify - boolean - Notify site email of overages?
     #   welcome_email_enabled - boolean - Will the welcome email be sent to new users?
