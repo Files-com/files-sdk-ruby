@@ -90,21 +90,6 @@ module Files
       @attributes[:username] = value
     end
 
-    # Create Lock
-    #
-    # Parameters:
-    #   timeout - integer - Lock timeout length
-    def create(params = {})
-      params ||= {}
-      params[:path] = @attributes[:path]
-      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params.dig(:timeout) and !params.dig(:timeout).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-
-      Api.send_request("/locks/#{Addressable::URI.encode_component(params[:path])}", :post, params, @options)
-    end
-
     # Parameters:
     #   token (required) - string - Lock token
     def delete(params = {})
@@ -150,9 +135,8 @@ module Files
       response, options = Api.send_request("/locks/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
     end
 
-    # Create Lock
-    #
     # Parameters:
+    #   path (required) - string - Path
     #   timeout - integer - Lock timeout length
     def self.create(path, params = {}, options = {})
       params ||= {}

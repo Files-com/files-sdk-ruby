@@ -86,17 +86,3 @@ Files::Folder.create(path)
 ### Parameters
 
 * `path` (string): Required - Path to operate on.
-
-
----
-
-## Create folder
-
-```
-folder = Files::Folder.find(1)
-folder.create
-```
-
-### Parameters
-
-* `path` (string): Required - Path to operate on.

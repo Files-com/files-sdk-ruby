@@ -100,26 +100,6 @@ module Files
       Api.send_request("/requests/folders/#{Addressable::URI.encode_component(params[:path])}", :get, params, @options)
     end
 
-    # Create Request
-    #
-    # Parameters:
-    #   destination (required) - string - Destination filename (without extension) to request.
-    #   user_ids - string - A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
-    #   group_ids - string - A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
-    def create(params = {})
-      params ||= {}
-      params[:path] = @attributes[:path]
-      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params.dig(:user_ids) and !params.dig(:user_ids).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: destination") unless params.dig(:destination)
-
-      Api.send_request("/requests", :post, params, @options)
-    end
-
     def save
       if @attributes[:path]
         raise NotImplementedError.new("The Request object doesn't support updates.")
@@ -168,9 +148,8 @@ module Files
       response, options = Api.send_request("/requests/folders/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
     end
 
-    # Create Request
-    #
     # Parameters:
+    #   path (required) - string - Folder path on which to request the file.
     #   destination (required) - string - Destination filename (without extension) to request.
     #   user_ids - string - A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.

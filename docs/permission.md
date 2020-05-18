@@ -85,28 +85,3 @@ Files::Permission.delete(id)
 ### Parameters
 
 * `id` (int64): Required - Permission ID.
-
-
----
-
-## Create Permission
-
-```
-permission = Files::Permission.find(1)
-permission.create(
-  group_id: 1,
-  permission: "full",
-  recursive: true,
-  user_id: 1,
-  username: "Sser"
-)
-```
-
-### Parameters
-
-* `group_id` (int64): Group ID
-* `path` (string): Folder path
-* `permission` (string):  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
-* `recursive` (boolean): Apply to subfolders recursively?
-* `user_id` (int64): User ID.  Provide `username` or `user_id`
-* `username` (string): User username.  Provide `username` or `user_id`

@@ -82,23 +82,6 @@ Files::Lock.delete(path,
 
 ---
 
-## Create Lock
-
-```
-lock = Files::Lock.find(1)
-lock.create(
-  timeout: 1
-)
-```
-
-### Parameters
-
-* `path` (string): Required - Path
-* `timeout` (int64): Lock timeout length
-
-
----
-
 ## Delete Lock
 
 ```

@@ -81,27 +81,6 @@ module Files
       @attributes[:recursive] = value
     end
 
-    # Create Permission
-    #
-    # Parameters:
-    #   group_id - integer - Group ID
-    #   permission - string -  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
-    #   recursive - boolean - Apply to subfolders recursively?
-    #   user_id - integer - User ID.  Provide `username` or `user_id`
-    #   username - string - User username.  Provide `username` or `user_id`
-    def create(params = {})
-      params ||= {}
-      params[:path] = @attributes[:path]
-      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: permission must be an String") if params.dig(:permission) and !params.dig(:permission).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
-
-      Api.send_request("/permissions", :post, params, @options)
-    end
-
     def save
       if @attributes[:path]
         raise NotImplementedError.new("The Permission object doesn't support updates.")
@@ -136,10 +115,9 @@ module Files
       list(path, params, options)
     end
 
-    # Create Permission
-    #
     # Parameters:
     #   group_id - integer - Group ID
+    #   path - string - Folder path
     #   permission - string -  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `previewonly`, or `history`
     #   recursive - boolean - Apply to subfolders recursively?
     #   user_id - integer - User ID.  Provide `username` or `user_id`

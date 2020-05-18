@@ -840,41 +840,6 @@ module Files
       Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :get, params, @options)
     end
 
-    # Upload file
-    #
-    # Parameters:
-    #   action - string - The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
-    #   etags[etag] (required) - array - etag identifier.
-    #   etags[part] (required) - array - Part number.
-    #   length - integer - Length of file.
-    #   mkdir_parents - boolean - Create parent directories if they do not exist?
-    #   part - integer - Part if uploading a part.
-    #   parts - integer - How many parts to fetch?
-    #   provided_mtime - string - User provided modification time.
-    #   ref - string -
-    #   restart - integer - File byte offset to restart from.
-    #   size - integer - Size of file.
-    #   structure - string - If copying folder, copy just the structure?
-    #   with_rename - boolean - Allow file rename instead of overwrite?
-    def create(params = {})
-      params ||= {}
-      params[:path] = @attributes[:path]
-      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: length must be an Integer") if params.dig(:length) and !params.dig(:length).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: part must be an Integer") if params.dig(:part) and !params.dig(:part).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params.dig(:parts) and !params.dig(:parts).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params.dig(:provided_mtime) and !params.dig(:provided_mtime).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ref must be an String") if params.dig(:ref) and !params.dig(:ref).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params.dig(:restart) and !params.dig(:restart).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params.dig(:size) and !params.dig(:size).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: structure must be an String") if params.dig(:structure) and !params.dig(:structure).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-
-      Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :post, params, @options)
-    end
-
     # Parameters:
     #   provided_mtime - string - Modified time of file.
     #   priority_color - string - Priority/Bookmark color of file.
@@ -934,9 +899,8 @@ module Files
       File.new(response.data, options)
     end
 
-    # Upload file
-    #
     # Parameters:
+    #   path (required) - string - Path to operate on.
     #   action - string - The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
     #   etags[etag] (required) - array - etag identifier.
     #   etags[part] (required) - array - Part number.

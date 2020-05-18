@@ -169,42 +169,6 @@ file.download(
 
 ---
 
-## Upload file
-
-```
-file = Files::File.find(1)
-file.create(
-  length: 1,
-  mkdir_parents: true,
-  part: 1,
-  parts: 1,
-  provided_mtime: "2000-01-01T01:00:00Z",
-  restart: 1,
-  size: 1,
-  with_rename: true
-)
-```
-
-### Parameters
-
-* `path` (string): Required - Path to operate on.
-* `action` (string): The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
-* `etags[etag]` (array(string)): etag identifier.
-* `etags[part]` (array(int64)): Part number.
-* `length` (int64): Length of file.
-* `mkdir_parents` (boolean): Create parent directories if they do not exist?
-* `part` (int64): Part if uploading a part.
-* `parts` (int64): How many parts to fetch?
-* `provided_mtime` (string): User provided modification time.
-* `ref` (string): 
-* `restart` (int64): File byte offset to restart from.
-* `size` (int64): Size of file.
-* `structure` (string): If copying folder, copy just the structure?
-* `with_rename` (boolean): Allow file rename instead of overwrite?
-
-
----
-
 ## Update file/folder metadata
 
 ```

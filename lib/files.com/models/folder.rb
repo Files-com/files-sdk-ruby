@@ -302,17 +302,6 @@ module Files
       @attributes[:preview] = value
     end
 
-    # Create folder
-    def create(params = {})
-      params ||= {}
-      params[:path] = @attributes[:path]
-      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-
-      Api.send_request("/folders/#{Addressable::URI.encode_component(params[:path])}", :post, params, @options)
-    end
-
     def save
       if @attributes[:path]
         raise NotImplementedError.new("The Folder object doesn't support updates.")
@@ -351,7 +340,8 @@ module Files
       end
     end
 
-    # Create folder
+    # Parameters:
+    #   path (required) - string - Path to operate on.
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path

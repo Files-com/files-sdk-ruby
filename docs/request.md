@@ -116,22 +116,3 @@ request.folders(
 * `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
 * `mine` (boolean): Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
 * `path` (string): Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory.
-
-
----
-
-## Create Request
-
-```
-request = Files::Request.find(1)
-request.create(
-  destination: "destination"
-)
-```
-
-### Parameters
-
-* `path` (string): Required - Folder path on which to request the file.
-* `destination` (string): Required - Destination filename (without extension) to request.
-* `user_ids` (string): A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
-* `group_ids` (string): A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
