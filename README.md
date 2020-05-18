@@ -81,12 +81,12 @@ word Folder, not Dir, and Files::Dir is simply an alias for
 Files::Folder).
 
 
-#### List using array syntax example
+#### List root folder
 
-    Files::Dir["/"].each do |path|
-      puts path
+    Files::Folder.list_for("/").each do |file|
+      puts file.path
     end
-
+    
 
 #### Writing a file example
 
