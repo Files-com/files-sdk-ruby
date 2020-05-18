@@ -153,11 +153,6 @@ module Files
       list(params, options)
     end
 
-    def self.find_current(params = {}, options = {})
-      response, options = Api.send_request("/api_key", :get, params, options)
-      ApiKey.new(response.data, options)
-    end
-
     # Parameters:
     #   id (required) - integer - Api Key ID.
     def self.find(id, params = {}, options = {})
@@ -174,6 +169,11 @@ module Files
       find(id, params, options)
     end
 
+    def self.find_current(params = {}, options = {})
+      response, options = Api.send_request("/api_key", :get, params, options)
+      ApiKey.new(response.data, options)
+    end
+
     # Parameters:
     #   user_id - integer - User ID.  Provide a value of `0` to operate the current session's user.
     #   name - string - Internal name for key.  For your reference only.
@@ -186,19 +186,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
 
       response, options = Api.send_request("/api_keys", :post, params, options)
-      ApiKey.new(response.data, options)
-    end
-
-    # Parameters:
-    #   name - string - Internal name for key.  For your reference only.
-    #   permission_set - string - Leave blank, or set to `desktop_app` to restrict the key to only desktop app functions.
-    #   expires_at - string - Have the key expire at this date/time.
-    def self.update_current(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params.dig(:permission_set) and !params.dig(:permission_set).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
-
-      response, options = Api.send_request("/api_key", :patch, params, options)
       ApiKey.new(response.data, options)
     end
 
@@ -219,9 +206,17 @@ module Files
       ApiKey.new(response.data, options)
     end
 
-    def self.delete_current(params = {}, options = {})
-      response, _options = Api.send_request("/api_key", :delete, params, options)
-      response.data
+    # Parameters:
+    #   name - string - Internal name for key.  For your reference only.
+    #   permission_set - string - Leave blank, or set to `desktop_app` to restrict the key to only desktop app functions.
+    #   expires_at - string - Have the key expire at this date/time.
+    def self.update_current(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params.dig(:permission_set) and !params.dig(:permission_set).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
+
+      response, options = Api.send_request("/api_key", :patch, params, options)
+      ApiKey.new(response.data, options)
     end
 
     def self.delete(id, params = {}, options = {})
@@ -236,6 +231,11 @@ module Files
 
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
+    end
+
+    def self.delete_current(params = {}, options = {})
+      response, _options = Api.send_request("/api_key", :delete, params, options)
+      response.data
     end
   end
 end
