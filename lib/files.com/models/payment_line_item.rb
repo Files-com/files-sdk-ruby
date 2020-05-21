@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # float - Payment line item amount
+    # double - Payment line item amount
     def amount
       @attributes[:amount]
     end

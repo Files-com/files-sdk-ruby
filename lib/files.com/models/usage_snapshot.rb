@@ -29,12 +29,12 @@ module Files
       @attributes[:created_at]
     end
 
-    # float - Current site usage as of report
+    # double - Current site usage as of report
     def current_storage
       @attributes[:current_storage]
     end
 
-    # float - Site usage report highest usage in time period
+    # double - Site usage report highest usage in time period
     def high_water_storage
       @attributes[:high_water_storage]
     end
@@ -59,17 +59,17 @@ module Files
       @attributes[:usage_by_top_level_dir]
     end
 
-    # float - Usage for root folder
+    # double - Usage for root folder
     def root_storage
       @attributes[:root_storage]
     end
 
-    # float - Usage for files that are deleted but uploaded within last 30 days
+    # double - Usage for files that are deleted but uploaded within last 30 days
     def deleted_files_counted_in_minimum
       @attributes[:deleted_files_counted_in_minimum]
     end
 
-    # float - Usage for files that are deleted but retained as backups
+    # double - Usage for files that are deleted but retained as backups
     def deleted_files_storage
       @attributes[:deleted_files_storage]
     end

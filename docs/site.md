@@ -90,7 +90,7 @@
   "smtp_from": "me@my-mail-server.com",
   "smtp_port": 25,
   "smtp_username": "mail",
-  "session_expiry": 6,
+  "session_expiry": 6.0,
   "ssl_required": true,
   "subdomain": "mysite",
   "switch_to_plan_date": "2000-01-01T01:00:00Z",
@@ -170,7 +170,7 @@
 * `login_help_text` (string): Login help text
 * `logo`: Branded logo
 * `max_prior_passwords` (int64): Number of prior passwords to disallow
-* `next_billing_amount` (float): Next billing amount
+* `next_billing_amount` (double): Next billing amount
 * `next_billing_date` (string): Next billing date
 * `opt_out_global` (boolean): Use servers in the USA only?
 * `overage_notified_at` (date-time): Last time the site was notified about an overage
@@ -199,7 +199,7 @@
 * `smtp_from` (string): From address to use when mailing through custom SMTP
 * `smtp_port` (int64): SMTP server port
 * `smtp_username` (string): SMTP server username
-* `session_expiry` (int64): Session expiry in hours
+* `session_expiry` (double): Session expiry in hours
 * `ssl_required` (boolean): Is SSL required?  Disabling this is insecure.
 * `subdomain` (string): Site subdomain
 * `switch_to_plan_date` (date-time): If switching plans, when does the new plan take effect?
@@ -264,7 +264,7 @@ Files::Site.update(
   desktop_app_session_lifetime: 1, 
   folder_permissions_groups_only: true, 
   welcome_screen: "user_controlled", 
-  session_expiry: 1, 
+  session_expiry: 6.0, 
   ssl_required: true, 
   tls_disabled: true, 
   user_lockout: true, 
@@ -351,7 +351,7 @@ Files::Site.update(
 * `desktop_app_session_lifetime` (int64): Desktop app session lifetime (in hours)
 * `folder_permissions_groups_only` (boolean): If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
 * `welcome_screen` (string): Does the welcome screen appear?
-* `session_expiry` (int64): Session expiry in hours
+* `session_expiry` (number): Session expiry in hours
 * `ssl_required` (boolean): Is SSL required?  Disabling this is insecure.
 * `tls_disabled` (boolean): Is TLS disabled(site setting)?
 * `user_lockout` (boolean): Will users be locked out after incorrect login attempts?

@@ -14,12 +14,12 @@ module Files
       @attributes[:id]
     end
 
-    # float - Line item amount
+    # double - Line item amount
     def amount
       @attributes[:amount]
     end
 
-    # float - Line item balance
+    # double - Line item balance
     def balance
       @attributes[:balance]
     end

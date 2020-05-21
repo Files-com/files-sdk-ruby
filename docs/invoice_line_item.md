@@ -16,7 +16,7 @@
 }
 ```
 
-* `amount` (float): Invoice line item amount
+* `amount` (double): Invoice line item amount
 * `created_at` (date-time): Invoice line item created at date/time
 * `description` (string): Invoice line item description
 * `type` (string): Invoice line item type

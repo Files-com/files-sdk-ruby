@@ -26,8 +26,8 @@
 ```
 
 * `id` (int64): Line item Id
-* `amount` (float): Line item amount
-* `balance` (float): Line item balance
+* `amount` (double): Line item amount
+* `balance` (double): Line item balance
 * `created_at` (date-time): Line item created at
 * `currency` (string): Line item currency
 * `download_uri` (string): Line item download uri

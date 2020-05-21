@@ -294,7 +294,7 @@ module Files
       @attributes[:max_prior_passwords]
     end
 
-    # float - Next billing amount
+    # double - Next billing amount
     def next_billing_amount
       @attributes[:next_billing_amount]
     end
@@ -439,7 +439,7 @@ module Files
       @attributes[:smtp_username]
     end
 
-    # int64 - Session expiry in hours
+    # double - Session expiry in hours
     def session_expiry
       @attributes[:session_expiry]
     end
@@ -570,7 +570,7 @@ module Files
     #   desktop_app_session_lifetime - integer - Desktop app session lifetime (in hours)
     #   folder_permissions_groups_only - boolean - If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
     #   welcome_screen - string - Does the welcome screen appear?
-    #   session_expiry - integer - Session expiry in hours
+    #   session_expiry - number - Session expiry in hours
     #   ssl_required - boolean - Is SSL required?  Disabling this is insecure.
     #   tls_disabled - boolean - Is TLS disabled(site setting)?
     #   user_lockout - boolean - Will users be locked out after incorrect login attempts?
@@ -660,7 +660,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: default_time_zone must be an String") if params.dig(:default_time_zone) and !params.dig(:default_time_zone).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: desktop_app_session_lifetime must be an Integer") if params.dig(:desktop_app_session_lifetime) and !params.dig(:desktop_app_session_lifetime).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: welcome_screen must be an String") if params.dig(:welcome_screen) and !params.dig(:welcome_screen).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: session_expiry must be an Integer") if params.dig(:session_expiry) and !params.dig(:session_expiry).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params.dig(:user_lockout_tries) and !params.dig(:user_lockout_tries).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_within must be an Integer") if params.dig(:user_lockout_within) and !params.dig(:user_lockout_within).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_lock_period must be an Integer") if params.dig(:user_lockout_lock_period) and !params.dig(:user_lockout_lock_period).is_a?(Integer)

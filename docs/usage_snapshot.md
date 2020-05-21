@@ -24,15 +24,15 @@
 * `start_at` (date-time): Site usage report start date/time
 * `end_at` (date-time): Site usage report end date/time
 * `created_at` (date-time): Site usage report created at date/time
-* `current_storage` (float): Current site usage as of report
-* `high_water_storage` (float): Site usage report highest usage in time period
+* `current_storage` (double): Current site usage as of report
+* `high_water_storage` (double): Site usage report highest usage in time period
 * `total_downloads` (int64): Number of downloads in report time period
 * `total_uploads` (int64): Number of uploads in time period
 * `updated_at` (date-time): The last time this site usage report was updated
 * `usage_by_top_level_dir` (object): A map of root folders to their total usage
-* `root_storage` (float): Usage for root folder
-* `deleted_files_counted_in_minimum` (float): Usage for files that are deleted but uploaded within last 30 days
-* `deleted_files_storage` (float): Usage for files that are deleted but retained as backups
+* `root_storage` (double): Usage for root folder
+* `deleted_files_counted_in_minimum` (double): Usage for files that are deleted but uploaded within last 30 days
+* `deleted_files_storage` (double): Usage for files that are deleted but retained as backups
 
 
 ---

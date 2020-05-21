@@ -12,7 +12,7 @@
 }
 ```
 
-* `amount` (float): Payment line item amount
+* `amount` (double): Payment line item amount
 * `created_at` (date-time): Payment line item created at date/time
 * `invoice_id` (int64): Invoice ID
 * `payment_id` (int64): Payment ID
