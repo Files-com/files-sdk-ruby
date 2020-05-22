@@ -44,11 +44,6 @@ module Files
       @attributes[:allow_bundle_names]
     end
 
-    # string - List of allowed file types
-    def allowed_file_types
-      @attributes[:allowed_file_types]
-    end
-
     # string - List of allowed IP addresses
     def allowed_ips
       @attributes[:allowed_ips]
@@ -578,7 +573,6 @@ module Files
     #   user_lockout_within - integer - Number of hours for user lockout window
     #   user_lockout_lock_period - integer - How many hours to lock user out for failed password?
     #   include_password_in_welcome_email - boolean - Include password in emails to new users?
-    #   allowed_file_types - string - List of allowed file types
     #   allowed_ips - string - List of allowed IP addresses
     #   days_to_retain_backups - integer - Number of days to keep deleted files
     #   max_prior_passwords - integer - Number of prior passwords to disallow
@@ -663,7 +657,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params.dig(:user_lockout_tries) and !params.dig(:user_lockout_tries).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_within must be an Integer") if params.dig(:user_lockout_within) and !params.dig(:user_lockout_within).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_lock_period must be an Integer") if params.dig(:user_lockout_lock_period) and !params.dig(:user_lockout_lock_period).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: allowed_file_types must be an String") if params.dig(:allowed_file_types) and !params.dig(:allowed_file_types).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: days_to_retain_backups must be an Integer") if params.dig(:days_to_retain_backups) and !params.dig(:days_to_retain_backups).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_prior_passwords must be an Integer") if params.dig(:max_prior_passwords) and !params.dig(:max_prior_passwords).is_a?(Integer)

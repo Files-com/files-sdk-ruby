@@ -11,7 +11,6 @@
   "allowed_2fa_method_yubi": true,
   "admin_user_id": 1,
   "allow_bundle_names": true,
-  "allowed_file_types": "",
   "allowed_ips": "",
   "ask_about_overwrites": true,
   "bundle_expiration": 1,
@@ -120,7 +119,6 @@
 * `allowed_2fa_method_yubi` (boolean): Is yubikey two factor authentication allowed?
 * `admin_user_id` (int64): User ID for the main site administrator
 * `allow_bundle_names` (boolean): Are manual Bundle names allowed?
-* `allowed_file_types` (string): List of allowed file types
 * `allowed_ips` (string): List of allowed IP addresses
 * `ask_about_overwrites` (boolean): If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
 * `bundle_expiration` (int64): Site-wide Bundle expiration in days
@@ -359,7 +357,6 @@ Files::Site.update(
 * `user_lockout_within` (int64): Number of hours for user lockout window
 * `user_lockout_lock_period` (int64): How many hours to lock user out for failed password?
 * `include_password_in_welcome_email` (boolean): Include password in emails to new users?
-* `allowed_file_types` (string): List of allowed file types
 * `allowed_ips` (string): List of allowed IP addresses
 * `days_to_retain_backups` (int64): Number of days to keep deleted files
 * `max_prior_passwords` (int64): Number of prior passwords to disallow
