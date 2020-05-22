@@ -1,0 +1,15 @@
+current directory: /builds/repository/files-sdk-generator/generated/docs/vendor/bundle/ruby/2.5.0/gems/fast_blank-1.0.0/ext/fast_blank
+/home/jenkins/.rbenv/versions/2.5.1/bin/ruby -I /home/jenkins/.rbenv/versions/2.5.1/lib/ruby/site_ruby/2.5.0 -r ./siteconf20200522-98-pcg578.rb extconf.rb
+creating Makefile
+
+current directory: /builds/repository/files-sdk-generator/generated/docs/vendor/bundle/ruby/2.5.0/gems/fast_blank-1.0.0/ext/fast_blank
+make "DESTDIR=" clean
+
+current directory: /builds/repository/files-sdk-generator/generated/docs/vendor/bundle/ruby/2.5.0/gems/fast_blank-1.0.0/ext/fast_blank
+make "DESTDIR="
+compiling fast_blank.c
+linking shared-object fast_blank.so
+
+current directory: /builds/repository/files-sdk-generator/generated/docs/vendor/bundle/ruby/2.5.0/gems/fast_blank-1.0.0/ext/fast_blank
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 fast_blank.so ./.gem.20200522-98-1e99zzu

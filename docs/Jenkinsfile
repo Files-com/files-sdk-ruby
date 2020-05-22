@@ -1,0 +1,85 @@
+#!/usr/bin/env groovy
+
+import hudson.model.*
+import hudson.EnvVars
+import groovy.json.JsonSlurperClassic
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import java.net.URL
+
+pipeline {
+  agent {
+    label 'linux'
+  }
+  stages {
+    stage ('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+    stage('Build') {
+      steps {
+        ansiColor('xterm') {
+          withDockerRegistry([credentialsId: 'b296bd0d-d0e3-44fd-a392-5965822ad026', url: 'https://docker.av']){
+            withDockerContainer(args: '-u jenkins:jenkins -v /home/jenkins/.s3cfg:/home/jenkins/.s3cfg', image: 'docker.av/base_ci:1.0.7') {
+              sh 'hostname'
+              dir ('docs/api') {
+                sh "bundle install --path vendor/bundle"
+                sh "bundle exec middleman build --clean"
+                sh "cd build; zip -r ../" + zipName() + " ."
+                sh "s3cmd --expiry-days=1 put " + zipName() + " s3://ops-avllc-public/builds/" + zipName()
+                archiveArtifacts zipName()
+              }
+            }
+          }
+        }
+      }
+    }
+
+    stage('Release') {
+      when {
+        expression {
+          return getGitBranchName() == 'master'
+        }
+      }
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'api-docs-production-credentials', passwordVariable: 'VAE_DEPLOY_PW', usernameVariable: 'VAE_DEPLOY_USER')]) {
+          dir ('docs/api') {
+            sh 'vae -u $VAE_DEPLOY_USER -P $VAE_DEPLOY_PW -s brickdevelopers -U https://s3.amazonaws.com/ops-avllc-public/builds/files-api-docs-master.zip deploy'
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    failure {
+      avSlackConsolidatedMsg('-files-backend', 'failure')
+    }
+  }
+}
+
+def zipName() {
+  zip_name = "files-api-docs-"
+  if (getGitBranchName() == "master") {
+    zip_name += "master"
+  } else {
+    zip_name += "stage"
+  }
+  return zip_name + ".zip"
+}
+
+def getGitBranchName() {
+  branch = env.BRANCH_NAME ?: env.GIT_BRANCH ?: sh(returnStdout: true, script: '$GIT_BRANCH').trim()
+  if (branch && branch != '') {
+    return branch
+  }
+  commit = getCommitSha()
+  branch = sh(returnStdout: true, script: 'git branch --contains ${commit}').replace('*','').trim()
+  return branch
+}
+
+def getCommitSha() {
+  return sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+}
+

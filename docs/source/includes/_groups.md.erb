@@ -1,0 +1,456 @@
+# Groups
+
+Groups are a powerful tool for permissions and user management on Files.com.  Users can belong to multiple groups.
+
+All permissions can be managed via Groups, and Groups can also be synced to your identity platform via LDAP or SCIM.
+
+Files.com's Group Admin feature allows you to define Group Admins, who then have access to add and remove users within their groups.
+
+
+## The Group object
+
+> Example Group Object
+
+```json
+{
+  "id": 1,
+  "name": "owners",
+  "admin_ids": [
+
+  ],
+  "notes": "",
+  "user_ids": [
+
+  ],
+  "usernames": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<group>
+  <id type="integer">1</id>
+  <name>owners</name>
+  <admin_ids type="array"/>
+  <notes></notes>
+  <user_ids type="array"/>
+  <usernames type="array"/>
+</group>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | Group ID 
+  name *string* | Group name 
+  admin_ids *array* | List of user IDs who are group administrators (separated by commas) 
+  notes *string* | Notes about this group 
+  user_ids *array* | List of user IDs who belong to this group (separated by commas) 
+  usernames *array* | List of usernames who belong to this group (separated by commas) 
+
+## List Groups
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/groups.json?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/groups.xml?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Group.list(
+  page: 1, 
+  per_page: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Group::list(array(
+  'page' => 1, 
+  'per_page' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "name": "owners",
+    "admin_ids": [
+
+    ],
+    "notes": "",
+    "user_ids": [
+
+    ],
+    "usernames": [
+
+    ]
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<groups type="array">
+  <group>
+    <id type="integer">1</id>
+    <name>owners</name>
+    <admin_ids type="array"/>
+    <notes></notes>
+    <user_ids type="array"/>
+    <usernames type="array"/>
+  </group>
+</groups>
+
+```
+
+
+### HTTPS Request
+
+`GET /groups`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Folder Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+ids *string*  | Comma-separated list of group ids to include in results. 
+## Show Group
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/groups/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/groups/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Group.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Group::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "name": "owners",
+  "admin_ids": [
+
+  ],
+  "notes": "",
+  "user_ids": [
+
+  ],
+  "usernames": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<group>
+  <id type="integer">1</id>
+  <name>owners</name>
+  <admin_ids type="array"/>
+  <notes></notes>
+  <user_ids type="array"/>
+  <usernames type="array"/>
+</group>
+
+```
+
+
+### HTTPS Request
+
+`GET /groups/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Folder Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Group ID. 
+## Create Group
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/groups.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"owners"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/groups.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<group>
+       <name>owners</name>
+     </group>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Group.create(
+  name: "owners"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Group::create(array(
+  'name' => "owners"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "name": "owners",
+  "admin_ids": [
+
+  ],
+  "notes": "",
+  "user_ids": [
+
+  ],
+  "usernames": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<group>
+  <id type="integer">1</id>
+  <name>owners</name>
+  <admin_ids type="array"/>
+  <notes></notes>
+  <user_ids type="array"/>
+  <usernames type="array"/>
+</group>
+
+```
+
+
+### HTTPS Request
+
+`POST /groups`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+name *string*  | Group name. 
+notes *string*  | Group notes. 
+user_ids *string*  | A list of user ids. If sent as a string, should be comma-delimited. 
+admin_ids *string*  | A list of group admin user ids. If sent as a string, should be comma-delimited. 
+## Update Group
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/groups/{id}.json \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"owners"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/groups/{id}.xml \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<group>
+       <name>owners</name>
+     </group>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+group = Files::Group.find(id)
+group.update(
+  name: "owners"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$group = \Files\Group->find(1);
+$group->update(array(
+  'name' => "owners"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "name": "owners",
+  "admin_ids": [
+
+  ],
+  "notes": "",
+  "user_ids": [
+
+  ],
+  "usernames": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<group>
+  <id type="integer">1</id>
+  <name>owners</name>
+  <admin_ids type="array"/>
+  <notes></notes>
+  <user_ids type="array"/>
+  <usernames type="array"/>
+</group>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /groups/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Group ID. 
+name *string*  | Group name. 
+notes *string*  | Group notes. 
+user_ids *string*  | A list of user ids. If sent as a string, should be comma-delimited. 
+admin_ids *string*  | A list of group admin user ids. If sent as a string, should be comma-delimited. 
+## Delete Group
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/groups/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/groups/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+group = Files::Group.find(id)
+group.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$group = \Files\Group->find(1);
+$group->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /groups/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Group ID. 
+

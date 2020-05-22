@@ -1,0 +1,333 @@
+# File Comments
+
+File Comments are comments attached to a file by a user.
+
+
+## The FileComment object
+
+> Example FileComment Object
+
+```json
+{
+  "id": 1,
+  "body": "What a great file!",
+  "reactions": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file-comment>
+  <id type="integer">1</id>
+  <body>What a great file!</body>
+  <reactions type="array"/>
+</file-comment>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | File Comment ID 
+  body *string* | Comment body. 
+  reactions *array* | Reactions to this comment. 
+  path *string* | File path. 
+
+## List File Comments by path
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/file_comments/files/{path}?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/file_comments/files/{path}?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::FileComment.list_for(path, 
+  page: 1, 
+  per_page: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\FileComment::listFor($path, array(
+  'page' => 1, 
+  'per_page' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "body": "What a great file!",
+    "reactions": [
+
+    ]
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file-comments type="array">
+  <file-comment>
+    <id type="integer">1</id>
+    <body>What a great file!</body>
+    <reactions type="array"/>
+  </file-comment>
+</file-comments>
+
+```
+
+
+### HTTPS Request
+
+`GET /file_comments/files/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+path *string* **Required** | Path to operate on. 
+## Create File Comment
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/file_comments.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"body":"body","path":"path"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/file_comments.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<file-comment>
+       <body>body</body>
+       <path>path</path>
+     </file-comment>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::FileComment.create(
+  body: "body", 
+  path: "path"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\FileComment::create(array(
+  'body' => "body", 
+  'path' => "path"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "body": "What a great file!",
+  "reactions": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file-comment>
+  <id type="integer">1</id>
+  <body>What a great file!</body>
+  <reactions type="array"/>
+</file-comment>
+
+```
+
+
+### HTTPS Request
+
+`POST /file_comments`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+body *string* **Required** | Comment body. 
+path *string* **Required** | File path. 
+## Update File Comment
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/file_comments/{id}.json \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"body":"body"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/file_comments/{id}.xml \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<file-comment>
+       <body>body</body>
+     </file-comment>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+file_comment = Files::FileComment.find(id)
+file_comment.update(
+  body: "body"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$file_comment = \Files\FileComment->find(1);
+$file_comment->update(array(
+  'body' => "body"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "body": "What a great file!",
+  "reactions": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file-comment>
+  <id type="integer">1</id>
+  <body>What a great file!</body>
+  <reactions type="array"/>
+</file-comment>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /file_comments/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | File Comment ID. 
+body *string* **Required** | Comment body. 
+## Delete File Comment
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/file_comments/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/file_comments/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+file_comment = Files::FileComment.find(id)
+file_comment.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$file_comment = \Files\FileComment->find(1);
+$file_comment->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /file_comments/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | File Comment ID. 
+

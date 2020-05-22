@@ -1,0 +1,28 @@
+# Introduction
+
+Welcome to the Files.com API and SDK documentation! Our REST API and SDKs are designed for people who require the highest level of integration between Files.com and their own application, website, or database.
+
+The Files.com web interface, Desktop app, and FTP backend uses this exact same API, so everything you can do in the UI can also be accomplished using the API or with one of our SDKs.
+
+
+### REST API
+
+The REST API uses plain JSON or XML over HTTP. Resources (such as Users or Groups) are manipulated individually using HTTP verbs such as **GET**, **POST**, **PUT**, **PATCH**, and **DELETE**.
+
+
+### Per-Language SDKs
+
+SDKs in **Ruby** and **PHP** are available for download using the typical package manager for each language.
+
+It is our goal to create new language SDKs.  Please reach out to us and let us know your language of choice, so we can prioritize getting you an SDK in your language.
+
+We already have plans to release SDKs in DotNet (C#), Elixir, Go, Java, Javascript/Node, and Python.
+
+
+### OpenAPI (f/k/a Swagger) v2 Definition File
+
+Files.com also publishes a <a href="https://app.files.com/api/rest/v1/swagger_doc.json" target="_blank">OpenAPI/Swagger v2 Definition File</a> for the API.  This `swagger_doc.json` file includes much of the information available on this documentation site in a machine-readable JSON format.
+
+The most common use of the OpenAPI definition file is in conjunction with API debugging tools like [Postman](https://www.getpostman.com/).
+
+It can also be used to generate SDKs in languages that we don't support, but we'd prefer that you reach out to us if you find yourself in that situation.  We'd much rather provide an officially supported SDK.

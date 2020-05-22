@@ -1,0 +1,242 @@
+# Styles
+
+Styles are custom sets of branding that can be applied on a per-folder basis.
+Currently these only support Logos per folder, but in the future we may extend these to also support colors.
+If you want to see that, please let us know so we can add your vote to the list.
+
+
+## The Style object
+
+> Example Style Object
+
+```json
+{
+  "id": 1,
+  "path": "",
+  "logo": "",
+  "thumbnail": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<style>
+  <id type="integer">1</id>
+  <path></path>
+  <logo></logo>
+  <thumbnail></thumbnail>
+</style>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | Style ID 
+  path *string* | Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters. 
+  logo  | Logo 
+  thumbnail  | Logo thumbnail 
+  file *file* | Logo for custom branding. 
+
+## Show Style
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/styles/{path} \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/styles/{path} \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Style.list(path)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Style::list($path);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "",
+  "logo": "",
+  "thumbnail": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<style>
+  <id type="integer">1</id>
+  <path></path>
+  <logo></logo>
+  <thumbnail></thumbnail>
+</style>
+
+```
+
+
+### HTTPS Request
+
+`GET /styles/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Style path. 
+## Update Style
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/styles/{path} \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"file":"file"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/styles/{path} \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<style>
+       <file>file</file>
+     </style>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+style = Files::Style.find(path)
+style.update(
+  file: "file"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$style = \Files\Style->find(1);
+$style->update(array(
+  'file' => "file"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "",
+  "logo": "",
+  "thumbnail": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<style>
+  <id type="integer">1</id>
+  <path></path>
+  <logo></logo>
+  <thumbnail></thumbnail>
+</style>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /styles/?*path`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Style path. 
+file *file* **Required** | Logo for custom branding. 
+## Delete Style
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/styles/{path} \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/styles/{path} \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+style = Files::Style.find(path)
+style.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$style = \Files\Style->find(1);
+$style->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /styles/?*path`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Style path. 
+

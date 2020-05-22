@@ -1,0 +1,82 @@
+# Errors
+
+> Example Response: Invalid API key (`401`)
+
+```json
+{
+  "error": "Unauthorized",
+  "http-code": "401"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<error>
+  <message>Unauthorized</message>
+  <http-code>401</http-code>
+</error>
+```
+
+> Example Response: Invalid username or password (`401`)
+
+```json
+{
+  "error": "invalid username or password",
+  "http-code": "401",
+  "errors": [
+    {
+      "type": "401-invalid-username-or-password",
+      "message": "invalid username or password"
+    }
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<error>
+  <message>invalid username or password</message>
+  <http-code>401</http-code>
+  <errors type="array">
+    <error>
+      <type>401-invalid-username-or-password</type>
+      <message>invalid username or password</message>
+    </error>
+  </errors>
+</error>
+```
+
+> Example Response: No permission to access resource (`403`)
+
+```json
+{
+  "error": "Forbidden",
+  "http-code": "403"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<error>
+  <message>Forbidden</message>
+  <http-code>403</http-code>
+</error>
+```
+
+The Files.com API returns standard HTTP success (`2xx`) or error (`4xx`, `5xx`) status codes.
+
+Some errors contain additional information in the response body.  We have not been perfectly consistent with the formatting of these errors and will be standardizing them in the future.
+
+### HTTP status codes
+
+Code | Description
+---- | -----------
+200 - OK | The request was successful.
+201 - Created | The resource was successfully created.
+204 - No response | The request was successful. The only difference between a 200 and 204 is the lack of response provided by that endpoint.
+400 - Bad request | Bad request.
+401 - Unauthorized | Your API key or username/password is invalid.
+403 - Forbidden | You don't have permission to access this resource.
+404 - Not found | The resource does not exist.
+422 - Unprocessable entity | The request could not be processed. Usually this is due to validation error of a parameter, but it could also be something like a username already taken, folder already existing, etc.
+5xx - Server error | An error occured with our API.  Wait some time and then try again.  If you get a 500 repeatedly, it may be a bug.  Please report it.

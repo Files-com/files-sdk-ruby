@@ -1,0 +1,330 @@
+/*
+Copyright 2008-2013 Concur Technologies, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may
+not use this file except in compliance with the License. You may obtain
+a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations
+under the License.
+*/
+
+
+////////////////////////////////////////////////////////////////////////////////
+// CUSTOMIZE SLATE
+////////////////////////////////////////////////////////////////////////////////
+// Use these settings to help adjust the appearance of Slate
+
+
+
+// BRICKFTP COLORS
+//////////////////
+
+$white: #fff;
+$off-white: #fffceb;
+$almost-white: #f9f9f9;
+$light-gray: #ebebeb;
+$medium-gray: #bcbcbc;
+$gray: #525252;
+$dark-gray: #292929;
+$black: #111;
+$total-black: #000;
+$green: #38b800;
+$orange: #fa7607;
+$red: #820000;
+$brick-red: #de404f;
+$magenta: #a71d5d;
+$pink: #ffe8ec;
+$blue: #2a5484;
+$blue-green: #2a8470;
+$light-blue: #88dbff;
+
+
+// FILES.COM Colors
+$primary-red--1:    hsla(360, 95, 95, 1.00);
+$primary-red--2:    hsla(359, 90, 70, 1.00);
+$primary-red--3:    hsla(356, 85, 55, 1.00);
+$primary-red--4:    hsla(353, 72, 44, 1.00);
+$primary-red--5:    hsla(352, 80, 31, 1.00);
+$primary-red--6:    hsla(350, 90, 20, 1.00);
+$primary-red--7:    hsla(349, 56, 19, 1.00);
+
+$accent-blue--1:    hsla(180, 100, 95, 1.00);
+$accent-blue--2:    hsla(183, 100, 81, 1.00);
+$accent-blue--3:    hsla(186, 100, 53, 1.00);
+$accent-blue--4:    hsla(188, 100, 43, 1.00);
+$accent-blue--5:    hsla(193, 100, 30, 1.00);
+$accent-blue--6:    hsla(198, 100, 22, 1.00);
+$accent-blue--7:    hsla(203, 100, 19, 1.00);
+
+$warm-grey--1:      hsla(1, 21, 98, 1.00);
+$warm-grey--2:      hsla(1, 20, 92, 1.00);
+$warm-grey--3:      hsla(0, 16, 81, 1.00);
+$warm-grey--4:      hsla(0, 10, 69, 1.00);
+$warm-grey--5:      hsla(3, 10, 50, 1.00);
+$warm-grey--6:      hsla(3, 12, 25, 1.00);
+$warm-grey--7:      hsla(4, 17, 15, 1.00);
+
+
+/* typographic sizes */
+$fontSize-72pt: 4.5rem;
+$fontSize-60pt: 3.75rem;
+$fontSize-48pt: 3rem;
+$fontSize-36pt: 2.25rem;
+$fontSize-30pt: 1.875rem;
+$fontSize-24pt: 1.5rem;
+$fontSize-20pt: 1.25rem;
+$fontSize-18pt: 1.125rem;
+$fontSize-16pt: 1rem;
+$fontSize-14pt: .875rem;
+$fontSize-12pt: .75rem;
+
+/* heights: */
+$header-height: 5.1rem;
+
+
+/* containers: */
+$header-container: 1280px;
+
+/* fonts: */
+/* base font size is 100% (16px), browser default */
+$base-line-height: 1.5;
+$heading-line-height: 1.25;
+
+// Padding
+$spacing-4pt:   .25rem;
+$spacing-8pt:   .5rem;
+$spacing-12pt:  .75rem;
+$spacing-16pt:  1rem;
+$spacing-24pt:  1.5rem;
+$spacing-32pt:  2rem;
+$spacing-48pt:  3rem;
+$spacing-64pt:  4rem;
+$spacing-96pt:  6rem;
+$spacing-128pt: 8rem;
+$spacing-192pt: 12rem;
+$spacing-256pt: 16rem;
+$spacing-384pt: 24rem;
+$spacing-512pt: 32rem;
+$spacing-640pt: 40rem;
+$spacing-768pt: 48rem;
+
+// legacy padding
+$large-pad: 1.5rem;
+$base-pad: 1rem;
+$small-pad: .5rem;
+$large-pad: 1.5rem;
+
+/* z-indexes: */
+$header-z-index: 99;
+
+/* misc. reusables */
+$page-pricing--background: $warm-grey--2;
+$border-radius--small: .25rem;
+$border-radius: .35rem;
+$box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+
+
+// BRICKFTP MIXINS
+//////////////////
+
+@mixin breakpoint($point, $value: "") {
+
+  @if $point == 'large' {
+    @media only screen and (max-width: 1024px) { @content; }
+  }
+  @else if $point == 'medium' {
+    @media only screen and (max-width: 768px) { @content; }
+  }
+  @else if $point == 'small' {
+    @media only screen and (max-width: 480px) { @content; }
+  }
+  @else if $point == 'extra-small' {
+    @media only screen and (max-width: 320px) { @content; }
+  }
+
+  @else if $point == 'max-width' {
+    @media only screen and (max-width: $value) { @content; }
+  }
+  @else if $point == 'min-width' {
+    @media only screen and (min-width: $value) { @content; }
+  }
+}
+
+
+// Usable Media Query Mixin with predefined breakpoints
+$S:     480px;
+$M:     768px;
+$ML:    910px;
+$L:     1120px;
+
+@mixin MQ($canvas) {
+  @if $canvas == S {
+   @media only screen and (min-width: $S) { @content; }
+  }
+  @else if $canvas == M {
+   @media only screen and (min-width: $M) { @content; }
+  }
+  @else if $canvas == ML {
+   @media only screen and (min-width: $ML) { @content; }
+  }
+  @else if $canvas == L {
+   @media only screen and (min-width: $L) { @content; }
+  }
+}
+
+
+// FIXED NAV OFFSET
+///////////////////
+
+$nav-offset: 75px !default; //see also all_nosearch.js
+
+// BACKGROUND COLORS
+////////////////////
+$nav-bg: $warm-grey--7 !default;
+$examples-bg: $warm-grey--6 !default;
+$code-bg: $warm-grey--7 !default;
+$code-annotation-bg: $warm-grey--6 !default;
+$nav-subitem-bg: $warm-grey--6 !default;
+$nav-active-bg: $primary-red--3 !default;
+$nav-active-parent-bg: $primary-red--4 !default; // parent links of the current section
+$lang-select-border: $black !default;
+$lang-select-bg: $warm-grey--7 !default;
+$lang-select-active-bg: $examples-bg !default; // feel free to change this to blue or something
+$lang-select-pressed-bg: $black !default; // color of language tab bg when mouse is pressed
+$main-bg: $almost-white !default;
+$aside-notice-bg: #8fbcd4 !default;
+$aside-warning-bg: #c97a7e !default;
+$aside-success-bg: #6ac174 !default;
+$search-notice-bg: #c97a7e !default;
+
+
+// TEXT COLORS
+////////////////////
+$main-text: $dark-gray !default; // main content text color
+$nav-text: #fff !default;
+$nav-active-text: #fff !default;
+$nav-active-parent-text: #fff !default; // parent links of the current section
+$lang-select-text: #fff !default; // color of unselected language tab text
+$lang-select-active-text: #fff !default; // color of selected language tab text
+$lang-select-pressed-text: #fff !default; // color of language tab text when mouse is pressed
+
+
+// SIZES
+////////////////////
+$nav-width: 210px !default; // width of the navbar
+$examples-width: 50% !default; // portion of the screen taken up by code examples
+$logo-margin: 0px !default; // margin below logo
+$main-padding: 28px !default; // padding to left and right of content & examples
+$nav-padding: 15px !default; // padding to left and right of navbar
+$nav-v-padding: 10px !default; // padding used vertically around search boxes and results
+$nav-indent: 10px !default; // extra padding for ToC subitems
+$code-annotation-padding: 13px !default; // padding inside code annotations
+$h1-margin-bottom: 21px !default; // padding under the largest header tags
+$tablet-width: 930px !default; // min width before reverting to tablet size
+$phone-width: $tablet-width - $nav-width !default; // min width before reverting to mobile size
+
+
+// FONTS
+////////////////////
+
+@import 'inter-ui-font';
+
+%default-font {
+  font-family: acumin-pro, 'Inter UI', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  // font-family: 'Inter UI', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+}
+
+%header-font {
+  @extend %default-font;
+  font-weight: 700;
+}
+
+%code-font {
+  font-family: Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace, serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+// OTHER
+////////////////////
+$nav-footer-border-color: $medium-gray !default;
+$search-box-border-color: $medium-gray !default;
+
+
+////////////////////////////////////////////////////////////////////////////////
+// INTERNAL
+////////////////////////////////////////////////////////////////////////////////
+// These settings are probably best left alone.
+
+%break-words {
+    word-break: break-all;
+    hyphens: auto;
+}
+
+
+$box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+
+// Center an element with absolute or fixed positioning along it's x and or y axis.
+@mixin center($xy:xy) {
+  @if $xy == xy {
+    left: 50%;
+    top: 50%;
+    bottom: auto;
+    right: auto;
+    @include transform(translateX(-50%) translateY(-50%));
+  }
+  @else if $xy == x {
+    left: 50%;
+    right: auto;
+    @include transform(translateX(-50%));
+  }
+  @else if $xy == y {
+    top: 50%;
+    bottom: auto;
+    @include transform(translateY(-50%));
+  }
+}
+
+
+// Accepts any transform property and creates prefixes for it.
+@mixin transform($attrs) {
+  -webkit-transform: $attrs;
+     -moz-transform: $attrs;
+      -ms-transform: $attrs;
+          transform: $attrs;
+}
+
+
+/* classes for reuse */
+.inset-background-shadow {
+  background:
+  /* Shadow covers */
+  linear-gradient(white 30%, rgba(255,255,255,0)),
+  linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
+  
+  /* Shadows */
+  radial-gradient(50% 0, farthest-side, rgba(45,33,32,.2), rgba(45,33,32,0)),
+  radial-gradient(50% 100%,farthest-side, rgba(45,33,32,.2), rgba(45,33,32,0)) 0 100%;
+  background:
+  /* Shadow covers */
+  linear-gradient(white 30%, rgba(255,255,255,0)),
+  linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
+  
+  /* Shadows */
+  radial-gradient(farthest-side at 50% 0, rgba(45,33,32,.2), rgba(45,33,32,0)),
+  radial-gradient(farthest-side at 50% 100%, rgba(45,33,32,.2), rgba(45,33,32,0)) 0 100%;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: 100% 40px, 100% 40px, 100% 20px, 100% 20px;
+
+    /* Opera doesn't support this in the shorthand */
+    background-attachment: local, local, scroll, scroll;
+}

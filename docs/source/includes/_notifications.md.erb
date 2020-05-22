@@ -1,0 +1,519 @@
+# Notifications
+
+Notifications are our feature that send E-Mails when new files are uploaded into a folder.
+
+
+## The Notification object
+
+> Example Notification Object
+
+```json
+{
+  "id": 1,
+  "path": "path",
+  "group_id": 1,
+  "group_name": "",
+  "notify_user_actions": true,
+  "notify_on_copy": true,
+  "send_interval": "fifteen_minutes",
+  "unsubscribed": true,
+  "unsubscribed_reason": "",
+  "user_id": 1,
+  "username": "User",
+  "suppressed_email": "suppressed_email"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<notification>
+  <id type="integer">1</id>
+  <path>path</path>
+  <group_id type="integer">1</group_id>
+  <group_name></group_name>
+  <notify_user_actions type="boolean">true</notify_user_actions>
+  <notify_on_copy type="boolean">true</notify_on_copy>
+  <send_interval>fifteen_minutes</send_interval>
+  <unsubscribed type="boolean">true</unsubscribed>
+  <unsubscribed_reason></unsubscribed_reason>
+  <user_id type="integer">1</user_id>
+  <username>User</username>
+  <suppressed_email>suppressed_email</suppressed_email>
+</notification>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | Notification ID 
+  path *string* | Folder path to notify on This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters. 
+  group_id *int64* | Notification group id 
+  group_name *string* | Group name if applicable 
+  notify_user_actions *boolean* | Trigger notification on notification user actions? 
+  notify_on_copy *boolean* | Triggers notification when moving or copying files to this path 
+  send_interval *string* | The time interval that notifications are aggregated to <div>Possible values: `five_minutes`, `fifteen_minutes`, `hourly`, `daily`</div>
+  unsubscribed *boolean* | Is the user unsubscribed from this notification? 
+  unsubscribed_reason *string* | The reason that the user unsubscribed <div>Possible values: `none`, `unsubscribe_link_clicked`, `mail_bounced`, `mail_marked_as_spam`</div>
+  user_id *int64* | Notification user ID 
+  username *string* | Notification username 
+  suppressed_email *boolean* | If true, it means that the recipient at this user's email address has manually unsubscribed from all emails, or had their email "hard bounce", which means that we are unable to send mail to this user's current email address. Notifications will resume if the user changes their email address. 
+
+## List Notifications
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/notifications.json?user_id=1&page=1&per_page=1&group_id=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/notifications.xml?user_id=1&page=1&per_page=1&group_id=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Notification.list(
+  user_id: 1, 
+  page: 1, 
+  per_page: 1, 
+  group_id: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Notification::list(array(
+  'user_id' => 1, 
+  'page' => 1, 
+  'per_page' => 1, 
+  'group_id' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "path": "path",
+    "group_id": 1,
+    "group_name": "",
+    "notify_user_actions": true,
+    "notify_on_copy": true,
+    "send_interval": "fifteen_minutes",
+    "unsubscribed": true,
+    "unsubscribed_reason": "",
+    "user_id": 1,
+    "username": "User",
+    "suppressed_email": "suppressed_email"
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<notifications type="array">
+  <notification>
+    <id type="integer">1</id>
+    <path>path</path>
+    <group_id type="integer">1</group_id>
+    <group_name></group_name>
+    <notify_user_actions type="boolean">true</notify_user_actions>
+    <notify_on_copy type="boolean">true</notify_on_copy>
+    <send_interval>fifteen_minutes</send_interval>
+    <unsubscribed type="boolean">true</unsubscribed>
+    <unsubscribed_reason></unsubscribed_reason>
+    <user_id type="integer">1</user_id>
+    <username>User</username>
+    <suppressed_email>suppressed_email</suppressed_email>
+  </notification>
+</notifications>
+
+```
+
+
+### HTTPS Request
+
+`GET /notifications`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+user_id *int64*  | Show notifications for this User ID. 
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+group_id *int64*  | Show notifications for this Group ID. 
+## Show Notification
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/notifications/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/notifications/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Notification.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Notification::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "path",
+  "group_id": 1,
+  "group_name": "",
+  "notify_user_actions": true,
+  "notify_on_copy": true,
+  "send_interval": "fifteen_minutes",
+  "unsubscribed": true,
+  "unsubscribed_reason": "",
+  "user_id": 1,
+  "username": "User",
+  "suppressed_email": "suppressed_email"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<notification>
+  <id type="integer">1</id>
+  <path>path</path>
+  <group_id type="integer">1</group_id>
+  <group_name></group_name>
+  <notify_user_actions type="boolean">true</notify_user_actions>
+  <notify_on_copy type="boolean">true</notify_on_copy>
+  <send_interval>fifteen_minutes</send_interval>
+  <unsubscribed type="boolean">true</unsubscribed>
+  <unsubscribed_reason></unsubscribed_reason>
+  <user_id type="integer">1</user_id>
+  <username>User</username>
+  <suppressed_email>suppressed_email</suppressed_email>
+</notification>
+
+```
+
+
+### HTTPS Request
+
+`GET /notifications/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Notification ID. 
+## Create Notification
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/notifications.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"user_id":1,"notify_on_copy":true,"notify_user_actions":true,"send_interval":"daily","group_id":1,"path":"path","username":"User"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/notifications.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<notification>
+       <user_id type="integer">1</user_id>
+       <notify_on_copy type="boolean">true</notify_on_copy>
+       <notify_user_actions type="boolean">true</notify_user_actions>
+       <send_interval>daily</send_interval>
+       <group_id type="integer">1</group_id>
+       <path>path</path>
+       <username>User</username>
+     </notification>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Notification.create(
+  user_id: 1, 
+  notify_on_copy: true, 
+  notify_user_actions: true, 
+  send_interval: "daily", 
+  group_id: 1, 
+  path: "path", 
+  username: "User"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Notification::create(array(
+  'user_id' => 1, 
+  'notify_on_copy' => true, 
+  'notify_user_actions' => true, 
+  'send_interval' => "daily", 
+  'group_id' => 1, 
+  'path' => "path", 
+  'username' => "User"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "path",
+  "group_id": 1,
+  "group_name": "",
+  "notify_user_actions": true,
+  "notify_on_copy": true,
+  "send_interval": "fifteen_minutes",
+  "unsubscribed": true,
+  "unsubscribed_reason": "",
+  "user_id": 1,
+  "username": "User",
+  "suppressed_email": "suppressed_email"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<notification>
+  <id type="integer">1</id>
+  <path>path</path>
+  <group_id type="integer">1</group_id>
+  <group_name></group_name>
+  <notify_user_actions type="boolean">true</notify_user_actions>
+  <notify_on_copy type="boolean">true</notify_on_copy>
+  <send_interval>fifteen_minutes</send_interval>
+  <unsubscribed type="boolean">true</unsubscribed>
+  <unsubscribed_reason></unsubscribed_reason>
+  <user_id type="integer">1</user_id>
+  <username>User</username>
+  <suppressed_email>suppressed_email</suppressed_email>
+</notification>
+
+```
+
+
+### HTTPS Request
+
+`POST /notifications`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+user_id *int64*  | The id of the user to notify. Provide `user_id`, `username` or `group_id`. 
+notify_on_copy *boolean*  | If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads. 
+notify_user_actions *boolean*  | If `true` actions initiated by the user will still result in a notification 
+send_interval *string*  | The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`. 
+group_id *int64*  | The ID of the group to notify.  Provide `user_id`, `username` or `group_id`. 
+path *string*  | Path 
+username *string*  | The username of the user to notify.  Provide `user_id`, `username` or `group_id`. 
+## Update Notification
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/notifications/{id}.json \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"notify_on_copy":true,"notify_user_actions":true,"send_interval":"daily"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/notifications/{id}.xml \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<notification>
+       <notify_on_copy type="boolean">true</notify_on_copy>
+       <notify_user_actions type="boolean">true</notify_user_actions>
+       <send_interval>daily</send_interval>
+     </notification>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+notification = Files::Notification.find(id)
+notification.update(
+  notify_on_copy: true,
+  notify_user_actions: true,
+  send_interval: "daily"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$notification = \Files\Notification->find(1);
+$notification->update(array(
+  'notify_on_copy' => true, 
+  'notify_user_actions' => true, 
+  'send_interval' => "daily"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "path",
+  "group_id": 1,
+  "group_name": "",
+  "notify_user_actions": true,
+  "notify_on_copy": true,
+  "send_interval": "fifteen_minutes",
+  "unsubscribed": true,
+  "unsubscribed_reason": "",
+  "user_id": 1,
+  "username": "User",
+  "suppressed_email": "suppressed_email"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<notification>
+  <id type="integer">1</id>
+  <path>path</path>
+  <group_id type="integer">1</group_id>
+  <group_name></group_name>
+  <notify_user_actions type="boolean">true</notify_user_actions>
+  <notify_on_copy type="boolean">true</notify_on_copy>
+  <send_interval>fifteen_minutes</send_interval>
+  <unsubscribed type="boolean">true</unsubscribed>
+  <unsubscribed_reason></unsubscribed_reason>
+  <user_id type="integer">1</user_id>
+  <username>User</username>
+  <suppressed_email>suppressed_email</suppressed_email>
+</notification>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /notifications/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Notification ID. 
+notify_on_copy *boolean*  | If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads. 
+notify_user_actions *boolean*  | If `true` actions initiated by the user will still result in a notification 
+send_interval *string*  | The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`. 
+## Delete Notification
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/notifications/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/notifications/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+notification = Files::Notification.find(id)
+notification.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$notification = \Files\Notification->find(1);
+$notification->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /notifications/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Notification ID. 
+

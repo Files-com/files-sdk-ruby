@@ -1,0 +1,713 @@
+# Remote Servers
+
+Remote servers are used with the `remote_server_sync` Behavior.
+
+Remote Servers can be either an FTP server, SFTP server, S3 bucket, Google Cloud Storage, Wasabi, Backblaze B2 Cloud Storage, or WebDAV.
+Other remote server types, such as Box, Dropbox, OneDrive, Google Drive, and Azure Blob Storage, are coming soon.
+
+Not every attribute will apply to every remote server.
+
+FTP Servers require that you specify their `hostname`, `port`, `username`, `password`, and a value for `ssl`.  Optionally, provide `server_certificate`.
+
+SFTP Servers require that you specify their `hostname`, `port`, `username`, `password` or `private_key`, and a value for `ssl`.  Optionally, provide `server_certificate`.
+
+S3 Buckets require that you specify their `s3_bucket` name, and `s3_region`.  Optionally provide a `aws_access_key`, and `aws_secret_key`.  If you don't provide credentials, you will need to use AWS to grant us access to your bucket.
+
+Google Cloud Storage requires that you specify `google_cloud_storage_bucket`, `google_cloud_storage_project_id`, and `google_cloud_storage_credentials_json`.
+
+Wasabi requires `wasabi_bucket`, `wasabi_region`, `wasabi_access_key`, and `wasabi_secret_key`.
+
+Backblaze B2 Cloud Storage `backblaze_b2_bucket`, `backblaze_b2_s3_endpoint`, `backblaze_b2_application_key`, and `backblaze_b2_key_id`. (Requires S3 Compatible API) See https://help.backblaze.com/hc/en-us/articles/360047425453
+
+WebDAV Servers require that you specify their `hostname`, `username`, and `password`.
+
+
+## The RemoteServer object
+
+> Example RemoteServer Object
+
+```json
+{
+  "id": 1,
+  "authentication_method": "password",
+  "hostname": "remote-server.com",
+  "name": "My Remote server",
+  "port": 1,
+  "max_connections": 1,
+  "s3_bucket": "my-bucket",
+  "s3_region": "us-east-1",
+  "server_certificate": "[certificate]",
+  "server_type": "s3",
+  "ssl": "always",
+  "username": "user",
+  "google_cloud_storage_bucket": "my-bucket",
+  "google_cloud_storage_project_id": "my-project",
+  "backblaze_b2_s3_endpoint": "s3.us-west-001.backblazeb2.com",
+  "backblaze_b2_bucket": "my-bucket",
+  "wasabi_bucket": "us-west-1",
+  "wasabi_region": "my-bucket"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<remote-server>
+  <id type="integer">1</id>
+  <authentication_method>password</authentication_method>
+  <hostname>remote-server.com</hostname>
+  <name>My Remote server</name>
+  <port type="integer">1</port>
+  <max_connections type="integer">1</max_connections>
+  <s3_bucket>my-bucket</s3_bucket>
+  <s3_region>us-east-1</s3_region>
+  <server_certificate>[certificate]</server_certificate>
+  <server_type>s3</server_type>
+  <ssl>always</ssl>
+  <username>user</username>
+  <google_cloud_storage_bucket>my-bucket</google_cloud_storage_bucket>
+  <google_cloud_storage_project_id>my-project</google_cloud_storage_project_id>
+  <backblaze_b2_s3_endpoint>s3.us-west-001.backblazeb2.com</backblaze_b2_s3_endpoint>
+  <backblaze_b2_bucket>my-bucket</backblaze_b2_bucket>
+  <wasabi_bucket>us-west-1</wasabi_bucket>
+  <wasabi_region>my-bucket</wasabi_region>
+</remote-server>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | Remote server ID 
+  authentication_method *string* | Type of authentication method 
+  hostname *string* | Hostname or IP address 
+  name *string* | Internal name for your reference 
+  port *int64* | Port for remote server.  Not needed for S3. 
+  max_connections *int64* | Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible). 
+  s3_bucket *string* | S3 bucket name 
+  s3_region *string* | S3 region 
+  server_certificate *string* | Remote server certificate <div>Possible values: `require_match`, `allow_any`</div>
+  server_type *string* | Remote server type. <div>Possible values: `ftp`, `sftp`, `s3`, `google_cloud_storage`, `webdav`, `wasabi`, `backblaze_b2`</div>
+  ssl *string* | Should we require SSL? <div>Possible values: `if_available`, `require`, `require_implicit`, `never`</div>
+  username *string* | Remote server username.  Not needed for S3 buckets. 
+  google_cloud_storage_bucket *string* | Google Cloud Storage bucket name 
+  google_cloud_storage_project_id *string* | Google Cloud Project ID 
+  backblaze_b2_s3_endpoint *string* | Backblaze B2 Cloud Storage S3 Endpoint 
+  backblaze_b2_bucket *string* | Backblaze B2 Cloud Storage Bucket name 
+  wasabi_bucket *string* | Wasabi region 
+  wasabi_region *string* | Wasabi Bucket name 
+  aws_access_key *string* | AWS Access Key. 
+  aws_secret_key *string* | AWS secret key. 
+  password *string* | Password if needed. 
+  private_key *string* | Private key if needed. 
+  google_cloud_storage_credentials_json *string* | A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey 
+  wasabi_access_key *string* | Wasabi access key. 
+  wasabi_secret_key *string* | Wasabi secret key. 
+  backblaze_b2_key_id *string* | Backblaze B2 Cloud Storage keyID. 
+  backblaze_b2_application_key *string* | Backblaze B2 Cloud Storage applicationKey. 
+
+## List Remote Servers
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/remote_servers.json?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/remote_servers.xml?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::RemoteServer.list(
+  page: 1, 
+  per_page: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\RemoteServer::list(array(
+  'page' => 1, 
+  'per_page' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "authentication_method": "password",
+    "hostname": "remote-server.com",
+    "name": "My Remote server",
+    "port": 1,
+    "max_connections": 1,
+    "s3_bucket": "my-bucket",
+    "s3_region": "us-east-1",
+    "server_certificate": "[certificate]",
+    "server_type": "s3",
+    "ssl": "always",
+    "username": "user",
+    "google_cloud_storage_bucket": "my-bucket",
+    "google_cloud_storage_project_id": "my-project",
+    "backblaze_b2_s3_endpoint": "s3.us-west-001.backblazeb2.com",
+    "backblaze_b2_bucket": "my-bucket",
+    "wasabi_bucket": "us-west-1",
+    "wasabi_region": "my-bucket"
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<remote-servers type="array">
+  <remote-server>
+    <id type="integer">1</id>
+    <authentication_method>password</authentication_method>
+    <hostname>remote-server.com</hostname>
+    <name>My Remote server</name>
+    <port type="integer">1</port>
+    <max_connections type="integer">1</max_connections>
+    <s3_bucket>my-bucket</s3_bucket>
+    <s3_region>us-east-1</s3_region>
+    <server_certificate>[certificate]</server_certificate>
+    <server_type>s3</server_type>
+    <ssl>always</ssl>
+    <username>user</username>
+    <google_cloud_storage_bucket>my-bucket</google_cloud_storage_bucket>
+    <google_cloud_storage_project_id>my-project</google_cloud_storage_project_id>
+    <backblaze_b2_s3_endpoint>s3.us-west-001.backblazeb2.com</backblaze_b2_s3_endpoint>
+    <backblaze_b2_bucket>my-bucket</backblaze_b2_bucket>
+    <wasabi_bucket>us-west-1</wasabi_bucket>
+    <wasabi_region>my-bucket</wasabi_region>
+  </remote-server>
+</remote-servers>
+
+```
+
+
+### HTTPS Request
+
+`GET /remote_servers`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+## Show Remote Server
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/remote_servers/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/remote_servers/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::RemoteServer.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\RemoteServer::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "authentication_method": "password",
+  "hostname": "remote-server.com",
+  "name": "My Remote server",
+  "port": 1,
+  "max_connections": 1,
+  "s3_bucket": "my-bucket",
+  "s3_region": "us-east-1",
+  "server_certificate": "[certificate]",
+  "server_type": "s3",
+  "ssl": "always",
+  "username": "user",
+  "google_cloud_storage_bucket": "my-bucket",
+  "google_cloud_storage_project_id": "my-project",
+  "backblaze_b2_s3_endpoint": "s3.us-west-001.backblazeb2.com",
+  "backblaze_b2_bucket": "my-bucket",
+  "wasabi_bucket": "us-west-1",
+  "wasabi_region": "my-bucket"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<remote-server>
+  <id type="integer">1</id>
+  <authentication_method>password</authentication_method>
+  <hostname>remote-server.com</hostname>
+  <name>My Remote server</name>
+  <port type="integer">1</port>
+  <max_connections type="integer">1</max_connections>
+  <s3_bucket>my-bucket</s3_bucket>
+  <s3_region>us-east-1</s3_region>
+  <server_certificate>[certificate]</server_certificate>
+  <server_type>s3</server_type>
+  <ssl>always</ssl>
+  <username>user</username>
+  <google_cloud_storage_bucket>my-bucket</google_cloud_storage_bucket>
+  <google_cloud_storage_project_id>my-project</google_cloud_storage_project_id>
+  <backblaze_b2_s3_endpoint>s3.us-west-001.backblazeb2.com</backblaze_b2_s3_endpoint>
+  <backblaze_b2_bucket>my-bucket</backblaze_b2_bucket>
+  <wasabi_bucket>us-west-1</wasabi_bucket>
+  <wasabi_region>my-bucket</wasabi_region>
+</remote-server>
+
+```
+
+
+### HTTPS Request
+
+`GET /remote_servers/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Remote Server ID. 
+## Create Remote Server
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/remote_servers.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"hostname":"remote-server.com","name":"My Remote server","max_connections":1,"port":1,"s3_bucket":"my-bucket","s3_region":"us-east-1","server_certificate":"[certificate]","server_type":"s3","ssl":"always","username":"user","google_cloud_storage_bucket":"my-bucket","google_cloud_storage_project_id":"my-project","backblaze_b2_bucket":"my-bucket","backblaze_b2_s3_endpoint":"s3.us-west-001.backblazeb2.com","wasabi_bucket":"us-west-1","wasabi_region":"my-bucket"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/remote_servers.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<remote-server>
+       <hostname>remote-server.com</hostname>
+       <name>My Remote server</name>
+       <max_connections type="integer">1</max_connections>
+       <port type="integer">1</port>
+       <s3_bucket>my-bucket</s3_bucket>
+       <s3_region>us-east-1</s3_region>
+       <server_certificate>[certificate]</server_certificate>
+       <server_type>s3</server_type>
+       <ssl>always</ssl>
+       <username>user</username>
+       <google_cloud_storage_bucket>my-bucket</google_cloud_storage_bucket>
+       <google_cloud_storage_project_id>my-project</google_cloud_storage_project_id>
+       <backblaze_b2_bucket>my-bucket</backblaze_b2_bucket>
+       <backblaze_b2_s3_endpoint>s3.us-west-001.backblazeb2.com</backblaze_b2_s3_endpoint>
+       <wasabi_bucket>us-west-1</wasabi_bucket>
+       <wasabi_region>my-bucket</wasabi_region>
+     </remote-server>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::RemoteServer.create(
+  hostname: "remote-server.com", 
+  name: "My Remote server", 
+  max_connections: 1, 
+  port: 1, 
+  s3_bucket: "my-bucket", 
+  s3_region: "us-east-1", 
+  server_certificate: "[certificate]", 
+  server_type: "s3", 
+  ssl: "always", 
+  username: "user", 
+  google_cloud_storage_bucket: "my-bucket", 
+  google_cloud_storage_project_id: "my-project", 
+  backblaze_b2_bucket: "my-bucket", 
+  backblaze_b2_s3_endpoint: "s3.us-west-001.backblazeb2.com", 
+  wasabi_bucket: "us-west-1", 
+  wasabi_region: "my-bucket"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\RemoteServer::create(array(
+  'hostname' => "remote-server.com", 
+  'name' => "My Remote server", 
+  'max_connections' => 1, 
+  'port' => 1, 
+  's3_bucket' => "my-bucket", 
+  's3_region' => "us-east-1", 
+  'server_certificate' => "[certificate]", 
+  'server_type' => "s3", 
+  'ssl' => "always", 
+  'username' => "user", 
+  'google_cloud_storage_bucket' => "my-bucket", 
+  'google_cloud_storage_project_id' => "my-project", 
+  'backblaze_b2_bucket' => "my-bucket", 
+  'backblaze_b2_s3_endpoint' => "s3.us-west-001.backblazeb2.com", 
+  'wasabi_bucket' => "us-west-1", 
+  'wasabi_region' => "my-bucket"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "authentication_method": "password",
+  "hostname": "remote-server.com",
+  "name": "My Remote server",
+  "port": 1,
+  "max_connections": 1,
+  "s3_bucket": "my-bucket",
+  "s3_region": "us-east-1",
+  "server_certificate": "[certificate]",
+  "server_type": "s3",
+  "ssl": "always",
+  "username": "user",
+  "google_cloud_storage_bucket": "my-bucket",
+  "google_cloud_storage_project_id": "my-project",
+  "backblaze_b2_s3_endpoint": "s3.us-west-001.backblazeb2.com",
+  "backblaze_b2_bucket": "my-bucket",
+  "wasabi_bucket": "us-west-1",
+  "wasabi_region": "my-bucket"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<remote-server>
+  <id type="integer">1</id>
+  <authentication_method>password</authentication_method>
+  <hostname>remote-server.com</hostname>
+  <name>My Remote server</name>
+  <port type="integer">1</port>
+  <max_connections type="integer">1</max_connections>
+  <s3_bucket>my-bucket</s3_bucket>
+  <s3_region>us-east-1</s3_region>
+  <server_certificate>[certificate]</server_certificate>
+  <server_type>s3</server_type>
+  <ssl>always</ssl>
+  <username>user</username>
+  <google_cloud_storage_bucket>my-bucket</google_cloud_storage_bucket>
+  <google_cloud_storage_project_id>my-project</google_cloud_storage_project_id>
+  <backblaze_b2_s3_endpoint>s3.us-west-001.backblazeb2.com</backblaze_b2_s3_endpoint>
+  <backblaze_b2_bucket>my-bucket</backblaze_b2_bucket>
+  <wasabi_bucket>us-west-1</wasabi_bucket>
+  <wasabi_region>my-bucket</wasabi_region>
+</remote-server>
+
+```
+
+
+### HTTPS Request
+
+`POST /remote_servers`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+aws_access_key *string*  | AWS Access Key. 
+aws_secret_key *string*  | AWS secret key. 
+password *string*  | Password if needed. 
+private_key *string*  | Private key if needed. 
+google_cloud_storage_credentials_json *string*  | A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey 
+wasabi_access_key *string*  | Wasabi access key. 
+wasabi_secret_key *string*  | Wasabi secret key. 
+backblaze_b2_key_id *string*  | Backblaze B2 Cloud Storage keyID. 
+backblaze_b2_application_key *string*  | Backblaze B2 Cloud Storage applicationKey. 
+hostname *string*  | Hostname or IP address 
+name *string*  | Internal name for your reference 
+max_connections *int64*  | Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible). 
+port *int64*  | Port for remote server.  Not needed for S3. 
+s3_bucket *string*  | S3 bucket name 
+s3_region *string*  | S3 region 
+server_certificate *string*  | Remote server certificate <div>Possible values: `require_match`, `allow_any`</div>
+server_type *string*  | Remote server type. <div>Possible values: `ftp`, `sftp`, `s3`, `google_cloud_storage`, `webdav`, `wasabi`, `backblaze_b2`</div>
+ssl *string*  | Should we require SSL? <div>Possible values: `if_available`, `require`, `require_implicit`, `never`</div>
+username *string*  | Remote server username.  Not needed for S3 buckets. 
+google_cloud_storage_bucket *string*  | Google Cloud Storage bucket name 
+google_cloud_storage_project_id *string*  | Google Cloud Project ID 
+backblaze_b2_bucket *string*  | Backblaze B2 Cloud Storage Bucket name 
+backblaze_b2_s3_endpoint *string*  | Backblaze B2 Cloud Storage S3 Endpoint 
+wasabi_bucket *string*  | Wasabi region 
+wasabi_region *string*  | Wasabi Bucket name 
+## Update Remote Server
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/remote_servers/{id}.json \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"hostname":"remote-server.com","name":"My Remote server","max_connections":1,"port":1,"s3_bucket":"my-bucket","s3_region":"us-east-1","server_certificate":"[certificate]","server_type":"s3","ssl":"always","username":"user","google_cloud_storage_bucket":"my-bucket","google_cloud_storage_project_id":"my-project","backblaze_b2_bucket":"my-bucket","backblaze_b2_s3_endpoint":"s3.us-west-001.backblazeb2.com","wasabi_bucket":"us-west-1","wasabi_region":"my-bucket"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/remote_servers/{id}.xml \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<remote-server>
+       <hostname>remote-server.com</hostname>
+       <name>My Remote server</name>
+       <max_connections type="integer">1</max_connections>
+       <port type="integer">1</port>
+       <s3_bucket>my-bucket</s3_bucket>
+       <s3_region>us-east-1</s3_region>
+       <server_certificate>[certificate]</server_certificate>
+       <server_type>s3</server_type>
+       <ssl>always</ssl>
+       <username>user</username>
+       <google_cloud_storage_bucket>my-bucket</google_cloud_storage_bucket>
+       <google_cloud_storage_project_id>my-project</google_cloud_storage_project_id>
+       <backblaze_b2_bucket>my-bucket</backblaze_b2_bucket>
+       <backblaze_b2_s3_endpoint>s3.us-west-001.backblazeb2.com</backblaze_b2_s3_endpoint>
+       <wasabi_bucket>us-west-1</wasabi_bucket>
+       <wasabi_region>my-bucket</wasabi_region>
+     </remote-server>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+remote_server = Files::RemoteServer.find(id)
+remote_server.update(
+  hostname: "remote-server.com",
+  name: "My Remote server",
+  max_connections: 1,
+  port: 1,
+  s3_bucket: "my-bucket",
+  s3_region: "us-east-1",
+  server_certificate: "[certificate]",
+  server_type: "s3",
+  ssl: "always",
+  username: "user",
+  google_cloud_storage_bucket: "my-bucket",
+  google_cloud_storage_project_id: "my-project",
+  backblaze_b2_bucket: "my-bucket",
+  backblaze_b2_s3_endpoint: "s3.us-west-001.backblazeb2.com",
+  wasabi_bucket: "us-west-1",
+  wasabi_region: "my-bucket"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$remote_server = \Files\RemoteServer->find(1);
+$remote_server->update(array(
+  'hostname' => "remote-server.com", 
+  'name' => "My Remote server", 
+  'max_connections' => 1, 
+  'port' => 1, 
+  's3_bucket' => "my-bucket", 
+  's3_region' => "us-east-1", 
+  'server_certificate' => "[certificate]", 
+  'server_type' => "s3", 
+  'ssl' => "always", 
+  'username' => "user", 
+  'google_cloud_storage_bucket' => "my-bucket", 
+  'google_cloud_storage_project_id' => "my-project", 
+  'backblaze_b2_bucket' => "my-bucket", 
+  'backblaze_b2_s3_endpoint' => "s3.us-west-001.backblazeb2.com", 
+  'wasabi_bucket' => "us-west-1", 
+  'wasabi_region' => "my-bucket"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "authentication_method": "password",
+  "hostname": "remote-server.com",
+  "name": "My Remote server",
+  "port": 1,
+  "max_connections": 1,
+  "s3_bucket": "my-bucket",
+  "s3_region": "us-east-1",
+  "server_certificate": "[certificate]",
+  "server_type": "s3",
+  "ssl": "always",
+  "username": "user",
+  "google_cloud_storage_bucket": "my-bucket",
+  "google_cloud_storage_project_id": "my-project",
+  "backblaze_b2_s3_endpoint": "s3.us-west-001.backblazeb2.com",
+  "backblaze_b2_bucket": "my-bucket",
+  "wasabi_bucket": "us-west-1",
+  "wasabi_region": "my-bucket"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<remote-server>
+  <id type="integer">1</id>
+  <authentication_method>password</authentication_method>
+  <hostname>remote-server.com</hostname>
+  <name>My Remote server</name>
+  <port type="integer">1</port>
+  <max_connections type="integer">1</max_connections>
+  <s3_bucket>my-bucket</s3_bucket>
+  <s3_region>us-east-1</s3_region>
+  <server_certificate>[certificate]</server_certificate>
+  <server_type>s3</server_type>
+  <ssl>always</ssl>
+  <username>user</username>
+  <google_cloud_storage_bucket>my-bucket</google_cloud_storage_bucket>
+  <google_cloud_storage_project_id>my-project</google_cloud_storage_project_id>
+  <backblaze_b2_s3_endpoint>s3.us-west-001.backblazeb2.com</backblaze_b2_s3_endpoint>
+  <backblaze_b2_bucket>my-bucket</backblaze_b2_bucket>
+  <wasabi_bucket>us-west-1</wasabi_bucket>
+  <wasabi_region>my-bucket</wasabi_region>
+</remote-server>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /remote_servers/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Remote Server ID. 
+aws_access_key *string*  | AWS Access Key. 
+aws_secret_key *string*  | AWS secret key. 
+password *string*  | Password if needed. 
+private_key *string*  | Private key if needed. 
+google_cloud_storage_credentials_json *string*  | A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey 
+wasabi_access_key *string*  | Wasabi access key. 
+wasabi_secret_key *string*  | Wasabi secret key. 
+backblaze_b2_key_id *string*  | Backblaze B2 Cloud Storage keyID. 
+backblaze_b2_application_key *string*  | Backblaze B2 Cloud Storage applicationKey. 
+hostname *string*  | Hostname or IP address 
+name *string*  | Internal name for your reference 
+max_connections *int64*  | Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible). 
+port *int64*  | Port for remote server.  Not needed for S3. 
+s3_bucket *string*  | S3 bucket name 
+s3_region *string*  | S3 region 
+server_certificate *string*  | Remote server certificate <div>Possible values: `require_match`, `allow_any`</div>
+server_type *string*  | Remote server type. <div>Possible values: `ftp`, `sftp`, `s3`, `google_cloud_storage`, `webdav`, `wasabi`, `backblaze_b2`</div>
+ssl *string*  | Should we require SSL? <div>Possible values: `if_available`, `require`, `require_implicit`, `never`</div>
+username *string*  | Remote server username.  Not needed for S3 buckets. 
+google_cloud_storage_bucket *string*  | Google Cloud Storage bucket name 
+google_cloud_storage_project_id *string*  | Google Cloud Project ID 
+backblaze_b2_bucket *string*  | Backblaze B2 Cloud Storage Bucket name 
+backblaze_b2_s3_endpoint *string*  | Backblaze B2 Cloud Storage S3 Endpoint 
+wasabi_bucket *string*  | Wasabi region 
+wasabi_region *string*  | Wasabi Bucket name 
+## Delete Remote Server
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/remote_servers/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/remote_servers/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+remote_server = Files::RemoteServer.find(id)
+remote_server.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$remote_server = \Files\RemoteServer->find(1);
+$remote_server->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /remote_servers/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Remote Server ID. 
+

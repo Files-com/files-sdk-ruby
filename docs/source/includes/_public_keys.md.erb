@@ -1,0 +1,407 @@
+# Public Keys
+
+Public keys are used by Users who want to connect via SFTP/SSH.
+(Note that our SSH support is limited to file operations only, no shell is provided.)
+
+
+## The PublicKey object
+
+> Example PublicKey Object
+
+```json
+{
+  "id": 1,
+  "title": "My public key",
+  "created_at": "2000-01-01T01:00:00Z",
+  "fingerprint": "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<public-key>
+  <id type="integer">1</id>
+  <title>My public key</title>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <fingerprint>43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8</fingerprint>
+</public-key>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | Public key ID 
+  title *string* | Public key title 
+  created_at *date-time* | Public key created at date/time 
+  fingerprint *string* | Public key fingerprint 
+  user_id *int64* | User ID.  Provide a value of `0` to operate the current session's user. 
+  public_key *string* | Actual contents of SSH key. 
+
+## List Public Keys
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/public_keys.json?user_id=1&page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/public_keys.xml?user_id=1&page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::PublicKey.list(
+  user_id: 1, 
+  page: 1, 
+  per_page: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\PublicKey::list(array(
+  'user_id' => 1, 
+  'page' => 1, 
+  'per_page' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "title": "My public key",
+    "created_at": "2000-01-01T01:00:00Z",
+    "fingerprint": "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<public-keys type="array">
+  <public-key>
+    <id type="integer">1</id>
+    <title>My public key</title>
+    <created_at>2000-01-01T01:00:00Z</created_at>
+    <fingerprint>43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8</fingerprint>
+  </public-key>
+</public-keys>
+
+```
+
+
+### HTTPS Request
+
+`GET /public_keys`
+
+### Authentication Required
+
+Not available to user API keys or sessions from users that are marked as Shared/Bot users.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+user_id *int64*  | User ID.  Provide a value of `0` to operate the current session's user. 
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+## Show Public Key
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/public_keys/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/public_keys/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::PublicKey.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\PublicKey::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "title": "My public key",
+  "created_at": "2000-01-01T01:00:00Z",
+  "fingerprint": "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<public-key>
+  <id type="integer">1</id>
+  <title>My public key</title>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <fingerprint>43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8</fingerprint>
+</public-key>
+
+```
+
+
+### HTTPS Request
+
+`GET /public_keys/{id}`
+
+### Authentication Required
+
+Not available to user API keys or sessions from users that are marked as Shared/Bot users.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Public Key ID. 
+## Create Public Key
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/public_keys.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"user_id":1,"title":"My Main Key","public_key":"public_key"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/public_keys.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<public-key>
+       <user_id type="integer">1</user_id>
+       <title>My Main Key</title>
+       <public_key>public_key</public_key>
+     </public-key>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::PublicKey.create(
+  user_id: 1, 
+  title: "My Main Key", 
+  public_key: "public_key"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\PublicKey::create(array(
+  'user_id' => 1, 
+  'title' => "My Main Key", 
+  'public_key' => "public_key"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "title": "My public key",
+  "created_at": "2000-01-01T01:00:00Z",
+  "fingerprint": "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<public-key>
+  <id type="integer">1</id>
+  <title>My public key</title>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <fingerprint>43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8</fingerprint>
+</public-key>
+
+```
+
+
+### HTTPS Request
+
+`POST /public_keys`
+
+### Authentication Required
+
+Not available to user API keys or sessions from users that are marked as Shared/Bot users.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+user_id *int64*  | User ID.  Provide a value of `0` to operate the current session's user. 
+title *string* **Required** | Internal reference for key. 
+public_key *string* **Required** | Actual contents of SSH key. 
+## Update Public Key
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/public_keys/{id}.json \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"My Main Key"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/public_keys/{id}.xml \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<public-key>
+       <title>My Main Key</title>
+     </public-key>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+public_key = Files::PublicKey.find(id)
+public_key.update(
+  title: "My Main Key"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$public_key = \Files\PublicKey->find(1);
+$public_key->update(array(
+  'title' => "My Main Key"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "title": "My public key",
+  "created_at": "2000-01-01T01:00:00Z",
+  "fingerprint": "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<public-key>
+  <id type="integer">1</id>
+  <title>My public key</title>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <fingerprint>43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8</fingerprint>
+</public-key>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /public_keys/{id}`
+
+### Authentication Required
+
+Not available to user API keys or sessions from users that are marked as Shared/Bot users.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Public Key ID. 
+title *string* **Required** | Internal reference for key. 
+## Delete Public Key
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/public_keys/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/public_keys/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+public_key = Files::PublicKey.find(id)
+public_key.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$public_key = \Files\PublicKey->find(1);
+$public_key->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /public_keys/{id}`
+
+### Authentication Required
+
+Not available to user API keys or sessions from users that are marked as Shared/Bot users.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Public Key ID. 
+

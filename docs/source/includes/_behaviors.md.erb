@@ -1,0 +1,970 @@
+# Behaviors
+
+Behaviors are the API resource for what are also known as Folder Settings.  Every behavior is associated with a folder.
+
+Depending on the behavior, it may also operate on child folders.  It may be overridable at the child folder level or maybe can be added to at the child folder level.  The exact options for each behavior type are explained in the table below.
+
+Additionally, some behaviors are visible to non-admins, and others are even settable by non-admins.  All the details are below.
+
+Each behavior uses a different format for storings its settings value.  Next to each behavior type is an example value.  Our API and SDKs currently require that the value for behaviors be sent as raw JSON within the `value` field.  Our SDK generator and API documentation generator doesn't fully keep up with this requirement, so if you need any help finding the exact syntax to use for your language or use case, just reach out.
+
+## Behavior Types
+### Webhook
+
+Sends an HTTP(S) request to a remote server whenever certain actions occur on a folder.
+Webhooks are often used to integrate Files.com with other services.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate({
+  'urls' => ['https://mysite.com/url...'],
+  'method' => 'POST',
+  'encoding' => 'RAW',
+  'triggers' => [ 'create', 'read', 'update', 'destroy', 'move', 'copy' ]
+})%>
+```
+
+Value Hash Parameters | &nbsp;
+--- | ---
+`urls` | Array of URLs to send the webhook to.
+`method` | Default: `GET`.  May also be set to `POST`.
+`triggers` | Leave blank to send webhooks on any action on this folder.  Or, for specific actions, you may specify an array of action types.  Valid values are: `create`, `read`, `update`, `destroy`, `move`, `copy`.
+`encoding` | May be `JSON`, `XML`, or `RAW`.  If set to `RAW` or left blank, we will deliver the webhook using the HTTP GET params or POST body.  If JSON or XML, we will encode the payload accordingly and send a matching `Content-Type` header.
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `webhook`
+Visible to non-admins? | No
+Requires attachment? | No
+Effect on Child Folders | In effect. Behaviors can also be set on child, to be also in effect.
+
+### File Expiration
+
+Files in this folder will expire (be deleted) after a certain number of days.  This is most often used for compliance purposes where different types of data may need different retention settings.  It's also great for managing your costs.  You can retain different data for less time than others.
+
+Value is stored as an Integer (not a hash/array) representing the number of days.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate(30)%>
+```
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `file_expiration`
+Visible to non-admins? | Yes
+Requires attachment? | No
+Effect on Child Folders | In effect. Can be overridden by adding a behavior to the child.
+
+### Auto Encrypt
+
+Files will be automatically encrypted after uploading using your provided GPG key.
+
+This Behavior is often used on our HIPAA accounts to convert data into a format unreadable by even us.
+GPG is an asymmetric encryption type (which means it uses public keys and private keys).
+Because you are only providing us your public key and keeping your private key, we won't be able to read anything once it has been GPG encrypted.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate({
+  'algorithm' => 'PGP/GPG',
+  'suffix' => '.gpg',
+  'key' => '[your GPG public key]'
+})%>
+```
+
+Value Hash Parameters | &nbsp;
+--- | ---
+`algorithm` | Must be set to `PGP/GPG`.  If we support other options in the future (like OpenSSL), we will amend this option.
+`suffix` | Suffix to apply to filenames once they've been uploaded.
+`key` | Your GPG public key.  Please be sure not to send your private key here. If that happens, we try to detect it and disable the behavior for your security.
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `auto_encrypt`
+Visible to non-admins? | Yes
+Requires attachment? | No
+Effect on Child Folders | In effect. Can be overridden by adding a behavior to the child.
+
+### Lock Subfolders
+
+The subfolder structure of this folder may not be changed.
+This is useful in conjunction with workflows and automations to ensure your folder structure stays as you expect.
+
+This behavior does not require that a `value` be set.
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `lock_subfolders`
+Visible to non-admins? | Yes
+Requires attachment? | No
+Effect on Child Folders | In effect, cannot be overridden.
+
+### Storage Region
+
+Files in this folder are stored in a certain geographical region.
+If you set this Behavior on an existing folder, we will migrate existing files to the new location automatically.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate('us-east-1')%>
+```
+
+Value is stored as a String.  Valid region values:
+
+Value String | Region Description
+--- | ---
+`us-east-1` | USA, Virginia
+`ap-southeast-2` | Australia, Sydney
+`ca-central-1` | Canada, Toronto
+`eu-west-2` | EU - UK, London
+`eu-central-1` | EU - Germany, Frankfurt
+`ap-northeast-1` | Japan, Tokyo
+`ap-southeast-1` | Singapore
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `storage_region`
+Visible to non-admins? | Yes
+Requires attachment? | No
+Effect on Child Folders | In effect. Can be overridden by adding a behavior to the child.
+
+### Serve Publicly
+
+Files in this folder are served via a public HTTPS URL at `https://SUBDOMAIN.hosted-by-files.com/...`
+
+This feature works with common static site generators such as Jekyll and Middleman, and allows any static web assets or website to be hosted.
+It's a great way to get extra mileage out of your Files.com account and avoid having to pay for separate web hosting.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate({
+  'key' => 'public-photos',
+  'show_index' => true
+})%>
+```
+
+Value Hash Parameters | &nbsp;
+--- | ---
+`key` | URL path for where the stuff is publicly hosted.  It will look like `https://SUBDOMAIN.hosted-by-files.com/{key}/`
+`show_index` | Show an index page listing the folder contents?
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `serve_publicly`
+Visible to non-admins? | Yes
+Requires attachment? | No
+Effect on Child Folders | In effect. Behaviors can also be set on child, to be also in effect.
+
+### Create User Folders
+
+Create a folder here for new users when they are added.
+This Behavior is typically used to implement home folders for users.
+It's also a good building block for more advanced automations and workflows.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate({
+  'permission' => 'full',
+  'existing_users' => true,
+  'group_id' => 1
+})%>
+```
+
+Value Hash Parameters | &nbsp;
+--- | ---
+`permission` | What permission level to give the user on his or her new folder?  Takes the same options as the Permissions endpoint.
+`existing_users` | Apply this behavior to existing users or only newly added users?
+`group_id` | Only apply this behavior to users who are members of this group ID.
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `create_user_folders`
+Visible to non-admins? | No
+Requires attachment? | No
+Effect on Child Folders | In effect. Behaviors can also be set on child, to be also in effect.
+
+### Remote Server Sync
+
+Sync this folder to a remote FTP, SFTP, or Amazon S3 Bucket.  One-way and two-way sync options are supported.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate({
+  'remote_server_id' => '1',
+  'direction' => 'two_way',
+  'keep_after_copy' => 'keep',
+  'remote_path' => ''
+})%>
+```
+
+Value Hash Parameters | &nbsp;
+--- | ---
+`direction` | One way or two way sync?  Valid values: `push_to_server`, `pull_from_server`, `two_way`
+`remote_server_id` | ID of the remote server to sync with.  See the Remote Servers API resource for managing these.
+`keep_after_copy` | If one-way syncing, should we delete or keep files after sync?
+`remote_path` | Path on remote server to sync with
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `remote_server_sync`
+Visible to non-admins? | No
+Requires attachment? | No
+Effect on Child Folders | In effect. Behaviors can also be set on child, to be also in effect.
+
+### Inbox
+
+This folder operates as an inbox where anonymous users can upload files without logging in.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate({
+  'key' => 'application-forms',
+  'title' => 'Submit Your Job Applications Here',
+  'description' => 'Thanks for coming to the Files.com Job Application Page',
+  'show_on_login_page' => true,
+  'require_registration' => true,
+  'help_text' => 'If you have trouble here, please contact your recruiter.'
+})%>
+```
+
+Value Hash Parameters | &nbsp;
+--- | ---
+`key` | URL key used for the inbox.
+`dont_separate_submissions_by_folder` | Do not create subfolders for files uploaded to this inbox. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder.  We strongly discourage use of this option unless absolutely required.
+`show_on_login_page` | Show this inbox on the login page of your website.  Only settable by admins.
+`title` | Title of the Inbox
+`description` | Description of the inbox shown on the actual inbox page.
+`help_text` | Help text shown on the inbox page.
+`require_registration` | Show a registration page that captures the uploader's name and email address?
+`password` | Password to authenticate to inbox.
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `inbox`
+Visible to non-admins? | Yes
+Requires attachment? | No
+Effect on Child Folders | In effect. Behaviors can also be set on child, to be also in effect.
+
+### Append Timestamp
+
+Append a timestamp to filenames of all files uploaded to this folder.
+This is often used in conjunction with Automations and remote server sync to ensure file organization.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate({
+  'format' => '-YYYY-MM-DDThh:mm:ssZ',
+  'timezone' => 'Z'
+})%>
+```
+
+Value Hash Parameters | &nbsp;
+--- | ---
+`format` | Format for the timestamp.  You may use anything accepted by the standard UNIX date command.
+`timezone` | Accepts any valid timezone value from the web interface.  Send `Z` for UTC/Zulu time.
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `append_timestamp`
+Visible to non-admins? | Yes
+Requires attachment? | No
+Effect on Child Folders | In effect, cannot be overridden.
+
+### Limit File Extensions
+
+Limit the allowed extensions of files being uploaded to this folder.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate([ 'xls', 'csv' ])%>
+```
+
+Value is stored as an Array (not a hash) of extensions.
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `limit_file_extensions`
+Visible to non-admins? | Yes
+Requires attachment? | No
+Effect on Child Folders | In effect, cannot be overridden.
+
+### Limit File Regex
+
+Limit the filenames of files in this folder according to a regular expression.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate([ "/Document-.*/" ])%>
+```
+Value is stored as a single-element Array (not a hash) containing the regular expression, which must start and end with slashes.
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `limit_file_regex`
+Visible to non-admins? | Yes
+Requires attachment? | No
+Effect on Child Folders | In effect, cannot be overridden.
+
+### Amazon Sns
+
+Sends a notification via Amazon SNS whenever certain actions occur on a folder.
+
+> Example Value
+
+```json
+<%=JSON.pretty_generate({
+  'arns' => ['ARN...'],
+  'triggers' => [ 'create', 'read', 'update', 'destroy', 'move', 'copy' ],
+  'aws_credentials' => {
+    'access_key_id' => 'ACCESS_KEY_ID',
+    'region' => 'us-east-1',
+    'secret_access_key' => 'SECRET_ACCESS_KEY'
+  }
+})%>
+```
+
+Value Hash Parameters | &nbsp;
+--- | ---
+`arns` | Array of ARNs to send the notifications to.
+`triggers` | Leave blank to send an SNS notification on any action on this folder.  Or, for specific actions, you may specify an array of action types.  Valid values are: `create`, `read`, `update`, `destroy`, `move`, `copy`.
+`aws_credentials` | AWS IAM Credentials to use for sending SNS requests. Must include `access_key_id`, and `secret_access_key`.
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `amazon_sns`
+Visible to non-admins? | No
+Requires attachment? | No
+Effect on Child Folders | In effect. Behaviors can also be set on child, to be also in effect.
+
+### Watermark
+
+Adds a watermark to any image preview generated for an image in this folder.
+
+```json
+<%=JSON.pretty_generate({
+  'gravity' => 'SouthWest',
+  'max_height_or_width' => 20,
+  'transparency' => 25
+})%>
+```
+
+Value Hash Parameters | &nbsp;
+--- | ---
+`gravity` | Where to locate the watermark?  Valid values: `Center`, `East`, `NorthEast`, `North`, `NorthWest`, `SouthEast`, `South`, `SouthWest`, `West`
+`max_height_or_width` | Max width/height as percent of image preview.
+`transparency` | Percentage applied to the watermark.
+
+
+Behavior Details | &nbsp;
+--- | ---
+Behavior type | `watermark`
+Visible to non-admins? | Yes
+Requires attachment? | Yes
+Effect on Child Folders | In effect, cannot be overridden.
+
+## The Behavior object
+
+> Example Behavior Object
+
+```json
+{
+  "id": 1,
+  "path": "",
+  "attachment_url": "",
+  "behavior": "webhook",
+  "value": {
+    "method": "GET"
+  }
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<behavior>
+  <id type="integer">1</id>
+  <path></path>
+  <attachment_url></attachment_url>
+  <behavior>webhook</behavior>
+  <value>{ "method": "GET" }</value>
+</behavior>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | Folder behavior ID 
+  path *string* | Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters. 
+  attachment_url *string* | URL for attached file 
+  behavior *string* | Behavior type. 
+  value *object* | Settings for this behavior.  See the section above for an example value to provide here.  Formatting is different for each Behavior type.  May be sent as nested JSON or a single JSON-encoded string.  If using XML encoding for the API call, this data must be sent as a JSON-encoded string. 
+  attachment_file *file* | Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image 
+
+## List Behaviors
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/behaviors.json?page=1&per_page=1&behavior=webhook" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/behaviors.xml?page=1&per_page=1&behavior=webhook" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Behavior.list(
+  page: 1, 
+  per_page: 1, 
+  behavior: "webhook"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Behavior::list(array(
+  'page' => 1, 
+  'per_page' => 1, 
+  'behavior' => "webhook"
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "path": "",
+    "attachment_url": "",
+    "behavior": "webhook",
+    "value": {
+      "method": "GET"
+    }
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<behaviors type="array">
+  <behavior>
+    <id type="integer">1</id>
+    <path></path>
+    <attachment_url></attachment_url>
+    <behavior>webhook</behavior>
+    <value>{ "method": "GET" }</value>
+  </behavior>
+</behaviors>
+
+```
+
+
+### HTTPS Request
+
+`GET /behaviors`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+behavior *string*  | If set, only shows folder behaviors matching this behavior type. 
+## List Behaviors by path
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/behaviors/folders/{path}?page=1&per_page=1&behavior=webhook" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/behaviors/folders/{path}?page=1&per_page=1&behavior=webhook" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Behavior.list_for(path, 
+  page: 1, 
+  per_page: 1, 
+  behavior: "webhook"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Behavior::listFor($path, array(
+  'page' => 1, 
+  'per_page' => 1, 
+  'behavior' => "webhook"
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "path": "",
+    "attachment_url": "",
+    "behavior": "webhook",
+    "value": {
+      "method": "GET"
+    }
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<behaviors type="array">
+  <behavior>
+    <id type="integer">1</id>
+    <path></path>
+    <attachment_url></attachment_url>
+    <behavior>webhook</behavior>
+    <value>{ "method": "GET" }</value>
+  </behavior>
+</behaviors>
+
+```
+
+
+### HTTPS Request
+
+`GET /behaviors/folders/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+path *string* **Required** | Path to operate on. 
+recursive *string*  | Show behaviors below this path? 
+behavior *string*  | If set only shows folder behaviors matching this behavior type. 
+## Show Behavior
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/behaviors/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/behaviors/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Behavior.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Behavior::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "",
+  "attachment_url": "",
+  "behavior": "webhook",
+  "value": {
+    "method": "GET"
+  }
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<behavior>
+  <id type="integer">1</id>
+  <path></path>
+  <attachment_url></attachment_url>
+  <behavior>webhook</behavior>
+  <value>{ "method": "GET" }</value>
+</behavior>
+
+```
+
+
+### HTTPS Request
+
+`GET /behaviors/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Behavior ID. 
+## Create Behavior
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/behaviors.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"value":"{\"method\": \"GET\"}","path":"path","behavior":"webhook"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/behaviors.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<behavior>
+       <value>{"method": "GET"}</value>
+       <path>path</path>
+       <behavior>webhook</behavior>
+     </behavior>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Behavior.create(
+  value: "{\"method\": \"GET\"}", 
+  path: "path", 
+  behavior: "webhook"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Behavior::create(array(
+  'value' => "{\"method\": \"GET\"}", 
+  'path' => "path", 
+  'behavior' => "webhook"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "",
+  "attachment_url": "",
+  "behavior": "webhook",
+  "value": {
+    "method": "GET"
+  }
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<behavior>
+  <id type="integer">1</id>
+  <path></path>
+  <attachment_url></attachment_url>
+  <behavior>webhook</behavior>
+  <value>{ "method": "GET" }</value>
+</behavior>
+
+```
+
+
+### HTTPS Request
+
+`POST /behaviors`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+value *string*  | The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. 
+attachment_file *file*  | Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image 
+path *string* **Required** | Folder behaviors path. 
+behavior *string* **Required** | Behavior type. 
+## Test webhook
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/behaviors/webhook/test.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"url":"https://www.site.com/...","method":"GET","encoding":"RAW"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/behaviors/webhook/test.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<behavior>
+       <url>https://www.site.com/...</url>
+       <method>GET</method>
+       <encoding>RAW</encoding>
+     </behavior>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Behavior.webhook_test(
+  url: "https://www.site.com/...", 
+  method: "GET", 
+  encoding: "RAW"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Behavior::webhookTest(array(
+  'url' => "https://www.site.com/...", 
+  'method' => "GET", 
+  'encoding' => "RAW"
+));
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`POST /behaviors/webhook/test`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Folder Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+url *string* **Required** | URL for testing the webhook. 
+method *string*  | HTTP method(GET or POST). 
+encoding *string*  | HTTP encoding method.  Can be JSON, XML, or RAW (form data). 
+## Update Behavior
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/behaviors/{id}.json \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"value":"{\"method\": \"GET\"}"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/behaviors/{id}.xml \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<behavior>
+       <value>{"method": "GET"}</value>
+     </behavior>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+behavior = Files::Behavior.find(id)
+behavior.update(
+  value: "{\"method\": \"GET\"}"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$behavior = \Files\Behavior->find(1);
+$behavior->update(array(
+  'value' => "{\"method\": \"GET\"}"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "",
+  "attachment_url": "",
+  "behavior": "webhook",
+  "value": {
+    "method": "GET"
+  }
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<behavior>
+  <id type="integer">1</id>
+  <path></path>
+  <attachment_url></attachment_url>
+  <behavior>webhook</behavior>
+  <value>{ "method": "GET" }</value>
+</behavior>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /behaviors/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Behavior ID. 
+value *string*  | The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. 
+attachment_file *file*  | Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image 
+## Delete Behavior
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/behaviors/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/behaviors/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+behavior = Files::Behavior.find(id)
+behavior.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$behavior = \Files\Behavior->find(1);
+$behavior->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /behaviors/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Behavior ID. 
+

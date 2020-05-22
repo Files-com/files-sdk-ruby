@@ -1,0 +1,450 @@
+# Account Line Items
+
+The AccountLineItems resource in the REST API allows you to operate on AccountLineItems.
+
+## The AccountLineItem object
+
+> Example AccountLineItem Object
+
+```json
+{
+  "id": 1,
+  "amount": "",
+  "balance": "",
+  "created_at": "2000-01-01T01:00:00Z",
+  "currency": "USD",
+  "download_uri": "https://url...",
+  "invoice_line_items": [
+
+  ],
+  "method": "paypal",
+  "payment_line_items": [
+
+  ],
+  "payment_reversed_at": "2000-01-01T01:00:00Z",
+  "payment_type": "",
+  "site_name": "My Site",
+  "type": "invoice",
+  "updated_at": "2000-01-01T01:00:00Z"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<account-line-item>
+  <id type="integer">1</id>
+  <amount></amount>
+  <balance></balance>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <currency>USD</currency>
+  <download_uri>https://url...</download_uri>
+  <invoice_line_items type="array"/>
+  <method>paypal</method>
+  <payment_line_items type="array"/>
+  <payment_reversed_at>2000-01-01T01:00:00Z</payment_reversed_at>
+  <payment_type></payment_type>
+  <site_name>My Site</site_name>
+  <type>invoice</type>
+  <updated_at>2000-01-01T01:00:00Z</updated_at>
+</account-line-item>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | Line item Id 
+  amount *double* | Line item amount 
+  balance *double* | Line item balance 
+  created_at *date-time* | Line item created at 
+  currency *string* | Line item currency 
+  download_uri *string* | Line item download uri 
+  invoice_line_items *array* | Associated invoice line items 
+  method *string* | Line item payment method 
+  payment_line_items *array* | Associated payment line items 
+  payment_reversed_at *date-time* | Date/time payment was reversed if applicable 
+  payment_type *string* | Type of payment if applicable 
+  site_name *string* | Site name this line item is for 
+  type *string* | Type of line item, either payment or invoice 
+  updated_at *date-time* | Line item updated at 
+
+## List Invoices
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/invoices.json?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/invoices.xml?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Invoice.list(
+  page: 1, 
+  per_page: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Invoice::list(array(
+  'page' => 1, 
+  'per_page' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "amount": "",
+    "balance": "",
+    "created_at": "2000-01-01T01:00:00Z",
+    "currency": "USD",
+    "download_uri": "https://url...",
+    "invoice_line_items": [
+
+    ],
+    "method": "paypal",
+    "payment_line_items": [
+
+    ],
+    "payment_reversed_at": "2000-01-01T01:00:00Z",
+    "payment_type": "",
+    "site_name": "My Site",
+    "type": "invoice",
+    "updated_at": "2000-01-01T01:00:00Z"
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<account-line-items type="array">
+  <account-line-item>
+    <id type="integer">1</id>
+    <amount></amount>
+    <balance></balance>
+    <created_at>2000-01-01T01:00:00Z</created_at>
+    <currency>USD</currency>
+    <download_uri>https://url...</download_uri>
+    <invoice_line_items type="array"/>
+    <method>paypal</method>
+    <payment_line_items type="array"/>
+    <payment_reversed_at>2000-01-01T01:00:00Z</payment_reversed_at>
+    <payment_type></payment_type>
+    <site_name>My Site</site_name>
+    <type>invoice</type>
+    <updated_at>2000-01-01T01:00:00Z</updated_at>
+  </account-line-item>
+</account-line-items>
+
+```
+
+
+### HTTPS Request
+
+`GET /invoices`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+## List Payments
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/payments.json?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/payments.xml?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Payment.list(
+  page: 1, 
+  per_page: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Payment::list(array(
+  'page' => 1, 
+  'per_page' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "amount": "",
+    "balance": "",
+    "created_at": "2000-01-01T01:00:00Z",
+    "currency": "USD",
+    "download_uri": "https://url...",
+    "invoice_line_items": [
+
+    ],
+    "method": "paypal",
+    "payment_line_items": [
+
+    ],
+    "payment_reversed_at": "2000-01-01T01:00:00Z",
+    "payment_type": "",
+    "site_name": "My Site",
+    "type": "invoice",
+    "updated_at": "2000-01-01T01:00:00Z"
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<account-line-items type="array">
+  <account-line-item>
+    <id type="integer">1</id>
+    <amount></amount>
+    <balance></balance>
+    <created_at>2000-01-01T01:00:00Z</created_at>
+    <currency>USD</currency>
+    <download_uri>https://url...</download_uri>
+    <invoice_line_items type="array"/>
+    <method>paypal</method>
+    <payment_line_items type="array"/>
+    <payment_reversed_at>2000-01-01T01:00:00Z</payment_reversed_at>
+    <payment_type></payment_type>
+    <site_name>My Site</site_name>
+    <type>invoice</type>
+    <updated_at>2000-01-01T01:00:00Z</updated_at>
+  </account-line-item>
+</account-line-items>
+
+```
+
+
+### HTTPS Request
+
+`GET /payments`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+## Show Invoice
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/invoices/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/invoices/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Invoice.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Invoice::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "amount": "",
+  "balance": "",
+  "created_at": "2000-01-01T01:00:00Z",
+  "currency": "USD",
+  "download_uri": "https://url...",
+  "invoice_line_items": [
+
+  ],
+  "method": "paypal",
+  "payment_line_items": [
+
+  ],
+  "payment_reversed_at": "2000-01-01T01:00:00Z",
+  "payment_type": "",
+  "site_name": "My Site",
+  "type": "invoice",
+  "updated_at": "2000-01-01T01:00:00Z"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<account-line-item>
+  <id type="integer">1</id>
+  <amount></amount>
+  <balance></balance>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <currency>USD</currency>
+  <download_uri>https://url...</download_uri>
+  <invoice_line_items type="array"/>
+  <method>paypal</method>
+  <payment_line_items type="array"/>
+  <payment_reversed_at>2000-01-01T01:00:00Z</payment_reversed_at>
+  <payment_type></payment_type>
+  <site_name>My Site</site_name>
+  <type>invoice</type>
+  <updated_at>2000-01-01T01:00:00Z</updated_at>
+</account-line-item>
+
+```
+
+
+### HTTPS Request
+
+`GET /invoices/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Invoice ID. 
+## Show Payment
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/payments/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/payments/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Payment.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Payment::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "amount": "",
+  "balance": "",
+  "created_at": "2000-01-01T01:00:00Z",
+  "currency": "USD",
+  "download_uri": "https://url...",
+  "invoice_line_items": [
+
+  ],
+  "method": "paypal",
+  "payment_line_items": [
+
+  ],
+  "payment_reversed_at": "2000-01-01T01:00:00Z",
+  "payment_type": "",
+  "site_name": "My Site",
+  "type": "invoice",
+  "updated_at": "2000-01-01T01:00:00Z"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<account-line-item>
+  <id type="integer">1</id>
+  <amount></amount>
+  <balance></balance>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <currency>USD</currency>
+  <download_uri>https://url...</download_uri>
+  <invoice_line_items type="array"/>
+  <method>paypal</method>
+  <payment_line_items type="array"/>
+  <payment_reversed_at>2000-01-01T01:00:00Z</payment_reversed_at>
+  <payment_type></payment_type>
+  <site_name>My Site</site_name>
+  <type>invoice</type>
+  <updated_at>2000-01-01T01:00:00Z</updated_at>
+</account-line-item>
+
+```
+
+
+### HTTPS Request
+
+`GET /payments/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Payment ID. 
+

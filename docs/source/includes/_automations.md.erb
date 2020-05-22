@@ -1,0 +1,665 @@
+# Automations
+
+Automations allow you to automate workflows on your Files.com site.
+
+Automations are different from Behaviors because Behaviors are associated with a current folder, while Automations apply across your entire site.
+Although Automations may have a Path specified, it can be a glob (which includes wildcards), which affects multiple folders.
+Additionally, paths in Automations can refer to folders which don't yet exist.
+
+Automations are never removed when folders are removed, while Behaviors are removed when the associated folder is removed.
+
+
+## Automation Types
+
+There are currently three types of automations:  Create Folder, Request File, and Request Move.
+
+
+### Create Folder Automation
+
+The Create Folder automation creates folders on a schedule.
+
+Example Use case:  Our business files sales tax for each division in 11 states every quarter.
+I want to create the folders where those sales tax forms and data will be collected.
+
+I could create a Create Folder automation as follows:
+
+* Interval: `quarter_end`
+* Path: `/AccountingAndTax/SalesTax/State/*/`
+* Destination: `%Y/Quarter-ending-%m-%d`
+
+
+### Request File Automation
+
+The Request File automation requests a file (optionally from a specific user) if it does not exist.
+
+Example Use case: Continuing our Sales Tax example from above, once the folders are
+created for the 11 states, our Bookkeeper needs to upload a `.xlsx` file
+containing the sales records for each state.
+
+We can create a Request File automation as follows:
+
+* Path: `/AccountingAndTax/SalesTax/State/*/*/*/`
+* Destination: `SalesByState-%p3-%p2-%p1`
+* Group IDs: `123` (representing the Bookkeepers group)
+
+Note that the %p1, %p2 amd %p3 are references back into the folder hierarchy
+(parent 1, parent 2, etc), so that the file will be named with the state
+name and the quarter name in the file.  Example: `SalesByState-NV-2017-Quarter-ending-Dec-31.xlsx`
+
+Now, let's say that our Tax Accountant is in charge of filing the actual
+state tax return once the Excel doc is completed by the Bookkeeper.  We
+can create another Automation to let him know when it's his turn
+to operate:
+
+* Path: `/AccountingAndTax/SalesTax/State/*/*/%/`
+* Source: `SalesByState-%p3-%p2-%p1`
+* Destination: `StateSalesTaxReturn-Unsigned-%p3-%p2-%p1`
+* Group IDs: `124` (representing the Tax Accountants group)
+    Group: Tax Accountants
+
+So the accountant will take the excel from the bookkeeper, generate the
+state tax return, and then upload it as a PDF, ready for the CFO to
+sign.  How does the CFO know when to sign?  You guessed it, another
+Automation will let him know when it's ready:
+
+* Path: `/AccountingAndTax/**/`
+* Source: `*-Unsigned-*`
+* Destination Replace From: `-Unsigned-`
+* Destination Replace To: `-Signed-`
+* Group IDs: `125` (representing the CFO group)
+
+This Automation looks in every nested subfolder of `AcccountingAndTax`
+(that's the `/**/` in the path).  And it looks for any filename containing
+the filename string `-Unsigned-`.  That's the cue to the CFO that something needs his
+signature.
+
+Rather than specifying the exact destination filename, we can specify a Destination Replace From
+and To in order to generate the new filename from the old filename.
+
+So if `StateSalesTaxReturn-Unsigned-NV-2017-q4.pdf` is uploaded, this
+Automation will trigger and expect the file `StateSalesTaxReturn-Signed-NV-2017-q4.pdf`
+from the CFO.
+
+You could then put in place another rule for the Tax Accountant or
+Bookkeeper to go do the actual filing once a signature is in place.
+
+
+### Request Move Automation
+
+The Request Move automation requests that a file be moved.  This is an alternate way to implement approval workflows.
+
+A variant of the Request File automation, this Automation creates requests that a
+user or group move a file, presumably indicating that they've taken some action on it.
+
+Example Use case: Action Verb uses Files.com to collect invoices from its Contractors, who
+upload new invoices into their own folder structure that only they have
+permissions to.  That structure looks like this:
+
+* `/Accounts Payable/Contractors/[contractor]/New/`
+* `/Accounts Payable/Contractors/[contractor]/Paid/`
+
+The contractor has full permissions to the `New/` folder, but only
+read-only permissions to `Paid/`.  This allows them to upload and update
+new invoices, but only view invoices that are already paid.  (Cool!)
+
+But, as we grow to dozens of contractors, it becomes a tough task for
+Accounts Payable to check all the New folders daily.
+
+To ensure Contractors get paid timely, we might set up Request Move automation:
+
+* Path: `/AccountsPayable/Contractors/*/New/`
+* Source: `*`
+* Destination: `../Paid/`
+* Group IDs: `126` (representing the Accounts Payable group)
+
+
+### Help us build the future of Automations
+
+Do you have an idea for something that would work well as a Files.com Automation?  Let us know!
+We are actively improving the types of automations offered on our platform.
+
+
+## The Automation object
+
+> Example Automation Object
+
+```json
+{
+  "id": 1,
+  "automation": "create_folder",
+  "source": "",
+  "destination": "",
+  "destination_replace_from": "",
+  "destination_replace_to": "",
+  "interval": "week",
+  "next_process_on": "2020-01-01",
+  "path": "",
+  "realtime": true,
+  "user_id": 1,
+  "user_ids": [
+
+  ],
+  "group_ids": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<automation>
+  <id type="integer">1</id>
+  <automation>create_folder</automation>
+  <source></source>
+  <destination></destination>
+  <destination_replace_from></destination_replace_from>
+  <destination_replace_to></destination_replace_to>
+  <interval>week</interval>
+  <next_process_on>2020-01-01</next_process_on>
+  <path></path>
+  <realtime type="boolean">true</realtime>
+  <user_id type="integer">1</user_id>
+  <user_ids type="array"/>
+  <group_ids type="array"/>
+</automation>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | Automation ID 
+  automation *string* | Automation type <div>Possible values: `create_folder`, `request_file`, `request_move`</div>
+  source *string* | Source Path 
+  destination *string* | Destination Path 
+  destination_replace_from *string* | If set, this string in the destination path will be replaced with the value in `destination_replace_to`. 
+  destination_replace_to *string* | If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here. 
+  interval *string* | How often to run this automation?  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end` 
+  next_process_on *string* | Date this automation will next run. 
+  path *string* | Path on which this Automation runs.  Supports globs. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters. 
+  realtime *boolean* | Does this automation run in real time?  This is a read-only property based on automation type. 
+  user_id *int64* | User ID of the Automation's creator. 
+  user_ids *array* | IDs of Users for the Automation (i.e. who to Request File from) 
+  group_ids *array* | IDs of Groups for the Automation (i.e. who to Request File from) 
+
+## List Automations
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/automations.json?page=1&per_page=1&automation=create_folder" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/automations.xml?page=1&per_page=1&automation=create_folder" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Automation.list(
+  page: 1, 
+  per_page: 1, 
+  automation: "create_folder"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Automation::list(array(
+  'page' => 1, 
+  'per_page' => 1, 
+  'automation' => "create_folder"
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "automation": "create_folder",
+    "source": "",
+    "destination": "",
+    "destination_replace_from": "",
+    "destination_replace_to": "",
+    "interval": "week",
+    "next_process_on": "2020-01-01",
+    "path": "",
+    "realtime": true,
+    "user_id": 1,
+    "user_ids": [
+
+    ],
+    "group_ids": [
+
+    ]
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<automations type="array">
+  <automation>
+    <id type="integer">1</id>
+    <automation>create_folder</automation>
+    <source></source>
+    <destination></destination>
+    <destination_replace_from></destination_replace_from>
+    <destination_replace_to></destination_replace_to>
+    <interval>week</interval>
+    <next_process_on>2020-01-01</next_process_on>
+    <path></path>
+    <realtime type="boolean">true</realtime>
+    <user_id type="integer">1</user_id>
+    <user_ids type="array"/>
+    <group_ids type="array"/>
+  </automation>
+</automations>
+
+```
+
+
+### HTTPS Request
+
+`GET /automations`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+automation *string*  | Type of automation to filter by. 
+## Show Automation
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/automations/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/automations/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Automation.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Automation::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "automation": "create_folder",
+  "source": "",
+  "destination": "",
+  "destination_replace_from": "",
+  "destination_replace_to": "",
+  "interval": "week",
+  "next_process_on": "2020-01-01",
+  "path": "",
+  "realtime": true,
+  "user_id": 1,
+  "user_ids": [
+
+  ],
+  "group_ids": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<automation>
+  <id type="integer">1</id>
+  <automation>create_folder</automation>
+  <source></source>
+  <destination></destination>
+  <destination_replace_from></destination_replace_from>
+  <destination_replace_to></destination_replace_to>
+  <interval>week</interval>
+  <next_process_on>2020-01-01</next_process_on>
+  <path></path>
+  <realtime type="boolean">true</realtime>
+  <user_id type="integer">1</user_id>
+  <user_ids type="array"/>
+  <group_ids type="array"/>
+</automation>
+
+```
+
+
+### HTTPS Request
+
+`GET /automations/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Automation ID. 
+## Create Automation
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/automations.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"automation":"create_folder","source":"source","destination":"destination","interval":"year"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/automations.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<automation>
+       <automation>create_folder</automation>
+       <source>source</source>
+       <destination>destination</destination>
+       <interval>year</interval>
+     </automation>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Automation.create(
+  automation: "create_folder", 
+  source: "source", 
+  destination: "destination", 
+  interval: "year"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Automation::create(array(
+  'automation' => "create_folder", 
+  'source' => "source", 
+  'destination' => "destination", 
+  'interval' => "year"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "automation": "create_folder",
+  "source": "",
+  "destination": "",
+  "destination_replace_from": "",
+  "destination_replace_to": "",
+  "interval": "week",
+  "next_process_on": "2020-01-01",
+  "path": "",
+  "realtime": true,
+  "user_id": 1,
+  "user_ids": [
+
+  ],
+  "group_ids": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<automation>
+  <id type="integer">1</id>
+  <automation>create_folder</automation>
+  <source></source>
+  <destination></destination>
+  <destination_replace_from></destination_replace_from>
+  <destination_replace_to></destination_replace_to>
+  <interval>week</interval>
+  <next_process_on>2020-01-01</next_process_on>
+  <path></path>
+  <realtime type="boolean">true</realtime>
+  <user_id type="integer">1</user_id>
+  <user_ids type="array"/>
+  <group_ids type="array"/>
+</automation>
+
+```
+
+
+### HTTPS Request
+
+`POST /automations`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+automation *string* **Required** | Type of automation.  One of: `create_folder`, `request_file`, `request_move` 
+source *string*  | Source Path 
+destination *string*  | Destination Path 
+destination_replace_from *string*  | If set, this string in the destination path will be replaced with the value in `destination_replace_to`. 
+destination_replace_to *string*  | If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here. 
+interval *string*  | How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end` 
+path *string*  | Path on which this Automation runs.  Supports globs. 
+user_ids *string*  | A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited. 
+group_ids *string*  | A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited. 
+## Update Automation
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/automations/{id}.json \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"automation":"create_folder","source":"source","destination":"destination","interval":"year"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/automations/{id}.xml \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<automation>
+       <automation>create_folder</automation>
+       <source>source</source>
+       <destination>destination</destination>
+       <interval>year</interval>
+     </automation>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+automation = Files::Automation.find(id)
+automation.update(
+  automation: "create_folder",
+  source: "source",
+  destination: "destination",
+  interval: "year"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$automation = \Files\Automation->find(1);
+$automation->update(array(
+  'automation' => "create_folder", 
+  'source' => "source", 
+  'destination' => "destination", 
+  'interval' => "year"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "automation": "create_folder",
+  "source": "",
+  "destination": "",
+  "destination_replace_from": "",
+  "destination_replace_to": "",
+  "interval": "week",
+  "next_process_on": "2020-01-01",
+  "path": "",
+  "realtime": true,
+  "user_id": 1,
+  "user_ids": [
+
+  ],
+  "group_ids": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<automation>
+  <id type="integer">1</id>
+  <automation>create_folder</automation>
+  <source></source>
+  <destination></destination>
+  <destination_replace_from></destination_replace_from>
+  <destination_replace_to></destination_replace_to>
+  <interval>week</interval>
+  <next_process_on>2020-01-01</next_process_on>
+  <path></path>
+  <realtime type="boolean">true</realtime>
+  <user_id type="integer">1</user_id>
+  <user_ids type="array"/>
+  <group_ids type="array"/>
+</automation>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /automations/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Automation ID. 
+automation *string* **Required** | Type of automation.  One of: `create_folder`, `request_file`, `request_move` 
+source *string*  | Source Path 
+destination *string*  | Destination Path 
+destination_replace_from *string*  | If set, this string in the destination path will be replaced with the value in `destination_replace_to`. 
+destination_replace_to *string*  | If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here. 
+interval *string*  | How often to run this automation? One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end` 
+path *string*  | Path on which this Automation runs.  Supports globs. 
+user_ids *string*  | A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited. 
+group_ids *string*  | A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited. 
+## Delete Automation
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/automations/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/automations/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+automation = Files::Automation.find(id)
+automation.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$automation = \Files\Automation->find(1);
+$automation->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /automations/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Automation ID. 
+

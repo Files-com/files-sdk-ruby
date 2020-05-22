@@ -1,0 +1,24 @@
+{
+  "name": "files.com",
+  "version": "1.0",
+  "description": "Files.com SDK for Javascript",
+  "keywords": [
+    "files.com",
+    "cloud storage",
+    "api"
+  ],
+  "homepage": "https://www.files.com/",
+  "author": "Files.com <support@files.com> (https://www.files.com/)",
+  "contributors": [],
+  "engines": {
+    "node": "^6 || ^8.1 || >=10.*"
+  },
+  "main": "lib/files.js",
+  "dependencies": {
+    "lodash.isplainobject": "^4.0.6",
+    "qs": "^6.6.0",
+    "safe-buffer": "^5.1.1",
+    "uuid": "^3.3.2"
+  },
+  "license": "MIT"
+}

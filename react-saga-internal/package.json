@@ -1,0 +1,17 @@
+{
+  "name": "react-saga-internal",
+  "version": "1.0.28339",
+  "description": "This Files.com SDK provides redux sagas for our React app to internally access the Files.com API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.av/repository/files-sdk-generator"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://nexus.av/repository/npm-private/"
+  }
+}

@@ -1,0 +1,298 @@
+# Locks
+
+Locks are not used by Files.com's web interface, but can be used by your applications to implement locking and concurrency features.
+
+Our lock feature is designed to emulate the locking feature offered by WebDAV.
+You can read the WebDAV spec and understand how all of the below endpoints work.
+
+Files.com's WebDAV offering and desktop app does leverage this locking API.
+
+
+## The Lock object
+
+> Example Lock Object
+
+```json
+{
+  "path": "locked_file",
+  "timeout": 43200,
+  "depth": "infinity",
+  "owner": "user",
+  "scope": "shared",
+  "token": "17c54824e9931a4688ca032d03f6663c",
+  "type": "write",
+  "user_id": 1,
+  "username": "username"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<lock>
+  <path>locked_file</path>
+  <timeout type="integer">43200</timeout>
+  <depth>infinity</depth>
+  <owner>user</owner>
+  <scope>shared</scope>
+  <token>17c54824e9931a4688ca032d03f6663c</token>
+  <type>write</type>
+  <user_id type="integer">1</user_id>
+  <username>username</username>
+</lock>
+
+```
+
+Attribute | Description
+--------- | -----------
+  path *string* | Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters. 
+  timeout *int64* | Lock timeout 
+  depth *string* | Lock depth (0 or infinity) 
+  owner *string* | Owner of lock.  This can be any arbitrary string. 
+  scope *string* | Lock scope(shared or exclusive) 
+  token *string* | Lock token.  Use to release lock. 
+  type *string* | Lock type 
+  user_id *int64* | Lock creator user ID 
+  username *string* | Lock creator username 
+
+## List Locks by path
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/locks/{path}?page=1&per_page=1&include_children=true" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/locks/{path}?page=1&per_page=1&include_children=true" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Lock.list_for(path, 
+  page: 1, 
+  per_page: 1, 
+  include_children: true
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Lock::listFor($path, array(
+  'page' => 1, 
+  'per_page' => 1, 
+  'include_children' => true
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "path": "locked_file",
+    "timeout": 43200,
+    "depth": "infinity",
+    "owner": "user",
+    "scope": "shared",
+    "token": "17c54824e9931a4688ca032d03f6663c",
+    "type": "write",
+    "user_id": 1,
+    "username": "username"
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<locks type="array">
+  <lock>
+    <path>locked_file</path>
+    <timeout type="integer">43200</timeout>
+    <depth>infinity</depth>
+    <owner>user</owner>
+    <scope>shared</scope>
+    <token>17c54824e9931a4688ca032d03f6663c</token>
+    <type>write</type>
+    <user_id type="integer">1</user_id>
+    <username>username</username>
+  </lock>
+</locks>
+
+```
+
+
+### HTTPS Request
+
+`GET /locks/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+path *string* **Required** | Path to operate on. 
+include_children *boolean*  | Include locks from children objects? 
+## Create Lock
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/locks/{path} \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"timeout":1}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/locks/{path} \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<lock>
+       <timeout type="integer">1</timeout>
+     </lock>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Lock.create(path, 
+  timeout: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Lock::create($path, array(
+  'timeout' => 1
+));
+```
+
+> Example Response
+
+```json
+{
+  "path": "locked_file",
+  "timeout": 43200,
+  "depth": "infinity",
+  "owner": "user",
+  "scope": "shared",
+  "token": "17c54824e9931a4688ca032d03f6663c",
+  "type": "write",
+  "user_id": 1,
+  "username": "username"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<lock>
+  <path>locked_file</path>
+  <timeout type="integer">43200</timeout>
+  <depth>infinity</depth>
+  <owner>user</owner>
+  <scope>shared</scope>
+  <token>17c54824e9931a4688ca032d03f6663c</token>
+  <type>write</type>
+  <user_id type="integer">1</user_id>
+  <username>username</username>
+</lock>
+
+```
+
+
+### HTTPS Request
+
+`POST /locks/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Path 
+timeout *int64*  | Lock timeout length 
+## Delete Lock
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/locks/{path}?token=token" \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/locks/{path}?token=token" \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+lock = Files::Lock.find(path)
+lock.delete(
+  token: "token"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$lock = \Files\Lock->find(1);
+$lock->delete(array(
+  'token' => "token"
+));
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /locks/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Path 
+token *string* **Required** | Lock token 
+

@@ -1,0 +1,308 @@
+# Sso Strategies
+
+An SSO Strategy is a method for allowing users to sign in via another identity provider, such as Okta or Auth0.
+
+It is rare that you will need to use API endpoints for managing these, and we recommend instead managing these via the web interface.
+Nevertheless, we share the API documentation here.
+
+
+## The SsoStrategy object
+
+> Example SsoStrategy Object
+
+```json
+{
+  "protocol": "okta",
+  "provider": "okta",
+  "id": 1,
+  "saml_provider_cert_fingerprint": "",
+  "saml_provider_issuer_url": "",
+  "saml_provider_metadata_url": "",
+  "saml_provider_slo_target_url": "",
+  "saml_provider_sso_target_url": "",
+  "scim_authentication_method": "",
+  "scim_username": "",
+  "subdomain": "my-site",
+  "provision_users": true,
+  "provision_groups": true,
+  "provision_group_default": "Employees",
+  "provision_group_exclusion": "Employees",
+  "provision_group_inclusion": "Employees",
+  "provision_group_required": "",
+  "provision_attachments_permission": true,
+  "provision_dav_permission": true,
+  "provision_ftp_permission": true,
+  "provision_sftp_permission": true,
+  "provision_time_zone": "Eastern Time (US & Canada)"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<sso-strategy>
+  <protocol>okta</protocol>
+  <provider>okta</provider>
+  <id type="integer">1</id>
+  <saml_provider_cert_fingerprint></saml_provider_cert_fingerprint>
+  <saml_provider_issuer_url></saml_provider_issuer_url>
+  <saml_provider_metadata_url></saml_provider_metadata_url>
+  <saml_provider_slo_target_url></saml_provider_slo_target_url>
+  <saml_provider_sso_target_url></saml_provider_sso_target_url>
+  <scim_authentication_method></scim_authentication_method>
+  <scim_username></scim_username>
+  <subdomain>my-site</subdomain>
+  <provision_users type="boolean">true</provision_users>
+  <provision_groups type="boolean">true</provision_groups>
+  <provision_group_default>Employees</provision_group_default>
+  <provision_group_exclusion>Employees</provision_group_exclusion>
+  <provision_group_inclusion>Employees</provision_group_inclusion>
+  <provision_group_required></provision_group_required>
+  <provision_attachments_permission type="boolean">true</provision_attachments_permission>
+  <provision_dav_permission type="boolean">true</provision_dav_permission>
+  <provision_ftp_permission type="boolean">true</provision_ftp_permission>
+  <provision_sftp_permission type="boolean">true</provision_sftp_permission>
+  <provision_time_zone>Eastern Time (US &amp; Canada)</provision_time_zone>
+</sso-strategy>
+
+```
+
+Attribute | Description
+--------- | -----------
+  protocol *string* | SSO Protocol <div>Possible values: `oauth2`, `openid2`, `saml`</div>
+  provider *string* | Provider name <div>Possible values: `google`, `auth0`, `okta`, `atlassian`, `azure`, `box`, `dropbox`, `slack`, `ubuntu`, `onelogin`, `saml`, `idaptive`</div>
+  id *int64* | ID 
+  saml_provider_cert_fingerprint *string* | Identity provider sha256 cert fingerprint if saml_provider_metadata_url is not available. 
+  saml_provider_issuer_url *string* | Identity provider issuer url 
+  saml_provider_metadata_url *string* | Metadata URL for the SAML identity provider 
+  saml_provider_slo_target_url *string* | Identity provider SLO endpoint 
+  saml_provider_sso_target_url *string* | Identity provider SSO endpoint if saml_provider_metadata_url is not available. 
+  scim_authentication_method *string* | SCIM authentication type. <div>Possible values: `none`, `basic`, `token`</div>
+  scim_username *string* | SCIM username. 
+  subdomain *string* | Subdomain 
+  provision_users *boolean* | Auto-provision users? 
+  provision_groups *boolean* | Auto-provision group membership based on group memberships on the SSO side? 
+  provision_group_default *string* | Comma-separated list of group names for groups to automatically add all auto-provisioned users to. 
+  provision_group_exclusion *string* | Comma-separated list of group names for groups (with optional wildcards) that will be excluded from auto-provisioning. 
+  provision_group_inclusion *string* | Comma-separated list of group names for groups (with optional wildcards) that will be auto-provisioned. 
+  provision_group_required *string* | Comma or newline separated list of group names (with optional wildcards) to require membership for user provisioning. 
+  provision_attachments_permission *boolean* | Auto-provisioned users get Sharing permission? 
+  provision_dav_permission *boolean* | Auto-provisioned users get WebDAV permission? 
+  provision_ftp_permission *boolean* | Auto-provisioned users get FTP permission? 
+  provision_sftp_permission *boolean* | Auto-provisioned users get SFTP permission? 
+  provision_time_zone *string* | Default time zone for auto provisioned users. 
+
+## List Sso Strategies
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/sso_strategies.json?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/sso_strategies.xml?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::SsoStrategy.list(
+  page: 1, 
+  per_page: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\SsoStrategy::list(array(
+  'page' => 1, 
+  'per_page' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "protocol": "okta",
+    "provider": "okta",
+    "id": 1,
+    "saml_provider_cert_fingerprint": "",
+    "saml_provider_issuer_url": "",
+    "saml_provider_metadata_url": "",
+    "saml_provider_slo_target_url": "",
+    "saml_provider_sso_target_url": "",
+    "scim_authentication_method": "",
+    "scim_username": "",
+    "subdomain": "my-site",
+    "provision_users": true,
+    "provision_groups": true,
+    "provision_group_default": "Employees",
+    "provision_group_exclusion": "Employees",
+    "provision_group_inclusion": "Employees",
+    "provision_group_required": "",
+    "provision_attachments_permission": true,
+    "provision_dav_permission": true,
+    "provision_ftp_permission": true,
+    "provision_sftp_permission": true,
+    "provision_time_zone": "Eastern Time (US & Canada)"
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<sso-strategies type="array">
+  <sso-strategy>
+    <protocol>okta</protocol>
+    <provider>okta</provider>
+    <id type="integer">1</id>
+    <saml_provider_cert_fingerprint></saml_provider_cert_fingerprint>
+    <saml_provider_issuer_url></saml_provider_issuer_url>
+    <saml_provider_metadata_url></saml_provider_metadata_url>
+    <saml_provider_slo_target_url></saml_provider_slo_target_url>
+    <saml_provider_sso_target_url></saml_provider_sso_target_url>
+    <scim_authentication_method></scim_authentication_method>
+    <scim_username></scim_username>
+    <subdomain>my-site</subdomain>
+    <provision_users type="boolean">true</provision_users>
+    <provision_groups type="boolean">true</provision_groups>
+    <provision_group_default>Employees</provision_group_default>
+    <provision_group_exclusion>Employees</provision_group_exclusion>
+    <provision_group_inclusion>Employees</provision_group_inclusion>
+    <provision_group_required></provision_group_required>
+    <provision_attachments_permission type="boolean">true</provision_attachments_permission>
+    <provision_dav_permission type="boolean">true</provision_dav_permission>
+    <provision_ftp_permission type="boolean">true</provision_ftp_permission>
+    <provision_sftp_permission type="boolean">true</provision_sftp_permission>
+    <provision_time_zone>Eastern Time (US &amp; Canada)</provision_time_zone>
+  </sso-strategy>
+</sso-strategies>
+
+```
+
+
+### HTTPS Request
+
+`GET /sso_strategies`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+## Show Sso Strategy
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/sso_strategies/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/sso_strategies/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::SsoStrategy.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\SsoStrategy::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "protocol": "okta",
+  "provider": "okta",
+  "id": 1,
+  "saml_provider_cert_fingerprint": "",
+  "saml_provider_issuer_url": "",
+  "saml_provider_metadata_url": "",
+  "saml_provider_slo_target_url": "",
+  "saml_provider_sso_target_url": "",
+  "scim_authentication_method": "",
+  "scim_username": "",
+  "subdomain": "my-site",
+  "provision_users": true,
+  "provision_groups": true,
+  "provision_group_default": "Employees",
+  "provision_group_exclusion": "Employees",
+  "provision_group_inclusion": "Employees",
+  "provision_group_required": "",
+  "provision_attachments_permission": true,
+  "provision_dav_permission": true,
+  "provision_ftp_permission": true,
+  "provision_sftp_permission": true,
+  "provision_time_zone": "Eastern Time (US & Canada)"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<sso-strategy>
+  <protocol>okta</protocol>
+  <provider>okta</provider>
+  <id type="integer">1</id>
+  <saml_provider_cert_fingerprint></saml_provider_cert_fingerprint>
+  <saml_provider_issuer_url></saml_provider_issuer_url>
+  <saml_provider_metadata_url></saml_provider_metadata_url>
+  <saml_provider_slo_target_url></saml_provider_slo_target_url>
+  <saml_provider_sso_target_url></saml_provider_sso_target_url>
+  <scim_authentication_method></scim_authentication_method>
+  <scim_username></scim_username>
+  <subdomain>my-site</subdomain>
+  <provision_users type="boolean">true</provision_users>
+  <provision_groups type="boolean">true</provision_groups>
+  <provision_group_default>Employees</provision_group_default>
+  <provision_group_exclusion>Employees</provision_group_exclusion>
+  <provision_group_inclusion>Employees</provision_group_inclusion>
+  <provision_group_required></provision_group_required>
+  <provision_attachments_permission type="boolean">true</provision_attachments_permission>
+  <provision_dav_permission type="boolean">true</provision_dav_permission>
+  <provision_ftp_permission type="boolean">true</provision_ftp_permission>
+  <provision_sftp_permission type="boolean">true</provision_sftp_permission>
+  <provision_time_zone>Eastern Time (US &amp; Canada)</provision_time_zone>
+</sso-strategy>
+
+```
+
+
+### HTTPS Request
+
+`GET /sso_strategies/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Sso Strategy ID. 
+

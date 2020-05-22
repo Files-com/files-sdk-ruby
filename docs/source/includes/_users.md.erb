@@ -1,0 +1,1288 @@
+# Users
+
+The Users resource in the REST API allows you to operate on Users.
+
+## The User object
+
+> Example User Object
+
+```json
+{
+  "id": 1,
+  "username": "user",
+  "admin_group_ids": [
+
+  ],
+  "allowed_ips": "127.0.0.1",
+  "attachments_permission": true,
+  "api_keys_count": 1,
+  "authenticate_until": "2000-01-01T01:00:00Z",
+  "authentication_method": "password",
+  "avatar_url": "",
+  "billing_permission": true,
+  "bypass_site_allowed_ips": true,
+  "bypass_inactive_disable": true,
+  "created_at": "2000-01-01T01:00:00Z",
+  "dav_permission": true,
+  "disabled": true,
+  "email": "john.doe@files.com",
+  "ftp_permission": true,
+  "group_ids": [
+
+  ],
+  "language": "en",
+  "last_login_at": "2000-01-01T01:00:00Z",
+  "last_protocol_cipher": "",
+  "lockout_expires": "2000-01-01T01:00:00Z",
+  "name": "John Doe",
+  "notes": "Internal notes on this user.",
+  "notification_daily_send_time": 18,
+  "password_set_at": "2000-01-01T01:00:00Z",
+  "password_validity_days": 1,
+  "public_keys_count": 1,
+  "receive_admin_alerts": true,
+  "require_2fa": true,
+  "require_password_change": true,
+  "restapi_permission": true,
+  "self_managed": true,
+  "sftp_permission": true,
+  "site_admin": true,
+  "skip_welcome_screen": true,
+  "ssl_required": "always_require",
+  "sso_strategy_id": 1,
+  "subscribe_to_newsletter": true,
+  "externally_managed": true,
+  "time_zone": "Pacific Time (US & Canada)",
+  "type_of_2fa": "",
+  "user_root": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <id type="integer">1</id>
+  <username>user</username>
+  <admin_group_ids type="array"/>
+  <allowed_ips>127.0.0.1</allowed_ips>
+  <attachments_permission type="boolean">true</attachments_permission>
+  <api_keys_count type="integer">1</api_keys_count>
+  <authenticate_until>2000-01-01T01:00:00Z</authenticate_until>
+  <authentication_method>password</authentication_method>
+  <avatar_url></avatar_url>
+  <billing_permission type="boolean">true</billing_permission>
+  <bypass_site_allowed_ips type="boolean">true</bypass_site_allowed_ips>
+  <bypass_inactive_disable type="boolean">true</bypass_inactive_disable>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <dav_permission type="boolean">true</dav_permission>
+  <disabled type="boolean">true</disabled>
+  <email>john.doe@files.com</email>
+  <ftp_permission type="boolean">true</ftp_permission>
+  <group_ids type="array"/>
+  <language>en</language>
+  <last_login_at>2000-01-01T01:00:00Z</last_login_at>
+  <last_protocol_cipher></last_protocol_cipher>
+  <lockout_expires>2000-01-01T01:00:00Z</lockout_expires>
+  <name>John Doe</name>
+  <notes>Internal notes on this user.</notes>
+  <notification_daily_send_time type="integer">18</notification_daily_send_time>
+  <password_set_at>2000-01-01T01:00:00Z</password_set_at>
+  <password_validity_days type="integer">1</password_validity_days>
+  <public_keys_count type="integer">1</public_keys_count>
+  <receive_admin_alerts type="boolean">true</receive_admin_alerts>
+  <require_2fa type="boolean">true</require_2fa>
+  <require_password_change type="boolean">true</require_password_change>
+  <restapi_permission type="boolean">true</restapi_permission>
+  <self_managed type="boolean">true</self_managed>
+  <sftp_permission type="boolean">true</sftp_permission>
+  <site_admin type="boolean">true</site_admin>
+  <skip_welcome_screen type="boolean">true</skip_welcome_screen>
+  <ssl_required>always_require</ssl_required>
+  <sso_strategy_id type="integer">1</sso_strategy_id>
+  <subscribe_to_newsletter type="boolean">true</subscribe_to_newsletter>
+  <externally_managed type="boolean">true</externally_managed>
+  <time_zone>Pacific Time (US &amp; Canada)</time_zone>
+  <type_of_2fa></type_of_2fa>
+  <user_root></user_root>
+</user>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | User ID 
+  username *string* | User's username 
+  admin_group_ids *array* | List of group IDs of which this user is an administrator 
+  allowed_ips *string* | A list of allowed IPs if applicable.  Newline delimited 
+  attachments_permission *boolean* | Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`. 
+  api_keys_count *int64* | Number of api keys associated with this user 
+  authenticate_until *date-time* | Scheduled Date/Time at which user will be deactivated 
+  authentication_method *string* | How is this user authenticated? <div>Possible values: `password`, `ldap`, `sso`, `none`</div>
+  avatar_url *string* | URL holding the user's avatar 
+  billing_permission *boolean* | Allow this user to perform operations on the account, payments, and invoices? 
+  bypass_site_allowed_ips *boolean* | Allow this user to skip site-wide IP blacklists? 
+  bypass_inactive_disable *boolean* | Exempt this user from being disabled based on inactivity? 
+  created_at *date-time* | When this user was created 
+  dav_permission *boolean* | Can the user connect with WebDAV? 
+  disabled *boolean* | Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting. 
+  email *email* | User email address 
+  ftp_permission *boolean* | Can the user access with FTP/FTPS? 
+  group_ids *array* | Comma-separated list of group IDs of which this user is a member 
+  language *string* | Preferred language 
+  last_login_at *date-time* | User's last login time 
+  last_protocol_cipher *string* | The last protocol and cipher used 
+  lockout_expires *date-time* | Time in the future that the user will no longer be locked out if applicable 
+  name *string* | User's full name 
+  notes *string* | Any internal notes on the user 
+  notification_daily_send_time *int64* | Hour of the day at which daily notifications should be sent. Can be in range 0 to 23 
+  password_set_at *date-time* | Last time the user's password was set 
+  password_validity_days *int64* | Number of days to allow user to use the same password 
+  public_keys_count *int64* | Number of public keys associated with this user 
+  receive_admin_alerts *boolean* | Should the user receive admin alerts such a certificate expiration notifications and overages? 
+  require_2fa *boolean* | Is 2fa required to sign in? 
+  require_password_change *boolean* | Is a password change required upon next user login? 
+  restapi_permission *boolean* | Can this user access the REST API? 
+  self_managed *boolean* | Does this user manage it's own credentials or is it a shared/bot user? 
+  sftp_permission *boolean* | Can the user access with SFTP? 
+  site_admin *boolean* | Is the user an administrator for this site? 
+  skip_welcome_screen *boolean* | Skip Welcome page in the UI? 
+  ssl_required *string* | SSL required setting <div>Possible values: `use_system_setting`, `always_require`, `never_require`</div>
+  sso_strategy_id *int64* | SSO (Single Sign On) strategy ID for the user, if applicable. 
+  subscribe_to_newsletter *boolean* | Is the user subscribed to the newsletter? 
+  externally_managed *boolean* | Is this user managed by an external source (such as LDAP)? 
+  time_zone *string* | User time zone 
+  type_of_2fa *string* | Type(s) of 2FA methods in use.  Will be either `sms`, `totp`, `u2f`, `yubi`, or multiple values sorted alphabetically and joined by an underscore. 
+  user_root *string* | Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface. 
+  avatar_file *file* | An image file for your user avatar. 
+  avatar_delete *boolean* | If true, the avatar will be deleted. 
+  change_password *string* | Used for changing a password on an existing user. 
+  change_password_confirmation *string* | Optional, but if provided, we will ensure that it matches the value sent in `change_password`. 
+  grant_permission *string* | Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `preview`, or `history`. 
+  group_id *int64* | Group ID to associate this user with. 
+  password *string* | User password. 
+  password_confirmation *string* | Optional, but if provided, we will ensure that it matches the value sent in `password`. 
+  announcements_read *boolean* | Signifies that the user has read all the announcements in the UI. 
+
+## List Users
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/users.json?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/users.xml?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::User.list(
+  page: 1, 
+  per_page: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\User::list(array(
+  'page' => 1, 
+  'per_page' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "username": "user",
+    "admin_group_ids": [
+
+    ],
+    "allowed_ips": "127.0.0.1",
+    "attachments_permission": true,
+    "api_keys_count": 1,
+    "authenticate_until": "2000-01-01T01:00:00Z",
+    "authentication_method": "password",
+    "avatar_url": "",
+    "billing_permission": true,
+    "bypass_site_allowed_ips": true,
+    "bypass_inactive_disable": true,
+    "created_at": "2000-01-01T01:00:00Z",
+    "dav_permission": true,
+    "disabled": true,
+    "email": "john.doe@files.com",
+    "ftp_permission": true,
+    "group_ids": [
+
+    ],
+    "language": "en",
+    "last_login_at": "2000-01-01T01:00:00Z",
+    "last_protocol_cipher": "",
+    "lockout_expires": "2000-01-01T01:00:00Z",
+    "name": "John Doe",
+    "notes": "Internal notes on this user.",
+    "notification_daily_send_time": 18,
+    "password_set_at": "2000-01-01T01:00:00Z",
+    "password_validity_days": 1,
+    "public_keys_count": 1,
+    "receive_admin_alerts": true,
+    "require_2fa": true,
+    "require_password_change": true,
+    "restapi_permission": true,
+    "self_managed": true,
+    "sftp_permission": true,
+    "site_admin": true,
+    "skip_welcome_screen": true,
+    "ssl_required": "always_require",
+    "sso_strategy_id": 1,
+    "subscribe_to_newsletter": true,
+    "externally_managed": true,
+    "time_zone": "Pacific Time (US & Canada)",
+    "type_of_2fa": "",
+    "user_root": ""
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<users type="array">
+  <user>
+    <id type="integer">1</id>
+    <username>user</username>
+    <admin_group_ids type="array"/>
+    <allowed_ips>127.0.0.1</allowed_ips>
+    <attachments_permission type="boolean">true</attachments_permission>
+    <api_keys_count type="integer">1</api_keys_count>
+    <authenticate_until>2000-01-01T01:00:00Z</authenticate_until>
+    <authentication_method>password</authentication_method>
+    <avatar_url></avatar_url>
+    <billing_permission type="boolean">true</billing_permission>
+    <bypass_site_allowed_ips type="boolean">true</bypass_site_allowed_ips>
+    <bypass_inactive_disable type="boolean">true</bypass_inactive_disable>
+    <created_at>2000-01-01T01:00:00Z</created_at>
+    <dav_permission type="boolean">true</dav_permission>
+    <disabled type="boolean">true</disabled>
+    <email>john.doe@files.com</email>
+    <ftp_permission type="boolean">true</ftp_permission>
+    <group_ids type="array"/>
+    <language>en</language>
+    <last_login_at>2000-01-01T01:00:00Z</last_login_at>
+    <last_protocol_cipher></last_protocol_cipher>
+    <lockout_expires>2000-01-01T01:00:00Z</lockout_expires>
+    <name>John Doe</name>
+    <notes>Internal notes on this user.</notes>
+    <notification_daily_send_time type="integer">18</notification_daily_send_time>
+    <password_set_at>2000-01-01T01:00:00Z</password_set_at>
+    <password_validity_days type="integer">1</password_validity_days>
+    <public_keys_count type="integer">1</public_keys_count>
+    <receive_admin_alerts type="boolean">true</receive_admin_alerts>
+    <require_2fa type="boolean">true</require_2fa>
+    <require_password_change type="boolean">true</require_password_change>
+    <restapi_permission type="boolean">true</restapi_permission>
+    <self_managed type="boolean">true</self_managed>
+    <sftp_permission type="boolean">true</sftp_permission>
+    <site_admin type="boolean">true</site_admin>
+    <skip_welcome_screen type="boolean">true</skip_welcome_screen>
+    <ssl_required>always_require</ssl_required>
+    <sso_strategy_id type="integer">1</sso_strategy_id>
+    <subscribe_to_newsletter type="boolean">true</subscribe_to_newsletter>
+    <externally_managed type="boolean">true</externally_managed>
+    <time_zone>Pacific Time (US &amp; Canada)</time_zone>
+    <type_of_2fa></type_of_2fa>
+    <user_root></user_root>
+  </user>
+</users>
+
+```
+
+
+### HTTPS Request
+
+`GET /users`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Folder Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+q[username] *string*  | List users matching username. 
+q[email] *string*  | List users matching email. 
+q[notes] *string*  | List users matching notes field. 
+q[admin] *string*  | If `true`, list only admin users. 
+q[allowed_ips] *string*  | If set, list only users with overridden allowed IP setting. 
+q[password_validity_days] *string*  | If set, list only users with overridden password validity days setting. 
+q[ssl_required] *string*  | If set, list only users with overridden SSL required setting. 
+search *string*  | Searches for partial matches of name, username, or email. 
+## Show User
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/users/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/users/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::User.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\User::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "username": "user",
+  "admin_group_ids": [
+
+  ],
+  "allowed_ips": "127.0.0.1",
+  "attachments_permission": true,
+  "api_keys_count": 1,
+  "authenticate_until": "2000-01-01T01:00:00Z",
+  "authentication_method": "password",
+  "avatar_url": "",
+  "billing_permission": true,
+  "bypass_site_allowed_ips": true,
+  "bypass_inactive_disable": true,
+  "created_at": "2000-01-01T01:00:00Z",
+  "dav_permission": true,
+  "disabled": true,
+  "email": "john.doe@files.com",
+  "ftp_permission": true,
+  "group_ids": [
+
+  ],
+  "language": "en",
+  "last_login_at": "2000-01-01T01:00:00Z",
+  "last_protocol_cipher": "",
+  "lockout_expires": "2000-01-01T01:00:00Z",
+  "name": "John Doe",
+  "notes": "Internal notes on this user.",
+  "notification_daily_send_time": 18,
+  "password_set_at": "2000-01-01T01:00:00Z",
+  "password_validity_days": 1,
+  "public_keys_count": 1,
+  "receive_admin_alerts": true,
+  "require_2fa": true,
+  "require_password_change": true,
+  "restapi_permission": true,
+  "self_managed": true,
+  "sftp_permission": true,
+  "site_admin": true,
+  "skip_welcome_screen": true,
+  "ssl_required": "always_require",
+  "sso_strategy_id": 1,
+  "subscribe_to_newsletter": true,
+  "externally_managed": true,
+  "time_zone": "Pacific Time (US & Canada)",
+  "type_of_2fa": "",
+  "user_root": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <id type="integer">1</id>
+  <username>user</username>
+  <admin_group_ids type="array"/>
+  <allowed_ips>127.0.0.1</allowed_ips>
+  <attachments_permission type="boolean">true</attachments_permission>
+  <api_keys_count type="integer">1</api_keys_count>
+  <authenticate_until>2000-01-01T01:00:00Z</authenticate_until>
+  <authentication_method>password</authentication_method>
+  <avatar_url></avatar_url>
+  <billing_permission type="boolean">true</billing_permission>
+  <bypass_site_allowed_ips type="boolean">true</bypass_site_allowed_ips>
+  <bypass_inactive_disable type="boolean">true</bypass_inactive_disable>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <dav_permission type="boolean">true</dav_permission>
+  <disabled type="boolean">true</disabled>
+  <email>john.doe@files.com</email>
+  <ftp_permission type="boolean">true</ftp_permission>
+  <group_ids type="array"/>
+  <language>en</language>
+  <last_login_at>2000-01-01T01:00:00Z</last_login_at>
+  <last_protocol_cipher></last_protocol_cipher>
+  <lockout_expires>2000-01-01T01:00:00Z</lockout_expires>
+  <name>John Doe</name>
+  <notes>Internal notes on this user.</notes>
+  <notification_daily_send_time type="integer">18</notification_daily_send_time>
+  <password_set_at>2000-01-01T01:00:00Z</password_set_at>
+  <password_validity_days type="integer">1</password_validity_days>
+  <public_keys_count type="integer">1</public_keys_count>
+  <receive_admin_alerts type="boolean">true</receive_admin_alerts>
+  <require_2fa type="boolean">true</require_2fa>
+  <require_password_change type="boolean">true</require_password_change>
+  <restapi_permission type="boolean">true</restapi_permission>
+  <self_managed type="boolean">true</self_managed>
+  <sftp_permission type="boolean">true</sftp_permission>
+  <site_admin type="boolean">true</site_admin>
+  <skip_welcome_screen type="boolean">true</skip_welcome_screen>
+  <ssl_required>always_require</ssl_required>
+  <sso_strategy_id type="integer">1</sso_strategy_id>
+  <subscribe_to_newsletter type="boolean">true</subscribe_to_newsletter>
+  <externally_managed type="boolean">true</externally_managed>
+  <time_zone>Pacific Time (US &amp; Canada)</time_zone>
+  <type_of_2fa></type_of_2fa>
+  <user_root></user_root>
+</user>
+
+```
+
+
+### HTTPS Request
+
+`GET /users/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Folder Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | User ID. 
+## Create User
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/users.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"avatar_delete":true,"email":"john.doe@files.com","group_id":1,"announcements_read":true,"allowed_ips":"127.0.0.1","attachments_permission":true,"authenticate_until":"2000-01-01T01:00:00Z","authentication_method":"password","billing_permission":true,"bypass_inactive_disable":true,"bypass_site_allowed_ips":true,"dav_permission":true,"disabled":true,"ftp_permission":true,"language":"en","notification_daily_send_time":18,"name":"John Doe","notes":"Internal notes on this user.","password_validity_days":1,"receive_admin_alerts":true,"require_password_change":true,"restapi_permission":true,"self_managed":true,"sftp_permission":true,"site_admin":true,"skip_welcome_screen":true,"ssl_required":"always_require","sso_strategy_id":1,"subscribe_to_newsletter":true,"time_zone":"Pacific Time (US & Canada)","username":"user"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/users.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<user>
+       <avatar_delete type="boolean">true</avatar_delete>
+       <email>john.doe@files.com</email>
+       <group_id type="integer">1</group_id>
+       <announcements_read type="boolean">true</announcements_read>
+       <allowed_ips>127.0.0.1</allowed_ips>
+       <attachments_permission type="boolean">true</attachments_permission>
+       <authenticate_until>2000-01-01T01:00:00Z</authenticate_until>
+       <authentication_method>password</authentication_method>
+       <billing_permission type="boolean">true</billing_permission>
+       <bypass_inactive_disable type="boolean">true</bypass_inactive_disable>
+       <bypass_site_allowed_ips type="boolean">true</bypass_site_allowed_ips>
+       <dav_permission type="boolean">true</dav_permission>
+       <disabled type="boolean">true</disabled>
+       <ftp_permission type="boolean">true</ftp_permission>
+       <language>en</language>
+       <notification_daily_send_time type="integer">18</notification_daily_send_time>
+       <name>John Doe</name>
+       <notes>Internal notes on this user.</notes>
+       <password_validity_days type="integer">1</password_validity_days>
+       <receive_admin_alerts type="boolean">true</receive_admin_alerts>
+       <require_password_change type="boolean">true</require_password_change>
+       <restapi_permission type="boolean">true</restapi_permission>
+       <self_managed type="boolean">true</self_managed>
+       <sftp_permission type="boolean">true</sftp_permission>
+       <site_admin type="boolean">true</site_admin>
+       <skip_welcome_screen type="boolean">true</skip_welcome_screen>
+       <ssl_required>always_require</ssl_required>
+       <sso_strategy_id type="integer">1</sso_strategy_id>
+       <subscribe_to_newsletter type="boolean">true</subscribe_to_newsletter>
+       <time_zone>Pacific Time (US &amp; Canada)</time_zone>
+       <username>user</username>
+     </user>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::User.create(
+  avatar_delete: true, 
+  email: "john.doe@files.com", 
+  group_id: 1, 
+  announcements_read: true, 
+  allowed_ips: "127.0.0.1", 
+  attachments_permission: true, 
+  authenticate_until: "2000-01-01T01:00:00Z", 
+  authentication_method: "password", 
+  billing_permission: true, 
+  bypass_inactive_disable: true, 
+  bypass_site_allowed_ips: true, 
+  dav_permission: true, 
+  disabled: true, 
+  ftp_permission: true, 
+  language: "en", 
+  notification_daily_send_time: 18, 
+  name: "John Doe", 
+  notes: "Internal notes on this user.", 
+  password_validity_days: 1, 
+  receive_admin_alerts: true, 
+  require_password_change: true, 
+  restapi_permission: true, 
+  self_managed: true, 
+  sftp_permission: true, 
+  site_admin: true, 
+  skip_welcome_screen: true, 
+  ssl_required: "always_require", 
+  sso_strategy_id: 1, 
+  subscribe_to_newsletter: true, 
+  time_zone: "Pacific Time (US & Canada)", 
+  username: "user"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\User::create(array(
+  'avatar_delete' => true, 
+  'email' => "john.doe@files.com", 
+  'group_id' => 1, 
+  'announcements_read' => true, 
+  'allowed_ips' => "127.0.0.1", 
+  'attachments_permission' => true, 
+  'authenticate_until' => "2000-01-01T01:00:00Z", 
+  'authentication_method' => "password", 
+  'billing_permission' => true, 
+  'bypass_inactive_disable' => true, 
+  'bypass_site_allowed_ips' => true, 
+  'dav_permission' => true, 
+  'disabled' => true, 
+  'ftp_permission' => true, 
+  'language' => "en", 
+  'notification_daily_send_time' => 18, 
+  'name' => "John Doe", 
+  'notes' => "Internal notes on this user.", 
+  'password_validity_days' => 1, 
+  'receive_admin_alerts' => true, 
+  'require_password_change' => true, 
+  'restapi_permission' => true, 
+  'self_managed' => true, 
+  'sftp_permission' => true, 
+  'site_admin' => true, 
+  'skip_welcome_screen' => true, 
+  'ssl_required' => "always_require", 
+  'sso_strategy_id' => 1, 
+  'subscribe_to_newsletter' => true, 
+  'time_zone' => "Pacific Time (US & Canada)", 
+  'username' => "user"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "username": "user",
+  "admin_group_ids": [
+
+  ],
+  "allowed_ips": "127.0.0.1",
+  "attachments_permission": true,
+  "api_keys_count": 1,
+  "authenticate_until": "2000-01-01T01:00:00Z",
+  "authentication_method": "password",
+  "avatar_url": "",
+  "billing_permission": true,
+  "bypass_site_allowed_ips": true,
+  "bypass_inactive_disable": true,
+  "created_at": "2000-01-01T01:00:00Z",
+  "dav_permission": true,
+  "disabled": true,
+  "email": "john.doe@files.com",
+  "ftp_permission": true,
+  "group_ids": [
+
+  ],
+  "language": "en",
+  "last_login_at": "2000-01-01T01:00:00Z",
+  "last_protocol_cipher": "",
+  "lockout_expires": "2000-01-01T01:00:00Z",
+  "name": "John Doe",
+  "notes": "Internal notes on this user.",
+  "notification_daily_send_time": 18,
+  "password_set_at": "2000-01-01T01:00:00Z",
+  "password_validity_days": 1,
+  "public_keys_count": 1,
+  "receive_admin_alerts": true,
+  "require_2fa": true,
+  "require_password_change": true,
+  "restapi_permission": true,
+  "self_managed": true,
+  "sftp_permission": true,
+  "site_admin": true,
+  "skip_welcome_screen": true,
+  "ssl_required": "always_require",
+  "sso_strategy_id": 1,
+  "subscribe_to_newsletter": true,
+  "externally_managed": true,
+  "time_zone": "Pacific Time (US & Canada)",
+  "type_of_2fa": "",
+  "user_root": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <id type="integer">1</id>
+  <username>user</username>
+  <admin_group_ids type="array"/>
+  <allowed_ips>127.0.0.1</allowed_ips>
+  <attachments_permission type="boolean">true</attachments_permission>
+  <api_keys_count type="integer">1</api_keys_count>
+  <authenticate_until>2000-01-01T01:00:00Z</authenticate_until>
+  <authentication_method>password</authentication_method>
+  <avatar_url></avatar_url>
+  <billing_permission type="boolean">true</billing_permission>
+  <bypass_site_allowed_ips type="boolean">true</bypass_site_allowed_ips>
+  <bypass_inactive_disable type="boolean">true</bypass_inactive_disable>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <dav_permission type="boolean">true</dav_permission>
+  <disabled type="boolean">true</disabled>
+  <email>john.doe@files.com</email>
+  <ftp_permission type="boolean">true</ftp_permission>
+  <group_ids type="array"/>
+  <language>en</language>
+  <last_login_at>2000-01-01T01:00:00Z</last_login_at>
+  <last_protocol_cipher></last_protocol_cipher>
+  <lockout_expires>2000-01-01T01:00:00Z</lockout_expires>
+  <name>John Doe</name>
+  <notes>Internal notes on this user.</notes>
+  <notification_daily_send_time type="integer">18</notification_daily_send_time>
+  <password_set_at>2000-01-01T01:00:00Z</password_set_at>
+  <password_validity_days type="integer">1</password_validity_days>
+  <public_keys_count type="integer">1</public_keys_count>
+  <receive_admin_alerts type="boolean">true</receive_admin_alerts>
+  <require_2fa type="boolean">true</require_2fa>
+  <require_password_change type="boolean">true</require_password_change>
+  <restapi_permission type="boolean">true</restapi_permission>
+  <self_managed type="boolean">true</self_managed>
+  <sftp_permission type="boolean">true</sftp_permission>
+  <site_admin type="boolean">true</site_admin>
+  <skip_welcome_screen type="boolean">true</skip_welcome_screen>
+  <ssl_required>always_require</ssl_required>
+  <sso_strategy_id type="integer">1</sso_strategy_id>
+  <subscribe_to_newsletter type="boolean">true</subscribe_to_newsletter>
+  <externally_managed type="boolean">true</externally_managed>
+  <time_zone>Pacific Time (US &amp; Canada)</time_zone>
+  <type_of_2fa></type_of_2fa>
+  <user_root></user_root>
+</user>
+
+```
+
+
+### HTTPS Request
+
+`POST /users`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+avatar_file *file*  | An image file for your user avatar. 
+avatar_delete *boolean*  | If true, the avatar will be deleted. 
+change_password *string*  | Used for changing a password on an existing user. 
+change_password_confirmation *string*  | Optional, but if provided, we will ensure that it matches the value sent in `change_password`. 
+email *string*  | User's email. 
+grant_permission *string*  | Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `preview`, or `history`. 
+group_id *int64*  | Group ID to associate this user with. 
+group_ids *string*  | A list of group ids to associate this user with.  Comma delimited. 
+password *string*  | User password. 
+password_confirmation *string*  | Optional, but if provided, we will ensure that it matches the value sent in `password`. 
+announcements_read *boolean*  | Signifies that the user has read all the announcements in the UI. 
+allowed_ips *string*  | A list of allowed IPs if applicable.  Newline delimited 
+attachments_permission *boolean*  | Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`. 
+authenticate_until *string*  | Scheduled Date/Time at which user will be deactivated 
+authentication_method *string*  | How is this user authenticated? <div>Possible values: `password`, `ldap`, `sso`, `none`</div>
+billing_permission *boolean*  | Allow this user to perform operations on the account, payments, and invoices? 
+bypass_inactive_disable *boolean*  | Exempt this user from being disabled based on inactivity? 
+bypass_site_allowed_ips *boolean*  | Allow this user to skip site-wide IP blacklists? 
+dav_permission *boolean*  | Can the user connect with WebDAV? 
+disabled *boolean*  | Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting. 
+ftp_permission *boolean*  | Can the user access with FTP/FTPS? 
+language *string*  | Preferred language 
+notification_daily_send_time *int64*  | Hour of the day at which daily notifications should be sent. Can be in range 0 to 23 
+name *string*  | User's full name 
+notes *string*  | Any internal notes on the user 
+password_validity_days *int64*  | Number of days to allow user to use the same password 
+receive_admin_alerts *boolean*  | Should the user receive admin alerts such a certificate expiration notifications and overages? 
+require_password_change *boolean*  | Is a password change required upon next user login? 
+restapi_permission *boolean*  | Can this user access the REST API? 
+self_managed *boolean*  | Does this user manage it's own credentials or is it a shared/bot user? 
+sftp_permission *boolean*  | Can the user access with SFTP? 
+site_admin *boolean*  | Is the user an administrator for this site? 
+skip_welcome_screen *boolean*  | Skip Welcome page in the UI? 
+ssl_required *string*  | SSL required setting <div>Possible values: `use_system_setting`, `always_require`, `never_require`</div>
+sso_strategy_id *int64*  | SSO (Single Sign On) strategy ID for the user, if applicable. 
+subscribe_to_newsletter *boolean*  | Is the user subscribed to the newsletter? 
+time_zone *string*  | User time zone 
+user_root *string*  | Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface. 
+username *string*  | User's username 
+## Unlock user who has been locked out due to failed logins
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/users/{id}/unlock.json \
+  -X POST \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/users/{id}/unlock.xml \
+  -X POST \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+user = Files::User.find(id)
+user.unlock
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$user = \Files\User->find(1);
+$user->unlock();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`POST /users/{id}/unlock`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | User ID. 
+## Resend user welcome email
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/users/{id}/resend_welcome_email.json \
+  -X POST \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/users/{id}/resend_welcome_email.xml \
+  -X POST \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+user = Files::User.find(id)
+user.resend_welcome_email
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$user = \Files\User->find(1);
+$user->resendWelcomeEmail();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`POST /users/{id}/resend_welcome_email`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | User ID. 
+## Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/users/{id}/2fa/reset.json \
+  -X POST \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/users/{id}/2fa/reset.xml \
+  -X POST \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+user = Files::User.find(id)
+user.user_2fa_reset
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$user = \Files\User->find(1);
+$user->user2faReset();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`POST /users/{id}/2fa/reset`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+  The <a href="#reauthentication">`X-Files-Reauthentication` header</a> is required for all requests to this endpoint.
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | User ID. 
+## Update User
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/users/{id}.json \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"avatar_delete":true,"email":"john.doe@files.com","group_id":1,"announcements_read":true,"allowed_ips":"127.0.0.1","attachments_permission":true,"authenticate_until":"2000-01-01T01:00:00Z","authentication_method":"password","billing_permission":true,"bypass_inactive_disable":true,"bypass_site_allowed_ips":true,"dav_permission":true,"disabled":true,"ftp_permission":true,"language":"en","notification_daily_send_time":18,"name":"John Doe","notes":"Internal notes on this user.","password_validity_days":1,"receive_admin_alerts":true,"require_password_change":true,"restapi_permission":true,"self_managed":true,"sftp_permission":true,"site_admin":true,"skip_welcome_screen":true,"ssl_required":"always_require","sso_strategy_id":1,"subscribe_to_newsletter":true,"time_zone":"Pacific Time (US & Canada)","username":"user"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/users/{id}.xml \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<user>
+       <avatar_delete type="boolean">true</avatar_delete>
+       <email>john.doe@files.com</email>
+       <group_id type="integer">1</group_id>
+       <announcements_read type="boolean">true</announcements_read>
+       <allowed_ips>127.0.0.1</allowed_ips>
+       <attachments_permission type="boolean">true</attachments_permission>
+       <authenticate_until>2000-01-01T01:00:00Z</authenticate_until>
+       <authentication_method>password</authentication_method>
+       <billing_permission type="boolean">true</billing_permission>
+       <bypass_inactive_disable type="boolean">true</bypass_inactive_disable>
+       <bypass_site_allowed_ips type="boolean">true</bypass_site_allowed_ips>
+       <dav_permission type="boolean">true</dav_permission>
+       <disabled type="boolean">true</disabled>
+       <ftp_permission type="boolean">true</ftp_permission>
+       <language>en</language>
+       <notification_daily_send_time type="integer">18</notification_daily_send_time>
+       <name>John Doe</name>
+       <notes>Internal notes on this user.</notes>
+       <password_validity_days type="integer">1</password_validity_days>
+       <receive_admin_alerts type="boolean">true</receive_admin_alerts>
+       <require_password_change type="boolean">true</require_password_change>
+       <restapi_permission type="boolean">true</restapi_permission>
+       <self_managed type="boolean">true</self_managed>
+       <sftp_permission type="boolean">true</sftp_permission>
+       <site_admin type="boolean">true</site_admin>
+       <skip_welcome_screen type="boolean">true</skip_welcome_screen>
+       <ssl_required>always_require</ssl_required>
+       <sso_strategy_id type="integer">1</sso_strategy_id>
+       <subscribe_to_newsletter type="boolean">true</subscribe_to_newsletter>
+       <time_zone>Pacific Time (US &amp; Canada)</time_zone>
+       <username>user</username>
+     </user>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+user = Files::User.find(id)
+user.update(
+  avatar_delete: true,
+  email: "john.doe@files.com",
+  group_id: 1,
+  announcements_read: true,
+  allowed_ips: "127.0.0.1",
+  attachments_permission: true,
+  authenticate_until: "2000-01-01T01:00:00Z",
+  authentication_method: "password",
+  billing_permission: true,
+  bypass_inactive_disable: true,
+  bypass_site_allowed_ips: true,
+  dav_permission: true,
+  disabled: true,
+  ftp_permission: true,
+  language: "en",
+  notification_daily_send_time: 18,
+  name: "John Doe",
+  notes: "Internal notes on this user.",
+  password_validity_days: 1,
+  receive_admin_alerts: true,
+  require_password_change: true,
+  restapi_permission: true,
+  self_managed: true,
+  sftp_permission: true,
+  site_admin: true,
+  skip_welcome_screen: true,
+  ssl_required: "always_require",
+  sso_strategy_id: 1,
+  subscribe_to_newsletter: true,
+  time_zone: "Pacific Time (US & Canada)",
+  username: "user"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$user = \Files\User->find(1);
+$user->update(array(
+  'avatar_delete' => true, 
+  'email' => "john.doe@files.com", 
+  'group_id' => 1, 
+  'announcements_read' => true, 
+  'allowed_ips' => "127.0.0.1", 
+  'attachments_permission' => true, 
+  'authenticate_until' => "2000-01-01T01:00:00Z", 
+  'authentication_method' => "password", 
+  'billing_permission' => true, 
+  'bypass_inactive_disable' => true, 
+  'bypass_site_allowed_ips' => true, 
+  'dav_permission' => true, 
+  'disabled' => true, 
+  'ftp_permission' => true, 
+  'language' => "en", 
+  'notification_daily_send_time' => 18, 
+  'name' => "John Doe", 
+  'notes' => "Internal notes on this user.", 
+  'password_validity_days' => 1, 
+  'receive_admin_alerts' => true, 
+  'require_password_change' => true, 
+  'restapi_permission' => true, 
+  'self_managed' => true, 
+  'sftp_permission' => true, 
+  'site_admin' => true, 
+  'skip_welcome_screen' => true, 
+  'ssl_required' => "always_require", 
+  'sso_strategy_id' => 1, 
+  'subscribe_to_newsletter' => true, 
+  'time_zone' => "Pacific Time (US & Canada)", 
+  'username' => "user"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "username": "user",
+  "admin_group_ids": [
+
+  ],
+  "allowed_ips": "127.0.0.1",
+  "attachments_permission": true,
+  "api_keys_count": 1,
+  "authenticate_until": "2000-01-01T01:00:00Z",
+  "authentication_method": "password",
+  "avatar_url": "",
+  "billing_permission": true,
+  "bypass_site_allowed_ips": true,
+  "bypass_inactive_disable": true,
+  "created_at": "2000-01-01T01:00:00Z",
+  "dav_permission": true,
+  "disabled": true,
+  "email": "john.doe@files.com",
+  "ftp_permission": true,
+  "group_ids": [
+
+  ],
+  "language": "en",
+  "last_login_at": "2000-01-01T01:00:00Z",
+  "last_protocol_cipher": "",
+  "lockout_expires": "2000-01-01T01:00:00Z",
+  "name": "John Doe",
+  "notes": "Internal notes on this user.",
+  "notification_daily_send_time": 18,
+  "password_set_at": "2000-01-01T01:00:00Z",
+  "password_validity_days": 1,
+  "public_keys_count": 1,
+  "receive_admin_alerts": true,
+  "require_2fa": true,
+  "require_password_change": true,
+  "restapi_permission": true,
+  "self_managed": true,
+  "sftp_permission": true,
+  "site_admin": true,
+  "skip_welcome_screen": true,
+  "ssl_required": "always_require",
+  "sso_strategy_id": 1,
+  "subscribe_to_newsletter": true,
+  "externally_managed": true,
+  "time_zone": "Pacific Time (US & Canada)",
+  "type_of_2fa": "",
+  "user_root": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <id type="integer">1</id>
+  <username>user</username>
+  <admin_group_ids type="array"/>
+  <allowed_ips>127.0.0.1</allowed_ips>
+  <attachments_permission type="boolean">true</attachments_permission>
+  <api_keys_count type="integer">1</api_keys_count>
+  <authenticate_until>2000-01-01T01:00:00Z</authenticate_until>
+  <authentication_method>password</authentication_method>
+  <avatar_url></avatar_url>
+  <billing_permission type="boolean">true</billing_permission>
+  <bypass_site_allowed_ips type="boolean">true</bypass_site_allowed_ips>
+  <bypass_inactive_disable type="boolean">true</bypass_inactive_disable>
+  <created_at>2000-01-01T01:00:00Z</created_at>
+  <dav_permission type="boolean">true</dav_permission>
+  <disabled type="boolean">true</disabled>
+  <email>john.doe@files.com</email>
+  <ftp_permission type="boolean">true</ftp_permission>
+  <group_ids type="array"/>
+  <language>en</language>
+  <last_login_at>2000-01-01T01:00:00Z</last_login_at>
+  <last_protocol_cipher></last_protocol_cipher>
+  <lockout_expires>2000-01-01T01:00:00Z</lockout_expires>
+  <name>John Doe</name>
+  <notes>Internal notes on this user.</notes>
+  <notification_daily_send_time type="integer">18</notification_daily_send_time>
+  <password_set_at>2000-01-01T01:00:00Z</password_set_at>
+  <password_validity_days type="integer">1</password_validity_days>
+  <public_keys_count type="integer">1</public_keys_count>
+  <receive_admin_alerts type="boolean">true</receive_admin_alerts>
+  <require_2fa type="boolean">true</require_2fa>
+  <require_password_change type="boolean">true</require_password_change>
+  <restapi_permission type="boolean">true</restapi_permission>
+  <self_managed type="boolean">true</self_managed>
+  <sftp_permission type="boolean">true</sftp_permission>
+  <site_admin type="boolean">true</site_admin>
+  <skip_welcome_screen type="boolean">true</skip_welcome_screen>
+  <ssl_required>always_require</ssl_required>
+  <sso_strategy_id type="integer">1</sso_strategy_id>
+  <subscribe_to_newsletter type="boolean">true</subscribe_to_newsletter>
+  <externally_managed type="boolean">true</externally_managed>
+  <time_zone>Pacific Time (US &amp; Canada)</time_zone>
+  <type_of_2fa></type_of_2fa>
+  <user_root></user_root>
+</user>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /users/{id}`
+
+### Authentication Required
+
+Not available to user API keys or sessions from users that are marked as Shared/Bot users.
+
+  The <a href="#reauthentication">`X-Files-Reauthentication` header</a> is required for any requests including the following parameters: `password`, `change_password`, `email`, `site_admin`.
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | User ID. 
+avatar_file *file*  | An image file for your user avatar. 
+avatar_delete *boolean*  | If true, the avatar will be deleted. 
+change_password *string*  | Used for changing a password on an existing user. 
+change_password_confirmation *string*  | Optional, but if provided, we will ensure that it matches the value sent in `change_password`. 
+email *string*  | User's email. 
+grant_permission *string*  | Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `preview`, or `history`. 
+group_id *int64*  | Group ID to associate this user with. 
+group_ids *string*  | A list of group ids to associate this user with.  Comma delimited. 
+password *string*  | User password. 
+password_confirmation *string*  | Optional, but if provided, we will ensure that it matches the value sent in `password`. 
+announcements_read *boolean*  | Signifies that the user has read all the announcements in the UI. 
+allowed_ips *string*  | A list of allowed IPs if applicable.  Newline delimited 
+attachments_permission *boolean*  | Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`. 
+authenticate_until *string*  | Scheduled Date/Time at which user will be deactivated 
+authentication_method *string*  | How is this user authenticated? <div>Possible values: `password`, `ldap`, `sso`, `none`</div>
+billing_permission *boolean*  | Allow this user to perform operations on the account, payments, and invoices? 
+bypass_inactive_disable *boolean*  | Exempt this user from being disabled based on inactivity? 
+bypass_site_allowed_ips *boolean*  | Allow this user to skip site-wide IP blacklists? 
+dav_permission *boolean*  | Can the user connect with WebDAV? 
+disabled *boolean*  | Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting. 
+ftp_permission *boolean*  | Can the user access with FTP/FTPS? 
+language *string*  | Preferred language 
+notification_daily_send_time *int64*  | Hour of the day at which daily notifications should be sent. Can be in range 0 to 23 
+name *string*  | User's full name 
+notes *string*  | Any internal notes on the user 
+password_validity_days *int64*  | Number of days to allow user to use the same password 
+receive_admin_alerts *boolean*  | Should the user receive admin alerts such a certificate expiration notifications and overages? 
+require_password_change *boolean*  | Is a password change required upon next user login? 
+restapi_permission *boolean*  | Can this user access the REST API? 
+self_managed *boolean*  | Does this user manage it's own credentials or is it a shared/bot user? 
+sftp_permission *boolean*  | Can the user access with SFTP? 
+site_admin *boolean*  | Is the user an administrator for this site? 
+skip_welcome_screen *boolean*  | Skip Welcome page in the UI? 
+ssl_required *string*  | SSL required setting <div>Possible values: `use_system_setting`, `always_require`, `never_require`</div>
+sso_strategy_id *int64*  | SSO (Single Sign On) strategy ID for the user, if applicable. 
+subscribe_to_newsletter *boolean*  | Is the user subscribed to the newsletter? 
+time_zone *string*  | User time zone 
+user_root *string*  | Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface. 
+username *string*  | User's username 
+## Delete User
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/users/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/users/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+user = Files::User.find(id)
+user.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$user = \Files\User->find(1);
+$user->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /users/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+  The <a href="#reauthentication">`X-Files-Reauthentication` header</a> is required for all requests to this endpoint.
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | User ID. 
+

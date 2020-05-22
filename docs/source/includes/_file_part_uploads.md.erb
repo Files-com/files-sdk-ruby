@@ -1,0 +1,186 @@
+# File Part Uploads
+
+The FilePartUploads resource in the REST API allows you to operate on FilePartUploads.
+
+## The FilePartUpload object
+
+> Example FilePartUpload Object
+
+```json
+{
+  "send": "",
+  "action": "upload/direct",
+  "ask_about_overwrites": true,
+  "available_parts": "",
+  "expires": "",
+  "headers": "",
+  "http_method": "POST",
+  "next_partsize": "",
+  "parameters": "",
+  "part_number": "",
+  "partsize": "",
+  "path": "path",
+  "ref": "upload-1",
+  "upload_uri": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file-part-upload>
+  <send></send>
+  <action>upload/direct</action>
+  <ask_about_overwrites type="boolean">true</ask_about_overwrites>
+  <available_parts></available_parts>
+  <expires></expires>
+  <headers></headers>
+  <http_method>POST</http_method>
+  <next_partsize></next_partsize>
+  <parameters></parameters>
+  <part_number></part_number>
+  <partsize></partsize>
+  <path>path</path>
+  <ref>upload-1</ref>
+  <upload_uri></upload_uri>
+</file-part-upload>
+
+```
+
+Attribute | Description
+--------- | -----------
+  send *object* | Content-Type and File to send 
+  action *string* | Type of upload 
+  ask_about_overwrites *boolean* | If false, rename conflicting files instead of asking for overwrite confirmation 
+  available_parts *string* | Currently unused 
+  expires *string* | Currently unused 
+  headers *object* | Additional upload headers 
+  http_method *string* | Upload method, usually POST 
+  next_partsize *string* | Currently unused 
+  parameters *string* | Additional upload parameters 
+  part_number *string* | Currently unused 
+  partsize *string* | Currently unused 
+  path *string* | Upload path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters. 
+  ref *string* | Reference name for this upload part 
+  upload_uri *string* | URI to upload this part to 
+
+## Begin file upload
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/file_actions/begin_upload/{path} \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"mkdir_parents":true,"part":1,"parts":1,"ref":"upload-1","restart":1,"with_rename":true}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/file_actions/begin_upload/{path} \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<file-part-upload>
+       <mkdir_parents type="boolean">true</mkdir_parents>
+       <part type="integer">1</part>
+       <parts type="integer">1</parts>
+       <ref>upload-1</ref>
+       <restart type="integer">1</restart>
+       <with_rename type="boolean">true</with_rename>
+     </file-part-upload>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+file_action = Files::FileAction.find(path)
+file_action.begin_upload(
+  mkdir_parents: true,
+  part: 1,
+  parts: 1,
+  ref: "upload-1",
+  restart: 1,
+  with_rename: true
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$file_action = \Files\FileAction->find(1);
+$file_action->beginUpload(array(
+  'mkdir_parents' => true, 
+  'part' => 1, 
+  'parts' => 1, 
+  'ref' => "upload-1", 
+  'restart' => 1, 
+  'with_rename' => true
+));
+```
+
+> Example Response
+
+```json
+{
+  "send": "",
+  "action": "upload/direct",
+  "ask_about_overwrites": true,
+  "available_parts": "",
+  "expires": "",
+  "headers": "",
+  "http_method": "POST",
+  "next_partsize": "",
+  "parameters": "",
+  "part_number": "",
+  "partsize": "",
+  "path": "path",
+  "ref": "upload-1",
+  "upload_uri": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file-part-upload>
+  <send></send>
+  <action>upload/direct</action>
+  <ask_about_overwrites type="boolean">true</ask_about_overwrites>
+  <available_parts></available_parts>
+  <expires></expires>
+  <headers></headers>
+  <http_method>POST</http_method>
+  <next_partsize></next_partsize>
+  <parameters></parameters>
+  <part_number></part_number>
+  <partsize></partsize>
+  <path>path</path>
+  <ref>upload-1</ref>
+  <upload_uri></upload_uri>
+</file-part-upload>
+
+```
+
+
+### HTTPS Request
+
+`POST /file_actions/begin_upload/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Path to operate on. 
+mkdir_parents *boolean*  | Create parent directories if they do not exist? 
+part *int64*  | Part if uploading a part. 
+parts *int64*  | How many parts to fetch? 
+ref *string*  |  
+restart *int64*  | File byte offset to restart from. 
+with_rename *boolean*  | Allow file rename instead of overwrite? 
+

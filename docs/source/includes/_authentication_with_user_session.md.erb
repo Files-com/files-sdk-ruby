@@ -1,0 +1,122 @@
+# Authentication with a Session
+
+You can also authenticate to the REST API or SDKs by creating a user session using the username and password of an active user. If the user is an administrator, the session will have full access to the entire API. Sessions created from regular user accounts will only be able to access files that user can access, and no access will be granted to site administration functions.
+
+## Logging in
+
+> Example Request
+
+```shell--json
+curl https://SUBDOMAIN.files.com/api/rest/v1/sessions.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"username": "motor", "password": "vroom"}'
+```
+
+```shell--xml
+curl https://SUBDOMAIN.files.com/api/rest/v1/sessions.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<session><username>motor</username><password>vroom</password></session>'
+```
+
+> Example Response
+
+```json
+{
+  "id": "8c2e9f493dd8a857d5cdddbb7bf64ece0b7fb599"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<session>
+  <id>8c2e9f493dd8a857d5cdddbb7bf64ece0b7fb599</id>
+</session>
+```
+
+To create a session, a **POST** request is made to `/sessions` with the user’s username and password.
+
+The `id` field in the response is the session ID that must be provided to subsequent requests in order to use this session.
+
+### HTTP Request
+
+`POST /sessions.(json|xml)`
+
+## Using a session
+
+> Example Request
+
+```shell--json
+curl https://SUBDOMAIN.files.com/api/rest/v1/users.json \
+  -H 'X-FilesAPI-Auth: 8c2e9f493dd8a857d5cdddbb7bf64ece0b7fb599'
+```
+
+```shell--xml
+curl https://SUBDOMAIN.files.com/api/rest/v1/users.xml \
+  -H 'X-FilesAPI-Auth: 8c2e9f493dd8a857d5cdddbb7bf64ece0b7fb599'
+```
+
+Once a session has been created, you authenticate to the REST API by sending a header called `X-FilesAPI-Auth` set to the value of the session ID.
+
+## Reauthentication
+
+> Example Request
+
+```shell--json
+curl https://SUBDOMAIN.files.com/api/rest/v1/users/123.json \
+  -X PUT \
+  -H 'Content-Type: application/json' \
+  -H 'X-FilesAPI-Auth: 8c2e9f493dd8a857d5cdddbb7bf64ece0b7fb599' \
+  -H 'X-Files-Reauthentication: password:YourPasswordHere' \
+  -d '{"password": "NewPassword"}'
+```
+
+```shell--xml
+curl https://SUBDOMAIN.files.com/api/rest/v1/users/123.xml \
+  -X PUT \
+  -H 'Content-Type: application/xml' \
+  -H 'X-FilesAPI-Auth: 8c2e9f493dd8a857d5cdddbb7bf64ece0b7fb599' \
+  -H 'X-Files-Reauthentication: password:YourPasswordHere' \
+  -d '<user><password>NewPassword</password></user>'
+```
+
+If authenticating to the API via a session ID (as opposed to an API key), we require that you provide the session user’s password again in a `X-Files-Reauthentication` header for certain types of requests where we want to add an additional level of security. We call this process Reauthentication.
+
+Currently, reauthentication is required for the following actions:
+
+* Changing the password of a User
+* Deleting a User
+
+## Logging out
+
+> Example Request
+
+```shell--json
+curl https://SUBDOMAIN.files.com/api/rest/v1/sessions.json \
+  -H 'X-FilesAPI-Auth: 8c2e9f493dd8a857d5cdddbb7bf64ece0b7fb599' \
+  -X DELETE
+```
+
+```shell--xml
+curl https://SUBDOMAIN.files.com/api/rest/v1/sessions.xml \
+  -H 'X-FilesAPI-Auth: 8c2e9f493dd8a857d5cdddbb7bf64ece0b7fb599' \
+  -X DELETE
+```
+
+> Example Response
+
+```json
+[]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<nil-classes type="array"/>
+```
+
+User sessions can be ended by sending a **DELETE** request to `/sessions`. If a valid user session ID is passed in via the `X-FilesAPI-Auth` header, then that user session will be deleted, which is similar to the user logging out. Note that sending a **DELETE** request at this endpoint will always result in a response of an empty array, even if an invalid user session was passed in.
+
+### HTTP Request
+
+`DELETE /sessions.(json|xml)`

@@ -1,0 +1,43 @@
+# Authentication with API Key
+
+Authenticating with an API key is the recommended authentication method for most scenarios, and is the method used in the examples on this site.
+
+Files.com also supports authentication with [user sessions](#authentication-with-a-session).
+
+> Example of authenticating with an API key
+
+```shell--json
+curl https://SUBDOMAIN.files.com/api/rest/v1/users.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://SUBDOMAIN.files.com/api/rest/v1/users.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+# Alternatively, you can specify the API key on a per-request basis in the final parameter to any method or initializer.
+Files::User.new(params, api_key: 'YOUR_API_KEY')
+```
+
+```php
+\Files::configure(array('api_key' => 'YOUR_API_KEY'));
+
+# Alternatively, you can specify the API key on a per-request basis in the final parameter to any method or initializer.
+new \Files\User($params, array('api_key' => 'YOUR_API_KEY'));
+```
+
+> Make sure to replace `YOUR_API_KEY` with your API key.
+
+To use the API or SDKs with an API Key, first [generate an API key](https://files.com/docs/articles/api-keys#managing-api-keys) from the web interface or [via the API or an SDK](#user-api-keys).
+
+Note that when using a user-specific API key, if the user is an administrator, you will have full access to the entire API. If the user is not an administrator, you will only be able to access files that user can access, and no access will be granted to site administration functions in the API.
+
+You may provide the key to the API one of two ways.  The simplest way is to set the `X-FilesAPI-Key` header with the value of the key.
+
+Alternatively, you may use HTTP Basic Authentication. You should pass in the API Key as the Username field in HTTP Basic Authentication. The password field may be left blank, or you may use a dummy value, such as `x`.
+
+SDKs can be configured to use a single API key or you can pass the API key to each individual method on the SDK.

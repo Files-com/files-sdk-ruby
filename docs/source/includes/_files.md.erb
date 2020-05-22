@@ -1,0 +1,1068 @@
+# Files/Folders
+
+The File and Folder resources in the REST API allow you to operate on files and folders. While the two resources are similar, they are not exactly the same, so pay close attention to the documentation to ensure that you are operating on the correct REST resource for the operation you are trying to perform.
+
+## Using SDKs for File/Folder operations
+
+Wherever possible, Files.com SDKs have implemented file operation interfaces that are as idiomatic as possible in your target language.  Meaning that operating on a remote file on Files.com is as close as possible to operating on a local file.
+
+We will be expanding the documentation on SDK file operations soon, but in the mean time, you can review the SDK's README file to learn more.
+
+We strongly recommend using SDKs for file/folder operations if we have one in your language.  The SDKs take care of all the complexity for you.
+
+
+## Specifying file path names
+
+When accessing the File and Folder resources in the REST API (i.e. endpoints that begin with `/files` or `/folders`), the remainder of the URL specifies the path to a file/folder being operated on. Operations on those endpoints in particular, without a file name, specify the operation applies to the Root Folder of your site.
+
+For example, to retrieve a file called `Hello.txt`, a GET request would be sent to `/files/Hello.txt`.
+
+If special characters exist in the path name, you will need to encode them in UTF-8 first, and then URL encode the bytes. For example, to list the contents of a folder with a complete path of `Engineering Candidates/Résumés`, a **GET** request would be sent to `/folders/Engineering%20Candidates/R%c3%a9sum%c3%a9s`.
+
+
+## Request and response format
+
+The Files.com REST API supports both JSON and XML for both request data and response data. The REST API does not assume the request and response formats are the same, and determines each independently to allow them to be different. On all requests, the request data format is determined from the `Content-Type` header in the request.
+
+For the response, the REST API normally looks at the file extension (.json or .xml) or the `Accept` header in the request. However, for requests sent to the `/files` and `/folders` interfaces (and other endpoints that include the path name directly, such as `/history/files` and `/history/folders`), any file extension is assumed to be part of the file name being operated on and does not affect the response format. Therefore, when using this part of the REST API, please send an `Accept` header to set the response format. Currently, the default format is JSON if no `Accept` header is sent, but is subject to change, and therefore sending the `Accept` header with a value of `application/json` is recommended.
+
+Valid `Accept` header values are as follows:
+
+MIME Type | Description |
+--- | --- |
+`application/json`| JSON
+`application/xml`| XML
+`text/html` | HTML (Only valid for `/history/files` and `/history/folders`) |
+`application/vnd.ms-excel`| XLS (Only valid for `/history/files` and `/history/folders`) |
+`text/csv` | CSV (Only valid for `/history/files` and `/history/folders`) |
+
+## The File object
+
+> Example File Object
+
+```json
+{
+  "id": 1,
+  "path": "path/file.txt",
+  "display_name": "file.txt",
+  "type": "file",
+  "size": 1024,
+  "mtime": "2000-01-01T01:00:00Z",
+  "provided_mtime": "2000-01-01T01:00:00Z",
+  "crc32": "70976923",
+  "md5": "17c54824e9931a4688ca032d03f6663c",
+  "mime_type": "application/octet-stream",
+  "region": "us-east-1",
+  "permissions": "rpw",
+  "subfolders_locked?": true,
+  "download_uri": "https://mysite.files.com/...",
+  "priority_color": "red",
+  "preview_id": 1,
+  "preview": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file>
+  <id type="integer">1</id>
+  <path>path/file.txt</path>
+  <display_name>file.txt</display_name>
+  <type>file</type>
+  <size type="integer">1024</size>
+  <mtime>2000-01-01T01:00:00Z</mtime>
+  <provided_mtime>2000-01-01T01:00:00Z</provided_mtime>
+  <crc32>70976923</crc32>
+  <md5>17c54824e9931a4688ca032d03f6663c</md5>
+  <mime_type>application/octet-stream</mime_type>
+  <region>us-east-1</region>
+  <permissions>rpw</permissions>
+  <subfolders_locked? type="boolean">true</subfolders_locked?>
+  <download_uri>https://mysite.files.com/...</download_uri>
+  <priority_color>red</priority_color>
+  <preview_id type="integer">1</preview_id>
+  <preview></preview>
+</file>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | File/Folder ID 
+  path *string* | File/Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters. 
+  display_name *string* | File/Folder display name 
+  type *string* | Type: `directory` or `file`. 
+  size *int64* | File/Folder size 
+  mtime *date-time* | File last modified date/time, according to the server.  This is the timestamp of the last Files.com operation of the file, regardless of what modified timestamp was sent. 
+  provided_mtime *date-time* | File last modified date/time, according to the client who set it.  Files.com allows desktop, FTP, SFTP, and WebDAV clients to set modified at times.  This allows Desktop<->Cloud syncing to preserve modified at times. 
+  crc32 *string* | File CRC32 checksum. This is sometimes delayed, so if you get a blank response, wait and try again. 
+  md5 *string* | File MD5 checksum. This is sometimes delayed, so if you get a blank response, wait and try again. 
+  mime_type *string* | MIME Type.  This is determined by the filename extension and is not stored separately internally. 
+  region *string* | Region location 
+  permissions *string* | A short string representing the current user's permissions.  Can be `r`,`w`,`p`, or any combination 
+  subfolders_locked? *boolean* | Are subfolders locked and unable to be modified? 
+  download_uri *string* | Link to download file. Provided only in response to a download request. 
+  priority_color *string* | Bookmark/priority color of file/folder 
+  preview_id *int64* | File preview ID 
+  preview  | File preview 
+  action *string* | The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist 
+  length *int64* | Length of file. 
+  mkdir_parents *boolean* | Create parent directories if they do not exist? 
+  part *int64* | Part if uploading a part. 
+  parts *int64* | How many parts to fetch? 
+  ref *string* |  
+  restart *int64* | File byte offset to restart from. 
+  structure *string* | If copying folder, copy just the structure? 
+  with_rename *boolean* | Allow file rename instead of overwrite? 
+
+## Download file
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/files/{path}?id=1&with_previews=true&with_priority_color=true" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/files/{path}?id=1&with_previews=true&with_priority_color=true" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+file = Files::File.find(path)
+file.download(
+  id: 1,
+  with_previews: true,
+  with_priority_color: true
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$file = \Files\File->find(1);
+$file->download(array(
+  'id' => 1, 
+  'with_previews' => true, 
+  'with_priority_color' => true
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "path/file.txt",
+  "display_name": "file.txt",
+  "type": "file",
+  "size": 1024,
+  "mtime": "2000-01-01T01:00:00Z",
+  "provided_mtime": "2000-01-01T01:00:00Z",
+  "crc32": "70976923",
+  "md5": "17c54824e9931a4688ca032d03f6663c",
+  "mime_type": "application/octet-stream",
+  "region": "us-east-1",
+  "permissions": "rpw",
+  "subfolders_locked?": true,
+  "download_uri": "https://mysite.files.com/...",
+  "priority_color": "red",
+  "preview_id": 1,
+  "preview": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file>
+  <id type="integer">1</id>
+  <path>path/file.txt</path>
+  <display_name>file.txt</display_name>
+  <type>file</type>
+  <size type="integer">1024</size>
+  <mtime>2000-01-01T01:00:00Z</mtime>
+  <provided_mtime>2000-01-01T01:00:00Z</provided_mtime>
+  <crc32>70976923</crc32>
+  <md5>17c54824e9931a4688ca032d03f6663c</md5>
+  <mime_type>application/octet-stream</mime_type>
+  <region>us-east-1</region>
+  <permissions>rpw</permissions>
+  <subfolders_locked? type="boolean">true</subfolders_locked?>
+  <download_uri>https://mysite.files.com/...</download_uri>
+  <priority_color>red</priority_color>
+  <preview_id type="integer">1</preview_id>
+  <preview></preview>
+</file>
+
+```
+
+
+### HTTPS Request
+
+`GET /files/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Path to operate on. 
+action *string*  | Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations. 
+id *int64*  | If provided, lookup the file by id instead of path. 
+with_previews *boolean*  | Include file preview information? 
+with_priority_color *boolean*  | Include file priority color information? 
+## List Folders by path
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/folders/{path}?page=1&per_page=1&search_all=true&with_priority_color=true" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/folders/{path}?page=1&per_page=1&search_all=true&with_priority_color=true" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Folder.list_for(path, 
+  page: 1, 
+  per_page: 1, 
+  search_all: true, 
+  with_priority_color: true
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Folder::listFor($path, array(
+  'page' => 1, 
+  'per_page' => 1, 
+  'search_all' => true, 
+  'with_priority_color' => true
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "path": "path/file.txt",
+    "display_name": "file.txt",
+    "type": "file",
+    "size": 1024,
+    "mtime": "2000-01-01T01:00:00Z",
+    "provided_mtime": "2000-01-01T01:00:00Z",
+    "crc32": "70976923",
+    "md5": "17c54824e9931a4688ca032d03f6663c",
+    "mime_type": "application/octet-stream",
+    "region": "us-east-1",
+    "permissions": "rpw",
+    "subfolders_locked?": true,
+    "download_uri": "https://mysite.files.com/...",
+    "priority_color": "red",
+    "preview_id": 1,
+    "preview": ""
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<files type="array">
+  <file>
+    <id type="integer">1</id>
+    <path>path/file.txt</path>
+    <display_name>file.txt</display_name>
+    <type>file</type>
+    <size type="integer">1024</size>
+    <mtime>2000-01-01T01:00:00Z</mtime>
+    <provided_mtime>2000-01-01T01:00:00Z</provided_mtime>
+    <crc32>70976923</crc32>
+    <md5>17c54824e9931a4688ca032d03f6663c</md5>
+    <mime_type>application/octet-stream</mime_type>
+    <region>us-east-1</region>
+    <permissions>rpw</permissions>
+    <subfolders_locked? type="boolean">true</subfolders_locked?>
+    <download_uri>https://mysite.files.com/...</download_uri>
+    <priority_color>red</priority_color>
+    <preview_id type="integer">1</preview_id>
+    <preview></preview>
+  </file>
+</files>
+
+```
+
+
+### HTTPS Request
+
+`GET /folders/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Action to take.  Can be `count`, `count_nrs` (non recursive), `size`, `permissions`, or blank. 
+path *string* **Required** | Path to operate on. 
+cursor *string*  | Send cursor to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor header. 
+filter *string*  | If specified, will to filter folders/files list by this string.  Wildcards of `*` and `?` are acceptable here. 
+preview_size *string*  | Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`. 
+search *string*  | If `search_all` is `true`, provide the search string here.  Otherwise, this parameter acts like an alias of `filter`. 
+search_all *boolean*  | Search entire site? 
+with_priority_color *boolean*  | Include file priority color information? 
+## Upload file
+
+Uploading files via REST is a multi-step process and it's covered in the <a href="#file-uploading">File Uploading</a> section.
+## Copy file/folder
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/file_actions/copy/{path} \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"destination":"destination"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/file_actions/copy/{path} \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<file>
+       <destination>destination</destination>
+     </file>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+file_action = Files::FileAction.find(path)
+file_action.copy(
+  destination: "destination"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$file_action = \Files\FileAction->find(1);
+$file_action->copy(array(
+  'destination' => "destination"
+));
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`POST /file_actions/copy/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Path to operate on. 
+destination *string* **Required** | Copy destination path. 
+## Move file/folder
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/file_actions/move/{path} \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"destination":"destination"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/file_actions/move/{path} \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<file>
+       <destination>destination</destination>
+     </file>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+file_action = Files::FileAction.find(path)
+file_action.move(
+  destination: "destination"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$file_action = \Files\FileAction->find(1);
+$file_action->move(array(
+  'destination' => "destination"
+));
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`POST /file_actions/move/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Path to operate on. 
+destination *string* **Required** | Move destination path. 
+## Create folder
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/folders/{path} \
+  -X POST \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/folders/{path} \
+  -X POST \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Folder.create(path)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Folder::create($path);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "path/file.txt",
+  "display_name": "file.txt",
+  "type": "file",
+  "size": 1024,
+  "mtime": "2000-01-01T01:00:00Z",
+  "provided_mtime": "2000-01-01T01:00:00Z",
+  "crc32": "70976923",
+  "md5": "17c54824e9931a4688ca032d03f6663c",
+  "mime_type": "application/octet-stream",
+  "region": "us-east-1",
+  "permissions": "rpw",
+  "subfolders_locked?": true,
+  "download_uri": "https://mysite.files.com/...",
+  "priority_color": "red",
+  "preview_id": 1,
+  "preview": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file>
+  <id type="integer">1</id>
+  <path>path/file.txt</path>
+  <display_name>file.txt</display_name>
+  <type>file</type>
+  <size type="integer">1024</size>
+  <mtime>2000-01-01T01:00:00Z</mtime>
+  <provided_mtime>2000-01-01T01:00:00Z</provided_mtime>
+  <crc32>70976923</crc32>
+  <md5>17c54824e9931a4688ca032d03f6663c</md5>
+  <mime_type>application/octet-stream</mime_type>
+  <region>us-east-1</region>
+  <permissions>rpw</permissions>
+  <subfolders_locked? type="boolean">true</subfolders_locked?>
+  <download_uri>https://mysite.files.com/...</download_uri>
+  <priority_color>red</priority_color>
+  <preview_id type="integer">1</preview_id>
+  <preview></preview>
+</file>
+
+```
+
+
+### HTTPS Request
+
+`POST /folders/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Path to operate on. 
+## Update file/folder metadata
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/files/{path} \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"provided_mtime":"2000-01-01T01:00:00Z","priority_color":"red"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/files/{path} \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<file>
+       <provided_mtime>2000-01-01T01:00:00Z</provided_mtime>
+       <priority_color>red</priority_color>
+     </file>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+file = Files::File.find(path)
+file.update(
+  provided_mtime: "2000-01-01T01:00:00Z",
+  priority_color: "red"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$file = \Files\File->find(1);
+$file->update(array(
+  'provided_mtime' => "2000-01-01T01:00:00Z", 
+  'priority_color' => "red"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "path": "path/file.txt",
+  "display_name": "file.txt",
+  "type": "file",
+  "size": 1024,
+  "mtime": "2000-01-01T01:00:00Z",
+  "provided_mtime": "2000-01-01T01:00:00Z",
+  "crc32": "70976923",
+  "md5": "17c54824e9931a4688ca032d03f6663c",
+  "mime_type": "application/octet-stream",
+  "region": "us-east-1",
+  "permissions": "rpw",
+  "subfolders_locked?": true,
+  "download_uri": "https://mysite.files.com/...",
+  "priority_color": "red",
+  "preview_id": 1,
+  "preview": ""
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file>
+  <id type="integer">1</id>
+  <path>path/file.txt</path>
+  <display_name>file.txt</display_name>
+  <type>file</type>
+  <size type="integer">1024</size>
+  <mtime>2000-01-01T01:00:00Z</mtime>
+  <provided_mtime>2000-01-01T01:00:00Z</provided_mtime>
+  <crc32>70976923</crc32>
+  <md5>17c54824e9931a4688ca032d03f6663c</md5>
+  <mime_type>application/octet-stream</mime_type>
+  <region>us-east-1</region>
+  <permissions>rpw</permissions>
+  <subfolders_locked? type="boolean">true</subfolders_locked?>
+  <download_uri>https://mysite.files.com/...</download_uri>
+  <priority_color>red</priority_color>
+  <preview_id type="integer">1</preview_id>
+  <preview></preview>
+</file>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /files/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Path to operate on. 
+provided_mtime *string*  | Modified time of file. 
+priority_color *string*  | Priority/Bookmark color of file. 
+## Delete file/folder
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/files/{path}?recursive=true" \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/files/{path}?recursive=true" \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+file = Files::File.find(path)
+file.delete(
+  recursive: true
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$file = \Files\File->find(1);
+$file->delete(array(
+  'recursive' => true
+));
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /files/?*path`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+path *string* **Required** | Path to operate on. 
+recursive *boolean*  | If true, will recursively delete folers.  Otherwise, will error on non-empty folders.  For legacy reasons, this parameter may also be provided as the HTTP header `Depth: Infinity` 
+
+# File Uploading
+
+In order to support huge files (up to 5TB), the procedure to upload files via the REST API requires multiple steps. We will explain the procedure here.
+
+**If you are using an SDK, you do not need to worry about any of this process, it's all handled for you by the SDK.**
+
+## REST API upload steps
+
+Uploading files using the REST API is done in 3 stages:
+
+1. [Start a new upload](#starting-a-new-upload) by sending a request to REST API to indicate intent to upload a file.
+2. [Upload the file](#uploading-the-file-or-file-parts) to the URL(s) provided by the REST API, possibly in parts via multiple uploads.
+3. [Complete the upload](#completing-an-upload) by notifying the REST API that the file upload has completed.
+
+## The upload object
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ref <em>string</em></td>
+      <td>Unique identifier to reference this file upload. This identifier is needed for subsequent requests to the REST API to complete the upload or request more upload URLs.</td>
+    </tr>
+    <tr>
+      <td>http_method <em>string</em></td>
+      <td>Value is PUT or POST, and is the HTTP method used when uploading the file to S3 at the <code>upload_uri</code>.</td>
+    </tr>
+    <tr>
+      <td>upload_uri <em>string</em></td>
+      <td>The URL where the file is uploaded to.</td>
+    </tr>
+    <tr>
+      <td>partsize <em>integer</em></td>
+      <td>Recommended size of upload. When uploading file pieces, the piece sizes are required to be between 5 MB and 5 GB (except the last part). This value provides a recommended size to upload for this part without adding another part.</td>
+    </tr>
+    <tr>
+      <td>part_number <em>integer</em></td>
+      <td>Number of this part, which is always between 1 and 10,000, and will always be 1 for the first upload URL at the beginning of uploading a new file.</td>
+    </tr>
+    <tr>
+      <td>available_parts <em>integer</em></td>
+      <td>Number of parts available for this upload. For new file uploads this value is always 10,000, but it may be smaller for other uploads. When requesting more upload URLs from the REST API, the part numbers must be between 1 and this number.</td>
+    </tr>
+    <tr>
+      <td>headers <em>key-value pairs</em></td>
+      <td>A list of required headers and their exact values to send in the file upload. It may be empty if no headers with fixed values are required.</td>
+    </tr>
+    <tr>
+      <td>parameters <em>key-value pairs</em></td>
+      <td>A list of required parameters and their exact values to send in the file upload. If any values are in this array, it is implied that the upload request is formatted appropriately to send form data parameters. It will always be empty if the body of the request is specified to be where the file upload data goes (see <code>send</code> below).</td>
+    </tr>
+    <tr>
+      <td>send <em>key-value pairs</em></td>
+      <td>
+        This is an array of values to be sent in the file upload request. Possible sub-values are <code>partsize</code>, <code>partdata</code>, <code>file</code>, and <code>Content-Type</code>:
+        <ul>
+          <li><code>file</code>: where to put the file data for the entire file upload</li>
+          <li><code>partdata</code>: where to put the file data for this part</li>
+          <li><code>partsize</code>: where to put the size of the upload for this file part</li>
+          <li><code>Content-Type</code>: where to put the Content-Type of the file (which can have no bearing on the file's actual type)</li>
+        </ul>
+        Possible values for these parameters:
+        <ul>
+          <li><code>body</code>: this information is the body of the PUT or POST request</li>
+          <li><code>required-header &lt;header name&gt;</code>: this information goes in the named header</li>
+          <li><code>required-parameter &lt;parameter name&gt;</code>: this information goes in the named parameter, and implies this request is formatted appropriately to send form data parameters</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>path <em>string</em></td>
+      <td>Intended destination path of the file upload. Path may change upon finalization, depending on existance of another upload to the same location and the site's overwrite setting.</td>
+    </tr>
+    <tr>
+      <td>action <em>string</em></td>
+      <td>Value is always <code>write</code> or <code>put</code> for this action.</td>
+    </tr>
+    <tr>
+      <td>ask_about_overwrites <em>boolean</em></td>
+      <td>If true, a file by this name already exists and will be overwritten when this upload completes if it continues.</td>
+    </tr>
+  </tbody>
+</table>
+
+
+## Starting a new upload
+
+> Example Request
+
+```shell--json
+curl https://SUBDOMAIN.files.com/api/rest/v1/files/NewFile.txt \
+  -u YOUR_API_KEY:x \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{
+        "action": "put"
+      }'
+```
+
+```shell--xml
+curl https://SUBDOMAIN.files.com/api/rest/v1/files/NewFile.txt \
+  -u YOUR_API_KEY:x \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -H 'Accept: application/xml' \
+  -d '<file>
+        <action>put</action>
+      </file>'
+```
+
+> Example Response
+
+```json
+{
+  "ref": "put-378670",
+  "path": "NewFile.txt",
+  "action": "put/write",
+  "ask_about_overwrites": false,
+  "http_method": "PUT",
+  "upload_uri": "https://example-upload-proxy-url.com/path/6eee7ad0-bf75-0131-71fc-0eeabbd7a8b4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIEWLY3MN4YGZQOWA%2F20140516%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20140516T221456Z&X-Amz-Expires=180&X-Amz-SignedHeaders=host&partNumber=1&uploadId=xQDI8q.aDdWdWIvSpRGLOFqnPQqJoMGZ88r9g_q7z2gW6U4rNZx8Zb_Wh9m07TDJM1x4rCTM18UCzdXaYjJu.SBH89LAiA4ye698TfMPyam4BO7ifs7HLuiBPrEW.zIz&X-Amz-Signature=69bc7be37c8c42096e78aa4ff752f073ea890481c5f76eac5ad40a5ab9466997",
+  "partsize":5242880,
+  "part_number":1,
+  "available_parts":10000,
+  "send": {
+    "partsize": "required-parameter Content-Length",
+    "partdata": "body"
+  },
+  "headers": {},
+  "parameters": {}
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<upload>
+  <ref>put-378670</ref>
+  <path>NewFile.txt</path>
+  <action>put/write</action>
+  <ask_about_overwrites type="boolean">false</ask_about_overwrites>
+  <http_method>PUT</http_method>
+  <upload_uri>https://example-upload-proxy-url.com/path/6eee7ad0-bf75-0131-71fc-0eeabbd7a8b4?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAIEWLY3MN4YGZQOWA%2F20140516%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20140516T221456Z&amp;X-Amz-Expires=180&amp;X-Amz-SignedHeaders=host&amp;partNumber=1&amp;uploadId=xQDI8q.aDdWdWIvSpRGLOFqnPQqJoMGZ88r9g_q7z2gW6U4rNZx8Zb_Wh9m07TDJM1x4rCTM18UCzdXaYjJu.SBH89LAiA4ye698TfMPyam4BO7ifs7HLuiBPrEW.zIz&amp;X-Amz-Signature=69bc7be37c8c42096e78aa4ff752f073ea890481c5f76eac5ad40a5ab9466997</upload_uri>
+  <partsize type="integer">5242880</partsize>
+  <part_number type="integer">1</part_number>
+  <available_parts type="integer">10000</available_parts>
+  <send>
+    <partsize>required-parameter Content-Length</partsize>
+    <partdata>body</partdata>
+  </send>
+  <headers></headers>
+  <parameters></parameters>
+</upload>
+```
+
+The first request to upload a new file is a **POST** request to `/files/PATH_AND_FILENAME.EXT` with an `action` parameter with the value of `put`.
+
+### HTTP Request
+
+`POST /files/:path_and_filename`
+
+## Uploading the file or file parts
+
+> Example Request
+
+```shell
+curl "https://example-upload-proxy-url.com/path/6eee7ad0-bf75-0131-71fc-0eeabbd7a8b4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIEWLY3MN4YGZQOWA%2F20140516%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20140516T221456Z&X-Amz-Expires=180&X-Amz-SignedHeaders=host&partNumber=1&uploadId=xQDI8q.aDdWdWIvSpRGLOFqnPQqJoMGZ88r9g_q7z2gW6U4rNZx8Zb_Wh9m07TDJM1x4rCTM18UCzdXaYjJu.SBH89LAiA4ye698TfMPyam4BO7ifs7HLuiBPrEW.zIz&X-Amz-Signature=69bc7be37c8c42096e78aa4ff752f073ea890481c5f76eac5ad40a5ab9466997" \
+  --upload-file filename.ext
+```
+
+At this point, you are to send a **PUT** request to the returned `upload_uri` with the file data, along with the headers and parameters provided to you from Files.com.
+
+The `upload_uri` link is signed by Files.com and must be used within 15 minutes. You will receive an HTTP 200 response with no body upon successful upload.
+
+Should you wish to upload the file in multiple parts (required if the file size exceeds 5 GB) you will need to [request an additional upload URL](#requesting-additional-upload-urls) for the next part.
+
+## Requesting additional upload URLs
+
+> Example Request
+
+```shell--json
+curl https://SUBDOMAIN.files.com/api/rest/v1/files/NewFile.txt \
+  -u YOUR_API_KEY:x \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{
+        "action": "put",
+        "ref": "put-378670",
+        "part": 2
+      }'
+```
+
+```shell--xml
+curl https://SUBDOMAIN.files.com/api/rest/v1/files/NewFile.txt \
+  -u YOUR_API_KEY:x \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -H 'Accept: application/xml' \
+  -d '<file>
+        <action>put</action>
+        <ref>put-378670</ref>
+        <part>2</part>
+      </file>'
+```
+
+> Example Response
+
+```json
+{
+  "ref": "put-378670",
+  "path": "NewFile.txt",
+  "action": "put/write",
+  "ask_about_overwrites": false,
+  "http_method": "PUT",
+  "upload_uri": "https://example-upload-proxy-url.com/path/6eee7ad0-bf75-0131-71fc-0eeabbd7a8b4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIEWLY3MN4YGZQOWA%2F20140516%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20140516T221456Z&X-Amz-Expires=180&X-Amz-SignedHeaders=host&partNumber=2&uploadId=xQDI8q.aDdWdWIvSpRGLOFqnPQqJoMGZ88r9g_q7z2gW6U4rNZx8Zb_Wh9m07TDJM1x4rCTM18UCzdXaYjJu.SBH89LAiA4ye698TfMPyam4BO7ifs7HLuiBPrEW.zIz&X-Amz-Signature=57c440731898fb55c6866af734757185dbbccba7741259ade453c30120e32c6h",
+  "partsize":5242880,
+  "part_number":2,
+  "available_parts":10000,
+  "send": {
+    "partsize": "required-parameter Content-Length",
+    "partdata": "body"
+  },
+  "headers": {},
+  "parameters": {}
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<upload>
+  <ref>put-378670</ref>
+  <path>NewFile.txt</path>
+  <action>put/write</action>
+  <ask_about_overwrites type="boolean">false</ask_about_overwrites>
+  <http_method>PUT</http_method>
+  <upload_uri>https://example-upload-proxy-url.com/path/6eee7ad0-bf75-0131-71fc-0eeabbd7a8b4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIEWLY3MN4YGZQOWA%2F20140516%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20140516T221456Z&X-Amz-Expires=180&X-Amz-SignedHeaders=host&partNumber=2&uploadId=xQDI8q.aDdWdWIvSpRGLOFqnPQqJoMGZ88r9g_q7z2gW6U4rNZx8Zb_Wh9m07TDJM1x4rCTM18UCzdXaYjJu.SBH89LAiA4ye698TfMPyam4BO7ifs7HLuiBPrEW.zIz&X-Amz-Signature=57c440731898fb55c6866af734757185dbbccba7741259ade453c30120e32c6h</upload_uri>
+  <partsize type="integer">5242880</partsize>
+  <part_number type="integer">2</part_number>
+  <available_parts type="integer">10000</available_parts>
+  <send>
+    <partsize>required-parameter Content-Length</partsize>
+    <partdata>body</partdata>
+  </send>
+  <headers></headers>
+  <parameters></parameters>
+</upload>
+```
+
+Once an upload has been opened and before it is completed, additional upload URLs can be requested from the REST API. Send a **POST** request to `/files/PATH_AND_FILENAME.EXT` with parameter `action` set to `put`, parameter `ref` set to the reference ID returned at the start of the upload, and parameter `part` set to the part number the upload URL should refer to. The part number can be the same as one previously used if a new URL is required, either because the part is to be re-uploaded or because a prior upload attempt failed and the prior URL’s signature has expired.
+
+### HTTP Request
+
+`POST /files/:path_and_filename`
+
+## Completing an upload
+
+> Example Request
+
+```shell--json
+curl https://SUBDOMAIN.files.com/api/rest/v1/files/NewFile.txt \
+  -u YOUR_API_KEY:x \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{
+        "action": "end",
+        "ref": "put-378670"
+      }'
+```
+
+```shell--xml
+curl https://SUBDOMAIN.files.com/api/rest/v1/files/NewFile.txt \
+  -u YOUR_API_KEY:x \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -H 'Accept: application/xml' \
+  -d '<file>
+        <action>end</action>
+        <ref>put-378670</ref>
+      </file>'
+```
+
+> Example Response
+
+```json
+{
+  "id": 1020304050,
+  "path": "NewFile.txt",
+  "display_name": "NewFile.txt",
+  "type": "file",
+  "size": 412,
+  "mtime": "2014-05-17T05:14:35+00:00",
+  "provided_mtime": null,
+  "crc32": null,
+  "md5": null,
+  "region":"us-east-1",
+  "permissions": "rwd"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<file>
+  <id type="integer">1020304050</id>
+  <path>NewFile.txt</path>
+  <display_name>NewFile.txt</display_name>
+  <type>file</type>
+  <size type="integer">412</size>
+  <mtime type="datetime">2014-05-17T05:14:35+00:00</mtime>
+  <provided_mtime nil="true"/>
+  <crc32 nil="true"/>
+  <md5 nil="true"/>
+  <region>us-east-1</region>
+  <permissions>rwd</permissions>
+</file>
+```
+
+After uploading the file to the file storage environment, the REST API needs to be notified that the upload was completed. This is done by sending another **POST** request to `/files/PATH_AND_FILENAME.EXT` with parameter `action` set to `end` and parameter `ref` set to the reference ID returned at the start of the upload.
+
+### HTTP Request
+
+`POST /files/:path_and_filename`

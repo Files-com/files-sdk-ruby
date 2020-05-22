@@ -1,0 +1,114 @@
+# Dns Records
+
+This resource allows retrieving the DNS records that are needed to configure custom DNS for a Site.
+
+
+## The DnsRecord object
+
+> Example DnsRecord Object
+
+```json
+{
+  "id": "customdomain.com-CNAME-site.files.com",
+  "domain": "my-custom-domain.com",
+  "rrtype": "CNAME",
+  "value": "mysite.files.com"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<dns-record>
+  <id>customdomain.com-CNAME-site.files.com</id>
+  <domain>my-custom-domain.com</domain>
+  <rrtype>CNAME</rrtype>
+  <value>mysite.files.com</value>
+</dns-record>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *string* | Unique label for DNS record; used by Zapier and other integrations. 
+  domain *string* | DNS record domain name 
+  rrtype *string* | DNS record type 
+  value *string* | DNS record value 
+
+## Show site DNS configuration
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/dns_records.json?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/dns_records.xml?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::DnsRecord.list(
+  page: 1, 
+  per_page: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\DnsRecord::list(array(
+  'page' => 1, 
+  'per_page' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": "customdomain.com-CNAME-site.files.com",
+    "domain": "my-custom-domain.com",
+    "rrtype": "CNAME",
+    "value": "mysite.files.com"
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<dns-records type="array">
+  <dns-record>
+    <id>customdomain.com-CNAME-site.files.com</id>
+    <domain>my-custom-domain.com</domain>
+    <rrtype>CNAME</rrtype>
+    <value>mysite.files.com</value>
+  </dns-record>
+</dns-records>
+
+```
+
+
+### HTTPS Request
+
+`GET /dns_records`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+

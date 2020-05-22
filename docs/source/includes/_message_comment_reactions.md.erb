@@ -1,0 +1,306 @@
+# Message Comment Reactions
+
+A message comment reaction represents a reaction emoji made by a user on a message comment.
+
+
+## The MessageCommentReaction object
+
+> Example MessageCommentReaction Object
+
+```json
+{
+  "id": 1,
+  "emoji": "👍"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<message-comment-reaction>
+  <id type="integer">1</id>
+  <emoji>👍</emoji>
+</message-comment-reaction>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | Reaction ID 
+  emoji *string* | Emoji used in the reaction. 
+  user_id *int64* | User ID.  Provide a value of `0` to operate the current session's user. 
+
+## List Message Comment Reactions
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/message_comment_reactions.json?user_id=1&page=1&per_page=1&message_comment_id=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/message_comment_reactions.xml?user_id=1&page=1&per_page=1&message_comment_id=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::MessageCommentReaction.list(
+  user_id: 1, 
+  page: 1, 
+  per_page: 1, 
+  message_comment_id: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\MessageCommentReaction::list(array(
+  'user_id' => 1, 
+  'page' => 1, 
+  'per_page' => 1, 
+  'message_comment_id' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "emoji": "👍"
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<message-comment-reactions type="array">
+  <message-comment-reaction>
+    <id type="integer">1</id>
+    <emoji>👍</emoji>
+  </message-comment-reaction>
+</message-comment-reactions>
+
+```
+
+
+### HTTPS Request
+
+`GET /message_comment_reactions`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+user_id *int64*  | User ID.  Provide a value of `0` to operate the current session's user. 
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+message_comment_id *int64* **Required** | Message comment to return reactions for. 
+## Show Message Comment Reaction
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/message_comment_reactions/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/message_comment_reactions/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::MessageCommentReaction.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\MessageCommentReaction::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "emoji": "👍"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<message-comment-reaction>
+  <id type="integer">1</id>
+  <emoji>👍</emoji>
+</message-comment-reaction>
+
+```
+
+
+### HTTPS Request
+
+`GET /message_comment_reactions/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Message Comment Reaction ID. 
+## Create Message Comment Reaction
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/message_comment_reactions.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"user_id":1,"emoji":"emoji"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/message_comment_reactions.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<message-comment-reaction>
+       <user_id type="integer">1</user_id>
+       <emoji>emoji</emoji>
+     </message-comment-reaction>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::MessageCommentReaction.create(
+  user_id: 1, 
+  emoji: "emoji"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\MessageCommentReaction::create(array(
+  'user_id' => 1, 
+  'emoji' => "emoji"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "emoji": "👍"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<message-comment-reaction>
+  <id type="integer">1</id>
+  <emoji>👍</emoji>
+</message-comment-reaction>
+
+```
+
+
+### HTTPS Request
+
+`POST /message_comment_reactions`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+user_id *int64*  | User ID.  Provide a value of `0` to operate the current session's user. 
+emoji *string* **Required** | Emoji to react with. 
+## Delete Message Comment Reaction
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/message_comment_reactions/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/message_comment_reactions/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+message_comment_reaction = Files::MessageCommentReaction.find(id)
+message_comment_reaction.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$message_comment_reaction = \Files\MessageCommentReaction->find(1);
+$message_comment_reaction->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /message_comment_reactions/{id}`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Message Comment Reaction ID. 
+

@@ -1,0 +1,273 @@
+# Group Users
+
+A GroupUser describes the membership of a User within a Group.
+
+
+## The GroupUser object
+
+> Example GroupUser Object
+
+```json
+{
+  "name": "My Group",
+  "id": 1,
+  "admin": true,
+  "usernames": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<group-user>
+  <name>My Group</name>
+  <id type="integer">1</id>
+  <admin type="boolean">true</admin>
+  <usernames type="array"/>
+</group-user>
+
+```
+
+Attribute | Description
+--------- | -----------
+  name *string* | Group name 
+  id *int64* | Group ID 
+  admin *boolean* | Is this user an administrator of this group? 
+  usernames *array* | A list of usernames for users in this group 
+  group_id *int64* | Group ID to add user to. 
+  user_id *int64* | User ID to add to group. 
+
+## List Group Users
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/group_users.json?user_id=1&page=1&per_page=1&group_id=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/group_users.xml?user_id=1&page=1&per_page=1&group_id=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::GroupUser.list(
+  user_id: 1, 
+  page: 1, 
+  per_page: 1, 
+  group_id: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\GroupUser::list(array(
+  'user_id' => 1, 
+  'page' => 1, 
+  'per_page' => 1, 
+  'group_id' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "name": "My Group",
+    "id": 1,
+    "admin": true,
+    "usernames": [
+
+    ]
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<group-users type="array">
+  <group-user>
+    <name>My Group</name>
+    <id type="integer">1</id>
+    <admin type="boolean">true</admin>
+    <usernames type="array"/>
+  </group-user>
+</group-users>
+
+```
+
+
+### HTTPS Request
+
+`GET /group_users`
+
+### Authentication Required
+
+Available to all authenticated keys or sessions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+user_id *int64*  | User ID.  If provided, will return groups of which this user is a member. 
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+group_id *int64*  | Group ID.  If provided, will return members of this group. 
+## Update Group User
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/group_users/{id}.json \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"group_id":1,"user_id":1,"admin":true}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/group_users/{id}.xml \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<group-user>
+       <group_id type="integer">1</group_id>
+       <user_id type="integer">1</user_id>
+       <admin type="boolean">true</admin>
+     </group-user>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+group_user = Files::GroupUser.find(id)
+group_user.update(
+  group_id: 1,
+  user_id: 1,
+  admin: true
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$group_user = \Files\GroupUser->find(1);
+$group_user->update(array(
+  'group_id' => 1, 
+  'user_id' => 1, 
+  'admin' => true
+));
+```
+
+> Example Response
+
+```json
+{
+  "name": "My Group",
+  "id": 1,
+  "admin": true,
+  "usernames": [
+
+  ]
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<group-user>
+  <name>My Group</name>
+  <id type="integer">1</id>
+  <admin type="boolean">true</admin>
+  <usernames type="array"/>
+</group-user>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /group_users/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Group User ID. 
+group_id *int64* **Required** | Group ID to add user to. 
+user_id *int64* **Required** | User ID to add to group. 
+admin *boolean*  | Is the user a group administrator? 
+## Delete Group User
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/group_users/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/group_users/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+group_user = Files::GroupUser.find(id)
+group_user.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$group_user = \Files\GroupUser->find(1);
+$group_user->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /group_users/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Group User ID. 
+

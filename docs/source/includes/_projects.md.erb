@@ -1,0 +1,371 @@
+# Projects
+
+Projects are associated with a folder and add project management features to that folder.
+
+
+## The Project object
+
+> Example Project Object
+
+```json
+{
+  "id": 1,
+  "global_access": "none"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <id type="integer">1</id>
+  <global_access>none</global_access>
+</project>
+
+```
+
+Attribute | Description
+--------- | -----------
+  id *int64* | Project ID 
+  global_access *string* | Global access settings <div>Possible values: `none`, `anyone_with_read`, `anyone_with_full`</div>
+
+## List Projects
+
+
+> Example Request
+
+```shell--json
+curl "https://app.files.com/api/rest/v1/projects.json?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl "https://app.files.com/api/rest/v1/projects.xml?page=1&per_page=1" \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Project.list(
+  page: 1, 
+  per_page: 1
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Project::list(array(
+  'page' => 1, 
+  'per_page' => 1
+));
+```
+
+> Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "global_access": "none"
+  }
+]
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<projects type="array">
+  <project>
+    <id type="integer">1</id>
+    <global_access>none</global_access>
+  </project>
+</projects>
+
+```
+
+
+### HTTPS Request
+
+`GET /projects`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+page *int64*  | Current page number. 
+per_page *int64*  | Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
+action *string*  | Deprecated: If set to `count` returns a count of matching records rather than the records themselves. 
+## Show Project
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/projects/{id}.json \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/projects/{id}.xml \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Project.find(id)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Project::find($id);
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "global_access": "none"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <id type="integer">1</id>
+  <global_access>none</global_access>
+</project>
+
+```
+
+
+### HTTPS Request
+
+`GET /projects/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Project ID. 
+## Create Project
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/projects.json \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"global_access":"global_access"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/projects.xml \
+  -X POST \
+  -H 'Content-Type: application/xml' \
+  -d '<project>
+       <global_access>global_access</global_access>
+     </project>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+Files::Project.create(
+  global_access: "global_access"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+\Files\Project::create(array(
+  'global_access' => "global_access"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "global_access": "none"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <id type="integer">1</id>
+  <global_access>none</global_access>
+</project>
+
+```
+
+
+### HTTPS Request
+
+`POST /projects`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+global_access *string* **Required** | Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`. 
+## Update Project
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/projects/{id}.json \
+  -X PATCH \
+  -H 'Content-Type: application/json' \
+  -d '{"global_access":"global_access"}' \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/projects/{id}.xml \
+  -X PATCH \
+  -H 'Content-Type: application/xml' \
+  -d '<project>
+       <global_access>global_access</global_access>
+     </project>'
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+project = Files::Project.find(id)
+project.update(
+  global_access: "global_access"
+)
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$project = \Files\Project->find(1);
+$project->update(array(
+  'global_access' => "global_access"
+));
+```
+
+> Example Response
+
+```json
+{
+  "id": 1,
+  "global_access": "none"
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <id type="integer">1</id>
+  <global_access>none</global_access>
+</project>
+
+```
+
+
+### HTTPS Request
+
+`PATCH /projects/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Project ID. 
+global_access *string* **Required** | Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`. 
+## Delete Project
+
+
+> Example Request
+
+```shell--json
+curl https://app.files.com/api/rest/v1/projects/{id}.json \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```shell--xml
+curl https://app.files.com/api/rest/v1/projects/{id}.xml \
+  -X DELETE \
+  -H 'X-FilesAPI-Key: YOUR_API_KEY'
+```
+
+```ruby
+Files.api_key = 'YOUR_API_KEY'
+
+project = Files::Project.find(id)
+project.delete
+```
+
+```php
+\Files\Files::setApiKey('YOUR_API_KEY');
+
+$project = \Files\Project->find(1);
+$project->delete();
+```
+
+> Example Response
+
+```json
+No response.
+```
+
+```xml
+No response.
+```
+
+
+### HTTPS Request
+
+`DELETE /projects/{id}`
+
+### Authentication Required
+
+Requires either a Site-Wide API key or User API key or session from a User with Site Admin permissions.
+
+
+
+### Request Parameters
+
+Parameter | Description
+--------- | --------- | -----------
+id *int64* **Required** | Project ID. 
+
