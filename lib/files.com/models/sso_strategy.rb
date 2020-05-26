@@ -19,6 +19,16 @@ module Files
       @attributes[:provider]
     end
 
+    # string - Custom label for the SSO provider on the login page.
+    def label
+      @attributes[:label]
+    end
+
+    # string - URL holding a custom logo for the SSO provider on the login page.
+    def logo_url
+      @attributes[:logo_url]
+    end
+
     # int64 - ID
     def id
       @attributes[:id]

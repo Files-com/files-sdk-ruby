@@ -74,24 +74,24 @@ Files::Bundle.find(id)
 ```
 Files::Bundle.create(
   user_id: 1, 
-  paths: ["file.txt"], 
   password: "Password", 
   expires_at: "2000-01-01T01:00:00Z", 
-  description: "Public description", 
-  note: "Internal Note", 
-  code: "abc123"
+  description: "The public description of the bundle.", 
+  note: "The internal note on the bundle.", 
+  code: "abc123", 
+  paths: ["file.txt"]
 )
 ```
 
 ### Parameters
 
 * `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
-* `paths` (array(string)): Required - A list of paths to include in this bundle.
 * `password` (string): Password for this bundle.
-* `expires_at` (string): Bundle expiration date/time.
-* `description` (string): Bundle public description
+* `expires_at` (string): Bundle expiration date/time
+* `description` (string): Public description
 * `note` (string): Bundle internal note
-* `code` (string): Bundle name
+* `code` (string): Bundle code.  This code forms the end part of the Public URL.
+* `paths` (array(string)): Required - A list of paths to include in this bundle.
 
 
 ---
@@ -110,6 +110,30 @@ Files::Bundle.share(id,
 * `id` (int64): Required - Bundle ID.
 * `to` (array(string)): Required - A list of email addresses to share this bundle with.
 * `note` (string): Note to include in email.
+
+
+---
+
+## Update Bundle
+
+```
+Files::Bundle.update(id, 
+  password: "Password", 
+  expires_at: "2000-01-01T01:00:00Z", 
+  description: "The public description of the bundle.", 
+  note: "The internal note on the bundle.", 
+  code: "abc123"
+)
+```
+
+### Parameters
+
+* `id` (int64): Required - Bundle ID.
+* `password` (string): Password for this bundle.
+* `expires_at` (string): Bundle expiration date/time
+* `description` (string): Public description
+* `note` (string): Bundle internal note
+* `code` (string): Bundle code.  This code forms the end part of the Public URL.
 
 
 ---
@@ -142,6 +166,31 @@ bundle.share(
 * `id` (int64): Required - Bundle ID.
 * `to` (array(string)): Required - A list of email addresses to share this bundle with.
 * `note` (string): Note to include in email.
+
+
+---
+
+## Update Bundle
+
+```
+bundle = Files::Bundle.find(1)
+bundle.update(
+  password: "Password",
+  expires_at: "2000-01-01T01:00:00Z",
+  description: "The public description of the bundle.",
+  note: "The internal note on the bundle.",
+  code: "abc123"
+)
+```
+
+### Parameters
+
+* `id` (int64): Required - Bundle ID.
+* `password` (string): Password for this bundle.
+* `expires_at` (string): Bundle expiration date/time
+* `description` (string): Public description
+* `note` (string): Bundle internal note
+* `code` (string): Bundle code.  This code forms the end part of the Public URL.
 
 
 ---

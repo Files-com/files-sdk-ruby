@@ -6,6 +6,8 @@
 {
   "protocol": "okta",
   "provider": "okta",
+  "label": "My Corporate SSO Provider",
+  "logo_url": "https://mysite.files.com/.../logo.png",
   "id": 1,
   "saml_provider_cert_fingerprint": "",
   "saml_provider_issuer_url": "",
@@ -31,6 +33,8 @@
 
 * `protocol` (string): SSO Protocol
 * `provider` (string): Provider name
+* `label` (string): Custom label for the SSO provider on the login page.
+* `logo_url` (string): URL holding a custom logo for the SSO provider on the login page.
 * `id` (int64): ID
 * `saml_provider_cert_fingerprint` (string): Identity provider sha256 cert fingerprint if saml_provider_metadata_url is not available.
 * `saml_provider_issuer_url` (string): Identity provider issuer url
