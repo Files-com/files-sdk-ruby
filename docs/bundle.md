@@ -74,24 +74,24 @@ Files::Bundle.find(id)
 ```
 Files::Bundle.create(
   user_id: 1, 
+  paths: ["file.txt"], 
   password: "Password", 
   expires_at: "2000-01-01T01:00:00Z", 
   description: "The public description of the bundle.", 
   note: "The internal note on the bundle.", 
-  code: "abc123", 
-  paths: ["file.txt"]
+  code: "abc123"
 )
 ```
 
 ### Parameters
 
 * `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
+* `paths` (array(string)): Required - A list of paths to include in this bundle.
 * `password` (string): Password for this bundle.
 * `expires_at` (string): Bundle expiration date/time
 * `description` (string): Public description
 * `note` (string): Bundle internal note
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
-* `paths` (array(string)): Required - A list of paths to include in this bundle.
 
 
 ---

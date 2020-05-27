@@ -211,20 +211,20 @@ module Files
 
     # Parameters:
     #   user_id - integer - User ID.  Provide a value of `0` to operate the current session's user.
+    #   paths (required) - array - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
     #   expires_at - string - Bundle expiration date/time
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
-    #   paths (required) - array - A list of paths to include in this bundle.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
       raise MissingParameterError.new("Parameter missing: paths") unless params.dig(:paths)
 
       response, options = Api.send_request("/bundles", :post, params, options)
