@@ -45,10 +45,10 @@ module Files
     #
     # Parameters:
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
-    #   part - integer - Part if uploading a part.
-    #   parts - integer - How many parts to fetch?
+    #   part - int64 - Part if uploading a part.
+    #   parts - int64 - How many parts to fetch?
     #   ref - string -
-    #   restart - integer - File byte offset to restart from.
+    #   restart - int64 - File byte offset to restart from.
     #   with_rename - boolean - Allow file rename instead of overwrite?
     def begin_upload(params = {})
       params ||= {}
@@ -100,10 +100,10 @@ module Files
     #
     # Parameters:
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
-    #   part - integer - Part if uploading a part.
-    #   parts - integer - How many parts to fetch?
+    #   part - int64 - Part if uploading a part.
+    #   parts - int64 - How many parts to fetch?
     #   ref - string -
-    #   restart - integer - File byte offset to restart from.
+    #   restart - int64 - File byte offset to restart from.
     #   with_rename - boolean - Allow file rename instead of overwrite?
     def self.begin_upload(path, params = {}, options = {})
       params ||= {}

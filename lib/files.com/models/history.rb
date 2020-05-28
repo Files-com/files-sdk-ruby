@@ -78,8 +78,8 @@ module Files
     #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
     #   end_at - string - Leave blank or set to a date/time to filter later entries.
     #   display - string - Display format. Leave blank or set to `full` or `parent`.
-    #   page - integer - Current page number.
-    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   page - int64 - Current page number.
+    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
     #   path (required) - string - Path to operate on.
     def self.list_for_file(path, params = {}, options = {})
@@ -101,8 +101,8 @@ module Files
     #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
     #   end_at - string - Leave blank or set to a date/time to filter later entries.
     #   display - string - Display format. Leave blank or set to `full` or `parent`.
-    #   page - integer - Current page number.
-    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   page - int64 - Current page number.
+    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
     #   path (required) - string - Path to operate on.
     def self.list_for_folder(path, params = {}, options = {})
@@ -124,10 +124,10 @@ module Files
     #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
     #   end_at - string - Leave blank or set to a date/time to filter later entries.
     #   display - string - Display format. Leave blank or set to `full` or `parent`.
-    #   page - integer - Current page number.
-    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   page - int64 - Current page number.
+    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
-    #   user_id (required) - integer - User ID.
+    #   user_id (required) - int64 - User ID.
     def self.list_for_user(user_id, params = {}, options = {})
       params ||= {}
       params[:user_id] = user_id
@@ -147,8 +147,8 @@ module Files
     #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
     #   end_at - string - Leave blank or set to a date/time to filter later entries.
     #   display - string - Display format. Leave blank or set to `full` or `parent`.
-    #   page - integer - Current page number.
-    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   page - int64 - Current page number.
+    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
     def self.list_logins(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params.dig(:start_at) and !params.dig(:start_at).is_a?(String)
@@ -165,8 +165,8 @@ module Files
     #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
     #   end_at - string - Leave blank or set to a date/time to filter later entries.
     #   display - string - Display format. Leave blank or set to `full` or `parent`.
-    #   page - integer - Current page number.
-    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   page - int64 - Current page number.
+    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params.dig(:start_at) and !params.dig(:start_at).is_a?(String)

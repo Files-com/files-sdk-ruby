@@ -264,8 +264,8 @@ module Files
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
-    #   max_connections - integer - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
-    #   port - integer - Port for remote server.  Not needed for S3.
+    #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   port - int64 - Port for remote server.  Not needed for S3.
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
@@ -337,8 +337,8 @@ module Files
     end
 
     # Parameters:
-    #   page - integer - Current page number.
-    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   page - int64 - Current page number.
+    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
@@ -353,7 +353,7 @@ module Files
     end
 
     # Parameters:
-    #   id (required) - integer - Remote Server ID.
+    #   id (required) - int64 - Remote Server ID.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -380,8 +380,8 @@ module Files
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
-    #   max_connections - integer - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
-    #   port - integer - Port for remote server.  Not needed for S3.
+    #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   port - int64 - Port for remote server.  Not needed for S3.
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
@@ -437,8 +437,8 @@ module Files
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
-    #   max_connections - integer - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
-    #   port - integer - Port for remote server.  Not needed for S3.
+    #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   port - int64 - Port for remote server.  Not needed for S3.
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate

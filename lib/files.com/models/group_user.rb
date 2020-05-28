@@ -64,8 +64,8 @@ module Files
     end
 
     # Parameters:
-    #   group_id (required) - integer - Group ID to add user to.
-    #   user_id (required) - integer - User ID to add to group.
+    #   group_id (required) - int64 - Group ID to add user to.
+    #   user_id (required) - int64 - User ID to add to group.
     #   admin - boolean - Is the user a group administrator?
     def update(params = {})
       params ||= {}
@@ -100,11 +100,11 @@ module Files
     end
 
     # Parameters:
-    #   user_id - integer - User ID.  If provided, will return groups of which this user is a member.
-    #   page - integer - Current page number.
-    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   user_id - int64 - User ID.  If provided, will return groups of which this user is a member.
+    #   page - int64 - Current page number.
+    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
-    #   group_id - integer - Group ID.  If provided, will return members of this group.
+    #   group_id - int64 - Group ID.  If provided, will return members of this group.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
@@ -120,8 +120,8 @@ module Files
     end
 
     # Parameters:
-    #   group_id (required) - integer - Group ID to add user to.
-    #   user_id (required) - integer - User ID to add to group.
+    #   group_id (required) - int64 - Group ID to add user to.
+    #   user_id (required) - int64 - User ID to add to group.
     #   admin - boolean - Is the user a group administrator?
     def self.update(id, params = {}, options = {})
       params ||= {}

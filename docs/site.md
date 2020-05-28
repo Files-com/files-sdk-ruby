@@ -262,7 +262,7 @@ Files::Site.update(
   desktop_app_session_lifetime: 1, 
   folder_permissions_groups_only: true, 
   welcome_screen: "user_controlled", 
-  session_expiry: 6.0, 
+  session_expiry: 1.0, 
   ssl_required: true, 
   tls_disabled: true, 
   user_lockout: true, 
@@ -349,7 +349,7 @@ Files::Site.update(
 * `desktop_app_session_lifetime` (int64): Desktop app session lifetime (in hours)
 * `folder_permissions_groups_only` (boolean): If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
 * `welcome_screen` (string): Does the welcome screen appear?
-* `session_expiry` (number): Session expiry in hours
+* `session_expiry` (double): Session expiry in hours
 * `ssl_required` (boolean): Is SSL required?  Disabling this is insecure.
 * `tls_disabled` (boolean): Is TLS disabled(site setting)?
 * `user_lockout` (boolean): Will users be locked out after incorrect login attempts?

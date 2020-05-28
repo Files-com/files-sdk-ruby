@@ -116,7 +116,7 @@ module Files
     # Send email(s) with a link to bundle
     #
     # Parameters:
-    #   to (required) - array - A list of email addresses to share this bundle with.
+    #   to (required) - array(string) - A list of email addresses to share this bundle with.
     #   note - string - Note to include in email.
     def share(params = {})
       params ||= {}
@@ -176,9 +176,9 @@ module Files
     end
 
     # Parameters:
-    #   user_id - integer - User ID.  Provide a value of `0` to operate the current session's user.
-    #   page - integer - Current page number.
-    #   per_page - integer - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   page - int64 - Current page number.
+    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
@@ -194,7 +194,7 @@ module Files
     end
 
     # Parameters:
-    #   id (required) - integer - Bundle ID.
+    #   id (required) - int64 - Bundle ID.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -210,8 +210,8 @@ module Files
     end
 
     # Parameters:
-    #   user_id - integer - User ID.  Provide a value of `0` to operate the current session's user.
-    #   paths (required) - array - A list of paths to include in this bundle.
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   paths (required) - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
     #   expires_at - string - Bundle expiration date/time
     #   description - string - Public description
@@ -234,7 +234,7 @@ module Files
     # Send email(s) with a link to bundle
     #
     # Parameters:
-    #   to (required) - array - A list of email addresses to share this bundle with.
+    #   to (required) - array(string) - A list of email addresses to share this bundle with.
     #   note - string - Note to include in email.
     def self.share(id, params = {}, options = {})
       params ||= {}

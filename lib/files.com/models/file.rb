@@ -825,7 +825,7 @@ module Files
     #
     # Parameters:
     #   action - string - Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
-    #   id - integer - If provided, lookup the file by id instead of path.
+    #   id - int64 - If provided, lookup the file by id instead of path.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
     def download(params = {})
@@ -884,7 +884,7 @@ module Files
     #
     # Parameters:
     #   action - string - Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
-    #   id - integer - If provided, lookup the file by id instead of path.
+    #   id - int64 - If provided, lookup the file by id instead of path.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
     def self.download(path, params = {}, options = {})
@@ -902,16 +902,16 @@ module Files
     # Parameters:
     #   path (required) - string - Path to operate on.
     #   action - string - The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
-    #   etags[etag] (required) - array - etag identifier.
-    #   etags[part] (required) - array - Part number.
-    #   length - integer - Length of file.
+    #   etags[etag] (required) - array(string) - etag identifier.
+    #   etags[part] (required) - array(int64) - Part number.
+    #   length - int64 - Length of file.
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
-    #   part - integer - Part if uploading a part.
-    #   parts - integer - How many parts to fetch?
+    #   part - int64 - Part if uploading a part.
+    #   parts - int64 - How many parts to fetch?
     #   provided_mtime - string - User provided modification time.
     #   ref - string -
-    #   restart - integer - File byte offset to restart from.
-    #   size - integer - Size of file.
+    #   restart - int64 - File byte offset to restart from.
+    #   size - int64 - Size of file.
     #   structure - string - If copying folder, copy just the structure?
     #   with_rename - boolean - Allow file rename instead of overwrite?
     def self.create(path, params = {}, options = {})
