@@ -90,6 +90,15 @@ module Files
       @attributes[:server_certificate] = value
     end
 
+    # string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
+    def server_host_key
+      @attributes[:server_host_key]
+    end
+
+    def server_host_key=(value)
+      @attributes[:server_host_key] = value
+    end
+
     # string - Remote server type.
     def server_type
       @attributes[:server_type]
@@ -269,6 +278,7 @@ module Files
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
+    #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.  Not needed for S3 buckets.
@@ -299,6 +309,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params.dig(:s3_bucket) and !params.dig(:s3_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params.dig(:s3_region) and !params.dig(:s3_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params.dig(:server_certificate) and !params.dig(:server_certificate).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params.dig(:server_host_key) and !params.dig(:server_host_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params.dig(:server_type) and !params.dig(:server_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params.dig(:ssl) and !params.dig(:ssl).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
@@ -385,6 +396,7 @@ module Files
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
+    #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.  Not needed for S3 buckets.
@@ -411,6 +423,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params.dig(:s3_bucket) and !params.dig(:s3_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params.dig(:s3_region) and !params.dig(:s3_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params.dig(:server_certificate) and !params.dig(:server_certificate).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params.dig(:server_host_key) and !params.dig(:server_host_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params.dig(:server_type) and !params.dig(:server_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params.dig(:ssl) and !params.dig(:ssl).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
@@ -442,6 +455,7 @@ module Files
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
+    #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.  Not needed for S3 buckets.
@@ -471,6 +485,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params.dig(:s3_bucket) and !params.dig(:s3_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params.dig(:s3_region) and !params.dig(:s3_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params.dig(:server_certificate) and !params.dig(:server_certificate).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params.dig(:server_host_key) and !params.dig(:server_host_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params.dig(:server_type) and !params.dig(:server_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params.dig(:ssl) and !params.dig(:ssl).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)

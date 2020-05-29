@@ -13,6 +13,7 @@
   "s3_bucket": "my-bucket",
   "s3_region": "us-east-1",
   "server_certificate": "[certificate]",
+  "server_host_key": "[public key]",
   "server_type": "s3",
   "ssl": "always",
   "username": "user",
@@ -34,6 +35,7 @@
 * `s3_bucket` (string): S3 bucket name
 * `s3_region` (string): S3 region
 * `server_certificate` (string): Remote server certificate
+* `server_host_key` (string): Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
 * `server_type` (string): Remote server type.
 * `ssl` (string): Should we require SSL?
 * `username` (string): Remote server username.  Not needed for S3 buckets.
@@ -98,6 +100,7 @@ Files::RemoteServer.create(
   s3_bucket: "my-bucket", 
   s3_region: "us-east-1", 
   server_certificate: "[certificate]", 
+  server_host_key: "[public key]", 
   server_type: "s3", 
   ssl: "always", 
   username: "user", 
@@ -128,6 +131,7 @@ Files::RemoteServer.create(
 * `s3_bucket` (string): S3 bucket name
 * `s3_region` (string): S3 region
 * `server_certificate` (string): Remote server certificate
+* `server_host_key` (string): Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
 * `server_type` (string): Remote server type.
 * `ssl` (string): Should we require SSL?
 * `username` (string): Remote server username.  Not needed for S3 buckets.
@@ -152,6 +156,7 @@ Files::RemoteServer.update(id,
   s3_bucket: "my-bucket", 
   s3_region: "us-east-1", 
   server_certificate: "[certificate]", 
+  server_host_key: "[public key]", 
   server_type: "s3", 
   ssl: "always", 
   username: "user", 
@@ -183,6 +188,7 @@ Files::RemoteServer.update(id,
 * `s3_bucket` (string): S3 bucket name
 * `s3_region` (string): S3 region
 * `server_certificate` (string): Remote server certificate
+* `server_host_key` (string): Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
 * `server_type` (string): Remote server type.
 * `ssl` (string): Should we require SSL?
 * `username` (string): Remote server username.  Not needed for S3 buckets.
@@ -221,6 +227,7 @@ remote_server.update(
   s3_bucket: "my-bucket",
   s3_region: "us-east-1",
   server_certificate: "[certificate]",
+  server_host_key: "[public key]",
   server_type: "s3",
   ssl: "always",
   username: "user",
@@ -252,6 +259,7 @@ remote_server.update(
 * `s3_bucket` (string): S3 bucket name
 * `s3_region` (string): S3 region
 * `server_certificate` (string): Remote server certificate
+* `server_host_key` (string): Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
 * `server_type` (string): Remote server type.
 * `ssl` (string): Should we require SSL?
 * `username` (string): Remote server username.  Not needed for S3 buckets.
