@@ -26,8 +26,21 @@
   "provision_attachments_permission": true,
   "provision_dav_permission": true,
   "provision_ftp_permission": true,
+  "provision_group_action": "disabled",
   "provision_sftp_permission": true,
-  "provision_time_zone": "Eastern Time (US & Canada)"
+  "provision_time_zone": "Eastern Time (US & Canada)",
+  "provision_user_action": "disabled",
+  "ldap_base_dn": "",
+  "ldap_domain": "mysite.com",
+  "enabled": true,
+  "ldap_host": "ldap.site.com",
+  "ldap_host_2": "ldap2.site.com",
+  "ldap_host_3": "ldap3.site.com",
+  "ldap_port": 1,
+  "ldap_secure": true,
+  "ldap_user_include_groups": "",
+  "ldap_username": "[ldap username]",
+  "ldap_username_field": "sAMAccountName"
 }
 ```
 
@@ -53,8 +66,21 @@
 * `provision_attachments_permission` (boolean): Auto-provisioned users get Sharing permission?
 * `provision_dav_permission` (boolean): Auto-provisioned users get WebDAV permission?
 * `provision_ftp_permission` (boolean): Auto-provisioned users get FTP permission?
+* `provision_group_action` (string): Should we sync groups from this strategy?
 * `provision_sftp_permission` (boolean): Auto-provisioned users get SFTP permission?
 * `provision_time_zone` (string): Default time zone for auto provisioned users.
+* `provision_user_action` (string): Should we sync users from this strategy?
+* `ldap_base_dn` (string): Base DN for looking up users in LDAP server
+* `ldap_domain` (string): Domain name that will be appended to LDAP usernames
+* `enabled` (boolean): Is strategy enabled?
+* `ldap_host` (string): LDAP host
+* `ldap_host_2` (string): LDAP backup host
+* `ldap_host_3` (string): LDAP backup host
+* `ldap_port` (int64): LDAP port
+* `ldap_secure` (boolean): Use secure LDAP?
+* `ldap_user_include_groups` (string): Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
+* `ldap_username` (string): Username for signing in to LDAP server.
+* `ldap_username_field` (string): LDAP username field
 
 
 ---

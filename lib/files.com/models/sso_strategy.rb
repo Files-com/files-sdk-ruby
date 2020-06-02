@@ -119,6 +119,11 @@ module Files
       @attributes[:provision_ftp_permission]
     end
 
+    # string - Should we sync groups from this strategy?
+    def provision_group_action
+      @attributes[:provision_group_action]
+    end
+
     # boolean - Auto-provisioned users get SFTP permission?
     def provision_sftp_permission
       @attributes[:provision_sftp_permission]
@@ -127,6 +132,66 @@ module Files
     # string - Default time zone for auto provisioned users.
     def provision_time_zone
       @attributes[:provision_time_zone]
+    end
+
+    # string - Should we sync users from this strategy?
+    def provision_user_action
+      @attributes[:provision_user_action]
+    end
+
+    # string - Base DN for looking up users in LDAP server
+    def ldap_base_dn
+      @attributes[:ldap_base_dn]
+    end
+
+    # string - Domain name that will be appended to LDAP usernames
+    def ldap_domain
+      @attributes[:ldap_domain]
+    end
+
+    # boolean - Is strategy enabled?
+    def enabled
+      @attributes[:enabled]
+    end
+
+    # string - LDAP host
+    def ldap_host
+      @attributes[:ldap_host]
+    end
+
+    # string - LDAP backup host
+    def ldap_host_2
+      @attributes[:ldap_host_2]
+    end
+
+    # string - LDAP backup host
+    def ldap_host_3
+      @attributes[:ldap_host_3]
+    end
+
+    # int64 - LDAP port
+    def ldap_port
+      @attributes[:ldap_port]
+    end
+
+    # boolean - Use secure LDAP?
+    def ldap_secure
+      @attributes[:ldap_secure]
+    end
+
+    # string - Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
+    def ldap_user_include_groups
+      @attributes[:ldap_user_include_groups]
+    end
+
+    # string - Username for signing in to LDAP server.
+    def ldap_username
+      @attributes[:ldap_username]
+    end
+
+    # string - LDAP username field
+    def ldap_username_field
+      @attributes[:ldap_username_field]
     end
 
     # Parameters:
