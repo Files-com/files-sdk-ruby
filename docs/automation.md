@@ -143,7 +143,8 @@ Files::Automation.delete(id)
 ## Update Automation
 
 ```
-automation = Files::Automation.find(1)
+automation = Files::Automation.list_for(path).first
+
 automation.update(
   automation: "create_folder",
   source: "source",
@@ -171,7 +172,8 @@ automation.update(
 ## Delete Automation
 
 ```
-automation = Files::Automation.find(1)
+automation = Files::Automation.list_for(path).first
+
 automation.delete
 ```
 

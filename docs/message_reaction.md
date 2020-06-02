@@ -84,7 +84,8 @@ Files::MessageReaction.delete(id)
 ## Delete Message Reaction
 
 ```
-message_reaction = Files::MessageReaction.find(1)
+message_reaction = Files::MessageReaction.list_for(path).first
+
 message_reaction.delete
 ```
 

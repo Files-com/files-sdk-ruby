@@ -158,7 +158,8 @@ Files::ApiKey.delete(id)
 ## Update Api Key
 
 ```
-api_key = Files::ApiKey.find(1)
+api_key = Files::ApiKey.list_for(path).first
+
 api_key.update(
   name: "My Key",
   permission_set: "full",
@@ -179,7 +180,8 @@ api_key.update(
 ## Delete Api Key
 
 ```
-api_key = Files::ApiKey.find(1)
+api_key = Files::ApiKey.list_for(path).first
+
 api_key.delete
 ```
 

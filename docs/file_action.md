@@ -63,7 +63,8 @@ Files::FileAction.begin_upload(path,
 ## Copy file/folder
 
 ```
-file_action = Files::FileAction.find(1)
+file_action = Files::FileAction.list_for(path).first
+
 file_action.copy(
   destination: "destination"
 )
@@ -80,7 +81,8 @@ file_action.copy(
 ## Move file/folder
 
 ```
-file_action = Files::FileAction.find(1)
+file_action = Files::FileAction.list_for(path).first
+
 file_action.move(
   destination: "destination"
 )
@@ -97,7 +99,8 @@ file_action.move(
 ## Begin file upload
 
 ```
-file_action = Files::FileAction.find(1)
+file_action = Files::FileAction.list_for(path).first
+
 file_action.begin_upload(
   mkdir_parents: true,
   part: 1,

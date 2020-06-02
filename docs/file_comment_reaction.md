@@ -52,7 +52,8 @@ Files::FileCommentReaction.delete(id)
 ## Delete File Comment Reaction
 
 ```
-file_comment_reaction = Files::FileCommentReaction.find(1)
+file_comment_reaction = Files::FileCommentReaction.list_for(path).first
+
 file_comment_reaction.delete
 ```
 

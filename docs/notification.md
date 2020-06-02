@@ -133,7 +133,8 @@ Files::Notification.delete(id)
 ## Update Notification
 
 ```
-notification = Files::Notification.find(1)
+notification = Files::Notification.list_for(path).first
+
 notification.update(
   notify_on_copy: true,
   notify_user_actions: true,
@@ -154,7 +155,8 @@ notification.update(
 ## Delete Notification
 
 ```
-notification = Files::Notification.find(1)
+notification = Files::Notification.list_for(path).first
+
 notification.delete
 ```
 

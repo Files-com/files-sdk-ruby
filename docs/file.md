@@ -150,7 +150,8 @@ Files::File.delete(path,
 ## Download file
 
 ```
-file = Files::File.find(1)
+file = Files::File.list_for(path).first
+
 file.download(
   id: 1,
   with_previews: true,
@@ -172,7 +173,8 @@ file.download(
 ## Update file/folder metadata
 
 ```
-file = Files::File.find(1)
+file = Files::File.list_for(path).first
+
 file.update(
   provided_mtime: "2000-01-01T01:00:00Z",
   priority_color: "red"
@@ -191,7 +193,8 @@ file.update(
 ## Delete file/folder
 
 ```
-file = Files::File.find(1)
+file = Files::File.list_for(path).first
+
 file.delete(
   recursive: true
 )

@@ -101,7 +101,8 @@ Files::Request.delete(id)
 ## List Requests
 
 ```
-request = Files::Request.find(1)
+request = Files::Request.list_for(path).first
+
 request.folders(
   page: 1,
   per_page: 1,

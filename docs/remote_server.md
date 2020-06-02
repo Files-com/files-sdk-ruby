@@ -218,7 +218,8 @@ Files::RemoteServer.delete(id)
 ## Update Remote Server
 
 ```
-remote_server = Files::RemoteServer.find(1)
+remote_server = Files::RemoteServer.list_for(path).first
+
 remote_server.update(
   hostname: "remote-server.com",
   name: "My Remote server",
@@ -276,7 +277,8 @@ remote_server.update(
 ## Delete Remote Server
 
 ```
-remote_server = Files::RemoteServer.find(1)
+remote_server = Files::RemoteServer.list_for(path).first
+
 remote_server.delete
 ```
 

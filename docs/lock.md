@@ -85,7 +85,8 @@ Files::Lock.delete(path,
 ## Delete Lock
 
 ```
-lock = Files::Lock.find(1)
+lock = Files::Lock.list_for(path).first
+
 lock.delete(
   token: "token"
 )

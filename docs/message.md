@@ -115,7 +115,8 @@ Files::Message.delete(id)
 ## Update Message
 
 ```
-message = Files::Message.find(1)
+message = Files::Message.list_for(path).first
+
 message.update(
   project_id: 1,
   subject: "subject",
@@ -136,7 +137,8 @@ message.update(
 ## Delete Message
 
 ```
-message = Files::Message.find(1)
+message = Files::Message.list_for(path).first
+
 message.delete
 ```
 

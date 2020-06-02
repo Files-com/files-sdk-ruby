@@ -164,7 +164,8 @@ Files::HistoryExport.delete(id)
 ## Delete History Export
 
 ```
-history_export = Files::HistoryExport.find(1)
+history_export = Files::HistoryExport.list_for(path).first
+
 history_export.delete
 ```
 

@@ -154,7 +154,8 @@ Files::Bundle.delete(id)
 ## Send email(s) with a link to bundle
 
 ```
-bundle = Files::Bundle.find(1)
+bundle = Files::Bundle.list_for(path).first
+
 bundle.share(
   to: ["johndoe@gmail.com"],
   note: "Just a note."
@@ -173,7 +174,8 @@ bundle.share(
 ## Update Bundle
 
 ```
-bundle = Files::Bundle.find(1)
+bundle = Files::Bundle.list_for(path).first
+
 bundle.update(
   password: "Password",
   expires_at: "2000-01-01T01:00:00Z",
@@ -198,7 +200,8 @@ bundle.update(
 ## Delete Bundle
 
 ```
-bundle = Files::Bundle.find(1)
+bundle = Files::Bundle.list_for(path).first
+
 bundle.delete
 ```
 
