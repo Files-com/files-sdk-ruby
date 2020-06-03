@@ -84,6 +84,16 @@ module Files
       @attributes[:provision_groups]
     end
 
+    # boolean - Auto-deprovision users?
+    def deprovision_users
+      @attributes[:deprovision_users]
+    end
+
+    # boolean - Auto-deprovision group membership based on group memberships on the SSO side?
+    def deprovision_groups
+      @attributes[:deprovision_groups]
+    end
+
     # string - Comma-separated list of group names for groups to automatically add all auto-provisioned users to.
     def provision_group_default
       @attributes[:provision_group_default]
@@ -119,11 +129,6 @@ module Files
       @attributes[:provision_ftp_permission]
     end
 
-    # string - Should we sync groups from this strategy?
-    def provision_group_action
-      @attributes[:provision_group_action]
-    end
-
     # boolean - Auto-provisioned users get SFTP permission?
     def provision_sftp_permission
       @attributes[:provision_sftp_permission]
@@ -132,11 +137,6 @@ module Files
     # string - Default time zone for auto provisioned users.
     def provision_time_zone
       @attributes[:provision_time_zone]
-    end
-
-    # string - Should we sync users from this strategy?
-    def provision_user_action
-      @attributes[:provision_user_action]
     end
 
     # string - Base DN for looking up users in LDAP server

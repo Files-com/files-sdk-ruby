@@ -19,6 +19,8 @@
   "subdomain": "my-site",
   "provision_users": true,
   "provision_groups": true,
+  "deprovision_users": true,
+  "deprovision_groups": true,
   "provision_group_default": "Employees",
   "provision_group_exclusion": "Employees",
   "provision_group_inclusion": "Employees",
@@ -26,10 +28,8 @@
   "provision_attachments_permission": true,
   "provision_dav_permission": true,
   "provision_ftp_permission": true,
-  "provision_group_action": "disabled",
   "provision_sftp_permission": true,
   "provision_time_zone": "Eastern Time (US & Canada)",
-  "provision_user_action": "disabled",
   "ldap_base_dn": "",
   "ldap_domain": "mysite.com",
   "enabled": true,
@@ -59,6 +59,8 @@
 * `subdomain` (string): Subdomain
 * `provision_users` (boolean): Auto-provision users?
 * `provision_groups` (boolean): Auto-provision group membership based on group memberships on the SSO side?
+* `deprovision_users` (boolean): Auto-deprovision users?
+* `deprovision_groups` (boolean): Auto-deprovision group membership based on group memberships on the SSO side?
 * `provision_group_default` (string): Comma-separated list of group names for groups to automatically add all auto-provisioned users to.
 * `provision_group_exclusion` (string): Comma-separated list of group names for groups (with optional wildcards) that will be excluded from auto-provisioning.
 * `provision_group_inclusion` (string): Comma-separated list of group names for groups (with optional wildcards) that will be auto-provisioned.
@@ -66,10 +68,8 @@
 * `provision_attachments_permission` (boolean): Auto-provisioned users get Sharing permission?
 * `provision_dav_permission` (boolean): Auto-provisioned users get WebDAV permission?
 * `provision_ftp_permission` (boolean): Auto-provisioned users get FTP permission?
-* `provision_group_action` (string): Should we sync groups from this strategy?
 * `provision_sftp_permission` (boolean): Auto-provisioned users get SFTP permission?
 * `provision_time_zone` (string): Default time zone for auto provisioned users.
-* `provision_user_action` (string): Should we sync users from this strategy?
 * `ldap_base_dn` (string): Base DN for looking up users in LDAP server
 * `ldap_domain` (string): Domain name that will be appended to LDAP usernames
 * `enabled` (boolean): Is strategy enabled?
