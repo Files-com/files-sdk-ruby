@@ -356,7 +356,7 @@ module Files
       @attributes[:subscribe_to_newsletter] = value
     end
 
-    # boolean - Is this user managed by an external source (such as LDAP)?
+    # boolean - Is this user managed by a SsoStrategy?
     def externally_managed
       @attributes[:externally_managed]
     end

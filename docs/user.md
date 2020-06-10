@@ -93,7 +93,7 @@
 * `ssl_required` (string): SSL required setting
 * `sso_strategy_id` (int64): SSO (Single Sign On) strategy ID for the user, if applicable.
 * `subscribe_to_newsletter` (boolean): Is the user subscribed to the newsletter?
-* `externally_managed` (boolean): Is this user managed by an external source (such as LDAP)?
+* `externally_managed` (boolean): Is this user managed by a SsoStrategy?
 * `time_zone` (string): User time zone
 * `type_of_2fa` (string): Type(s) of 2FA methods in use.  Will be either `sms`, `totp`, `u2f`, `yubi`, or multiple values sorted alphabetically and joined by an underscore.
 * `user_root` (string): Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.

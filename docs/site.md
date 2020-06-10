@@ -32,6 +32,8 @@
   "disable_password_reset": true,
   "domain": "my-custom-domain.com",
   "email": "john.doe@files.com",
+  "non_sso_groups_allowed": true,
+  "non_sso_users_allowed": true,
   "folder_permissions_groups_only": true,
   "hipaa": true,
   "icon128": "",
@@ -140,6 +142,8 @@
 * `disable_password_reset` (boolean): Is password reset disabled?
 * `domain` (string): Custom domain
 * `email` (email): Main email for this site
+* `non_sso_groups_allowed` (boolean): If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
+* `non_sso_users_allowed` (boolean): If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
 * `folder_permissions_groups_only` (boolean): If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
 * `hipaa` (boolean): Is there a signed HIPAA BAA between Files.com and this site?
 * `icon128`: Branded icon 128x128
@@ -289,6 +293,8 @@ Files::Site.update(
   use_provided_modified_at: true, 
   custom_namespace: true, 
   disable_users_from_inactivity_period_days: 1, 
+  non_sso_groups_allowed: true, 
+  non_sso_users_allowed: true, 
   allowed_2fa_method_sms: true, 
   allowed_2fa_method_u2f: true, 
   allowed_2fa_method_totp: true, 
@@ -377,6 +383,8 @@ Files::Site.update(
 * `use_provided_modified_at` (boolean): Allow uploaders to set `provided_modified_at` for uploaded files?
 * `custom_namespace` (boolean): Is this site using a custom namespace for users?
 * `disable_users_from_inactivity_period_days` (int64): If greater than zero, users will unable to login if they do not show activity within this number of days.
+* `non_sso_groups_allowed` (boolean): If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
+* `non_sso_users_allowed` (boolean): If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
 * `allowed_2fa_method_sms` (boolean): Is SMS two factor authentication allowed?
 * `allowed_2fa_method_u2f` (boolean): Is U2F two factor authentication allowed?
 * `allowed_2fa_method_totp` (boolean): Is TOTP two factor authentication allowed?

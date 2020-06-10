@@ -42,7 +42,9 @@ Files::Notification.list(
   user_id: 1, 
   page: 1, 
   per_page: 1, 
-  group_id: 1
+  group_id: 1, 
+  path: "path", 
+  include_ancestors: true
 )
 ```
 
@@ -53,6 +55,8 @@ Files::Notification.list(
 * `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
 * `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
 * `group_id` (int64): Show notifications for this Group ID.
+* `path` (string): Show notifications for this Path.
+* `include_ancestors` (boolean): If `include_ancestors` is `true` and `path` is specified, include notifications for any parent paths. Ignored if `path` is not specified.
 
 
 ---
