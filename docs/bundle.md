@@ -4,33 +4,35 @@
 
 ```
 {
-  "id": 1,
   "code": "abc123",
-  "created_at": "2000-01-01T01:00:00Z",
+  "url": "https://subdomain.files.com/f/12345678",
   "description": "The public description of the bundle.",
+  "password_protected": true,
+  "require_registration": true,
+  "id": 1,
+  "created_at": "2000-01-01T01:00:00Z",
   "expires_at": "2000-01-01T01:00:00Z",
+  "note": "The internal note on the bundle.",
+  "user_id": 1,
+  "username": "user",
   "paths": [
 
-  ],
-  "note": "The internal note on the bundle.",
-  "password_protected": true,
-  "url": "https://subdomain.files.com/f/12345678",
-  "user_id": 1,
-  "username": "user"
+  ]
 }
 ```
 
-* `id` (int64): Bundle ID
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
-* `created_at` (date-time): Bundle created at date/time
-* `description` (string): Public description
-* `expires_at` (date-time): Bundle expiration date/time
-* `paths` (array): A list of paths in this bundle
-* `note` (string): Bundle internal note
-* `password_protected` (boolean): Is this bundle password protected?
 * `url` (string): Public URL of Share Link
+* `description` (string): Public description
+* `password_protected` (boolean): Is this bundle password protected?
+* `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
+* `id` (int64): Bundle ID
+* `created_at` (date-time): Bundle created at date/time
+* `expires_at` (date-time): Bundle expiration date/time
+* `note` (string): Bundle internal note
 * `user_id` (int64): Bundle creator user ID
 * `username` (string): Bundle creator username
+* `paths` (array): A list of paths in this bundle
 * `password` (string): Password for this bundle.
 
 
@@ -79,7 +81,8 @@ Files::Bundle.create(
   expires_at: "2000-01-01T01:00:00Z", 
   description: "The public description of the bundle.", 
   note: "The internal note on the bundle.", 
-  code: "abc123"
+  code: "abc123", 
+  require_registration: true
 )
 ```
 
@@ -92,6 +95,7 @@ Files::Bundle.create(
 * `description` (string): Public description
 * `note` (string): Bundle internal note
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
+* `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 
 
 ---
@@ -122,7 +126,8 @@ Files::Bundle.update(id,
   expires_at: "2000-01-01T01:00:00Z", 
   description: "The public description of the bundle.", 
   note: "The internal note on the bundle.", 
-  code: "abc123"
+  code: "abc123", 
+  require_registration: true
 )
 ```
 
@@ -134,6 +139,7 @@ Files::Bundle.update(id,
 * `description` (string): Public description
 * `note` (string): Bundle internal note
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
+* `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 
 
 ---
@@ -181,7 +187,8 @@ bundle.update(
   expires_at: "2000-01-01T01:00:00Z",
   description: "The public description of the bundle.",
   note: "The internal note on the bundle.",
-  code: "abc123"
+  code: "abc123",
+  require_registration: true
 )
 ```
 
@@ -193,6 +200,7 @@ bundle.update(
 * `description` (string): Public description
 * `note` (string): Bundle internal note
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
+* `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 
 
 ---

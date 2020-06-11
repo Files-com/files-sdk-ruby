@@ -9,15 +9,6 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Bundle ID
-    def id
-      @attributes[:id]
-    end
-
-    def id=(value)
-      @attributes[:id] = value
-    end
-
     # string - Bundle code.  This code forms the end part of the Public URL.
     def code
       @attributes[:code]
@@ -27,9 +18,13 @@ module Files
       @attributes[:code] = value
     end
 
-    # date-time - Bundle created at date/time
-    def created_at
-      @attributes[:created_at]
+    # string - Public URL of Share Link
+    def url
+      @attributes[:url]
+    end
+
+    def url=(value)
+      @attributes[:url] = value
     end
 
     # string - Public description
@@ -41,33 +36,6 @@ module Files
       @attributes[:description] = value
     end
 
-    # date-time - Bundle expiration date/time
-    def expires_at
-      @attributes[:expires_at]
-    end
-
-    def expires_at=(value)
-      @attributes[:expires_at] = value
-    end
-
-    # array - A list of paths in this bundle
-    def paths
-      @attributes[:paths]
-    end
-
-    def paths=(value)
-      @attributes[:paths] = value
-    end
-
-    # string - Bundle internal note
-    def note
-      @attributes[:note]
-    end
-
-    def note=(value)
-      @attributes[:note] = value
-    end
-
     # boolean - Is this bundle password protected?
     def password_protected
       @attributes[:password_protected]
@@ -77,13 +45,45 @@ module Files
       @attributes[:password_protected] = value
     end
 
-    # string - Public URL of Share Link
-    def url
-      @attributes[:url]
+    # boolean - Show a registration page that captures the downloader's name and email address?
+    def require_registration
+      @attributes[:require_registration]
     end
 
-    def url=(value)
-      @attributes[:url] = value
+    def require_registration=(value)
+      @attributes[:require_registration] = value
+    end
+
+    # int64 - Bundle ID
+    def id
+      @attributes[:id]
+    end
+
+    def id=(value)
+      @attributes[:id] = value
+    end
+
+    # date-time - Bundle created at date/time
+    def created_at
+      @attributes[:created_at]
+    end
+
+    # date-time - Bundle expiration date/time
+    def expires_at
+      @attributes[:expires_at]
+    end
+
+    def expires_at=(value)
+      @attributes[:expires_at] = value
+    end
+
+    # string - Bundle internal note
+    def note
+      @attributes[:note]
+    end
+
+    def note=(value)
+      @attributes[:note] = value
     end
 
     # int64 - Bundle creator user ID
@@ -102,6 +102,15 @@ module Files
 
     def username=(value)
       @attributes[:username] = value
+    end
+
+    # array - A list of paths in this bundle
+    def paths
+      @attributes[:paths]
+    end
+
+    def paths=(value)
+      @attributes[:paths] = value
     end
 
     # string - Password for this bundle.
@@ -137,6 +146,7 @@ module Files
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
+    #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -217,6 +227,7 @@ module Files
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
+    #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
@@ -255,6 +266,7 @@ module Files
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
+    #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
