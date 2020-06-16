@@ -8,4 +8,4 @@
 }
 ```
 
-* `dynamic` (object): Additional data
+* `dynamic` (object): 

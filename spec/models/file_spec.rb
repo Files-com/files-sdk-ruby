@@ -24,8 +24,9 @@ RSpec.describe Files::File, :with_test_folder do
 
     it "returns an IO Object" do
       file = Files::File.find(test_folder.join("read.txt").to_s, {}, options)
-      expect(file.read_io.class).to eq(IO)
+      expect(file.read_io).to be_a_kind_of(IO)
       expect(file.read_io.read).to eq("contents")
+      expect(file.read_io.size).to eq("contents".length)
     end
   end
 

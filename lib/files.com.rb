@@ -11,11 +11,13 @@ require "set"
 require "socket"
 require "uri"
 require "addressable/uri"
+require "concurrent/promise"
 
 $LOAD_PATH.push __dir__
 
 require "files.com/version"
 
+require "files.com/sizable_io"
 require "files.com/api"
 require "files.com/api_client"
 require "files.com/errors"

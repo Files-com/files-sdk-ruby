@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # object - Additional data
+    # object
     def dynamic
       @attributes[:dynamic]
     end

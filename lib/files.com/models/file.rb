@@ -389,7 +389,7 @@ module Files
 
     def read_io
       @read_io ||= begin
-                     r, w = IO.pipe
+                     r, w = SizableIO.pipe
                      Thread.new do
                        download_content(w)
                      ensure

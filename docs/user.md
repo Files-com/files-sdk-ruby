@@ -132,6 +132,8 @@ Files::User.list(
 * `q[password_validity_days]` (string): If set, list only users with overridden password validity days setting.
 * `q[ssl_required]` (string): If set, list only users with overridden SSL required setting.
 * `search` (string): Searches for partial matches of name, username, or email.
+* `sort_by[last_login_at]` (string): If set, sort users by 'last_login_at' in either 'asc' or 'desc' direction
+* `sort_by[authenticate_until]` (string): If set, sort users by 'authenticate_until' in either 'asc' or 'desc' direction
 
 
 ---

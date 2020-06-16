@@ -10,21 +10,30 @@ module Files
     end
 
     # string - Group name
-    def name
-      @attributes[:name]
+    def group_name
+      @attributes[:group_name]
     end
 
-    def name=(value)
-      @attributes[:name] = value
+    def group_name=(value)
+      @attributes[:group_name] = value
     end
 
     # int64 - Group ID
-    def id
-      @attributes[:id]
+    def group_id
+      @attributes[:group_id]
     end
 
-    def id=(value)
-      @attributes[:id] = value
+    def group_id=(value)
+      @attributes[:group_id] = value
+    end
+
+    # int64 - User ID
+    def user_id
+      @attributes[:user_id]
+    end
+
+    def user_id=(value)
+      @attributes[:user_id] = value
     end
 
     # boolean - Is this user an administrator of this group?
@@ -45,22 +54,22 @@ module Files
       @attributes[:usernames] = value
     end
 
-    # int64 - Group ID to add user to.
-    def group_id
-      @attributes[:group_id]
+    # string
+    def name
+      @attributes[:name]
     end
 
-    def group_id=(value)
-      @attributes[:group_id] = value
+    def name=(value)
+      @attributes[:name] = value
     end
 
-    # int64 - User ID to add to group.
-    def user_id
-      @attributes[:user_id]
+    # string
+    def id
+      @attributes[:id]
     end
 
-    def user_id=(value)
-      @attributes[:user_id] = value
+    def id=(value)
+      @attributes[:id] = value
     end
 
     # Parameters:
@@ -100,11 +109,11 @@ module Files
     end
 
     # Parameters:
-    #   user_id - int64 - User ID.  If provided, will return groups of which this user is a member.
+    #   user_id - int64 - User ID.  If provided, will return group_users of this user.
     #   page - int64 - Current page number.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
-    #   group_id - int64 - Group ID.  If provided, will return members of this group.
+    #   group_id - int64 - Group ID.  If provided, will return group_users of this group.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)

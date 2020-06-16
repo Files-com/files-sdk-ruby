@@ -17,5 +17,5 @@
 * `code` (int64): Status http code
 * `message` (string): Error message
 * `status` (string): Status message
-* `data`: 
+* `data`: Additional data
 * `errors` (array): A list of api errors

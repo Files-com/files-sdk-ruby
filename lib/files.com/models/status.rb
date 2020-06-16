@@ -24,6 +24,7 @@ module Files
       @attributes[:status]
     end
 
+    # Additional data
     def data
       @attributes[:data]
     end

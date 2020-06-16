@@ -4,21 +4,25 @@
 
 ```
 {
-  "name": "My Group",
-  "id": 1,
+  "group_name": "My Group",
+  "group_id": 1,
+  "user_id": 1,
   "admin": true,
   "usernames": [
 
-  ]
+  ],
+  "name": "",
+  "id": ""
 }
 ```
 
-* `name` (string): Group name
-* `id` (int64): Group ID
+* `group_name` (string): Group name
+* `group_id` (int64): Group ID
+* `user_id` (int64): User ID
 * `admin` (boolean): Is this user an administrator of this group?
 * `usernames` (array): A list of usernames for users in this group
-* `group_id` (int64): Group ID to add user to.
-* `user_id` (int64): User ID to add to group.
+* `name` (string): 
+* `id` (string): 
 
 
 ---
@@ -36,11 +40,11 @@ Files::GroupUser.list(
 
 ### Parameters
 
-* `user_id` (int64): User ID.  If provided, will return groups of which this user is a member.
+* `user_id` (int64): User ID.  If provided, will return group_users of this user.
 * `page` (int64): Current page number.
 * `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
 * `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
-* `group_id` (int64): Group ID.  If provided, will return members of this group.
+* `group_id` (int64): Group ID.  If provided, will return group_users of this group.
 
 
 ---

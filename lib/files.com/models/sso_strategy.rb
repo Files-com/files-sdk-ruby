@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # string - SSO Protocol
+    # array - SSO Protocol
     def protocol
       @attributes[:protocol]
     end
@@ -177,11 +177,6 @@ module Files
     # boolean - Use secure LDAP?
     def ldap_secure
       @attributes[:ldap_secure]
-    end
-
-    # string - Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
-    def ldap_user_include_groups
-      @attributes[:ldap_user_include_groups]
     end
 
     # string - Username for signing in to LDAP server.

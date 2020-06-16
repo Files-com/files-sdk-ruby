@@ -105,7 +105,9 @@ Files::Behavior.create(
 Files::Behavior.webhook_test(
   url: "https://www.site.com/...", 
   method: "GET", 
-  encoding: "RAW"
+  encoding: "RAW", 
+  headers: "x-test-header => testvalue", 
+  body: "test-param => testvalue"
 )
 ```
 
@@ -114,6 +116,8 @@ Files::Behavior.webhook_test(
 * `url` (string): Required - URL for testing the webhook.
 * `method` (string): HTTP method(GET or POST).
 * `encoding` (string): HTTP encoding method.  Can be JSON, XML, or RAW (form data).
+* `headers` (object): Additional request headers.
+* `body` (object): Additional body parameters.
 
 
 ---

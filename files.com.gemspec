@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'faraday', ">= 1.0.1"
   s.add_dependency 'net-http-persistent'
   s.add_dependency 'addressable', ">= 2.7.0"
+  s.add_dependency 'concurrent-ruby', ">= 1.1.6"
 
   s.files         = `find *`.split("\n").uniq.sort.reject(&:empty?)
   s.executables   = [ "files", "files-console" ]

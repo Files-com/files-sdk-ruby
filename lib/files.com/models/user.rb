@@ -612,6 +612,8 @@ module Files
     #   q[password_validity_days] - string - If set, list only users with overridden password validity days setting.
     #   q[ssl_required] - string - If set, list only users with overridden SSL required setting.
     #   search - string - Searches for partial matches of name, username, or email.
+    #   sort_by[last_login_at] - string - If set, sort users by 'last_login_at' in either 'asc' or 'desc' direction
+    #   sort_by[authenticate_until] - string - If set, sort users by 'authenticate_until' in either 'asc' or 'desc' direction
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)

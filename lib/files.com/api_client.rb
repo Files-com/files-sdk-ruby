@@ -146,13 +146,19 @@ module Files
 
     def stream_download(uri, io)
       if conn.adapter == Faraday::Adapter::NetHttp
-        remote_request(:get, uri) do |req|
-          req.options.on_data = proc do |chunk, _overall_received_bytes|
-            io.write(chunk.encode!)
+        uri = URI(uri)
+        Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+          request = Net::HTTP::Get.new uri
+          http.request request do |response|
+            io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
+            response.read_body do |chunk|
+              io << chunk.encode!
+            end
           end
         end
       else
         response = remote_request(:get, uri)
+        io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
         io.write(response.body)
       end
     end

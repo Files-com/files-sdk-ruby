@@ -4,7 +4,9 @@
 
 ```
 {
-  "protocol": "okta",
+  "protocol": [
+
+  ],
   "provider": "okta",
   "label": "My Corporate SSO Provider",
   "logo_url": "https://mysite.files.com/.../logo.png",
@@ -38,13 +40,12 @@
   "ldap_host_3": "ldap3.site.com",
   "ldap_port": 1,
   "ldap_secure": true,
-  "ldap_user_include_groups": "",
   "ldap_username": "[ldap username]",
   "ldap_username_field": "sAMAccountName"
 }
 ```
 
-* `protocol` (string): SSO Protocol
+* `protocol` (array): SSO Protocol
 * `provider` (string): Provider name
 * `label` (string): Custom label for the SSO provider on the login page.
 * `logo_url` (string): URL holding a custom logo for the SSO provider on the login page.
@@ -78,7 +79,6 @@
 * `ldap_host_3` (string): LDAP backup host
 * `ldap_port` (int64): LDAP port
 * `ldap_secure` (boolean): Use secure LDAP?
-* `ldap_user_include_groups` (string): Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
 * `ldap_username` (string): Username for signing in to LDAP server.
 * `ldap_username_field` (string): LDAP username field
 
