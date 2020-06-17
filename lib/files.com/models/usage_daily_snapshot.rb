@@ -39,6 +39,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
 
       response, options = Api.send_request("/usage_daily_snapshots", :get, params, options)
+      response.data.map do |entity_data|
+        UsageDailySnapshot.new(entity_data, options)
+      end
     end
 
     def self.all(params = {}, options = {})

@@ -74,6 +74,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: message_comment_id") unless params.dig(:message_comment_id)
 
       response, options = Api.send_request("/message_comment_reactions", :get, params, options)
+      response.data.map do |entity_data|
+        MessageCommentReaction.new(entity_data, options)
+      end
     end
 
     def self.all(params = {}, options = {})

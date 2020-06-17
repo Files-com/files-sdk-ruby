@@ -27,6 +27,7 @@ RSpec.configure do |config|
     Files::Folder.mkdir("files_regional_worker", {}, api_key: @api_key) unless Files::Folder.exist?("files_regional_worker", api_key: @api_key)
     Files::Folder.mkdir(@test_folder.to_s, {}, api_key: @api_key)
     all.run
+  ensure
     Files::Folder.delete(@test_folder.to_s, { recursive: true }, api_key: @api_key)
   end
 

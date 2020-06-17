@@ -109,6 +109,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_id must be an String") if params.dig(:user_id) and !params.dig(:user_id).is_a?(String)
 
       response, options = Api.send_request("/permissions", :get, params, options)
+      response.data.map do |entity_data|
+        Permission.new(entity_data, options)
+      end
     end
 
     def self.all(path, params = {}, options = {})

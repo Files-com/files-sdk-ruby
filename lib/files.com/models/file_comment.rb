@@ -97,6 +97,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
       response, options = Api.send_request("/file_comments/files/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
+      response.data.map do |entity_data|
+        FileComment.new(entity_data, options)
+      end
     end
 
     # Parameters:

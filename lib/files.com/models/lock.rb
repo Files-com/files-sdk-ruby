@@ -133,6 +133,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
       response, options = Api.send_request("/locks/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
+      response.data.map do |entity_data|
+        Lock.new(entity_data, options)
+      end
     end
 
     # Parameters:

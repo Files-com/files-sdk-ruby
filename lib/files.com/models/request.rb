@@ -124,6 +124,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
 
       response, options = Api.send_request("/requests", :get, params, options)
+      response.data.map do |entity_data|
+        Request.new(entity_data, options)
+      end
     end
 
     def self.all(path, params = {}, options = {})
@@ -146,6 +149,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
 
       response, options = Api.send_request("/requests/folders/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
+      response.data.map do |entity_data|
+        Request.new(entity_data, options)
+      end
     end
 
     # Parameters:

@@ -117,6 +117,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ids must be an String") if params.dig(:ids) and !params.dig(:ids).is_a?(String)
 
       response, options = Api.send_request("/groups", :get, params, options)
+      response.data.map do |entity_data|
+        Group.new(entity_data, options)
+      end
     end
 
     def self.all(params = {}, options = {})

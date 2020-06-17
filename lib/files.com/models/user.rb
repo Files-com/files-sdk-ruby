@@ -621,6 +621,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params.dig(:search) and !params.dig(:search).is_a?(String)
 
       response, options = Api.send_request("/users", :get, params, options)
+      response.data.map do |entity_data|
+        User.new(entity_data, options)
+      end
     end
 
     def self.all(params = {}, options = {})

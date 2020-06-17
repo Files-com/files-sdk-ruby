@@ -191,6 +191,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
 
       response, options = Api.send_request("/automations", :get, params, options)
+      response.data.map do |entity_data|
+        Automation.new(entity_data, options)
+      end
     end
 
     def self.all(params = {}, options = {})

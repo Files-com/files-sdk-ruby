@@ -172,6 +172,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
 
       response, options = Api.send_request("/notifications", :get, params, options)
+      response.data.map do |entity_data|
+        Notification.new(entity_data, options)
+      end
     end
 
     def self.all(params = {}, options = {})

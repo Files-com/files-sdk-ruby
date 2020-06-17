@@ -95,6 +95,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
       response, options = Api.send_request("/history/files(/*path)", :get, params, options)
+      response.data.map do |entity_data|
+        Action.new(entity_data, options)
+      end
     end
 
     # Parameters:
@@ -118,6 +121,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
       response, options = Api.send_request("/history/folders(/*path)", :get, params, options)
+      response.data.map do |entity_data|
+        Action.new(entity_data, options)
+      end
     end
 
     # Parameters:
@@ -141,6 +147,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: user_id") unless params.dig(:user_id)
 
       response, options = Api.send_request("/history/users/#{params[:user_id]}", :get, params, options)
+      response.data.map do |entity_data|
+        Action.new(entity_data, options)
+      end
     end
 
     # Parameters:
@@ -159,6 +168,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
 
       response, options = Api.send_request("/history/login", :get, params, options)
+      response.data.map do |entity_data|
+        Action.new(entity_data, options)
+      end
     end
 
     # Parameters:
@@ -177,6 +189,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
 
       response, options = Api.send_request("/history", :get, params, options)
+      response.data.map do |entity_data|
+        Action.new(entity_data, options)
+      end
     end
 
     def self.all(params = {}, options = {})
