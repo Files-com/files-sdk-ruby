@@ -10,9 +10,7 @@
   "admin": true,
   "usernames": [
 
-  ],
-  "name": "",
-  "id": ""
+  ]
 }
 ```
 
@@ -21,8 +19,7 @@
 * `user_id` (int64): User ID
 * `admin` (boolean): Is this user an administrator of this group?
 * `usernames` (array): A list of usernames for users in this group
-* `name` (string): 
-* `id` (string): 
+* `id` (int64): Group User ID.
 
 
 ---

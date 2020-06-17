@@ -54,16 +54,7 @@ module Files
       @attributes[:usernames] = value
     end
 
-    # string
-    def name
-      @attributes[:name]
-    end
-
-    def name=(value)
-      @attributes[:name] = value
-    end
-
-    # string
+    # int64 - Group User ID.
     def id
       @attributes[:id]
     end
