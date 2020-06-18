@@ -180,6 +180,33 @@ module Files
       @attributes[:wasabi_region] = value
     end
 
+    # string - Rackspace username used to login to the Rackspace Cloud Control Panel.
+    def rackspace_username
+      @attributes[:rackspace_username]
+    end
+
+    def rackspace_username=(value)
+      @attributes[:rackspace_username] = value
+    end
+
+    # string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    def rackspace_region
+      @attributes[:rackspace_region]
+    end
+
+    def rackspace_region=(value)
+      @attributes[:rackspace_region] = value
+    end
+
+    # string - The name of the container (top level directory) where files will sync.
+    def rackspace_container
+      @attributes[:rackspace_container]
+    end
+
+    def rackspace_container=(value)
+      @attributes[:rackspace_container] = value
+    end
+
     # string - AWS Access Key.
     def aws_access_key
       @attributes[:aws_access_key]
@@ -261,6 +288,15 @@ module Files
       @attributes[:backblaze_b2_application_key] = value
     end
 
+    # string - Rackspace API key from the Rackspace Cloud Control Panel.
+    def rackspace_api_key
+      @attributes[:rackspace_api_key]
+    end
+
+    def rackspace_api_key=(value)
+      @attributes[:rackspace_api_key] = value
+    end
+
     # Parameters:
     #   aws_access_key - string - AWS Access Key.
     #   aws_secret_key - string - AWS secret key.
@@ -271,6 +307,7 @@ module Files
     #   wasabi_secret_key - string - Wasabi secret key.
     #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
+    #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -288,6 +325,9 @@ module Files
     #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
     #   wasabi_bucket - string - Wasabi region
     #   wasabi_region - string - Wasabi Bucket name
+    #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
+    #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -302,6 +342,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params.dig(:wasabi_secret_key) and !params.dig(:wasabi_secret_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params.dig(:backblaze_b2_key_id) and !params.dig(:backblaze_b2_key_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params.dig(:rackspace_api_key) and !params.dig(:rackspace_api_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -319,6 +360,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params.dig(:backblaze_b2_s3_endpoint) and !params.dig(:backblaze_b2_s3_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_bucket must be an String") if params.dig(:wasabi_bucket) and !params.dig(:wasabi_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_region must be an String") if params.dig(:wasabi_region) and !params.dig(:wasabi_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params.dig(:rackspace_username) and !params.dig(:rackspace_username).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/remote_servers/#{@attributes[:id]}", :patch, params, @options)
@@ -392,6 +436,7 @@ module Files
     #   wasabi_secret_key - string - Wasabi secret key.
     #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
+    #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -409,6 +454,9 @@ module Files
     #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
     #   wasabi_bucket - string - Wasabi region
     #   wasabi_region - string - Wasabi Bucket name
+    #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
+    #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params.dig(:aws_access_key) and !params.dig(:aws_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
@@ -419,6 +467,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params.dig(:wasabi_secret_key) and !params.dig(:wasabi_secret_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params.dig(:backblaze_b2_key_id) and !params.dig(:backblaze_b2_key_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params.dig(:rackspace_api_key) and !params.dig(:rackspace_api_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -436,6 +485,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params.dig(:backblaze_b2_s3_endpoint) and !params.dig(:backblaze_b2_s3_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_bucket must be an String") if params.dig(:wasabi_bucket) and !params.dig(:wasabi_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_region must be an String") if params.dig(:wasabi_region) and !params.dig(:wasabi_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params.dig(:rackspace_username) and !params.dig(:rackspace_username).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
 
       response, options = Api.send_request("/remote_servers", :post, params, options)
       RemoteServer.new(response.data, options)
@@ -451,6 +503,7 @@ module Files
     #   wasabi_secret_key - string - Wasabi secret key.
     #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
+    #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -468,6 +521,9 @@ module Files
     #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
     #   wasabi_bucket - string - Wasabi region
     #   wasabi_region - string - Wasabi Bucket name
+    #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
+    #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -481,6 +537,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params.dig(:wasabi_secret_key) and !params.dig(:wasabi_secret_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params.dig(:backblaze_b2_key_id) and !params.dig(:backblaze_b2_key_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params.dig(:rackspace_api_key) and !params.dig(:rackspace_api_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -498,6 +555,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params.dig(:backblaze_b2_s3_endpoint) and !params.dig(:backblaze_b2_s3_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_bucket must be an String") if params.dig(:wasabi_bucket) and !params.dig(:wasabi_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_region must be an String") if params.dig(:wasabi_region) and !params.dig(:wasabi_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params.dig(:rackspace_username) and !params.dig(:rackspace_username).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}", :patch, params, options)

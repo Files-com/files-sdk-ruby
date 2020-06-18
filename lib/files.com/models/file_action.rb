@@ -116,7 +116,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
       response, options = Api.send_request("/file_actions/begin_upload/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
-      FilePartUpload.new(response.data, options)
+      response.data.map do |entity_data|
+        FilePartUpload.new(entity_data, options)
+      end
     end
   end
 end

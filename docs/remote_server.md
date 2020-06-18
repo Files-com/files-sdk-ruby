@@ -22,7 +22,10 @@
   "backblaze_b2_s3_endpoint": "s3.us-west-001.backblazeb2.com",
   "backblaze_b2_bucket": "my-bucket",
   "wasabi_bucket": "us-west-1",
-  "wasabi_region": "my-bucket"
+  "wasabi_region": "my-bucket",
+  "rackspace_username": "rackspaceuser",
+  "rackspace_region": "dfw",
+  "rackspace_container": "my-container"
 }
 ```
 
@@ -45,6 +48,9 @@
 * `backblaze_b2_bucket` (string): Backblaze B2 Cloud Storage Bucket name
 * `wasabi_bucket` (string): Wasabi region
 * `wasabi_region` (string): Wasabi Bucket name
+* `rackspace_username` (string): Rackspace username used to login to the Rackspace Cloud Control Panel.
+* `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+* `rackspace_container` (string): The name of the container (top level directory) where files will sync.
 * `aws_access_key` (string): AWS Access Key.
 * `aws_secret_key` (string): AWS secret key.
 * `password` (string): Password if needed.
@@ -54,6 +60,7 @@
 * `wasabi_secret_key` (string): Wasabi secret key.
 * `backblaze_b2_key_id` (string): Backblaze B2 Cloud Storage keyID.
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
+* `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
 
 
 ---
@@ -109,7 +116,10 @@ Files::RemoteServer.create(
   backblaze_b2_bucket: "my-bucket", 
   backblaze_b2_s3_endpoint: "s3.us-west-001.backblazeb2.com", 
   wasabi_bucket: "us-west-1", 
-  wasabi_region: "my-bucket"
+  wasabi_region: "my-bucket", 
+  rackspace_username: "rackspaceuser", 
+  rackspace_region: "dfw", 
+  rackspace_container: "my-container"
 )
 ```
 
@@ -124,6 +134,7 @@ Files::RemoteServer.create(
 * `wasabi_secret_key` (string): Wasabi secret key.
 * `backblaze_b2_key_id` (string): Backblaze B2 Cloud Storage keyID.
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
+* `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -141,6 +152,9 @@ Files::RemoteServer.create(
 * `backblaze_b2_s3_endpoint` (string): Backblaze B2 Cloud Storage S3 Endpoint
 * `wasabi_bucket` (string): Wasabi region
 * `wasabi_region` (string): Wasabi Bucket name
+* `rackspace_username` (string): Rackspace username used to login to the Rackspace Cloud Control Panel.
+* `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+* `rackspace_container` (string): The name of the container (top level directory) where files will sync.
 
 
 ---
@@ -165,7 +179,10 @@ Files::RemoteServer.update(id,
   backblaze_b2_bucket: "my-bucket", 
   backblaze_b2_s3_endpoint: "s3.us-west-001.backblazeb2.com", 
   wasabi_bucket: "us-west-1", 
-  wasabi_region: "my-bucket"
+  wasabi_region: "my-bucket", 
+  rackspace_username: "rackspaceuser", 
+  rackspace_region: "dfw", 
+  rackspace_container: "my-container"
 )
 ```
 
@@ -181,6 +198,7 @@ Files::RemoteServer.update(id,
 * `wasabi_secret_key` (string): Wasabi secret key.
 * `backblaze_b2_key_id` (string): Backblaze B2 Cloud Storage keyID.
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
+* `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -198,6 +216,9 @@ Files::RemoteServer.update(id,
 * `backblaze_b2_s3_endpoint` (string): Backblaze B2 Cloud Storage S3 Endpoint
 * `wasabi_bucket` (string): Wasabi region
 * `wasabi_region` (string): Wasabi Bucket name
+* `rackspace_username` (string): Rackspace username used to login to the Rackspace Cloud Control Panel.
+* `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+* `rackspace_container` (string): The name of the container (top level directory) where files will sync.
 
 
 ---
@@ -237,7 +258,10 @@ remote_server.update(
   backblaze_b2_bucket: "my-bucket",
   backblaze_b2_s3_endpoint: "s3.us-west-001.backblazeb2.com",
   wasabi_bucket: "us-west-1",
-  wasabi_region: "my-bucket"
+  wasabi_region: "my-bucket",
+  rackspace_username: "rackspaceuser",
+  rackspace_region: "dfw",
+  rackspace_container: "my-container"
 )
 ```
 
@@ -253,6 +277,7 @@ remote_server.update(
 * `wasabi_secret_key` (string): Wasabi secret key.
 * `backblaze_b2_key_id` (string): Backblaze B2 Cloud Storage keyID.
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
+* `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -270,6 +295,9 @@ remote_server.update(
 * `backblaze_b2_s3_endpoint` (string): Backblaze B2 Cloud Storage S3 Endpoint
 * `wasabi_bucket` (string): Wasabi region
 * `wasabi_region` (string): Wasabi Bucket name
+* `rackspace_username` (string): Rackspace username used to login to the Rackspace Cloud Control Panel.
+* `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+* `rackspace_container` (string): The name of the container (top level directory) where files will sync.
 
 
 ---
