@@ -63,7 +63,7 @@ end
 
 def test_sessions
   session = Files::Session.create(username: "sessionuser", password: "sessionuserpassword")
-  user = Files::ApiKey.list({ user_id: 0 }, session: session)
+  Files::ApiKey.list({ user_id: 0 }, session: session)
   session.destroy
 end
 

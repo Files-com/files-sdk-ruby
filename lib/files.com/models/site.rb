@@ -666,6 +666,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: default_time_zone must be an String") if params.dig(:default_time_zone) and !params.dig(:default_time_zone).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: desktop_app_session_lifetime must be an Integer") if params.dig(:desktop_app_session_lifetime) and !params.dig(:desktop_app_session_lifetime).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: welcome_screen must be an String") if params.dig(:welcome_screen) and !params.dig(:welcome_screen).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: session_expiry must be an Float") if params.dig(:session_expiry) and !params.dig(:session_expiry).is_a?(Float)
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params.dig(:user_lockout_tries) and !params.dig(:user_lockout_tries).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_within must be an Integer") if params.dig(:user_lockout_within) and !params.dig(:user_lockout_within).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_lock_period must be an Integer") if params.dig(:user_lockout_lock_period) and !params.dig(:user_lockout_lock_period).is_a?(Integer)

@@ -3,6 +3,7 @@
 module Files
   class Session
     attr_reader :options, :attributes
+
     def destroy(params = {}, options = {})
       Session.destroy(params, options.merge(session: self, session_id: nil))
     end

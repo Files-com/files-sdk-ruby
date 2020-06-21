@@ -3,6 +3,7 @@
 module Files
   class Folder
     attr_reader :options, :attributes
+
     def self.[](*_)
       raise NotImplementedError
     end

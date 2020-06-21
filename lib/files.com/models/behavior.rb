@@ -201,9 +201,9 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be one of String, Integer, Hash") if params.dig(:id) and [String, Integer, Hash].none? { |klass| params.dig(:id).is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: id must be one of String, Integer, Hash") if params.dig(:id) and [ String, Integer, Hash ].none? { |klass| params.dig(:id).is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: value must be an String") if params.dig(:value) and !params.dig(:value).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: attachment_file must be one of String, Integer, Hash") if params.dig(:attachment_file) and [String, Integer, Hash].none? { |klass| params.dig(:attachment_file).is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: attachment_file must be one of String, Integer, Hash") if params.dig(:attachment_file) and [ String, Integer, Hash ].none? { |klass| params.dig(:attachment_file).is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/behaviors/#{params[:id]}", :patch, params, options)

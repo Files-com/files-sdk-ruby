@@ -16,9 +16,7 @@ RSpec.configure do |config|
     let(:options) { { api_key: api_key } }
   end
 
-  RSpec.configure do |config|
-    config.include_context "API Helpers", :with_test_folder
-  end
+  config.include_context "API Helpers", :with_test_folder
 
   config.around(:example, :with_test_folder) do |all|
     @api_key = ENV["TEST_API_KEY"] || File.read("../../config/test_api_key.txt")
