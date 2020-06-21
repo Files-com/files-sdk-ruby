@@ -90,7 +90,7 @@ module Files
       new(path).mtime
     end
 
-    def self.open(path, mode = "r", options={}, &block)
+    def self.open(path, mode = "r", options = {}, &block)
       file = new(path, mode, options)
       if block
         yield file
@@ -306,7 +306,7 @@ module Files
     end
 
     def download_content(io)
-      Files::ApiClient::download_client.stream_download(download_uri_with_load, io)
+      Files::ApiClient.download_client.stream_download(download_uri_with_load, io)
     end
 
     def each(*args, &block)
@@ -571,13 +571,13 @@ module Files
     end
 
     def upload_file(local_file)
-      File.upload_file(local_file. path)
+      File.upload_file(local_file.path)
     end
 
     def write(*args)
       @mode ||= 'w'
       if args[0].respond_to?(:read)
-        flush if @write_io.size > 0
+        flush if @write_io.size > 0 # rubocop:disable Style/ZeroLengthPredicate
         @write_io = args[0]
       else
         @write_io.write *args

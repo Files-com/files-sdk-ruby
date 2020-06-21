@@ -10,11 +10,11 @@ Gem::Specification.new do |s|
   s.summary     = "Files.com Ruby client."
   s.description = "The Files.com Ruby client."
   s.license     = "MIT"
-  s.required_ruby_version = ">= 2.3"
-  s.add_dependency 'faraday', ">= 1.0.1"
-  s.add_dependency 'net-http-persistent'
+  s.required_ruby_version = ">= 2.5"
   s.add_dependency 'addressable', ">= 2.7.0"
   s.add_dependency 'concurrent-ruby', ">= 1.1.3"
+  s.add_dependency 'faraday', ">= 1.0.1"
+  s.add_dependency 'net-http-persistent'
 
   s.files         = `find *`.split("\n").uniq.sort.reject(&:empty?)
   s.executables   = [ "files", "files-console" ]

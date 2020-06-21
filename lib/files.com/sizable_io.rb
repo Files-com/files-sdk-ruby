@@ -5,7 +5,7 @@ module Files
 
       w.instance_variable_set(:@read_io, r)
 
-      [r, w]
+      [ r, w ]
     end
 
     def size
