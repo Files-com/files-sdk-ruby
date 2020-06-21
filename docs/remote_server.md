@@ -25,7 +25,11 @@
   "wasabi_region": "my-bucket",
   "rackspace_username": "rackspaceuser",
   "rackspace_region": "dfw",
-  "rackspace_container": "my-container"
+  "rackspace_container": "my-container",
+  "auth_setup_link": "auth/:provider",
+  "auth_status": "in_setup",
+  "auth_account_name": "me@example.com",
+  "one_drive_account_type": "personnel"
 }
 ```
 
@@ -51,6 +55,10 @@
 * `rackspace_username` (string): Rackspace username used to login to the Rackspace Cloud Control Panel.
 * `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
 * `rackspace_container` (string): The name of the container (top level directory) where files will sync.
+* `auth_setup_link` (string): Returns link to login with an Oauth provider
+* `auth_status` (string): Either `in_setup` or `complete`
+* `auth_account_name` (string): Describes the authorized account
+* `one_drive_account_type` (string): Either personnel or business_other account types
 * `aws_access_key` (string): AWS Access Key.
 * `aws_secret_key` (string): AWS secret key.
 * `password` (string): Password if needed.
@@ -61,6 +69,7 @@
 * `backblaze_b2_key_id` (string): Backblaze B2 Cloud Storage keyID.
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
 * `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
+* `reset_authentication` (boolean): Reset authenticated account
 
 
 ---
@@ -100,6 +109,7 @@ Files::RemoteServer.find(id)
 
 ```
 Files::RemoteServer.create(
+  reset_authentication: true, 
   hostname: "remote-server.com", 
   name: "My Remote server", 
   max_connections: 1, 
@@ -119,7 +129,8 @@ Files::RemoteServer.create(
   wasabi_region: "my-bucket", 
   rackspace_username: "rackspaceuser", 
   rackspace_region: "dfw", 
-  rackspace_container: "my-container"
+  rackspace_container: "my-container", 
+  one_drive_account_type: "personnel"
 )
 ```
 
@@ -135,6 +146,7 @@ Files::RemoteServer.create(
 * `backblaze_b2_key_id` (string): Backblaze B2 Cloud Storage keyID.
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
 * `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
+* `reset_authentication` (boolean): Reset authenticated account
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -155,6 +167,7 @@ Files::RemoteServer.create(
 * `rackspace_username` (string): Rackspace username used to login to the Rackspace Cloud Control Panel.
 * `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
 * `rackspace_container` (string): The name of the container (top level directory) where files will sync.
+* `one_drive_account_type` (string): Either personnel or business_other account types
 
 
 ---
@@ -163,6 +176,7 @@ Files::RemoteServer.create(
 
 ```
 Files::RemoteServer.update(id, 
+  reset_authentication: true, 
   hostname: "remote-server.com", 
   name: "My Remote server", 
   max_connections: 1, 
@@ -182,7 +196,8 @@ Files::RemoteServer.update(id,
   wasabi_region: "my-bucket", 
   rackspace_username: "rackspaceuser", 
   rackspace_region: "dfw", 
-  rackspace_container: "my-container"
+  rackspace_container: "my-container", 
+  one_drive_account_type: "personnel"
 )
 ```
 
@@ -199,6 +214,7 @@ Files::RemoteServer.update(id,
 * `backblaze_b2_key_id` (string): Backblaze B2 Cloud Storage keyID.
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
 * `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
+* `reset_authentication` (boolean): Reset authenticated account
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -219,6 +235,7 @@ Files::RemoteServer.update(id,
 * `rackspace_username` (string): Rackspace username used to login to the Rackspace Cloud Control Panel.
 * `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
 * `rackspace_container` (string): The name of the container (top level directory) where files will sync.
+* `one_drive_account_type` (string): Either personnel or business_other account types
 
 
 ---
@@ -242,6 +259,7 @@ Files::RemoteServer.delete(id)
 remote_server = Files::RemoteServer.list_for(path).first
 
 remote_server.update(
+  reset_authentication: true,
   hostname: "remote-server.com",
   name: "My Remote server",
   max_connections: 1,
@@ -261,7 +279,8 @@ remote_server.update(
   wasabi_region: "my-bucket",
   rackspace_username: "rackspaceuser",
   rackspace_region: "dfw",
-  rackspace_container: "my-container"
+  rackspace_container: "my-container",
+  one_drive_account_type: "personnel"
 )
 ```
 
@@ -278,6 +297,7 @@ remote_server.update(
 * `backblaze_b2_key_id` (string): Backblaze B2 Cloud Storage keyID.
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
 * `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
+* `reset_authentication` (boolean): Reset authenticated account
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -298,6 +318,7 @@ remote_server.update(
 * `rackspace_username` (string): Rackspace username used to login to the Rackspace Cloud Control Panel.
 * `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
 * `rackspace_container` (string): The name of the container (top level directory) where files will sync.
+* `one_drive_account_type` (string): Either personnel or business_other account types
 
 
 ---

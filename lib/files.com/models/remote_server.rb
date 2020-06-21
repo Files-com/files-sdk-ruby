@@ -207,6 +207,42 @@ module Files
       @attributes[:rackspace_container] = value
     end
 
+    # string - Returns link to login with an Oauth provider
+    def auth_setup_link
+      @attributes[:auth_setup_link]
+    end
+
+    def auth_setup_link=(value)
+      @attributes[:auth_setup_link] = value
+    end
+
+    # string - Either `in_setup` or `complete`
+    def auth_status
+      @attributes[:auth_status]
+    end
+
+    def auth_status=(value)
+      @attributes[:auth_status] = value
+    end
+
+    # string - Describes the authorized account
+    def auth_account_name
+      @attributes[:auth_account_name]
+    end
+
+    def auth_account_name=(value)
+      @attributes[:auth_account_name] = value
+    end
+
+    # string - Either personnel or business_other account types
+    def one_drive_account_type
+      @attributes[:one_drive_account_type]
+    end
+
+    def one_drive_account_type=(value)
+      @attributes[:one_drive_account_type] = value
+    end
+
     # string - AWS Access Key.
     def aws_access_key
       @attributes[:aws_access_key]
@@ -297,6 +333,15 @@ module Files
       @attributes[:rackspace_api_key] = value
     end
 
+    # boolean - Reset authenticated account
+    def reset_authentication
+      @attributes[:reset_authentication]
+    end
+
+    def reset_authentication=(value)
+      @attributes[:reset_authentication] = value
+    end
+
     # Parameters:
     #   aws_access_key - string - AWS Access Key.
     #   aws_secret_key - string - AWS secret key.
@@ -308,6 +353,7 @@ module Files
     #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
+    #   reset_authentication - boolean - Reset authenticated account
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -328,6 +374,7 @@ module Files
     #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
+    #   one_drive_account_type - string - Either personnel or business_other account types
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -363,6 +410,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params.dig(:rackspace_username) and !params.dig(:rackspace_username).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/remote_servers/#{@attributes[:id]}", :patch, params, @options)
@@ -437,6 +485,7 @@ module Files
     #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
+    #   reset_authentication - boolean - Reset authenticated account
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -457,6 +506,7 @@ module Files
     #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
+    #   one_drive_account_type - string - Either personnel or business_other account types
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params.dig(:aws_access_key) and !params.dig(:aws_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
@@ -488,6 +538,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params.dig(:rackspace_username) and !params.dig(:rackspace_username).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
 
       response, options = Api.send_request("/remote_servers", :post, params, options)
       RemoteServer.new(response.data, options)
@@ -504,6 +555,7 @@ module Files
     #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
+    #   reset_authentication - boolean - Reset authenticated account
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -524,6 +576,7 @@ module Files
     #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
+    #   one_drive_account_type - string - Either personnel or business_other account types
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -558,6 +611,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params.dig(:rackspace_username) and !params.dig(:rackspace_username).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}", :patch, params, options)
