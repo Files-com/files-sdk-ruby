@@ -54,6 +54,15 @@ module Files
       @attributes[:require_registration] = value
     end
 
+    # string - Legal text that must be agreed to prior to accessing Bundle.
+    def clickwrap_body
+      @attributes[:clickwrap_body]
+    end
+
+    def clickwrap_body=(value)
+      @attributes[:clickwrap_body] = value
+    end
+
     # int64 - Bundle ID
     def id
       @attributes[:id]
@@ -104,6 +113,15 @@ module Files
       @attributes[:username] = value
     end
 
+    # int64 - ID of the clickwrap to use with this bundle.
+    def clickwrap_id
+      @attributes[:clickwrap_id]
+    end
+
+    def clickwrap_id=(value)
+      @attributes[:clickwrap_id] = value
+    end
+
     # array - A list of paths in this bundle
     def paths
       @attributes[:paths]
@@ -147,6 +165,7 @@ module Files
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
+    #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -157,6 +176,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/bundles/#{@attributes[:id]}", :patch, params, @options)
@@ -231,6 +251,7 @@ module Files
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
+    #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
@@ -239,6 +260,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: paths") unless params.dig(:paths)
 
       response, options = Api.send_request("/bundles", :post, params, options)
@@ -270,6 +292,7 @@ module Files
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
+    #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -279,6 +302,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/bundles/#{params[:id]}", :patch, params, options)

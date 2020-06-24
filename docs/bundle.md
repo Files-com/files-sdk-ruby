@@ -9,12 +9,14 @@
   "description": "The public description of the bundle.",
   "password_protected": true,
   "require_registration": true,
+  "clickwrap_body": "[Legal text]",
   "id": 1,
   "created_at": "2000-01-01T01:00:00Z",
   "expires_at": "2000-01-01T01:00:00Z",
   "note": "The internal note on the bundle.",
   "user_id": 1,
   "username": "user",
+  "clickwrap_id": 1,
   "paths": [
 
   ]
@@ -26,12 +28,14 @@
 * `description` (string): Public description
 * `password_protected` (boolean): Is this bundle password protected?
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
+* `clickwrap_body` (string): Legal text that must be agreed to prior to accessing Bundle.
 * `id` (int64): Bundle ID
 * `created_at` (date-time): Bundle created at date/time
 * `expires_at` (date-time): Bundle expiration date/time
 * `note` (string): Bundle internal note
 * `user_id` (int64): Bundle creator user ID
 * `username` (string): Bundle creator username
+* `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
 * `paths` (array): A list of paths in this bundle
 * `password` (string): Password for this bundle.
 
@@ -82,7 +86,8 @@ Files::Bundle.create(
   description: "The public description of the bundle.", 
   note: "The internal note on the bundle.", 
   code: "abc123", 
-  require_registration: true
+  require_registration: true, 
+  clickwrap_id: 1
 )
 ```
 
@@ -96,6 +101,7 @@ Files::Bundle.create(
 * `note` (string): Bundle internal note
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
+* `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
 
 
 ---
@@ -127,7 +133,8 @@ Files::Bundle.update(id,
   description: "The public description of the bundle.", 
   note: "The internal note on the bundle.", 
   code: "abc123", 
-  require_registration: true
+  require_registration: true, 
+  clickwrap_id: 1
 )
 ```
 
@@ -140,6 +147,7 @@ Files::Bundle.update(id,
 * `note` (string): Bundle internal note
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
+* `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
 
 
 ---
@@ -188,7 +196,8 @@ bundle.update(
   description: "The public description of the bundle.",
   note: "The internal note on the bundle.",
   code: "abc123",
-  require_registration: true
+  require_registration: true,
+  clickwrap_id: 1
 )
 ```
 
@@ -201,6 +210,7 @@ bundle.update(
 * `note` (string): Bundle internal note
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
+* `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
 
 
 ---
