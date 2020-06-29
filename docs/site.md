@@ -83,6 +83,7 @@
   "session": "",
   "session_pinned_by_ip": true,
   "sftp_user_root_enabled": true,
+  "sharing_enabled": true,
   "show_request_access_link": true,
   "site_footer": "",
   "site_header": "",
@@ -193,6 +194,7 @@
 * `session`: Current session
 * `session_pinned_by_ip` (boolean): Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
 * `sftp_user_root_enabled` (boolean): Use user FTP roots also for SFTP?
+* `sharing_enabled` (boolean): Allow bundle creation
 * `show_request_access_link` (boolean): Show request access link for users without access?  Currently unused.
 * `site_footer` (string): Custom site footer text
 * `site_header` (string): Custom site header text
@@ -295,6 +297,7 @@ Files::Site.update(
   disable_users_from_inactivity_period_days: 1, 
   non_sso_groups_allowed: true, 
   non_sso_users_allowed: true, 
+  sharing_enabled: true, 
   allowed_2fa_method_sms: true, 
   allowed_2fa_method_u2f: true, 
   allowed_2fa_method_totp: true, 
@@ -385,6 +388,7 @@ Files::Site.update(
 * `disable_users_from_inactivity_period_days` (int64): If greater than zero, users will unable to login if they do not show activity within this number of days.
 * `non_sso_groups_allowed` (boolean): If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
 * `non_sso_users_allowed` (boolean): If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
+* `sharing_enabled` (boolean): Allow bundle creation
 * `allowed_2fa_method_sms` (boolean): Is SMS two factor authentication allowed?
 * `allowed_2fa_method_u2f` (boolean): Is U2F two factor authentication allowed?
 * `allowed_2fa_method_totp` (boolean): Is TOTP two factor authentication allowed?

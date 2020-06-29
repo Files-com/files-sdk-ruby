@@ -26,6 +26,7 @@
   "group_ids": [
 
   ],
+  "header_text": "User-specific message.",
   "language": "en",
   "last_login_at": "2000-01-01T01:00:00Z",
   "last_protocol_cipher": "",
@@ -72,6 +73,7 @@
 * `email` (email): User email address
 * `ftp_permission` (boolean): Can the user access with FTP/FTPS?
 * `group_ids` (array): Comma-separated list of group IDs of which this user is a member
+* `header_text` (string): Text to display to the user in the header of the UI
 * `language` (string): Preferred language
 * `last_login_at` (date-time): User's last login time
 * `last_protocol_cipher` (string): The last protocol and cipher used
@@ -169,6 +171,7 @@ Files::User.create(
   dav_permission: true, 
   disabled: true, 
   ftp_permission: true, 
+  header_text: "User-specific message.", 
   language: "en", 
   notification_daily_send_time: 18, 
   name: "John Doe", 
@@ -212,6 +215,7 @@ Files::User.create(
 * `dav_permission` (boolean): Can the user connect with WebDAV?
 * `disabled` (boolean): Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
 * `ftp_permission` (boolean): Can the user access with FTP/FTPS?
+* `header_text` (string): Text to display to the user in the header of the UI
 * `language` (string): Preferred language
 * `notification_daily_send_time` (int64): Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
 * `name` (string): User's full name
@@ -291,6 +295,7 @@ Files::User.update(id,
   dav_permission: true, 
   disabled: true, 
   ftp_permission: true, 
+  header_text: "User-specific message.", 
   language: "en", 
   notification_daily_send_time: 18, 
   name: "John Doe", 
@@ -335,6 +340,7 @@ Files::User.update(id,
 * `dav_permission` (boolean): Can the user connect with WebDAV?
 * `disabled` (boolean): Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
 * `ftp_permission` (boolean): Can the user access with FTP/FTPS?
+* `header_text` (string): Text to display to the user in the header of the UI
 * `language` (string): Preferred language
 * `notification_daily_send_time` (int64): Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
 * `name` (string): User's full name
@@ -435,6 +441,7 @@ user.update(
   dav_permission: true,
   disabled: true,
   ftp_permission: true,
+  header_text: "User-specific message.",
   language: "en",
   notification_daily_send_time: 18,
   name: "John Doe",
@@ -479,6 +486,7 @@ user.update(
 * `dav_permission` (boolean): Can the user connect with WebDAV?
 * `disabled` (boolean): Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
 * `ftp_permission` (boolean): Can the user access with FTP/FTPS?
+* `header_text` (string): Text to display to the user in the header of the UI
 * `language` (string): Preferred language
 * `notification_daily_send_time` (int64): Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
 * `name` (string): User's full name

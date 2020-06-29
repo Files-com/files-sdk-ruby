@@ -167,6 +167,15 @@ module Files
       @attributes[:group_ids] = value
     end
 
+    # string - Text to display to the user in the header of the UI
+    def header_text
+      @attributes[:header_text]
+    end
+
+    def header_text=(value)
+      @attributes[:header_text] = value
+    end
+
     # string - Preferred language
     def language
       @attributes[:language]
@@ -528,6 +537,7 @@ module Files
     #   dav_permission - boolean - Can the user connect with WebDAV?
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
     #   ftp_permission - boolean - Can the user access with FTP/FTPS?
+    #   header_text - string - Text to display to the user in the header of the UI
     #   language - string - Preferred language
     #   notification_daily_send_time - int64 - Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
     #   name - string - User's full name
@@ -562,6 +572,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params.dig(:authenticate_until) and !params.dig(:authenticate_until).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params.dig(:authentication_method) and !params.dig(:authentication_method).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params.dig(:header_text) and !params.dig(:header_text).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params.dig(:language) and !params.dig(:language).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params.dig(:notification_daily_send_time) and !params.dig(:notification_daily_send_time).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
@@ -668,6 +679,7 @@ module Files
     #   dav_permission - boolean - Can the user connect with WebDAV?
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
     #   ftp_permission - boolean - Can the user access with FTP/FTPS?
+    #   header_text - string - Text to display to the user in the header of the UI
     #   language - string - Preferred language
     #   notification_daily_send_time - int64 - Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
     #   name - string - User's full name
@@ -698,6 +710,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params.dig(:authenticate_until) and !params.dig(:authenticate_until).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params.dig(:authentication_method) and !params.dig(:authentication_method).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params.dig(:header_text) and !params.dig(:header_text).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params.dig(:language) and !params.dig(:language).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params.dig(:notification_daily_send_time) and !params.dig(:notification_daily_send_time).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
@@ -768,6 +781,7 @@ module Files
     #   dav_permission - boolean - Can the user connect with WebDAV?
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
     #   ftp_permission - boolean - Can the user access with FTP/FTPS?
+    #   header_text - string - Text to display to the user in the header of the UI
     #   language - string - Preferred language
     #   notification_daily_send_time - int64 - Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
     #   name - string - User's full name
@@ -801,6 +815,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params.dig(:authenticate_until) and !params.dig(:authenticate_until).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params.dig(:authentication_method) and !params.dig(:authentication_method).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params.dig(:header_text) and !params.dig(:header_text).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params.dig(:language) and !params.dig(:language).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params.dig(:notification_daily_send_time) and !params.dig(:notification_daily_send_time).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)

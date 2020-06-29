@@ -404,6 +404,11 @@ module Files
       @attributes[:sftp_user_root_enabled]
     end
 
+    # boolean - Allow bundle creation
+    def sharing_enabled
+      @attributes[:sharing_enabled]
+    end
+
     # boolean - Show request access link for users without access?  Currently unused.
     def show_request_access_link
       @attributes[:show_request_access_link]
@@ -605,6 +610,7 @@ module Files
     #   disable_users_from_inactivity_period_days - int64 - If greater than zero, users will unable to login if they do not show activity within this number of days.
     #   non_sso_groups_allowed - boolean - If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
     #   non_sso_users_allowed - boolean - If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
+    #   sharing_enabled - boolean - Allow bundle creation
     #   allowed_2fa_method_sms - boolean - Is SMS two factor authentication allowed?
     #   allowed_2fa_method_u2f - boolean - Is U2F two factor authentication allowed?
     #   allowed_2fa_method_totp - boolean - Is TOTP two factor authentication allowed?
