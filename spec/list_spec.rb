@@ -12,15 +12,34 @@ RSpec.describe Files::List do
       let(:per_page) { 3 }
 
       context "when response includes a cursor" do
-        let(:client) { instance_double(Files::ApiClient, cursor: "XXX-XXX") }
+        let(:client) { instance_double(Files::ApiClient) }
+        let(:stubbed_cursors) {
+          [
+            '3',
+            '6',
+            nil
+          ]
+        }
+
+        before do
+          allow(client).to receive(:cursor).and_return(*stubbed_cursors)
+        end
 
         it "does not call the API until out of responses" do
           server_results = ('a'..'h').to_a
           times_block_yielded = 0
+          request_cursor = nil
+          response_cursor = nil
+
           list = described_class.new(ResourceWrapper, params) {
             times_block_yielded += 1
+            request_cursor = params[:cursor]
+            range_start = params[:cursor] ? params[:cursor].to_i : 0
+
+            response_data = server_results[range_start, per_page]
+            response_cursor = (range_start + per_page).to_s
             [
-              instance_double(Files::Response, data: server_results.shift(per_page), http_status: 200),
+              instance_double(Files::Response, data: response_data, http_status: 200, http_headers: { "x-files-cursor" => response_cursor }),
               options
             ]
           }
@@ -29,15 +48,18 @@ RSpec.describe Files::List do
           expect(times_block_yielded).to eq(0)
           expect(results.next.object).to eq('a')
           expect(times_block_yielded).to eq(1)
+          expect(request_cursor).to eq(nil)
           expect(results.next.object).to eq('b')
           expect(results.next.object).to eq('c')
           expect(results.next.object).to eq('d')
           expect(times_block_yielded).to eq(2)
+          expect(request_cursor).to eq("3")
           expect(results.next.object).to eq('e')
           expect(results.next.object).to eq('f')
           expect(results.next.object).to eq('g')
           expect(results.next.object).to eq('h')
           expect(times_block_yielded).to eq(3)
+          expect(request_cursor).to eq("6")
         end
 
         it "stops calling the API once there is an error" do

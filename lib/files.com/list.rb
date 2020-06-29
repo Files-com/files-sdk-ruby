@@ -77,7 +77,7 @@ module Files
     end
 
     def set_cursor
-      params[:cursor] ||= @current_options[:client].cursor
+      params[:cursor] = @current_options[:client].cursor
     end
 
     def cursor
