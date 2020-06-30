@@ -86,6 +86,15 @@ module Files
       @attributes[:expires_at] = value
     end
 
+    # int64 - Maximum number of times bundle can be accessed
+    def max_uses
+      @attributes[:max_uses]
+    end
+
+    def max_uses=(value)
+      @attributes[:max_uses] = value
+    end
+
     # string - Bundle internal note
     def note
       @attributes[:note]
@@ -120,6 +129,15 @@ module Files
 
     def clickwrap_id=(value)
       @attributes[:clickwrap_id] = value
+    end
+
+    # int64 - ID of the associated inbox, if available.
+    def inbox_id
+      @attributes[:inbox_id]
+    end
+
+    def inbox_id=(value)
+      @attributes[:inbox_id] = value
     end
 
     # array - A list of paths in this bundle
@@ -161,11 +179,13 @@ module Files
     # Parameters:
     #   password - string - Password for this bundle.
     #   expires_at - string - Bundle expiration date/time
+    #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
+    #   inbox_id - int64 - ID of the associated inbox, if available.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -173,10 +193,12 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params.dig(:max_uses) and !params.dig(:max_uses).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/bundles/#{@attributes[:id]}", :patch, params, @options)
@@ -247,20 +269,24 @@ module Files
     #   paths (required) - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
     #   expires_at - string - Bundle expiration date/time
+    #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
+    #   inbox_id - int64 - ID of the associated inbox, if available.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params.dig(:max_uses) and !params.dig(:max_uses).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: paths") unless params.dig(:paths)
 
       response, options = Api.send_request("/bundles", :post, params, options)
@@ -288,21 +314,25 @@ module Files
     # Parameters:
     #   password - string - Password for this bundle.
     #   expires_at - string - Bundle expiration date/time
+    #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
+    #   inbox_id - int64 - ID of the associated inbox, if available.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params.dig(:max_uses) and !params.dig(:max_uses).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/bundles/#{params[:id]}", :patch, params, options)

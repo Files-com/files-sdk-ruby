@@ -13,10 +13,12 @@
   "id": 1,
   "created_at": "2000-01-01T01:00:00Z",
   "expires_at": "2000-01-01T01:00:00Z",
+  "max_uses": 1,
   "note": "The internal note on the bundle.",
   "user_id": 1,
   "username": "user",
   "clickwrap_id": 1,
+  "inbox_id": 1,
   "paths": [
 
   ]
@@ -32,10 +34,12 @@
 * `id` (int64): Bundle ID
 * `created_at` (date-time): Bundle created at date/time
 * `expires_at` (date-time): Bundle expiration date/time
+* `max_uses` (int64): Maximum number of times bundle can be accessed
 * `note` (string): Bundle internal note
 * `user_id` (int64): Bundle creator user ID
 * `username` (string): Bundle creator username
 * `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
+* `inbox_id` (int64): ID of the associated inbox, if available.
 * `paths` (array): A list of paths in this bundle
 * `password` (string): Password for this bundle.
 
@@ -83,11 +87,13 @@ Files::Bundle.create(
   paths: ["file.txt"], 
   password: "Password", 
   expires_at: "2000-01-01T01:00:00Z", 
+  max_uses: 1, 
   description: "The public description of the bundle.", 
   note: "The internal note on the bundle.", 
   code: "abc123", 
   require_registration: true, 
-  clickwrap_id: 1
+  clickwrap_id: 1, 
+  inbox_id: 1
 )
 ```
 
@@ -97,11 +103,13 @@ Files::Bundle.create(
 * `paths` (array(string)): Required - A list of paths to include in this bundle.
 * `password` (string): Password for this bundle.
 * `expires_at` (string): Bundle expiration date/time
+* `max_uses` (int64): Maximum number of times bundle can be accessed
 * `description` (string): Public description
 * `note` (string): Bundle internal note
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 * `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
+* `inbox_id` (int64): ID of the associated inbox, if available.
 
 
 ---
@@ -130,11 +138,13 @@ Files::Bundle.share(id,
 Files::Bundle.update(id, 
   password: "Password", 
   expires_at: "2000-01-01T01:00:00Z", 
+  max_uses: 1, 
   description: "The public description of the bundle.", 
   note: "The internal note on the bundle.", 
   code: "abc123", 
   require_registration: true, 
-  clickwrap_id: 1
+  clickwrap_id: 1, 
+  inbox_id: 1
 )
 ```
 
@@ -143,11 +153,13 @@ Files::Bundle.update(id,
 * `id` (int64): Required - Bundle ID.
 * `password` (string): Password for this bundle.
 * `expires_at` (string): Bundle expiration date/time
+* `max_uses` (int64): Maximum number of times bundle can be accessed
 * `description` (string): Public description
 * `note` (string): Bundle internal note
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 * `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
+* `inbox_id` (int64): ID of the associated inbox, if available.
 
 
 ---
@@ -193,11 +205,13 @@ bundle = Files::Bundle.list_for(path).first
 bundle.update(
   password: "Password",
   expires_at: "2000-01-01T01:00:00Z",
+  max_uses: 1,
   description: "The public description of the bundle.",
   note: "The internal note on the bundle.",
   code: "abc123",
   require_registration: true,
-  clickwrap_id: 1
+  clickwrap_id: 1,
+  inbox_id: 1
 )
 ```
 
@@ -206,11 +220,13 @@ bundle.update(
 * `id` (int64): Required - Bundle ID.
 * `password` (string): Password for this bundle.
 * `expires_at` (string): Bundle expiration date/time
+* `max_uses` (int64): Maximum number of times bundle can be accessed
 * `description` (string): Public description
 * `note` (string): Bundle internal note
 * `code` (string): Bundle code.  This code forms the end part of the Public URL.
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 * `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
+* `inbox_id` (int64): ID of the associated inbox, if available.
 
 
 ---
