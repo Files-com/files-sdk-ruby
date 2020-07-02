@@ -24,7 +24,7 @@
 * `key` (string): API Key actual key string
 * `last_use_at` (date-time): API Key last used - note this value is only updated once per 3 hour period, so the 'actual' time of last use may be up to 3 hours later than this timestamp.
 * `name` (string): Internal name for the API Key.  For your use.
-* `permission_set` (string): Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations.)  We hope to offer additional permission sets in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+* `permission_set` (string): Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
 * `platform` (string): If this API key represents a Desktop app, what platform was it created on?
 * `user_id` (int64): User ID for the owner of this API Key.  May be blank for Site-wide API Keys.
 
@@ -78,18 +78,18 @@ Files::ApiKey.find(id)
 ```
 Files::ApiKey.create(
   user_id: 1, 
-  name: "My Key", 
-  permission_set: "full", 
-  expires_at: "2000-01-01T01:00:00Z"
+  name: "My Main API Key", 
+  expires_at: "2000-01-01T01:00:00Z", 
+  permission_set: "full"
 )
 ```
 
 ### Parameters
 
 * `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
-* `name` (string): Internal name for key.  For your reference only.
-* `permission_set` (string): Leave blank, or set to 'desktop_app' to restrict the key to only desktop app functions.
-* `expires_at` (string): Have the key expire at this date/time.
+* `name` (string): Internal name for the API Key.  For your use.
+* `expires_at` (string): API Key expiration date
+* `permission_set` (string): Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
 
 
 ---
@@ -98,17 +98,17 @@ Files::ApiKey.create(
 
 ```
 Files::ApiKey.update_current(
-  name: "My Key", 
-  permission_set: "full", 
-  expires_at: "2000-01-01T01:00:00Z"
+  expires_at: "2000-01-01T01:00:00Z", 
+  name: "My Main API Key", 
+  permission_set: "full"
 )
 ```
 
 ### Parameters
 
-* `name` (string): Internal name for key.  For your reference only.
-* `permission_set` (string): Leave blank, or set to `desktop_app` to restrict the key to only desktop app functions.
-* `expires_at` (string): Have the key expire at this date/time.
+* `expires_at` (string): API Key expiration date
+* `name` (string): Internal name for the API Key.  For your use.
+* `permission_set` (string): Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
 
 
 ---
@@ -117,18 +117,18 @@ Files::ApiKey.update_current(
 
 ```
 Files::ApiKey.update(id, 
-  name: "My Key", 
-  permission_set: "full", 
-  expires_at: "2000-01-01T01:00:00Z"
+  name: "My Main API Key", 
+  expires_at: "2000-01-01T01:00:00Z", 
+  permission_set: "full"
 )
 ```
 
 ### Parameters
 
 * `id` (int64): Required - Api Key ID.
-* `name` (string): Internal name for key.  For your reference only.
-* `permission_set` (string): Leave blank, or set to 'desktop_app' to restrict the key to only desktop app functions.
-* `expires_at` (string): Have the key expire at this date/time.
+* `name` (string): Internal name for the API Key.  For your use.
+* `expires_at` (string): API Key expiration date
+* `permission_set` (string): Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
 
 
 ---
@@ -161,18 +161,18 @@ Files::ApiKey.delete(id)
 api_key = Files::ApiKey.list_for(path).first
 
 api_key.update(
-  name: "My Key",
-  permission_set: "full",
-  expires_at: "2000-01-01T01:00:00Z"
+  name: "My Main API Key",
+  expires_at: "2000-01-01T01:00:00Z",
+  permission_set: "full"
 )
 ```
 
 ### Parameters
 
 * `id` (int64): Required - Api Key ID.
-* `name` (string): Internal name for key.  For your reference only.
-* `permission_set` (string): Leave blank, or set to 'desktop_app' to restrict the key to only desktop app functions.
-* `expires_at` (string): Have the key expire at this date/time.
+* `name` (string): Internal name for the API Key.  For your use.
+* `expires_at` (string): API Key expiration date
+* `permission_set` (string): Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
 
 
 ---
