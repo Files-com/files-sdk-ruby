@@ -106,6 +106,7 @@
   "user_lockout_lock_period": 1,
   "user_lockout_tries": 1,
   "user_lockout_within": 6,
+  "user_requests_enabled": true,
   "welcome_custom_text": "Welcome to my site!",
   "welcome_email_cc": "",
   "welcome_email_enabled": true,
@@ -217,6 +218,7 @@
 * `user_lockout_lock_period` (int64): How many hours to lock user out for failed password?
 * `user_lockout_tries` (int64): Number of login tries within `user_lockout_within` hours before users are locked out
 * `user_lockout_within` (int64): Number of hours for user lockout window
+* `user_requests_enabled` (boolean): Enable User Requests feature
 * `welcome_custom_text` (string): Custom text send in user welcome email
 * `welcome_email_cc` (email): Include this email in welcome emails if enabled
 * `welcome_email_enabled` (boolean): Will the welcome email be sent to new users?
@@ -298,6 +300,7 @@ Files::Site.update(
   non_sso_groups_allowed: true, 
   non_sso_users_allowed: true, 
   sharing_enabled: true, 
+  user_requests_enabled: true, 
   allowed_2fa_method_sms: true, 
   allowed_2fa_method_u2f: true, 
   allowed_2fa_method_totp: true, 
@@ -389,6 +392,7 @@ Files::Site.update(
 * `non_sso_groups_allowed` (boolean): If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
 * `non_sso_users_allowed` (boolean): If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
 * `sharing_enabled` (boolean): Allow bundle creation
+* `user_requests_enabled` (boolean): Enable User Requests feature
 * `allowed_2fa_method_sms` (boolean): Is SMS two factor authentication allowed?
 * `allowed_2fa_method_u2f` (boolean): Is U2F two factor authentication allowed?
 * `allowed_2fa_method_totp` (boolean): Is TOTP two factor authentication allowed?

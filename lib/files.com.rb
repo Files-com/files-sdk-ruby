@@ -75,6 +75,7 @@ require "files.com/models/usage_daily_snapshot"
 require "files.com/models/usage_snapshot"
 require "files.com/models/user"
 require "files.com/models/user_cipher_use"
+require "files.com/models/user_request"
 
 require "files.com/models/dir"
 require "files.com/models/file_utils"
