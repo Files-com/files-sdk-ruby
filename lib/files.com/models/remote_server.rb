@@ -234,7 +234,7 @@ module Files
       @attributes[:auth_account_name] = value
     end
 
-    # string - Either personnel or business_other account types
+    # string - Either personal or business_other account types
     def one_drive_account_type
       @attributes[:one_drive_account_type]
     end
@@ -374,7 +374,7 @@ module Files
     #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
-    #   one_drive_account_type - string - Either personnel or business_other account types
+    #   one_drive_account_type - string - Either personal or business_other account types
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -506,7 +506,7 @@ module Files
     #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
-    #   one_drive_account_type - string - Either personnel or business_other account types
+    #   one_drive_account_type - string - Either personal or business_other account types
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params.dig(:aws_access_key) and !params.dig(:aws_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
@@ -576,7 +576,7 @@ module Files
     #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
-    #   one_drive_account_type - string - Either personnel or business_other account types
+    #   one_drive_account_type - string - Either personal or business_other account types
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
