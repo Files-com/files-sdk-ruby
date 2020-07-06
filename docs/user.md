@@ -23,9 +23,7 @@
   "disabled": true,
   "email": "john.doe@files.com",
   "ftp_permission": true,
-  "group_ids": [
-
-  ],
+  "group_ids": "",
   "header_text": "User-specific message.",
   "language": "en",
   "last_login_at": "2000-01-01T01:00:00Z",
@@ -72,7 +70,7 @@
 * `disabled` (boolean): Is user disabled? Disabled users cannot log in, and do not count for billing purposes.  Users can be automatically disabled after an inactivity period via a Site setting.
 * `email` (email): User email address
 * `ftp_permission` (boolean): Can the user access with FTP/FTPS?
-* `group_ids` (array): Comma-separated list of group IDs of which this user is a member
+* `group_ids` (string): Comma-separated list of group IDs of which this user is a member
 * `header_text` (string): Text to display to the user in the header of the UI
 * `language` (string): Preferred language
 * `last_login_at` (date-time): User's last login time
