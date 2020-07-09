@@ -21,7 +21,7 @@
 
 ---
 
-## List Ip Addresses
+## List IP Addresses associated with the current site
 
 ```
 Files::IpAddress.list(

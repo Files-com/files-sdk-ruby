@@ -243,6 +243,24 @@ module Files
       @attributes[:one_drive_account_type] = value
     end
 
+    # string - Azure Blob Storage Account name
+    def azure_blob_storage_account
+      @attributes[:azure_blob_storage_account]
+    end
+
+    def azure_blob_storage_account=(value)
+      @attributes[:azure_blob_storage_account] = value
+    end
+
+    # string - Azure Blob Storage Container name
+    def azure_blob_storage_container
+      @attributes[:azure_blob_storage_container]
+    end
+
+    def azure_blob_storage_container=(value)
+      @attributes[:azure_blob_storage_container] = value
+    end
+
     # string - AWS Access Key.
     def aws_access_key
       @attributes[:aws_access_key]
@@ -342,6 +360,15 @@ module Files
       @attributes[:reset_authentication] = value
     end
 
+    # string - Azure Blob Storage secret key.
+    def azure_blob_storage_access_key
+      @attributes[:azure_blob_storage_access_key]
+    end
+
+    def azure_blob_storage_access_key=(value)
+      @attributes[:azure_blob_storage_access_key] = value
+    end
+
     # Parameters:
     #   aws_access_key - string - AWS Access Key.
     #   aws_secret_key - string - AWS secret key.
@@ -354,6 +381,7 @@ module Files
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
     #   reset_authentication - boolean - Reset authenticated account
+    #   azure_blob_storage_access_key - string - Azure Blob Storage secret key.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -375,6 +403,8 @@ module Files
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     #   one_drive_account_type - string - Either personal or business_other account types
+    #   azure_blob_storage_account - string - Azure Blob Storage Account name
+    #   azure_blob_storage_container - string - Azure Blob Storage Container name
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -390,6 +420,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params.dig(:backblaze_b2_key_id) and !params.dig(:backblaze_b2_key_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params.dig(:rackspace_api_key) and !params.dig(:rackspace_api_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params.dig(:azure_blob_storage_access_key) and !params.dig(:azure_blob_storage_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -411,6 +442,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/remote_servers/#{@attributes[:id]}", :patch, params, @options)
@@ -486,6 +519,7 @@ module Files
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
     #   reset_authentication - boolean - Reset authenticated account
+    #   azure_blob_storage_access_key - string - Azure Blob Storage secret key.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -507,6 +541,8 @@ module Files
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     #   one_drive_account_type - string - Either personal or business_other account types
+    #   azure_blob_storage_account - string - Azure Blob Storage Account name
+    #   azure_blob_storage_container - string - Azure Blob Storage Container name
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params.dig(:aws_access_key) and !params.dig(:aws_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
@@ -518,6 +554,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params.dig(:backblaze_b2_key_id) and !params.dig(:backblaze_b2_key_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params.dig(:rackspace_api_key) and !params.dig(:rackspace_api_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params.dig(:azure_blob_storage_access_key) and !params.dig(:azure_blob_storage_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -539,6 +576,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
 
       response, options = Api.send_request("/remote_servers", :post, params, options)
       RemoteServer.new(response.data, options)
@@ -556,6 +595,7 @@ module Files
     #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
     #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
     #   reset_authentication - boolean - Reset authenticated account
+    #   azure_blob_storage_access_key - string - Azure Blob Storage secret key.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -577,6 +617,8 @@ module Files
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     #   one_drive_account_type - string - Either personal or business_other account types
+    #   azure_blob_storage_account - string - Azure Blob Storage Account name
+    #   azure_blob_storage_container - string - Azure Blob Storage Container name
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -591,6 +633,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params.dig(:backblaze_b2_key_id) and !params.dig(:backblaze_b2_key_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params.dig(:rackspace_api_key) and !params.dig(:rackspace_api_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params.dig(:azure_blob_storage_access_key) and !params.dig(:azure_blob_storage_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -612,6 +655,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}", :patch, params, options)

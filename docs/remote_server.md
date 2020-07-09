@@ -29,7 +29,9 @@
   "auth_setup_link": "auth/:provider",
   "auth_status": "in_setup",
   "auth_account_name": "me@example.com",
-  "one_drive_account_type": "personal"
+  "one_drive_account_type": "personal",
+  "azure_blob_storage_account": "storage-account-name",
+  "azure_blob_storage_container": "container-name"
 }
 ```
 
@@ -59,6 +61,8 @@
 * `auth_status` (string): Either `in_setup` or `complete`
 * `auth_account_name` (string): Describes the authorized account
 * `one_drive_account_type` (string): Either personal or business_other account types
+* `azure_blob_storage_account` (string): Azure Blob Storage Account name
+* `azure_blob_storage_container` (string): Azure Blob Storage Container name
 * `aws_access_key` (string): AWS Access Key.
 * `aws_secret_key` (string): AWS secret key.
 * `password` (string): Password if needed.
@@ -70,6 +74,7 @@
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
 * `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
 * `reset_authentication` (boolean): Reset authenticated account
+* `azure_blob_storage_access_key` (string): Azure Blob Storage secret key.
 
 
 ---
@@ -130,7 +135,9 @@ Files::RemoteServer.create(
   rackspace_username: "rackspaceuser", 
   rackspace_region: "dfw", 
   rackspace_container: "my-container", 
-  one_drive_account_type: "personal"
+  one_drive_account_type: "personal", 
+  azure_blob_storage_account: "storage-account-name", 
+  azure_blob_storage_container: "container-name"
 )
 ```
 
@@ -147,6 +154,7 @@ Files::RemoteServer.create(
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
 * `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
 * `reset_authentication` (boolean): Reset authenticated account
+* `azure_blob_storage_access_key` (string): Azure Blob Storage secret key.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -168,6 +176,8 @@ Files::RemoteServer.create(
 * `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
 * `rackspace_container` (string): The name of the container (top level directory) where files will sync.
 * `one_drive_account_type` (string): Either personal or business_other account types
+* `azure_blob_storage_account` (string): Azure Blob Storage Account name
+* `azure_blob_storage_container` (string): Azure Blob Storage Container name
 
 
 ---
@@ -197,7 +207,9 @@ Files::RemoteServer.update(id,
   rackspace_username: "rackspaceuser", 
   rackspace_region: "dfw", 
   rackspace_container: "my-container", 
-  one_drive_account_type: "personal"
+  one_drive_account_type: "personal", 
+  azure_blob_storage_account: "storage-account-name", 
+  azure_blob_storage_container: "container-name"
 )
 ```
 
@@ -215,6 +227,7 @@ Files::RemoteServer.update(id,
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
 * `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
 * `reset_authentication` (boolean): Reset authenticated account
+* `azure_blob_storage_access_key` (string): Azure Blob Storage secret key.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -236,6 +249,8 @@ Files::RemoteServer.update(id,
 * `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
 * `rackspace_container` (string): The name of the container (top level directory) where files will sync.
 * `one_drive_account_type` (string): Either personal or business_other account types
+* `azure_blob_storage_account` (string): Azure Blob Storage Account name
+* `azure_blob_storage_container` (string): Azure Blob Storage Container name
 
 
 ---
@@ -280,7 +295,9 @@ remote_server.update(
   rackspace_username: "rackspaceuser",
   rackspace_region: "dfw",
   rackspace_container: "my-container",
-  one_drive_account_type: "personal"
+  one_drive_account_type: "personal",
+  azure_blob_storage_account: "storage-account-name",
+  azure_blob_storage_container: "container-name"
 )
 ```
 
@@ -298,6 +315,7 @@ remote_server.update(
 * `backblaze_b2_application_key` (string): Backblaze B2 Cloud Storage applicationKey.
 * `rackspace_api_key` (string): Rackspace API key from the Rackspace Cloud Control Panel.
 * `reset_authentication` (boolean): Reset authenticated account
+* `azure_blob_storage_access_key` (string): Azure Blob Storage secret key.
 * `hostname` (string): Hostname or IP address
 * `name` (string): Internal name for your reference
 * `max_connections` (int64): Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -319,6 +337,8 @@ remote_server.update(
 * `rackspace_region` (string): Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
 * `rackspace_container` (string): The name of the container (top level directory) where files will sync.
 * `one_drive_account_type` (string): Either personal or business_other account types
+* `azure_blob_storage_account` (string): Azure Blob Storage Account name
+* `azure_blob_storage_container` (string): Azure Blob Storage Container name
 
 
 ---
