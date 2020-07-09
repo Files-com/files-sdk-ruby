@@ -6,7 +6,8 @@
 
 ```
 Files::FileAction.copy(path, 
-  destination: "destination"
+  destination: "destination", 
+  structure: true
 )
 ```
 
@@ -14,6 +15,7 @@ Files::FileAction.copy(path,
 
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Copy destination path.
+* `structure` (boolean): Copy structure only?
 
 
 ---
@@ -66,7 +68,8 @@ Files::FileAction.begin_upload(path,
 file_action = Files::FileAction.list_for(path).first
 
 file_action.copy(
-  destination: "destination"
+  destination: "destination",
+  structure: true
 )
 ```
 
@@ -74,6 +77,7 @@ file_action.copy(
 
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Copy destination path.
+* `structure` (boolean): Copy structure only?
 
 
 ---

@@ -81,12 +81,19 @@ module Files
       Api.send_request("/group_users/#{@attributes[:id]}", :patch, params, @options)
     end
 
+    # Parameters:
+    #   group_id (required) - int64 - Group ID from which to remove user.
+    #   user_id (required) - int64 - User ID to remove from group.
     def delete(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise MissingParameterError.new("Parameter missing: group_id") unless params.dig(:group_id)
+      raise MissingParameterError.new("Parameter missing: user_id") unless params.dig(:user_id)
 
       Api.send_request("/group_users/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -140,11 +147,18 @@ module Files
       GroupUser.new(response.data, options)
     end
 
+    # Parameters:
+    #   group_id (required) - int64 - Group ID from which to remove user.
+    #   user_id (required) - int64 - User ID to remove from group.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise MissingParameterError.new("Parameter missing: group_id") unless params.dig(:group_id)
+      raise MissingParameterError.new("Parameter missing: user_id") unless params.dig(:user_id)
 
       response, _options = Api.send_request("/group_users/#{params[:id]}", :delete, params, options)
       response.data

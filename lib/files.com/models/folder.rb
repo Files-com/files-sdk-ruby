@@ -322,6 +322,7 @@ module Files
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   search - string - If `search_all` is `true`, provide the search string here.  Otherwise, this parameter acts like an alias of `filter`.
     #   search_all - boolean - Search entire site?
+    #   with_previews - boolean - Include file previews?
     #   with_priority_color - boolean - Include file priority color information?
     def self.list_for(path, params = {}, options = {})
       params ||= {}

@@ -66,12 +66,16 @@ module Files
     # Parameters:
     #   value - string - The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    #   behavior - string - Behavior type.
+    #   path - string - Folder behaviors path.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: value must be an String") if params.dig(:value) and !params.dig(:value).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/behaviors/#{@attributes[:id]}", :patch, params, @options)
@@ -183,12 +187,14 @@ module Files
     #   encoding - string - HTTP encoding method.  Can be JSON, XML, or RAW (form data).
     #   headers - object - Additional request headers.
     #   body - object - Additional body parameters.
+    #   action - string - action for test body
     def self.webhook_test(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: url must be an String") if params.dig(:url) and !params.dig(:url).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: method must be an String") if params.dig(:method) and !params.dig(:method).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: encoding must be an String") if params.dig(:encoding) and !params.dig(:encoding).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if params.dig(:headers) and !params.dig(:headers).is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: body must be an Hash") if params.dig(:body) and !params.dig(:body).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
       raise MissingParameterError.new("Parameter missing: url") unless params.dig(:url)
 
       response, _options = Api.send_request("/behaviors/webhook/test", :post, params, options)
@@ -198,12 +204,15 @@ module Files
     # Parameters:
     #   value - string - The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    #   behavior - string - Behavior type.
+    #   path - string - Folder behaviors path.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be one of String, Integer, Hash") if params.dig(:id) and [ String, Integer, Hash ].none? { |klass| params.dig(:id).is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: value must be an String") if params.dig(:value) and !params.dig(:value).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: attachment_file must be one of String, Integer, Hash") if params.dig(:attachment_file) and [ String, Integer, Hash ].none? { |klass| params.dig(:attachment_file).is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be one of String, Integer, Hash") if params.dig(:path) and [ String, Integer, Hash ].none? { |klass| params.dig(:path).is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/behaviors/#{params[:id]}", :patch, params, options)

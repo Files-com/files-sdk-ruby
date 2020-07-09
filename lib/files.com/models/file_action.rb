@@ -13,6 +13,7 @@ module Files
     #
     # Parameters:
     #   destination (required) - string - Copy destination path.
+    #   structure - boolean - Copy structure only?
     def copy(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
@@ -68,6 +69,7 @@ module Files
     #
     # Parameters:
     #   destination (required) - string - Copy destination path.
+    #   structure - boolean - Copy structure only?
     def self.copy(path, params = {}, options = {})
       params ||= {}
       params[:path] = path

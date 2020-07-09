@@ -107,7 +107,8 @@ Files::Behavior.webhook_test(
   method: "GET", 
   encoding: "RAW", 
   headers: "x-test-header => testvalue", 
-  body: "test-param => testvalue"
+  body: "test-param => testvalue", 
+  action: "test"
 )
 ```
 
@@ -118,6 +119,7 @@ Files::Behavior.webhook_test(
 * `encoding` (string): HTTP encoding method.  Can be JSON, XML, or RAW (form data).
 * `headers` (object): Additional request headers.
 * `body` (object): Additional body parameters.
+* `action` (string): action for test body
 
 
 ---
@@ -126,7 +128,8 @@ Files::Behavior.webhook_test(
 
 ```
 Files::Behavior.update(id, 
-  value: "{\"method\": \"GET\"}"
+  value: "{\"method\": \"GET\"}", 
+  behavior: "webhook"
 )
 ```
 
@@ -135,6 +138,8 @@ Files::Behavior.update(id,
 * `id` (int64): Required - Behavior ID.
 * `value` (string): The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior.
 * `attachment_file` (file): Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+* `behavior` (string): Behavior type.
+* `path` (string): Folder behaviors path.
 
 
 ---
@@ -158,7 +163,8 @@ Files::Behavior.delete(id)
 behavior = Files::Behavior.list_for(path).first
 
 behavior.update(
-  value: "{\"method\": \"GET\"}"
+  value: "{\"method\": \"GET\"}",
+  behavior: "webhook"
 )
 ```
 
@@ -167,6 +173,8 @@ behavior.update(
 * `id` (int64): Required - Behavior ID.
 * `value` (string): The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior.
 * `attachment_file` (file): Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+* `behavior` (string): Behavior type.
+* `path` (string): Folder behaviors path.
 
 
 ---

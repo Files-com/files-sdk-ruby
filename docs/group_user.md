@@ -69,12 +69,17 @@ Files::GroupUser.update(id,
 ## Delete Group User
 
 ```
-Files::GroupUser.delete(id)
+Files::GroupUser.delete(id, 
+  group_id: 1, 
+  user_id: 1
+)
 ```
 
 ### Parameters
 
 * `id` (int64): Required - Group User ID.
+* `group_id` (int64): Required - Group ID from which to remove user.
+* `user_id` (int64): Required - User ID to remove from group.
 
 
 ---
@@ -106,9 +111,14 @@ group_user.update(
 ```
 group_user = Files::GroupUser.list_for(path).first
 
-group_user.delete
+group_user.delete(
+  group_id: 1,
+  user_id: 1
+)
 ```
 
 ### Parameters
 
 * `id` (int64): Required - Group User ID.
+* `group_id` (int64): Required - Group ID from which to remove user.
+* `user_id` (int64): Required - User ID to remove from group.

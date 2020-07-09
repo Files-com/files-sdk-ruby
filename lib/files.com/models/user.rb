@@ -615,6 +615,7 @@ module Files
     #   page - int64 - Current page number.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+    #   ids - string - comma-separated list of User IDs
     #   q[username] - string - List users matching username.
     #   q[email] - string - List users matching email.
     #   q[notes] - string - List users matching notes field.
@@ -629,6 +630,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ids must be an String") if params.dig(:ids) and !params.dig(:ids).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params.dig(:search) and !params.dig(:search).is_a?(String)
 
       response, options = Api.send_request("/users", :get, params, options)
