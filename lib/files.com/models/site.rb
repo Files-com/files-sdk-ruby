@@ -309,6 +309,11 @@ module Files
       @attributes[:next_billing_date]
     end
 
+    # boolean - Allow users to use Office for the web?
+    def office_integration_available
+      @attributes[:office_integration_available]
+    end
+
     # boolean - Use servers in the USA only?
     def opt_out_global
       @attributes[:opt_out_global]
@@ -585,6 +590,7 @@ module Files
     #   desktop_app_session_lifetime - int64 - Desktop app session lifetime (in hours)
     #   folder_permissions_groups_only - boolean - If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
     #   welcome_screen - string - Does the welcome screen appear?
+    #   office_integration_available - boolean - Allow users to use Office for the web?
     #   session_expiry - double - Session expiry in hours
     #   ssl_required - boolean - Is SSL required?  Disabling this is insecure.
     #   tls_disabled - boolean - Is TLS disabled(site setting)?

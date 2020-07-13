@@ -64,6 +64,7 @@
   "max_prior_passwords": 1,
   "next_billing_amount": "",
   "next_billing_date": "Apr 20",
+  "office_integration_available": true,
   "opt_out_global": true,
   "overage_notified_at": "2000-01-01T01:00:00Z",
   "overage_notify": true,
@@ -176,6 +177,7 @@
 * `max_prior_passwords` (int64): Number of prior passwords to disallow
 * `next_billing_amount` (double): Next billing amount
 * `next_billing_date` (string): Next billing date
+* `office_integration_available` (boolean): Allow users to use Office for the web?
 * `opt_out_global` (boolean): Use servers in the USA only?
 * `overage_notified_at` (date-time): Last time the site was notified about an overage
 * `overage_notify` (boolean): Notify site email of overages?
@@ -270,6 +272,7 @@ Files::Site.update(
   desktop_app_session_lifetime: 1, 
   folder_permissions_groups_only: true, 
   welcome_screen: "user_controlled", 
+  office_integration_available: true, 
   session_expiry: 1.0, 
   ssl_required: true, 
   tls_disabled: true, 
@@ -361,6 +364,7 @@ Files::Site.update(
 * `desktop_app_session_lifetime` (int64): Desktop app session lifetime (in hours)
 * `folder_permissions_groups_only` (boolean): If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
 * `welcome_screen` (string): Does the welcome screen appear?
+* `office_integration_available` (boolean): Allow users to use Office for the web?
 * `session_expiry` (double): Session expiry in hours
 * `ssl_required` (boolean): Is SSL required?  Disabling this is insecure.
 * `tls_disabled` (boolean): Is TLS disabled(site setting)?

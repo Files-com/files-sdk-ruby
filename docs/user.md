@@ -32,6 +32,7 @@
   "name": "John Doe",
   "notes": "Internal notes on this user.",
   "notification_daily_send_time": 18,
+  "office_integration_enabled": true,
   "password_set_at": "2000-01-01T01:00:00Z",
   "password_validity_days": 1,
   "public_keys_count": 1,
@@ -79,6 +80,7 @@
 * `name` (string): User's full name
 * `notes` (string): Any internal notes on the user
 * `notification_daily_send_time` (int64): Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+* `office_integration_enabled` (boolean): Enable integration with Office for the web?
 * `password_set_at` (date-time): Last time the user's password was set
 * `password_validity_days` (int64): Number of days to allow user to use the same password
 * `public_keys_count` (int64): Number of public keys associated with this user
@@ -175,6 +177,7 @@ Files::User.create(
   notification_daily_send_time: 18, 
   name: "John Doe", 
   notes: "Internal notes on this user.", 
+  office_integration_enabled: true, 
   password_validity_days: 1, 
   receive_admin_alerts: true, 
   require_password_change: true, 
@@ -219,6 +222,7 @@ Files::User.create(
 * `notification_daily_send_time` (int64): Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
 * `name` (string): User's full name
 * `notes` (string): Any internal notes on the user
+* `office_integration_enabled` (boolean): Enable integration with Office for the web?
 * `password_validity_days` (int64): Number of days to allow user to use the same password
 * `receive_admin_alerts` (boolean): Should the user receive admin alerts such a certificate expiration notifications and overages?
 * `require_password_change` (boolean): Is a password change required upon next user login?
@@ -299,6 +303,7 @@ Files::User.update(id,
   notification_daily_send_time: 18, 
   name: "John Doe", 
   notes: "Internal notes on this user.", 
+  office_integration_enabled: true, 
   password_validity_days: 1, 
   receive_admin_alerts: true, 
   require_password_change: true, 
@@ -344,6 +349,7 @@ Files::User.update(id,
 * `notification_daily_send_time` (int64): Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
 * `name` (string): User's full name
 * `notes` (string): Any internal notes on the user
+* `office_integration_enabled` (boolean): Enable integration with Office for the web?
 * `password_validity_days` (int64): Number of days to allow user to use the same password
 * `receive_admin_alerts` (boolean): Should the user receive admin alerts such a certificate expiration notifications and overages?
 * `require_password_change` (boolean): Is a password change required upon next user login?
@@ -445,6 +451,7 @@ user.update(
   notification_daily_send_time: 18,
   name: "John Doe",
   notes: "Internal notes on this user.",
+  office_integration_enabled: true,
   password_validity_days: 1,
   receive_admin_alerts: true,
   require_password_change: true,
@@ -490,6 +497,7 @@ user.update(
 * `notification_daily_send_time` (int64): Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
 * `name` (string): User's full name
 * `notes` (string): Any internal notes on the user
+* `office_integration_enabled` (boolean): Enable integration with Office for the web?
 * `password_validity_days` (int64): Number of days to allow user to use the same password
 * `receive_admin_alerts` (boolean): Should the user receive admin alerts such a certificate expiration notifications and overages?
 * `require_password_change` (boolean): Is a password change required upon next user login?
