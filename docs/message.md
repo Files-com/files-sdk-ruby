@@ -18,7 +18,7 @@
 * `body` (string): Message body.
 * `comments` (array): Comments.
 * `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
-* `project_id` (int64): Project to attach the message to.
+* `project_id` (int64): Project to which the message should be attached.
 
 
 ---
@@ -40,7 +40,7 @@ Files::Message.list(
 * `page` (int64): Current page number.
 * `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
 * `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
-* `project_id` (int64): Required - Project to return messages for.
+* `project_id` (int64): Required - Project for which to return messages.
 
 
 ---
@@ -64,15 +64,15 @@ Files::Message.find(id)
 Files::Message.create(
   user_id: 1, 
   project_id: 1, 
-  subject: "subject", 
-  body: "body"
+  subject: "Files.com Account Upgrade", 
+  body: "We should upgrade our Files.com account!"
 )
 ```
 
 ### Parameters
 
 * `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
-* `project_id` (int64): Required - Project to attach the message to.
+* `project_id` (int64): Required - Project to which the message should be attached.
 * `subject` (string): Required - Message subject.
 * `body` (string): Required - Message body.
 
@@ -84,15 +84,15 @@ Files::Message.create(
 ```
 Files::Message.update(id, 
   project_id: 1, 
-  subject: "subject", 
-  body: "body"
+  subject: "Files.com Account Upgrade", 
+  body: "We should upgrade our Files.com account!"
 )
 ```
 
 ### Parameters
 
 * `id` (int64): Required - Message ID.
-* `project_id` (int64): Required - Project to attach the message to.
+* `project_id` (int64): Required - Project to which the message should be attached.
 * `subject` (string): Required - Message subject.
 * `body` (string): Required - Message body.
 
@@ -119,15 +119,15 @@ message = Files::Message.list_for(path).first
 
 message.update(
   project_id: 1,
-  subject: "subject",
-  body: "body"
+  subject: "Files.com Account Upgrade",
+  body: "We should upgrade our Files.com account!"
 )
 ```
 
 ### Parameters
 
 * `id` (int64): Required - Message ID.
-* `project_id` (int64): Required - Project to attach the message to.
+* `project_id` (int64): Required - Project to which the message should be attached.
 * `subject` (string): Required - Message subject.
 * `body` (string): Required - Message body.
 
