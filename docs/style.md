@@ -23,7 +23,7 @@
 ## Show Style
 
 ```
-Files::Style.list(path)
+Files::Style.find(path)
 ```
 
 ### Parameters

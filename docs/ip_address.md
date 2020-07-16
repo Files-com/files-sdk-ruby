@@ -35,3 +35,21 @@ Files::IpAddress.list(
 * `page` (int64): Current page number.
 * `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
 * `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+
+
+---
+
+## List all possible public IP addresses
+
+```
+Files::IpAddress.get_reserved(
+  page: 1, 
+  per_page: 1
+)
+```
+
+### Parameters
+
+* `page` (int64): Current page number.
+* `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+* `action` (string): Deprecated: If set to `count` returns a count of matching records rather than the records themselves.

@@ -625,6 +625,14 @@ module Files
     #   page - int64 - Current page number.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+    #   cursor - string - Send cursor to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor-Next header.
+    #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `active`, `master_admin`, `site_id`, `authenticate_until`, `email`, `last_desktop_login_at`, `last_login_at`, `username`, `notes`, `site_admin`, `receive_admin_alerts`, `allowed_ips`, `password_validity_days`, `ssl_required` or `not_site_admin`.
+    #   filter - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `username`, `email`, `notes`, `site_admin`, `allowed_ips`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until` or `not_site_admin`.
+    #   filter_gt - object - If set, return records where the specifiied field is greater than the supplied value. Valid fields are `username`, `email`, `notes`, `site_admin`, `allowed_ips`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until` or `not_site_admin`.
+    #   filter_gteq - object - If set, return records where the specifiied field is greater than or equal to the supplied value. Valid fields are `username`, `email`, `notes`, `site_admin`, `allowed_ips`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until` or `not_site_admin`.
+    #   filter_like - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `username`, `email`, `notes`, `site_admin`, `allowed_ips`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until` or `not_site_admin`.
+    #   filter_lt - object - If set, return records where the specifiied field is less than the supplied value. Valid fields are `username`, `email`, `notes`, `site_admin`, `allowed_ips`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until` or `not_site_admin`.
+    #   filter_lteq - object - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `username`, `email`, `notes`, `site_admin`, `allowed_ips`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until` or `not_site_admin`.
     #   ids - string - comma-separated list of User IDs
     #   q[username] - string - List users matching username.
     #   q[email] - string - List users matching email.
@@ -634,18 +642,23 @@ module Files
     #   q[password_validity_days] - string - If set, list only users with overridden password validity days setting.
     #   q[ssl_required] - string - If set, list only users with overridden SSL required setting.
     #   search - string - Searches for partial matches of name, username, or email.
-    #   sort_by[last_login_at] - string - If set, sort users by 'last_login_at' in either 'asc' or 'desc' direction
-    #   sort_by[authenticate_until] - string - If set, sort users by 'authenticate_until' in either 'asc' or 'desc' direction
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params.dig(:sort_by) and !params.dig(:sort_by).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params.dig(:filter) and !params.dig(:filter).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params.dig(:filter_gt) and !params.dig(:filter_gt).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params.dig(:filter_gteq) and !params.dig(:filter_gteq).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params.dig(:filter_like) and !params.dig(:filter_like).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params.dig(:filter_lt) and !params.dig(:filter_lt).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params.dig(:filter_lteq) and !params.dig(:filter_lteq).is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: ids must be an String") if params.dig(:ids) and !params.dig(:ids).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params.dig(:search) and !params.dig(:search).is_a?(String)
 
-      response, options = Api.send_request("/users", :get, params, options)
-      response.data.map do |entity_data|
-        User.new(entity_data, options)
+      List.new(User, params) do
+        Api.send_request("/users", :get, params, options)
       end
     end
 

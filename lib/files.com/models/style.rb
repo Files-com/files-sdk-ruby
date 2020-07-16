@@ -64,7 +64,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
       raise MissingParameterError.new("Parameter missing: file") unless params.dig(:file)
 
-      Api.send_request("/styles/#{Addressable::URI.encode_component(params[:path])}", :patch, params, @options)
+      Api.send_request("/styles/#{@attributes[:path]}", :patch, params, @options)
     end
 
     def delete(params = {})
@@ -74,7 +74,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      Api.send_request("/styles/#{Addressable::URI.encode_component(params[:path])}", :delete, params, @options)
+      Api.send_request("/styles/#{@attributes[:path]}", :delete, params, @options)
     end
 
     def destroy(params = {})
@@ -87,18 +87,18 @@ module Files
 
     # Parameters:
     #   path (required) - string - Style path.
-    def self.list(path, params = {}, options = {})
+    def self.find(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/styles/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
+      response, options = Api.send_request("/styles/#{params[:path]}", :get, params, options)
       Style.new(response.data, options)
     end
 
-    def self.all(path, params = {}, options = {})
-      list(path, params, options)
+    def self.get(path, params = {}, options = {})
+      find(path, params, options)
     end
 
     # Parameters:
@@ -110,7 +110,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
       raise MissingParameterError.new("Parameter missing: file") unless params.dig(:file)
 
-      response, options = Api.send_request("/styles/#{Addressable::URI.encode_component(params[:path])}", :patch, params, options)
+      response, options = Api.send_request("/styles/#{params[:path]}", :patch, params, options)
       Style.new(response.data, options)
     end
 
@@ -120,7 +120,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, _options = Api.send_request("/styles/#{Addressable::URI.encode_component(params[:path])}", :delete, params, options)
+      response, _options = Api.send_request("/styles/#{params[:path]}", :delete, params, options)
       response.data
     end
 

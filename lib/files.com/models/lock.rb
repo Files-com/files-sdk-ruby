@@ -101,7 +101,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
       raise MissingParameterError.new("Parameter missing: token") unless params.dig(:token)
 
-      Api.send_request("/locks/#{Addressable::URI.encode_component(params[:path])}", :delete, params, @options)
+      Api.send_request("/locks/#{@attributes[:path]}", :delete, params, @options)
     end
 
     def destroy(params = {})
@@ -132,7 +132,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/locks/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
+      response, options = Api.send_request("/locks/#{params[:path]}", :get, params, options)
       response.data.map do |entity_data|
         Lock.new(entity_data, options)
       end
@@ -148,7 +148,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params.dig(:timeout) and !params.dig(:timeout).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/locks/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
+      response, options = Api.send_request("/locks/#{params[:path]}", :post, params, options)
       Lock.new(response.data, options)
     end
 
@@ -162,7 +162,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
       raise MissingParameterError.new("Parameter missing: token") unless params.dig(:token)
 
-      response, _options = Api.send_request("/locks/#{Addressable::URI.encode_component(params[:path])}", :delete, params, options)
+      response, _options = Api.send_request("/locks/#{params[:path]}", :delete, params, options)
       response.data
     end
 

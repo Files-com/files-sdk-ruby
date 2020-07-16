@@ -61,7 +61,6 @@ may places where a Ruby File object can be used.
 
 ```
 Files::File.download(path, 
-  id: 1, 
   with_previews: true, 
   with_priority_color: true
 )
@@ -71,7 +70,6 @@ Files::File.download(path,
 
 * `path` (string): Required - Path to operate on.
 * `action` (string): Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
-* `id` (int64): If provided, lookup the file by id instead of path.
 * `preview_size` (string): Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
 * `with_previews` (boolean): Include file preview information?
 * `with_priority_color` (boolean): Include file priority color information?
@@ -154,7 +152,6 @@ Files::File.delete(path,
 file = Files::File.list_for(path).first
 
 file.download(
-  id: 1,
   with_previews: true,
   with_priority_color: true
 )
@@ -164,7 +161,6 @@ file.download(
 
 * `path` (string): Required - Path to operate on.
 * `action` (string): Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
-* `id` (int64): If provided, lookup the file by id instead of path.
 * `preview_size` (string): Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
 * `with_previews` (boolean): Include file preview information?
 * `with_priority_color` (boolean): Include file priority color information?

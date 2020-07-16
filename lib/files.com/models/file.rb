@@ -826,7 +826,6 @@ module Files
     #
     # Parameters:
     #   action - string - Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
-    #   id - int64 - If provided, lookup the file by id instead of path.
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
@@ -836,11 +835,10 @@ module Files
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params.dig(:preview_size) and !params.dig(:preview_size).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :get, params, @options)
+      Api.send_request("/files/#{@attributes[:path]}", :get, params, @options)
     end
 
     # Parameters:
@@ -855,7 +853,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if params.dig(:priority_color) and !params.dig(:priority_color).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :patch, params, @options)
+      Api.send_request("/files/#{@attributes[:path]}", :patch, params, @options)
     end
 
     # Parameters:
@@ -867,7 +865,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :delete, params, @options)
+      Api.send_request("/files/#{@attributes[:path]}", :delete, params, @options)
     end
 
     def destroy(params = {})
@@ -887,7 +885,6 @@ module Files
     #
     # Parameters:
     #   action - string - Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
-    #   id - int64 - If provided, lookup the file by id instead of path.
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
@@ -896,11 +893,10 @@ module Files
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params.dig(:preview_size) and !params.dig(:preview_size).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
+      response, options = Api.send_request("/files/#{params[:path]}", :get, params, options)
       File.new(response.data, options)
     end
 
@@ -934,7 +930,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: structure must be an String") if params.dig(:structure) and !params.dig(:structure).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
+      response, options = Api.send_request("/files/#{params[:path]}", :post, params, options)
       File.new(response.data, options)
     end
 
@@ -949,7 +945,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if params.dig(:priority_color) and !params.dig(:priority_color).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :patch, params, options)
+      response, options = Api.send_request("/files/#{params[:path]}", :patch, params, options)
       File.new(response.data, options)
     end
 
@@ -961,7 +957,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, _options = Api.send_request("/files/#{Addressable::URI.encode_component(params[:path])}", :delete, params, options)
+      response, _options = Api.send_request("/files/#{params[:path]}", :delete, params, options)
       response.data
     end
 

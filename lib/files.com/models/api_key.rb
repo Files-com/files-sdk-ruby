@@ -68,6 +68,15 @@ module Files
       @attributes[:name] = value
     end
 
+    # string - Folder path restriction for this api key. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    def path
+      @attributes[:path]
+    end
+
+    def path=(value)
+      @attributes[:path] = value
+    end
+
     # string - Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
     def permission_set
       @attributes[:permission_set]
@@ -140,15 +149,30 @@ module Files
     #   page - int64 - Current page number.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+    #   cursor - string - Send cursor to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor-Next header.
+    #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `deleted_at` and `expires_at`.
+    #   filter - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `expires_at`.
+    #   filter_gt - object - If set, return records where the specifiied field is greater than the supplied value. Valid fields are `expires_at`.
+    #   filter_gteq - object - If set, return records where the specifiied field is greater than or equal to the supplied value. Valid fields are `expires_at`.
+    #   filter_like - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `expires_at`.
+    #   filter_lt - object - If set, return records where the specifiied field is less than the supplied value. Valid fields are `expires_at`.
+    #   filter_lteq - object - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `expires_at`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params.dig(:sort_by) and !params.dig(:sort_by).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params.dig(:filter) and !params.dig(:filter).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params.dig(:filter_gt) and !params.dig(:filter_gt).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params.dig(:filter_gteq) and !params.dig(:filter_gteq).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params.dig(:filter_like) and !params.dig(:filter_like).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params.dig(:filter_lt) and !params.dig(:filter_lt).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params.dig(:filter_lteq) and !params.dig(:filter_lteq).is_a?(Hash)
 
-      response, options = Api.send_request("/api_keys", :get, params, options)
-      response.data.map do |entity_data|
-        ApiKey.new(entity_data, options)
+      List.new(ApiKey, params) do
+        Api.send_request("/api_keys", :get, params, options)
       end
     end
 
@@ -182,11 +206,13 @@ module Files
     #   name - string - Internal name for the API Key.  For your use.
     #   expires_at - string - API Key expiration date
     #   permission_set - string - Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    #   path - string - Folder path restriction for this api key.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params.dig(:permission_set) and !params.dig(:permission_set).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
 
       response, options = Api.send_request("/api_keys", :post, params, options)
       ApiKey.new(response.data, options)

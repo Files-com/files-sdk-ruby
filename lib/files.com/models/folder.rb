@@ -338,7 +338,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
       List.new(File, params) do
-        Api.send_request("/folders/#{Addressable::URI.encode_component(params[:path])}", :get, params, options)
+        Api.send_request("/folders/#{params[:path]}", :get, params, options)
       end
     end
 
@@ -350,7 +350,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
-      response, options = Api.send_request("/folders/#{Addressable::URI.encode_component(params[:path])}", :post, params, options)
+      response, options = Api.send_request("/folders/#{params[:path]}", :post, params, options)
       File.new(response.data, options)
     end
   end

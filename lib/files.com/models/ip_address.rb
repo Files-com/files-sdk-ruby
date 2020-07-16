@@ -47,5 +47,20 @@ module Files
     def self.all(params = {}, options = {})
       list(params, options)
     end
+
+    # Parameters:
+    #   page - int64 - Current page number.
+    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+    def self.get_reserved(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
+
+      response, options = Api.send_request("/ip_addresses/reserved", :get, params, options)
+      response.data.map do |entity_data|
+        PublicIpAddress.new(entity_data, options)
+      end
+    end
   end
 end
