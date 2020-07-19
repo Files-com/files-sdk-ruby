@@ -13,7 +13,7 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Session ID
+    # string - Session ID
     def id
       @attributes[:id]
     end

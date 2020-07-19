@@ -4,7 +4,7 @@
 
 ```
 {
-  "id": 1,
+  "id": "60525f92e859c4c3d74cb02fd176b1525901b525",
   "language": "en",
   "login_token": "@tok-randomcode",
   "login_token_domain": "https://mysite.files.com",
@@ -25,7 +25,7 @@
 }
 ```
 
-* `id` (int64): Session ID
+* `id` (string): Session ID
 * `language` (string): Session language
 * `login_token` (string): Login token. If set, this token will allow your user to log in via browser at the domain in `login_token_domain`.
 * `login_token_domain` (string): Domain to use with `login_token`.
