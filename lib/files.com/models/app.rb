@@ -24,6 +24,11 @@ module Files
       @attributes[:documentation_links]
     end
 
+    # string - App icon
+    def icon_url
+      @attributes[:icon_url]
+    end
+
     # string - Full size logo for the App
     def logo_url
       @attributes[:logo_url]
