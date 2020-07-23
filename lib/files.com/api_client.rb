@@ -55,6 +55,7 @@ module Files
       return false if num_retries >= Files.max_network_retries
       return true if error.is_a?(Faraday::TimeoutError)
       return true if error.is_a?(Faraday::ConnectionFailed)
+      return true if error.is_a?(Faraday::ServerError)
 
       false
     end
