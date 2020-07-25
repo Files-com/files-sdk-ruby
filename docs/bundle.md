@@ -9,6 +9,7 @@
   "description": "The public description of the bundle.",
   "password_protected": true,
   "require_registration": true,
+  "require_share_recipient": true,
   "clickwrap_body": "[Legal text]",
   "id": 1,
   "created_at": "2000-01-01T01:00:00Z",
@@ -30,6 +31,7 @@
 * `description` (string): Public description
 * `password_protected` (boolean): Is this bundle password protected?
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
+* `require_share_recipient` (boolean): Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
 * `clickwrap_body` (string): Legal text that must be agreed to prior to accessing Bundle.
 * `id` (int64): Bundle ID
 * `created_at` (date-time): Bundle created at date/time
@@ -101,7 +103,8 @@ Files::Bundle.create(
   code: "abc123", 
   require_registration: true, 
   clickwrap_id: 1, 
-  inbox_id: 1
+  inbox_id: 1, 
+  require_share_recipient: true
 )
 ```
 
@@ -118,6 +121,7 @@ Files::Bundle.create(
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 * `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
 * `inbox_id` (int64): ID of the associated inbox, if available.
+* `require_share_recipient` (boolean): Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
 
 
 ---
@@ -145,14 +149,15 @@ Files::Bundle.share(id,
 ```
 Files::Bundle.update(id, 
   password: "Password", 
-  expires_at: "2000-01-01T01:00:00Z", 
-  max_uses: 1, 
-  description: "The public description of the bundle.", 
-  note: "The internal note on the bundle.", 
-  code: "abc123", 
-  require_registration: true, 
   clickwrap_id: 1, 
-  inbox_id: 1
+  code: "abc123", 
+  description: "The public description of the bundle.", 
+  expires_at: "2000-01-01T01:00:00Z", 
+  inbox_id: 1, 
+  max_uses: 1, 
+  note: "The internal note on the bundle.", 
+  require_registration: true, 
+  require_share_recipient: true
 )
 ```
 
@@ -160,14 +165,15 @@ Files::Bundle.update(id,
 
 * `id` (int64): Required - Bundle ID.
 * `password` (string): Password for this bundle.
-* `expires_at` (string): Bundle expiration date/time
-* `max_uses` (int64): Maximum number of times bundle can be accessed
-* `description` (string): Public description
-* `note` (string): Bundle internal note
-* `code` (string): Bundle code.  This code forms the end part of the Public URL.
-* `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 * `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
+* `code` (string): Bundle code.  This code forms the end part of the Public URL.
+* `description` (string): Public description
+* `expires_at` (string): Bundle expiration date/time
 * `inbox_id` (int64): ID of the associated inbox, if available.
+* `max_uses` (int64): Maximum number of times bundle can be accessed
+* `note` (string): Bundle internal note
+* `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
+* `require_share_recipient` (boolean): Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
 
 
 ---
@@ -212,14 +218,15 @@ bundle = Files::Bundle.list_for(path).first
 
 bundle.update(
   password: "Password",
-  expires_at: "2000-01-01T01:00:00Z",
-  max_uses: 1,
-  description: "The public description of the bundle.",
-  note: "The internal note on the bundle.",
-  code: "abc123",
-  require_registration: true,
   clickwrap_id: 1,
-  inbox_id: 1
+  code: "abc123",
+  description: "The public description of the bundle.",
+  expires_at: "2000-01-01T01:00:00Z",
+  inbox_id: 1,
+  max_uses: 1,
+  note: "The internal note on the bundle.",
+  require_registration: true,
+  require_share_recipient: true
 )
 ```
 
@@ -227,14 +234,15 @@ bundle.update(
 
 * `id` (int64): Required - Bundle ID.
 * `password` (string): Password for this bundle.
-* `expires_at` (string): Bundle expiration date/time
-* `max_uses` (int64): Maximum number of times bundle can be accessed
-* `description` (string): Public description
-* `note` (string): Bundle internal note
-* `code` (string): Bundle code.  This code forms the end part of the Public URL.
-* `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 * `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
+* `code` (string): Bundle code.  This code forms the end part of the Public URL.
+* `description` (string): Public description
+* `expires_at` (string): Bundle expiration date/time
 * `inbox_id` (int64): ID of the associated inbox, if available.
+* `max_uses` (int64): Maximum number of times bundle can be accessed
+* `note` (string): Bundle internal note
+* `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
+* `require_share_recipient` (boolean): Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
 
 
 ---
