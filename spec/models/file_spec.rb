@@ -4,13 +4,13 @@ require "tempfile"
 RSpec.describe Files::File, :with_test_folder do
   describe "#read" do
     before do
-      Files::File.open(test_folder.join("read.txt").to_s, 'w', options) do |f|
+      Files::File.open(test_folder.join("[[strange stuff]]#yes.text").to_s, 'w', options) do |f|
         f.write("contents")
       end
     end
 
     it "returns the body of the file" do
-      file = Files::File.find(test_folder.join("read.txt").to_s, {}, options)
+      file = Files::File.find(test_folder.join("[[strange stuff]]#yes.text").to_s, {}, options)
       expect(file.read).to eq("contents")
     end
   end
