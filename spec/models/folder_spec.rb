@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Files::Folder, :with_test_folder do
-  describe "#list_for" do
+  xdescribe "#list_for" do
     before do
       Files::File.open(test_folder.join("example.txt").to_s, 'w', options) do |f|
         f.write("my text")
@@ -22,7 +22,7 @@ RSpec.describe Files::Folder, :with_test_folder do
     end
   end
 
-  describe "#delete" do
+  xdescribe "#delete" do
     it "deletes a folder" do
       Files::Folder.mkdir(test_folder.join("my-new-folder").to_s, {}, options)
       Files::Folder.delete(test_folder.join("my-new-folder").to_s, {}, options)
@@ -31,7 +31,7 @@ RSpec.describe Files::Folder, :with_test_folder do
     end
   end
 
-  describe "mkdir" do
+  xdescribe "mkdir" do
     it "makes a new folder" do
       Files::Folder.mkdir(test_folder.join("my-new-folder").to_s, {}, options)
       expect(Files::Folder.exist?(test_folder.join("my-new-folder").to_s, options)).to eq(true)

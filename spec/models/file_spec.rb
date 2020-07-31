@@ -2,7 +2,7 @@ require "spec_helper"
 require "tempfile"
 
 RSpec.describe Files::File, :with_test_folder do
-  describe "#read" do
+  xdescribe "#read" do
     before do
       Files::File.open(test_folder.join("[[strange stuff]]#yes.text").to_s, 'w', options) do |f|
         f.write("contents")
@@ -15,7 +15,7 @@ RSpec.describe Files::File, :with_test_folder do
     end
   end
 
-  describe "#read_io" do
+  xdescribe "#read_io" do
     before do
       Files::File.open(test_folder.join("read.txt").to_s, 'w', options) do |f|
         f.write("contents")
@@ -30,7 +30,7 @@ RSpec.describe Files::File, :with_test_folder do
     end
   end
 
-  describe "#write" do
+  xdescribe "#write" do
     it "can take string" do
       Files::File.open(test_folder.join("write-as-string.txt").to_s, 'w', options) do |f|
         f.write("I am a string")
