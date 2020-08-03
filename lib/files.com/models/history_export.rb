@@ -216,6 +216,15 @@ module Files
       @attributes[:query_target_permission_set] = value
     end
 
+    # string - If `status` is `ready` and the query succeeded, this will be a URL where all the results can be downloaded at once as a CSV.
+    def results_url
+      @attributes[:results_url]
+    end
+
+    def results_url=(value)
+      @attributes[:results_url] = value
+    end
+
     # int64 - User ID.  Provide a value of `0` to operate the current session's user.
     def user_id
       @attributes[:user_id]
@@ -225,20 +234,6 @@ module Files
       @attributes[:user_id] = value
     end
 
-    def delete(params = {})
-      params ||= {}
-      params[:id] = @attributes[:id]
-      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-
-      Api.send_request("/history_exports/#{@attributes[:id]}", :delete, params, @options)
-    end
-
-    def destroy(params = {})
-      delete(params)
-    end
-
     def save
       if @attributes[:id]
         raise NotImplementedError.new("The HistoryExport object doesn't support updates.")
@@ -246,27 +241,6 @@ module Files
         new_obj = HistoryExport.create(@attributes, @options)
         @attributes = new_obj.attributes
       end
-    end
-
-    # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   page - int64 - Current page number.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
-    def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
-
-      response, options = Api.send_request("/history_exports", :get, params, options)
-      response.data.map do |entity_data|
-        HistoryExport.new(entity_data, options)
-      end
-    end
-
-    def self.all(params = {}, options = {})
-      list(params, options)
     end
 
     # Parameters:
@@ -334,20 +308,6 @@ module Files
 
       response, options = Api.send_request("/history_exports", :post, params, options)
       HistoryExport.new(response.data, options)
-    end
-
-    def self.delete(id, params = {}, options = {})
-      params ||= {}
-      params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-
-      response, _options = Api.send_request("/history_exports/#{params[:id]}", :delete, params, options)
-      response.data
-    end
-
-    def self.destroy(id, params = {}, options = {})
-      delete(id, params, options)
     end
   end
 end
