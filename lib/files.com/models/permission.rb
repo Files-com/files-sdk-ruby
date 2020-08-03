@@ -81,8 +81,22 @@ module Files
       @attributes[:recursive] = value
     end
 
+    def delete(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+
+      Api.send_request("/permissions/#{@attributes[:id]}", :delete, params, @options)
+    end
+
+    def destroy(params = {})
+      delete(params)
+    end
+
     def save
-      if @attributes[:path]
+      if @attributes[:id]
         raise NotImplementedError.new("The Permission object doesn't support updates.")
       else
         new_obj = Permission.create(@attributes, @options)
@@ -106,9 +120,7 @@ module Files
     #   group_id - string - DEPRECATED: Group ID.  If provided, will scope permissions to this group. Use `filter[group_id]` instead.`
     #   user_id - string - DEPRECATED: User ID.  If provided, will scope permissions to this user. Use `filter[user_id]` instead.`
     #   include_groups - boolean - If searching by user or group, also include user's permissions that are inherited from its groups?
-    def self.list(path, params = {}, options = {})
-      params ||= {}
-      params[:path] = path
+    def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
@@ -129,8 +141,8 @@ module Files
       end
     end
 
-    def self.all(path, params = {}, options = {})
-      list(path, params, options)
+    def self.all(params = {}, options = {})
+      list(params, options)
     end
 
     # Parameters:
@@ -140,9 +152,7 @@ module Files
     #   recursive - boolean - Apply to subfolders recursively?
     #   user_id - int64 - User ID.  Provide `username` or `user_id`
     #   username - string - User username.  Provide `username` or `user_id`
-    def self.create(path, params = {}, options = {})
-      params ||= {}
-      params[:path] = path
+    def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permission must be an String") if params.dig(:permission) and !params.dig(:permission).is_a?(String)
@@ -153,8 +163,6 @@ module Files
       Permission.new(response.data, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Permission ID.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

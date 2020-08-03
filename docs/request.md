@@ -28,7 +28,7 @@
 ## List Requests
 
 ```
-Files::Request.list(path, 
+Files::Request.list(
   page: 1, 
   per_page: 1, 
   mine: true
@@ -51,7 +51,7 @@ Files::Request.list(path,
 ## List Requests
 
 ```
-Files::Request.find_folder(path, 
+Files::Request.get_folder(path, 
   page: 1, 
   per_page: 1, 
   mine: true
@@ -74,7 +74,8 @@ Files::Request.find_folder(path,
 ## Create Request
 
 ```
-Files::Request.create(path, 
+Files::Request.create(
+  path: "path", 
   destination: "destination"
 )
 ```
@@ -93,6 +94,21 @@ Files::Request.create(path,
 
 ```
 Files::Request.delete(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Request ID.
+
+
+---
+
+## Delete Request
+
+```
+request = Files::Request.list_for(path).first
+
+request.delete
 ```
 
 ### Parameters

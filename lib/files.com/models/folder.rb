@@ -304,12 +304,8 @@ module Files
     end
 
     def save
-      if @attributes[:path]
-        raise NotImplementedError.new("The Folder object doesn't support updates.")
-      else
-        new_obj = Folder.create(@attributes, @options)
-        @attributes = new_obj.attributes
-      end
+      new_obj = Folder.create(path, @attributes, @options)
+      @attributes = new_obj.attributes
     end
 
     # Parameters:

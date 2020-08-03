@@ -873,12 +873,8 @@ module Files
     end
 
     def save
-      if @attributes[:path]
-        update(@attributes)
-      else
-        new_obj = File.create(@attributes, @options)
-        @attributes = new_obj.attributes
-      end
+      new_obj = File.create(path, @attributes, @options)
+      @attributes = new_obj.attributes
     end
 
     # Download file

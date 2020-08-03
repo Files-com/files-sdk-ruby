@@ -81,8 +81,22 @@ module Files
       @attributes[:group_ids] = value
     end
 
+    def delete(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+
+      Api.send_request("/requests/#{@attributes[:id]}", :delete, params, @options)
+    end
+
+    def destroy(params = {})
+      delete(params)
+    end
+
     def save
-      if @attributes[:path]
+      if @attributes[:id]
         raise NotImplementedError.new("The Request object doesn't support updates.")
       else
         new_obj = Request.create(@attributes, @options)
@@ -98,9 +112,7 @@ module Files
     #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `site_id`, `folder_id` or `destination`.
     #   mine - boolean - Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
     #   path - string - Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory.
-    def self.list(path, params = {}, options = {})
-      params ||= {}
-      params[:path] = path
+    def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
@@ -113,8 +125,8 @@ module Files
       end
     end
 
-    def self.all(path, params = {}, options = {})
-      list(path, params, options)
+    def self.all(params = {}, options = {})
+      list(params, options)
     end
 
     # Parameters:
@@ -125,7 +137,7 @@ module Files
     #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `site_id`, `folder_id` or `destination`.
     #   mine - boolean - Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
     #   path (required) - string - Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory.
-    def self.find_folder(path, params = {}, options = {})
+    def self.get_folder(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
@@ -146,9 +158,7 @@ module Files
     #   destination (required) - string - Destination filename (without extension) to request.
     #   user_ids - string - A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
-    def self.create(path, params = {}, options = {})
-      params ||= {}
-      params[:path] = path
+    def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params.dig(:user_ids) and !params.dig(:user_ids).is_a?(String)
@@ -160,8 +170,6 @@ module Files
       Request.new(response.data, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Request ID.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

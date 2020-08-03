@@ -109,12 +109,8 @@ module Files
     end
 
     def save
-      if @attributes[:path]
-        raise NotImplementedError.new("The Lock object doesn't support updates.")
-      else
-        new_obj = Lock.create(@attributes, @options)
-        @attributes = new_obj.attributes
-      end
+      new_obj = Lock.create(path, @attributes, @options)
+      @attributes = new_obj.attributes
     end
 
     # Parameters:

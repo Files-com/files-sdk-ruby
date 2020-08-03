@@ -30,7 +30,7 @@
 ## List Permissions
 
 ```
-Files::Permission.list(path, 
+Files::Permission.list(
   page: 1, 
   per_page: 1, 
   group_id: 1, 
@@ -63,7 +63,7 @@ Files::Permission.list(path,
 ## Create Permission
 
 ```
-Files::Permission.create(path, 
+Files::Permission.create(
   group_id: 1, 
   permission: "full", 
   recursive: true, 
@@ -88,6 +88,21 @@ Files::Permission.create(path,
 
 ```
 Files::Permission.delete(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Permission ID.
+
+
+---
+
+## Delete Permission
+
+```
+permission = Files::Permission.list_for(path).first
+
+permission.delete
 ```
 
 ### Parameters
