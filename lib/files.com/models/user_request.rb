@@ -9,6 +9,15 @@ module Files
       @options = options || {}
     end
 
+    # int64 - ID
+    def id
+      @attributes[:id]
+    end
+
+    def id=(value)
+      @attributes[:id] = value
+    end
+
     # string - User's full name
     def name
       @attributes[:name]
