@@ -49,6 +49,11 @@ module Files
       @attributes[:next_partsize]
     end
 
+    # boolean - If true, parts may be uploaded in parallel
+    def parallel_parts
+      @attributes[:parallel_parts]
+    end
+
     # string - Additional upload parameters
     def parameters
       @attributes[:parameters]

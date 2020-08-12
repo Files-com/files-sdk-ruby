@@ -305,8 +305,8 @@ module Files
       end
     end
 
-    def download_content(io)
-      Files::ApiClient.download_client.stream_download(download_uri_with_load, io)
+    def download_content(io, range: [])
+      Files::ApiClient.download_client.stream_download(download_uri_with_load, io, range)
     end
 
     def each(*args, &block)
@@ -388,11 +388,11 @@ module Files
       read_io.gets *args
     end
 
-    def read_io
+    def read_io(**options)
       @read_io ||= begin
                      r, w = SizableIO.pipe
                      Thread.new do
-                       download_content(w)
+                       download_content(w, **options)
                      ensure
                        w.close
                      end

@@ -145,11 +145,12 @@ module Files
       end
     end
 
-    def stream_download(uri, io)
+    def stream_download(uri, io, range)
       if conn.adapter == Faraday::Adapter::NetHttp
         uri = URI(uri)
         Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
           request = Net::HTTP::Get.new uri
+          request["RANGE"] = "bytes=#{range[0]}-#{range[1]}" if range
           http.request request do |response|
             io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
             response.read_body do |chunk|
