@@ -234,8 +234,16 @@
 ## Show site settings
 
 ```
-Files::Site.get
+Files::Site.get(
+  format: "", 
+  site: ""
+)
 ```
+
+### Parameters
+
+* `format` (string): 
+* `site` (object): 
 
 
 ---
@@ -243,8 +251,16 @@ Files::Site.get
 ## Get the most recent usage snapshot (usage data for billing purposes) for a Site
 
 ```
-Files::Site.get_usage
+Files::Site.get_usage(
+  format: "", 
+  site: ""
+)
 ```
+
+### Parameters
+
+* `format` (string): 
+* `site` (object): 
 
 
 ---

@@ -63,7 +63,7 @@ module Files
       @attributes[:query_interface] = value
     end
 
-    # int64 - Return results that are actions performed by the user indiciated by this User ID
+    # string - Return results that are actions performed by the user indiciated by this User ID
     def query_user_id
       @attributes[:query_user_id]
     end
@@ -72,7 +72,7 @@ module Files
       @attributes[:query_user_id] = value
     end
 
-    # int64 - Return results that are file actions related to the file indicated by this File ID
+    # string - Return results that are file actions related to the file indicated by this File ID
     def query_file_id
       @attributes[:query_file_id]
     end
@@ -81,7 +81,7 @@ module Files
       @attributes[:query_file_id] = value
     end
 
-    # int64 - Return results that are file actions inside the parent folder specified by this folder ID
+    # string - Return results that are file actions inside the parent folder specified by this folder ID
     def query_parent_id
       @attributes[:query_parent_id]
     end
@@ -153,7 +153,7 @@ module Files
       @attributes[:query_failure_type] = value
     end
 
-    # int64 - If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
+    # string - If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
     def query_target_id
       @attributes[:query_target_id]
     end
@@ -180,7 +180,7 @@ module Files
       @attributes[:query_target_permission] = value
     end
 
-    # int64 - If searching for Histories about API keys, this parameter restricts results to API keys created by/for this user ID.
+    # string - If searching for Histories about API keys, this parameter restricts results to API keys created by/for this user ID.
     def query_target_user_id
       @attributes[:query_target_user_id]
     end
@@ -265,9 +265,9 @@ module Files
     #   end_at - string - End date/time of export range.
     #   query_action - string - Filter results by this this action type. Valid values: `create`, `read`, `update`, `destroy`, `move`, `login`, `failedlogin`, `copy`, `user_create`, `user_update`, `user_destroy`, `group_create`, `group_update`, `group_destroy`, `permission_create`, `permission_destroy`, `api_key_create`, `api_key_update`, `api_key_destroy`
     #   query_interface - string - Filter results by this this interface type. Valid values: `web`, `ftp`, `robot`, `jsapi`, `webdesktopapi`, `sftp`, `dav`, `desktop`, `restapi`, `scim`
-    #   query_user_id - int64 - Return results that are actions performed by the user indiciated by this User ID
-    #   query_file_id - int64 - Return results that are file actions related to the file indicated by this File ID
-    #   query_parent_id - int64 - Return results that are file actions inside the parent folder specified by this folder ID
+    #   query_user_id - string - Return results that are actions performed by the user indiciated by this User ID
+    #   query_file_id - string - Return results that are file actions related to the file indicated by this File ID
+    #   query_parent_id - string - Return results that are file actions inside the parent folder specified by this folder ID
     #   query_path - string - Return results that are file actions related to this path.
     #   query_folder - string - Return results that are file actions related to files or folders inside this folder path.
     #   query_src - string - Return results that are file moves originating from this path.
@@ -275,10 +275,10 @@ module Files
     #   query_ip - string - Filter results by this IP address.
     #   query_username - string - Filter results by this username.
     #   query_failure_type - string - If searching for Histories about login failures, this parameter restricts results to failures of this specific type.  Valid values: `expired_trial`, `account_overdue`, `locked_out`, `ip_mismatch`, `password_mismatch`, `site_mismatch`, `username_not_found`, `none`, `no_ftp_permission`, `no_web_permission`, `no_directory`, `errno_enoent`, `no_sftp_permission`, `no_dav_permission`, `no_restapi_permission`, `key_mismatch`, `region_mismatch`, `expired_access`, `desktop_ip_mismatch`, `desktop_api_key_not_used_quickly_enough`, `disabled`
-    #   query_target_id - int64 - If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
+    #   query_target_id - string - If searching for Histories about specific objects (such as Users, or API Keys), this paremeter restricts results to objects that match this ID.
     #   query_target_name - string - If searching for Histories about Users, Groups or other objects with names, this parameter restricts results to objects with this name/username.
     #   query_target_permission - string - If searching for Histories about Permisisons, this parameter restricts results to permissions of this level.
-    #   query_target_user_id - int64 - If searching for Histories about API keys, this parameter restricts results to API keys created by/for this user ID.
+    #   query_target_user_id - string - If searching for Histories about API keys, this parameter restricts results to API keys created by/for this user ID.
     #   query_target_username - string - If searching for Histories about API keys, this parameter restricts results to API keys created by/for this username.
     #   query_target_platform - string - If searching for Histories about API keys, this parameter restricts results to API keys associated with this platform.
     #   query_target_permission_set - string - If searching for Histories about API keys, this parameter restricts results to API keys with this permission set.
@@ -288,9 +288,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params.dig(:end_at) and !params.dig(:end_at).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_action must be an String") if params.dig(:query_action) and !params.dig(:query_action).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_interface must be an String") if params.dig(:query_interface) and !params.dig(:query_interface).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_user_id must be an Integer") if params.dig(:query_user_id) and !params.dig(:query_user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: query_file_id must be an Integer") if params.dig(:query_file_id) and !params.dig(:query_file_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: query_parent_id must be an Integer") if params.dig(:query_parent_id) and !params.dig(:query_parent_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: query_user_id must be an String") if params.dig(:query_user_id) and !params.dig(:query_user_id).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_file_id must be an String") if params.dig(:query_file_id) and !params.dig(:query_file_id).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_parent_id must be an String") if params.dig(:query_parent_id) and !params.dig(:query_parent_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_path must be an String") if params.dig(:query_path) and !params.dig(:query_path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_folder must be an String") if params.dig(:query_folder) and !params.dig(:query_folder).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_src must be an String") if params.dig(:query_src) and !params.dig(:query_src).is_a?(String)
@@ -298,10 +298,10 @@ module Files
       raise InvalidParameterError.new("Bad parameter: query_ip must be an String") if params.dig(:query_ip) and !params.dig(:query_ip).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_username must be an String") if params.dig(:query_username) and !params.dig(:query_username).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_failure_type must be an String") if params.dig(:query_failure_type) and !params.dig(:query_failure_type).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_target_id must be an Integer") if params.dig(:query_target_id) and !params.dig(:query_target_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: query_target_id must be an String") if params.dig(:query_target_id) and !params.dig(:query_target_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_target_name must be an String") if params.dig(:query_target_name) and !params.dig(:query_target_name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_target_permission must be an String") if params.dig(:query_target_permission) and !params.dig(:query_target_permission).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_target_user_id must be an Integer") if params.dig(:query_target_user_id) and !params.dig(:query_target_user_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: query_target_user_id must be an String") if params.dig(:query_target_user_id) and !params.dig(:query_target_user_id).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_target_username must be an String") if params.dig(:query_target_username) and !params.dig(:query_target_username).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_target_platform must be an String") if params.dig(:query_target_platform) and !params.dig(:query_target_platform).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_target_permission_set must be an String") if params.dig(:query_target_permission_set) and !params.dig(:query_target_permission_set).is_a?(String)

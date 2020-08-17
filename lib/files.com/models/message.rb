@@ -111,18 +111,19 @@ module Files
     #   page - int64 - Current page number.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   action - string - Deprecated: If set to `count` returns a count of matching records rather than the records themselves.
+    #   cursor - string - Send cursor to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor-Next header.
     #   project_id (required) - int64 - Project for which to return messages.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params.dig(:page) and !params.dig(:page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: project_id must be an Integer") if params.dig(:project_id) and !params.dig(:project_id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: project_id") unless params.dig(:project_id)
 
-      response, options = Api.send_request("/messages", :get, params, options)
-      response.data.map do |entity_data|
-        Message.new(entity_data, options)
+      List.new(Message, params) do
+        Api.send_request("/messages", :get, params, options)
       end
     end
 
