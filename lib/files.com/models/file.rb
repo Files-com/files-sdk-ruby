@@ -857,7 +857,7 @@ module Files
     end
 
     # Parameters:
-    #   recursive - boolean - If true, will recursively delete folers.  Otherwise, will error on non-empty folders.  For legacy reasons, this parameter may also be provided as the HTTP header `Depth: Infinity`
+    #   recursive - boolean - If true, will recursively delete folers.  Otherwise, will error on non-empty folders.
     def delete(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
@@ -946,7 +946,7 @@ module Files
     end
 
     # Parameters:
-    #   recursive - boolean - If true, will recursively delete folers.  Otherwise, will error on non-empty folders.  For legacy reasons, this parameter may also be provided as the HTTP header `Depth: Infinity`
+    #   recursive - boolean - If true, will recursively delete folers.  Otherwise, will error on non-empty folders.
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path

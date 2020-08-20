@@ -94,6 +94,11 @@ module Files
       @attributes[:deprovision_groups]
     end
 
+    # string - Method used for deprovisioning users.
+    def deprovision_behavior
+      @attributes[:deprovision_behavior]
+    end
+
     # string - Comma-separated list of group names for groups to automatically add all auto-provisioned users to.
     def provision_group_default
       @attributes[:provision_group_default]
