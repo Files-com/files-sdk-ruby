@@ -34,6 +34,11 @@ module Files
       @attributes[:logo_url]
     end
 
+    # string - Screenshots of the App
+    def screenshot_list_urls
+      @attributes[:screenshot_list_urls]
+    end
+
     # string - Logo thumbnail for the App
     def logo_thumbnail_url
       @attributes[:logo_thumbnail_url]

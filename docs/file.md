@@ -7,7 +7,6 @@ may places where a Ruby File object can be used.
 
 ```
 {
-  "id": 1,
   "path": "path/file.txt",
   "display_name": "file.txt",
   "type": "file",
@@ -27,7 +26,6 @@ may places where a Ruby File object can be used.
 }
 ```
 
-* `id` (int64): File/Folder ID
 * `path` (string): File/Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
 * `display_name` (string): File/Folder display name
 * `type` (string): Type: `directory` or `file`.

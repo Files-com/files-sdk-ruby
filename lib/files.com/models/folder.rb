@@ -150,15 +150,6 @@ module Files
       path
     end
 
-    # int64 - File/Folder ID
-    def id
-      @attributes[:id]
-    end
-
-    def id=(value)
-      @attributes[:id] = value
-    end
-
     # string - File/Folder path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]

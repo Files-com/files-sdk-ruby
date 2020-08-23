@@ -24,7 +24,7 @@ module Files
       @attributes[:ask_about_overwrites]
     end
 
-    # string - Currently unused
+    # int64 - Currently unused
     def available_parts
       @attributes[:available_parts]
     end
@@ -44,7 +44,7 @@ module Files
       @attributes[:http_method]
     end
 
-    # string - Currently unused
+    # int64 - Currently unused
     def next_partsize
       @attributes[:next_partsize]
     end
@@ -54,17 +54,17 @@ module Files
       @attributes[:parallel_parts]
     end
 
-    # string - Additional upload parameters
+    # object - Additional upload parameters
     def parameters
       @attributes[:parameters]
     end
 
-    # string - Currently unused
+    # int64 - Currently unused
     def part_number
       @attributes[:part_number]
     end
 
-    # string - Currently unused
+    # int64 - Currently unused
     def partsize
       @attributes[:partsize]
     end
