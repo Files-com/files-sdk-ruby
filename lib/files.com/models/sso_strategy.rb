@@ -44,6 +44,11 @@ module Files
       @attributes[:saml_provider_issuer_url]
     end
 
+    # string - Custom identity provider metadata
+    def saml_provider_metadata_content
+      @attributes[:saml_provider_metadata_content]
+    end
+
     # string - Metadata URL for the SAML identity provider
     def saml_provider_metadata_url
       @attributes[:saml_provider_metadata_url]
