@@ -119,7 +119,7 @@ module Files
 
       response, options = Api.send_request("/file_actions/begin_upload/#{params[:path]}", :post, params, options)
       response.data.map do |entity_data|
-        FilePartUpload.new(entity_data, options)
+        FileUploadPart.new(entity_data, options)
       end
     end
   end
