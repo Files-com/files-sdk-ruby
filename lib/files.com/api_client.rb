@@ -172,9 +172,10 @@ module Files
     private def api_url(url = "", base_url = nil)
       uri        = Addressable::URI.new
       uri.host   = Addressable::URI.parse(base_url).host
-      uri.path   = "/api/rest/v1" + url
+      uri.path   = "/api/rest/v1" + Files::URI.normalized_path(url)
       uri.scheme = Addressable::URI.parse(base_url).scheme
-      uri.normalize!.to_s
+
+      uri.to_s
     end
 
     private def check_api_key!(api_key)
