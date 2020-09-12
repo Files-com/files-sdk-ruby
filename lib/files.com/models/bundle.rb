@@ -149,6 +149,15 @@ module Files
       @attributes[:inbox_id] = value
     end
 
+    # boolean - Does this bundle have an associated inbox?
+    def has_inbox
+      @attributes[:has_inbox]
+    end
+
+    def has_inbox=(value)
+      @attributes[:has_inbox] = value
+    end
+
     # array - A list of paths in this bundle
     def paths
       @attributes[:paths]

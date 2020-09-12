@@ -36,7 +36,7 @@ module Files
       @attributes[:end_at] = value
     end
 
-    # string - Status of export.  Will be: `building` or `ready`
+    # string - Status of export.  Will be: `building`, `ready`, or `failed`
     def status
       @attributes[:status]
     end
