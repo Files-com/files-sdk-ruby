@@ -302,6 +302,15 @@ module Files
       @attributes[:require_2fa] = value
     end
 
+    # boolean - Is 2fa required to sign in?
+    def active_2fa
+      @attributes[:active_2fa]
+    end
+
+    def active_2fa=(value)
+      @attributes[:active_2fa] = value
+    end
+
     # boolean - Is a password change required upon next user login?
     def require_password_change
       @attributes[:require_password_change]

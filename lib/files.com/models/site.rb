@@ -149,6 +149,11 @@ module Files
       @attributes[:email]
     end
 
+    # email - Reply-to email for this site
+    def reply_to_email
+      @attributes[:reply_to_email]
+    end
+
     # boolean - If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
     def non_sso_groups_allowed
       @attributes[:non_sso_groups_allowed]
@@ -586,6 +591,7 @@ module Files
     #   subdomain - string - Site subdomain
     #   domain - string - Custom domain
     #   email - string - Main email for this site
+    #   reply_to_email - string - Reply-to email for this site
     #   allow_bundle_names - boolean - Are manual Bundle names allowed?
     #   bundle_expiration - int64 - Site-wide Bundle expiration in days
     #   overage_notify - boolean - Notify site email of overages?
@@ -689,6 +695,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: subdomain must be an String") if params.dig(:subdomain) and !params.dig(:subdomain).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: domain must be an String") if params.dig(:domain) and !params.dig(:domain).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: email must be an String") if params.dig(:email) and !params.dig(:email).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: reply_to_email must be an String") if params.dig(:reply_to_email) and !params.dig(:reply_to_email).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: bundle_expiration must be an Integer") if params.dig(:bundle_expiration) and !params.dig(:bundle_expiration).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: welcome_email_cc must be an String") if params.dig(:welcome_email_cc) and !params.dig(:welcome_email_cc).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: welcome_custom_text must be an String") if params.dig(:welcome_custom_text) and !params.dig(:welcome_custom_text).is_a?(String)

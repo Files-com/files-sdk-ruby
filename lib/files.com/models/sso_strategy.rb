@@ -149,6 +149,11 @@ module Files
       @attributes[:provision_time_zone]
     end
 
+    # string - Default company for auto provisioned users.
+    def provision_company
+      @attributes[:provision_company]
+    end
+
     # string - Base DN for looking up users in LDAP server
     def ldap_base_dn
       @attributes[:ldap_base_dn]
