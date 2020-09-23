@@ -302,7 +302,7 @@ module Files
       @attributes[:require_2fa] = value
     end
 
-    # boolean - Is 2fa required to sign in?
+    # boolean - Is 2fa active for the user?
     def active_2fa
       @attributes[:active_2fa]
     end

@@ -63,6 +63,15 @@ module Files
       @attributes[:notify_on_copy] = value
     end
 
+    # boolean - Enable notifications for each subfolder in this path
+    def recursive
+      @attributes[:recursive]
+    end
+
+    def recursive=(value)
+      @attributes[:recursive] = value
+    end
+
     # string - The time interval that notifications are aggregated to
     def send_interval
       @attributes[:send_interval]
@@ -120,6 +129,7 @@ module Files
     # Parameters:
     #   notify_on_copy - boolean - If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
     #   notify_user_actions - boolean - If `true` actions initiated by the user will still result in a notification
+    #   recursive - boolean - If `true`, enable notifications for each subfolder in this path
     #   send_interval - string - The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
     def update(params = {})
       params ||= {}
@@ -216,6 +226,7 @@ module Files
     #   user_id - int64 - The id of the user to notify. Provide `user_id`, `username` or `group_id`.
     #   notify_on_copy - boolean - If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
     #   notify_user_actions - boolean - If `true` actions initiated by the user will still result in a notification
+    #   recursive - boolean - If `true`, enable notifications for each subfolder in this path
     #   send_interval - string - The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
     #   group_id - int64 - The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
     #   path - string - Path
@@ -234,6 +245,7 @@ module Files
     # Parameters:
     #   notify_on_copy - boolean - If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
     #   notify_user_actions - boolean - If `true` actions initiated by the user will still result in a notification
+    #   recursive - boolean - If `true`, enable notifications for each subfolder in this path
     #   send_interval - string - The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
     def self.update(id, params = {}, options = {})
       params ||= {}
