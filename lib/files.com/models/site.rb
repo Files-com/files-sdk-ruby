@@ -44,6 +44,11 @@ module Files
       @attributes[:allow_bundle_names]
     end
 
+    # string - Comma seperated list of allowed Country codes
+    def allowed_countries
+      @attributes[:allowed_countries]
+    end
+
     # string - List of allowed IP addresses
     def allowed_ips
       @attributes[:allowed_ips]
@@ -127,6 +132,11 @@ module Files
     # int64 - Desktop app session lifetime (in hours)
     def desktop_app_session_lifetime
       @attributes[:desktop_app_session_lifetime]
+    end
+
+    # string - Comma seperated list of disallowed Country codes
+    def disallowed_countries
+      @attributes[:disallowed_countries]
     end
 
     # boolean - Are notifications disabled?
@@ -617,7 +627,9 @@ module Files
     #   user_lockout_within - int64 - Number of hours for user lockout window
     #   user_lockout_lock_period - int64 - How many hours to lock user out for failed password?
     #   include_password_in_welcome_email - boolean - Include password in emails to new users?
+    #   allowed_countries - string - Comma seperated list of allowed Country codes
     #   allowed_ips - string - List of allowed IP addresses
+    #   disallowed_countries - string - Comma seperated list of disallowed Country codes
     #   days_to_retain_backups - int64 - Number of days to keep deleted files
     #   max_prior_passwords - int64 - Number of prior passwords to disallow
     #   password_validity_days - int64 - Number of days password is valid
@@ -707,7 +719,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params.dig(:user_lockout_tries) and !params.dig(:user_lockout_tries).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_within must be an Integer") if params.dig(:user_lockout_within) and !params.dig(:user_lockout_within).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_lock_period must be an Integer") if params.dig(:user_lockout_lock_period) and !params.dig(:user_lockout_lock_period).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: allowed_countries must be an String") if params.dig(:allowed_countries) and !params.dig(:allowed_countries).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: disallowed_countries must be an String") if params.dig(:disallowed_countries) and !params.dig(:disallowed_countries).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: days_to_retain_backups must be an Integer") if params.dig(:days_to_retain_backups) and !params.dig(:days_to_retain_backups).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_prior_passwords must be an Integer") if params.dig(:max_prior_passwords) and !params.dig(:max_prior_passwords).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params.dig(:password_validity_days) and !params.dig(:password_validity_days).is_a?(Integer)
