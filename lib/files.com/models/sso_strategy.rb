@@ -124,6 +124,11 @@ module Files
       @attributes[:provision_group_required]
     end
 
+    # string - Comma-separated list of group names whose members will be created as Site Admins.
+    def provision_site_admin_groups
+      @attributes[:provision_site_admin_groups]
+    end
+
     # boolean - Auto-provisioned users get Sharing permission?
     def provision_attachments_permission
       @attributes[:provision_attachments_permission]
