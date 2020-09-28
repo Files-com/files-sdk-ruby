@@ -257,7 +257,7 @@ module Files
     # Parameters:
     #   format - string
     #   api_key - object
-    def self.current(params = {}, options = {})
+    def self.delete_current(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: format must be an String") if params.dig(:format) and !params.dig(:format).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: api_key must be an Hash") if params.dig(:api_key) and !params.dig(:api_key).is_a?(Hash)
 

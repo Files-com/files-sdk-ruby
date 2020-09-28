@@ -156,7 +156,7 @@ Files::ApiKey.update(id,
 ## Delete current API key.  (Requires current API connection to be using an API key.)
 
 ```
-Files::ApiKey.current(
+Files::ApiKey.delete_current(
   format: "", 
   api_key: ""
 )
