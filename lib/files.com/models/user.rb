@@ -293,7 +293,7 @@ module Files
       @attributes[:receive_admin_alerts] = value
     end
 
-    # boolean - Is 2fa required to sign in?
+    # string - 2FA required setting
     def require_2fa
       @attributes[:require_2fa]
     end
@@ -582,6 +582,7 @@ module Files
     #   ssl_required - string - SSL required setting
     #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
     #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
+    #   require_2fa - string - 2FA required setting
     #   time_zone - string - User time zone
     #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
     #   username - string - User's username
@@ -610,6 +611,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params.dig(:password_validity_days) and !params.dig(:password_validity_days).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params.dig(:ssl_required) and !params.dig(:ssl_required).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params.dig(:sso_strategy_id) and !params.dig(:sso_strategy_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params.dig(:require_2fa) and !params.dig(:require_2fa).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params.dig(:time_zone) and !params.dig(:time_zone).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params.dig(:user_root) and !params.dig(:user_root).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
@@ -742,6 +744,7 @@ module Files
     #   ssl_required - string - SSL required setting
     #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
     #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
+    #   require_2fa - string - 2FA required setting
     #   time_zone - string - User time zone
     #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
     #   username - string - User's username
@@ -766,6 +769,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params.dig(:password_validity_days) and !params.dig(:password_validity_days).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params.dig(:ssl_required) and !params.dig(:ssl_required).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params.dig(:sso_strategy_id) and !params.dig(:sso_strategy_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params.dig(:require_2fa) and !params.dig(:require_2fa).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params.dig(:time_zone) and !params.dig(:time_zone).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params.dig(:user_root) and !params.dig(:user_root).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
@@ -847,6 +851,7 @@ module Files
     #   ssl_required - string - SSL required setting
     #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
     #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
+    #   require_2fa - string - 2FA required setting
     #   time_zone - string - User time zone
     #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
     #   username - string - User's username
@@ -874,6 +879,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params.dig(:password_validity_days) and !params.dig(:password_validity_days).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params.dig(:ssl_required) and !params.dig(:ssl_required).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params.dig(:sso_strategy_id) and !params.dig(:sso_strategy_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params.dig(:require_2fa) and !params.dig(:require_2fa).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params.dig(:time_zone) and !params.dig(:time_zone).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params.dig(:user_root) and !params.dig(:user_root).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
