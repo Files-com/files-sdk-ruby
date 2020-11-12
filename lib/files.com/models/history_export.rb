@@ -36,6 +36,24 @@ module Files
       @attributes[:end_at] = value
     end
 
+    # string - Export format
+    def export_as
+      @attributes[:export_as]
+    end
+
+    def export_as=(value)
+      @attributes[:export_as] = value
+    end
+
+    # boolean - Is a file export, downloadable using the results_url
+    def file_export
+      @attributes[:file_export]
+    end
+
+    def file_export=(value)
+      @attributes[:file_export] = value
+    end
+
     # string - Status of export.  Will be: `building`, `ready`, or `failed`
     def status
       @attributes[:status]
@@ -263,6 +281,7 @@ module Files
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   start_at - string - Start date/time of export range.
     #   end_at - string - End date/time of export range.
+    #   export_as - string - Export format
     #   query_action - string - Filter results by this this action type. Valid values: `create`, `read`, `update`, `destroy`, `move`, `login`, `failedlogin`, `copy`, `user_create`, `user_update`, `user_destroy`, `group_create`, `group_update`, `group_destroy`, `permission_create`, `permission_destroy`, `api_key_create`, `api_key_update`, `api_key_destroy`
     #   query_interface - string - Filter results by this this interface type. Valid values: `web`, `ftp`, `robot`, `jsapi`, `webdesktopapi`, `sftp`, `dav`, `desktop`, `restapi`, `scim`, `office`
     #   query_user_id - string - Return results that are actions performed by the user indiciated by this User ID
@@ -286,6 +305,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params.dig(:start_at) and !params.dig(:start_at).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params.dig(:end_at) and !params.dig(:end_at).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: export_as must be an String") if params.dig(:export_as) and !params.dig(:export_as).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_action must be an String") if params.dig(:query_action) and !params.dig(:query_action).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_interface must be an String") if params.dig(:query_interface) and !params.dig(:query_interface).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_user_id must be an String") if params.dig(:query_user_id) and !params.dig(:query_user_id).is_a?(String)
