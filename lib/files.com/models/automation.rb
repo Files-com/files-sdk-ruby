@@ -126,8 +126,26 @@ module Files
       @attributes[:group_ids] = value
     end
 
+    # string - How this automation is triggered to run. One of: `realtime` or `custom_schedule`.
+    def trigger
+      @attributes[:trigger]
+    end
+
+    def trigger=(value)
+      @attributes[:trigger] = value
+    end
+
+    # object - Custom schedule description for when the automation should be run.
+    def schedule
+      @attributes[:schedule]
+    end
+
+    def schedule=(value)
+      @attributes[:schedule] = value
+    end
+
     # Parameters:
-    #   automation (required) - string - Type of automation.  One of: `create_folder`, `request_file`, `request_move`
+    #   automation (required) - string - Automation type
     #   source - string - Source Path
     #   destination - string - Destination Path
     #   destination_replace_from - string - If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
@@ -136,6 +154,8 @@ module Files
     #   path - string - Path on which this Automation runs.  Supports globs.
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    #   schedule - object - Custom schedule for running this automation.
+    #   trigger - string - How this automation is triggered to run. One of: `realtime` or `custom_schedule`.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -150,6 +170,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params.dig(:user_ids) and !params.dig(:user_ids).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
       raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
@@ -228,7 +249,7 @@ module Files
     end
 
     # Parameters:
-    #   automation (required) - string - Type of automation.  One of: `create_folder`, `request_file`, `request_move`
+    #   automation (required) - string - Automation type
     #   source - string - Source Path
     #   destination - string - Destination Path
     #   destination_replace_from - string - If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
@@ -237,6 +258,8 @@ module Files
     #   path - string - Path on which this Automation runs.  Supports globs.
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    #   schedule - object - Custom schedule for running this automation.
+    #   trigger - string - How this automation is triggered to run. One of: `realtime` or `custom_schedule`.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params.dig(:source) and !params.dig(:source).is_a?(String)
@@ -247,6 +270,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params.dig(:user_ids) and !params.dig(:user_ids).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: schedule must be an Hash") if params.dig(:schedule) and !params.dig(:schedule).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
       response, options = Api.send_request("/automations", :post, params, options)
@@ -254,7 +279,7 @@ module Files
     end
 
     # Parameters:
-    #   automation (required) - string - Type of automation.  One of: `create_folder`, `request_file`, `request_move`
+    #   automation (required) - string - Automation type
     #   source - string - Source Path
     #   destination - string - Destination Path
     #   destination_replace_from - string - If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
@@ -263,6 +288,8 @@ module Files
     #   path - string - Path on which this Automation runs.  Supports globs.
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
+    #   schedule - object - Custom schedule for running this automation.
+    #   trigger - string - How this automation is triggered to run. One of: `realtime` or `custom_schedule`.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -276,6 +303,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params.dig(:user_ids) and !params.dig(:user_ids).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: schedule must be an Hash") if params.dig(:schedule) and !params.dig(:schedule).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
       raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
