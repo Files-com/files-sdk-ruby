@@ -197,6 +197,7 @@ module Files
     end
 
     # Parameters:
+    #   paths - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
@@ -212,6 +213,7 @@ module Files
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
@@ -347,6 +349,7 @@ module Files
     end
 
     # Parameters:
+    #   paths - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
@@ -361,6 +364,7 @@ module Files
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
