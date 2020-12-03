@@ -27,6 +27,42 @@ module Files
       @attributes[:automation] = value
     end
 
+    # string - How this automation is triggered to run. One of: `realtime` or `custom_schedule`.
+    def trigger
+      @attributes[:trigger]
+    end
+
+    def trigger=(value)
+      @attributes[:trigger] = value
+    end
+
+    # string - If trigger is `daily`, this specifies how often to run this automation.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    def interval
+      @attributes[:interval]
+    end
+
+    def interval=(value)
+      @attributes[:interval] = value
+    end
+
+    # string - If trigger is `daily`, date this automation will next run.
+    def next_process_on
+      @attributes[:next_process_on]
+    end
+
+    def next_process_on=(value)
+      @attributes[:next_process_on] = value
+    end
+
+    # object - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run.
+    def schedule
+      @attributes[:schedule]
+    end
+
+    def schedule=(value)
+      @attributes[:schedule] = value
+    end
+
     # string - Source Path
     def source
       @attributes[:source]
@@ -63,24 +99,6 @@ module Files
       @attributes[:destination_replace_to] = value
     end
 
-    # string - How often to run this automation?  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    def interval
-      @attributes[:interval]
-    end
-
-    def interval=(value)
-      @attributes[:interval] = value
-    end
-
-    # string - Date this automation will next run.
-    def next_process_on
-      @attributes[:next_process_on]
-    end
-
-    def next_process_on=(value)
-      @attributes[:next_process_on] = value
-    end
-
     # string - Path on which this Automation runs.  Supports globs. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
@@ -88,15 +106,6 @@ module Files
 
     def path=(value)
       @attributes[:path] = value
-    end
-
-    # boolean - Does this automation run in real time?  This is a read-only property based on automation type.
-    def realtime
-      @attributes[:realtime]
-    end
-
-    def realtime=(value)
-      @attributes[:realtime] = value
     end
 
     # int64 - User ID of the Automation's creator.
@@ -124,24 +133,6 @@ module Files
 
     def group_ids=(value)
       @attributes[:group_ids] = value
-    end
-
-    # string - How this automation is triggered to run. One of: `realtime` or `custom_schedule`.
-    def trigger
-      @attributes[:trigger]
-    end
-
-    def trigger=(value)
-      @attributes[:trigger] = value
-    end
-
-    # object - Custom schedule description for when the automation should be run.
-    def schedule
-      @attributes[:schedule]
-    end
-
-    def schedule=(value)
-      @attributes[:schedule] = value
     end
 
     # Parameters:
