@@ -27,7 +27,7 @@ module Files
       @attributes[:automation] = value
     end
 
-    # string - How this automation is triggered to run. One of: `realtime` or `custom_schedule`.
+    # string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, or `email`.
     def trigger
       @attributes[:trigger]
     end
@@ -146,7 +146,7 @@ module Files
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   schedule - object - Custom schedule for running this automation.
-    #   trigger - string - How this automation is triggered to run. One of: `realtime` or `custom_schedule`.
+    #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, or `email`.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -250,7 +250,7 @@ module Files
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   schedule - object - Custom schedule for running this automation.
-    #   trigger - string - How this automation is triggered to run. One of: `realtime` or `custom_schedule`.
+    #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, or `email`.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params.dig(:source) and !params.dig(:source).is_a?(String)
@@ -280,7 +280,7 @@ module Files
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   schedule - object - Custom schedule for running this automation.
-    #   trigger - string - How this automation is triggered to run. One of: `realtime` or `custom_schedule`.
+    #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, or `email`.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
