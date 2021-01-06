@@ -72,6 +72,15 @@ module Files
       @attributes[:clickwrap_body] = value
     end
 
+    # Custom Form to use
+    def form_field_set
+      @attributes[:form_field_set]
+    end
+
+    def form_field_set=(value)
+      @attributes[:form_field_set] = value
+    end
+
     # int64 - Bundle ID
     def id
       @attributes[:id]
@@ -176,6 +185,15 @@ module Files
       @attributes[:password] = value
     end
 
+    # int64 - Id of Form Field Set to use with this bundle
+    def form_field_set_id
+      @attributes[:form_field_set_id]
+    end
+
+    def form_field_set_id=(value)
+      @attributes[:form_field_set_id] = value
+    end
+
     # Send email(s) with a link to bundle
     #
     # Parameters:
@@ -199,6 +217,7 @@ module Files
     # Parameters:
     #   paths - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
+    #   form_field_set_id - int64 - Id of Form Field Set to use with this bundle
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
     #   description - string - Public description
@@ -215,6 +234,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if params.dig(:form_field_set_id) and !params.dig(:form_field_set_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
@@ -254,7 +274,7 @@ module Files
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   cursor - string - Used for pagination.  Send a cursor value to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor-Next header.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `site_id`, `created_at` or `code`.
+    #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `created_at` and `code`.
     #   filter - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `created_at`.
     #   filter_gt - object - If set, return records where the specifiied field is greater than the supplied value. Valid fields are `created_at`.
     #   filter_gteq - object - If set, return records where the specifiied field is greater than or equal to the supplied value. Valid fields are `created_at`.
@@ -302,6 +322,7 @@ module Files
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   paths (required) - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
+    #   form_field_set_id - int64 - Id of Form Field Set to use with this bundle
     #   expires_at - string - Bundle expiration date/time
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   description - string - Public description
@@ -315,6 +336,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if params.dig(:form_field_set_id) and !params.dig(:form_field_set_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params.dig(:max_uses) and !params.dig(:max_uses).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
@@ -351,6 +373,7 @@ module Files
     # Parameters:
     #   paths - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
+    #   form_field_set_id - int64 - Id of Form Field Set to use with this bundle
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
     #   description - string - Public description
@@ -366,6 +389,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if params.dig(:form_field_set_id) and !params.dig(:form_field_set_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)

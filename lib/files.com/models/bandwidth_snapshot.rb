@@ -24,6 +24,16 @@ module Files
       @attributes[:bytes_sent]
     end
 
+    # double - Site sync bandwidth report bytes received
+    def sync_bytes_received
+      @attributes[:sync_bytes_received]
+    end
+
+    # double - Site sync bandwidth report bytes sent
+    def sync_bytes_sent
+      @attributes[:sync_bytes_sent]
+    end
+
     # double - Site bandwidth report get requests
     def requests_get
       @attributes[:requests_get]
@@ -57,7 +67,7 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  Send a cursor value to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor-Next header.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `site_id` and `logged_at`.
+    #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `logged_at`.
     #   filter - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `logged_at`.
     #   filter_gt - object - If set, return records where the specifiied field is greater than the supplied value. Valid fields are `logged_at`.
     #   filter_gteq - object - If set, return records where the specifiied field is greater than or equal to the supplied value. Valid fields are `logged_at`.

@@ -9,6 +9,16 @@ module Files
       @options = options || {}
     end
 
+    # string - Status of file operation. Possible values: completed, enqueued.
+    def status
+      @attributes[:status]
+    end
+
+    # int64 - If status is enqueued, this is the id of the FileMigration to check for status updates.
+    def file_migration_id
+      @attributes[:file_migration_id]
+    end
+
     # Copy file/folder
     #
     # Parameters:
@@ -78,8 +88,8 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
       raise MissingParameterError.new("Parameter missing: destination") unless params.dig(:destination)
 
-      response, _options = Api.send_request("/file_actions/copy/#{params[:path]}", :post, params, options)
-      response.data
+      response, options = Api.send_request("/file_actions/copy/#{params[:path]}", :post, params, options)
+      FileAction.new(response.data, options)
     end
 
     # Move file/folder
@@ -94,8 +104,8 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
       raise MissingParameterError.new("Parameter missing: destination") unless params.dig(:destination)
 
-      response, _options = Api.send_request("/file_actions/move/#{params[:path]}", :post, params, options)
-      response.data
+      response, options = Api.send_request("/file_actions/move/#{params[:path]}", :post, params, options)
+      FileAction.new(response.data, options)
     end
 
     # Begin file upload
