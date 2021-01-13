@@ -154,7 +154,7 @@ module Files
           http.request request do |response|
             io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
             response.read_body do |chunk|
-              io << chunk.encode!
+              io << chunk
             end
           end
         end
