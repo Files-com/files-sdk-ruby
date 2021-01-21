@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Files
-  class BundleRecipient
+  class InboxRecipient
     attr_reader :options, :attributes
 
     def initialize(attributes = {}, options = {})
@@ -27,7 +27,7 @@ module Files
       @attributes[:name] = value
     end
 
-    # string - A note sent to the recipient with the bundle.
+    # string - A note sent to the recipient with the inbox.
     def note
       @attributes[:note]
     end
@@ -45,7 +45,7 @@ module Files
       @attributes[:recipient] = value
     end
 
-    # date-time - When the Bundle was shared with this recipient.
+    # date-time - When the Inbox was shared with this recipient.
     def sent_at
       @attributes[:sent_at]
     end
@@ -63,13 +63,13 @@ module Files
       @attributes[:user_id] = value
     end
 
-    # int64 - Bundle to share.
-    def bundle_id
-      @attributes[:bundle_id]
+    # int64 - Inbox to share.
+    def inbox_id
+      @attributes[:inbox_id]
     end
 
-    def bundle_id=(value)
-      @attributes[:bundle_id] = value
+    def inbox_id=(value)
+      @attributes[:inbox_id] = value
     end
 
     # boolean - Set to true to share the link with the recipient upon creation.
@@ -83,9 +83,9 @@ module Files
 
     def save
       if @attributes[:id]
-        raise NotImplementedError.new("The BundleRecipient object doesn't support updates.")
+        raise NotImplementedError.new("The InboxRecipient object doesn't support updates.")
       else
-        new_obj = BundleRecipient.create(@attributes, @options)
+        new_obj = InboxRecipient.create(@attributes, @options)
         @attributes = new_obj.attributes
       end
     end
@@ -101,7 +101,7 @@ module Files
     #   filter_like - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `has_registrations`.
     #   filter_lt - object - If set, return records where the specifiied field is less than the supplied value. Valid fields are `has_registrations`.
     #   filter_lteq - object - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `has_registrations`.
-    #   bundle_id (required) - int64 - List recipients for the bundle with this ID.
+    #   inbox_id (required) - int64 - List recipients for the inbox with this ID.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
@@ -113,11 +113,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params.dig(:filter_like) and !params.dig(:filter_like).is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params.dig(:filter_lt) and !params.dig(:filter_lt).is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params.dig(:filter_lteq) and !params.dig(:filter_lteq).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params.dig(:bundle_id) and !params.dig(:bundle_id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: bundle_id") unless params.dig(:bundle_id)
+      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: inbox_id") unless params.dig(:inbox_id)
 
-      List.new(BundleRecipient, params) do
-        Api.send_request("/bundle_recipients", :get, params, options)
+      List.new(InboxRecipient, params) do
+        Api.send_request("/inbox_recipients", :get, params, options)
       end
     end
 
@@ -127,24 +127,24 @@ module Files
 
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   bundle_id (required) - int64 - Bundle to share.
-    #   recipient (required) - string - Email addresses to share this bundle with.
+    #   inbox_id (required) - int64 - Inbox to share.
+    #   recipient (required) - string - Email addresses to share this inbox with.
     #   name - string - Name of recipient.
     #   company - string - Company of recipient.
     #   note - string - Note to include in email.
     #   share_after_create - boolean - Set to true to share the link with the recipient upon creation.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params.dig(:bundle_id) and !params.dig(:bundle_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: recipient must be an String") if params.dig(:recipient) and !params.dig(:recipient).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: company must be an String") if params.dig(:company) and !params.dig(:company).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: bundle_id") unless params.dig(:bundle_id)
+      raise MissingParameterError.new("Parameter missing: inbox_id") unless params.dig(:inbox_id)
       raise MissingParameterError.new("Parameter missing: recipient") unless params.dig(:recipient)
 
-      response, options = Api.send_request("/bundle_recipients", :post, params, options)
-      BundleRecipient.new(response.data, options)
+      response, options = Api.send_request("/inbox_recipients", :post, params, options)
+      InboxRecipient.new(response.data, options)
     end
   end
 end

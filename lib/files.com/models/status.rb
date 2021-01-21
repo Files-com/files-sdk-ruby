@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Status http code
+    # int64 - Status HTTP code
     def code
       @attributes[:code]
     end
@@ -32,6 +32,16 @@ module Files
     # array - A list of api errors
     def errors
       @attributes[:errors]
+    end
+
+    # int64 - Required Clickwrap id
+    def clickwrap_id
+      @attributes[:clickwrap_id]
+    end
+
+    # string - Required Clickwrap body
+    def clickwrap_body
+      @attributes[:clickwrap_body]
     end
   end
 end
