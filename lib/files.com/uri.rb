@@ -34,17 +34,11 @@ module Files
       # here we need to, so switch to ASCII.
       component = component.dup
       component.force_encoding(Encoding::ASCII_8BIT)
-      unencoded = Addressable::URI.unencode_component(component, String, leave_encoded)
-      begin
-        encoded = Addressable::URI.encode_component(
-          # Addressable::IDNA.unicode_normalize_kc(unencoded),
-          unencoded,
-          character_class,
-          leave_encoded
-        )
-      rescue ArgumentError
-        encoded = encode_component(unencoded)
-      end
+      encoded = Addressable::URI.encode_component(
+        component,
+        character_class,
+        leave_encoded
+      )
       encoded.force_encoding(Encoding::UTF_8)
       encoded
     end
