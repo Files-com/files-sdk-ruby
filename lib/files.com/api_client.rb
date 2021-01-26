@@ -277,16 +277,12 @@ module Files
         code: error_data[:code] || resp.http_status,
       }
 
-      case resp.http_status
-      when 400, 404
-        InvalidRequestError.new(error_data[:message], opts)
-      when 401
-        AuthenticationError.new(error_data[:message], opts)
-      when 403
-        PermissionError.new(error_data[:message], opts)
-      when 429
-        RateLimitError.new(error_data[:message], opts)
-      else
+      return APIError.new(error_data[:message], opts) unless resp&.data&.dig(:type)
+
+      begin
+        error_class = Files.const_get(resp.data[:type].split("/").map { |piece| piece.split("-").map(&:capitalize).join('') + 'Error' }.join("::"))
+        error_class.new(error_data[:message], opts)
+      rescue NameError
         APIError.new(error_data[:message], opts)
       end
     end
