@@ -120,7 +120,6 @@ module Files
   class HistoryPermissionRequiredError < NotAuthorizedError; end
   class InsufficientPermissionForParamsError < NotAuthorizedError; end
   class LockedOutError < NotAuthorizedError; end
-  class LockoutIpFailuresError < NotAuthorizedError; end
   class LockoutRegionMismatchError < NotAuthorizedError; end
   class MustAuthenticateWithApiKeyError < NotAuthorizedError; end
   class NeedAdminPermissionForInboxError < NotAuthorizedError; end
@@ -174,6 +173,7 @@ module Files
 
   class RateLimitedError < APIError; end
   class ReauthenticationRateLimitedError < RateLimitedError; end
+  class TooManyLoginAttemptsError < RateLimitedError; end
   class TooManyRequestsError < RateLimitedError; end
 
   class SiteConfigurationError < APIError; end
