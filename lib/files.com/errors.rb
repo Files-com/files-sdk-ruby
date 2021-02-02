@@ -85,6 +85,7 @@ module Files
   class UserRequiredError < BadRequestError; end
 
   class InvalidParamsError < APIError; end
+  class InvalidCursorError < InvalidParamsError; end
   class NoValidInputParamsError < InvalidParamsError; end
   class ReauthenticationNeededFieldsError < InvalidParamsError; end
   class RequestParamPathCannotHaveTrailingWhitespaceError < InvalidParamsError; end
