@@ -64,6 +64,16 @@ module Files
       @attributes[:external_homepage_url]
     end
 
+    # string - Marketing video page
+    def marketing_youtube_url
+      @attributes[:marketing_youtube_url]
+    end
+
+    # string - Tutorial video page
+    def tutorial_youtube_url
+      @attributes[:tutorial_youtube_url]
+    end
+
     # string - The type of the App
     def app_type
       @attributes[:app_type]

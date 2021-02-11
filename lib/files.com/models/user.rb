@@ -45,7 +45,7 @@ module Files
       @attributes[:allowed_ips] = value
     end
 
-    # boolean - Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
+    # boolean - DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
     def attachments_permission
       @attributes[:attachments_permission]
     end
@@ -555,7 +555,7 @@ module Files
     #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
     #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
     #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
-    #   attachments_permission - boolean - Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
+    #   attachments_permission - boolean - DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
     #   authentication_method - string - How is this user authenticated?
     #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
@@ -713,7 +713,7 @@ module Files
     #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
     #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
     #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
-    #   attachments_permission - boolean - Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
+    #   attachments_permission - boolean - DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
     #   authentication_method - string - How is this user authenticated?
     #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
@@ -820,7 +820,7 @@ module Files
     #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
     #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
     #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
-    #   attachments_permission - boolean - Can the user create Bundles (aka Share Links)?  This field will be aliased or renamed in the future to `bundles_permission`.
+    #   attachments_permission - boolean - DEPRECATED: Can the user create Bundles (aka Share Links)? Use the bundle permission instead.
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
     #   authentication_method - string - How is this user authenticated?
     #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?

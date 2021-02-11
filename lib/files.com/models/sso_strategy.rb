@@ -139,7 +139,7 @@ module Files
       @attributes[:provision_site_admin_groups]
     end
 
-    # boolean - Auto-provisioned users get Sharing permission?
+    # boolean - DEPRECATED: Auto-provisioned users get Sharing permission. Use a Group with the Bundle permission instead.
     def provision_attachments_permission
       @attributes[:provision_attachments_permission]
     end
