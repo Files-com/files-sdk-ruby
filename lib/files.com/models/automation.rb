@@ -162,6 +162,15 @@ module Files
       @attributes[:trigger_action_path] = value
     end
 
+    # object - A Hash of attributes specific to the automation type.
+    def value
+      @attributes[:value]
+    end
+
+    def value=(value)
+      @attributes[:value] = value
+    end
+
     # Parameters:
     #   automation (required) - string - Automation type
     #   source - string - Source Path
@@ -176,6 +185,7 @@ module Files
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   trigger_action_path - string - If trigger is `action`, this is the path to watch for the specified trigger actions.
+    #   value - object - A Hash of attributes specific to the automation type.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -284,6 +294,7 @@ module Files
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   trigger_action_path - string - If trigger is `action`, this is the path to watch for the specified trigger actions.
+    #   value - object - A Hash of attributes specific to the automation type.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params.dig(:source) and !params.dig(:source).is_a?(String)
@@ -298,6 +309,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: trigger_action_path must be an String") if params.dig(:trigger_action_path) and !params.dig(:trigger_action_path).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params.dig(:value) and !params.dig(:value).is_a?(Hash)
       raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
       response, options = Api.send_request("/automations", :post, params, options)
@@ -318,6 +330,7 @@ module Files
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   trigger_action_path - string - If trigger is `action`, this is the path to watch for the specified trigger actions.
+    #   value - object - A Hash of attributes specific to the automation type.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -335,6 +348,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: trigger_action_path must be an String") if params.dig(:trigger_action_path) and !params.dig(:trigger_action_path).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params.dig(:value) and !params.dig(:value).is_a?(Hash)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
       raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
