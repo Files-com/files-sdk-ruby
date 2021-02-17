@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # string - Version of the history for the export.
+    def history_version
+      @attributes[:history_version]
+    end
+
+    def history_version=(value)
+      @attributes[:history_version] = value
+    end
+
     # date-time - Start date/time of export range.
     def start_at
       @attributes[:start_at]
