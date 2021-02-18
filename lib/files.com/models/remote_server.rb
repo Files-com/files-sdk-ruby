@@ -36,6 +36,15 @@ module Files
       @attributes[:hostname] = value
     end
 
+    # string - Initial home folder on remote server
+    def remote_home_path
+      @attributes[:remote_home_path]
+    end
+
+    def remote_home_path=(value)
+      @attributes[:remote_home_path] = value
+    end
+
     # string - Internal name for your reference
     def name
       @attributes[:name]
