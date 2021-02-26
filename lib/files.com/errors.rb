@@ -56,10 +56,6 @@ module Files
     end
   end
 
-  class ProcessingPendingError < APIError; end
-
-  class AccountInBadStandingError < APIError; end
-  class AccountOverdueError < AccountInBadStandingError; end
 
   class BadRequestError < APIError; end
   class AttachmentTooLargeError < BadRequestError; end
@@ -68,42 +64,40 @@ module Files
   class DatetimeParseError < BadRequestError; end
   class DestinationSameError < BadRequestError; end
   class FolderMustNotBeAFileError < BadRequestError; end
+  class InvalidCursorError < BadRequestError; end
   class InvalidFilterCombinationError < BadRequestError; end
   class InvalidFilterFieldError < BadRequestError; end
   class InvalidInputEncodingError < BadRequestError; end
   class InvalidInterfaceError < BadRequestError; end
-  class InvalidOauthError < BadRequestError; end
   class InvalidOauthProviderError < BadRequestError; end
   class InvalidReturnToUrlError < BadRequestError; end
   class InvalidUploadOffsetError < BadRequestError; end
-  class InvalidUsernameOrPasswordError < BadRequestError; end
+  class NoValidInputParamsError < BadRequestError; end
   class OperationOnNonScimResourceError < BadRequestError; end
+  class ReauthenticationNeededFieldsError < BadRequestError; end
+  class RequestParamPathCannotHaveTrailingWhitespaceError < BadRequestError; end
+  class RequestParamsContainInvalidCharacterError < BadRequestError; end
+  class RequestParamsInvalidError < BadRequestError; end
+  class RequestParamsRequiredError < BadRequestError; end
+  class UnsupportedCurrencyError < BadRequestError; end
   class UnsupportedHttpResponseFormatError < BadRequestError; end
   class UnsupportedMediaTypeError < BadRequestError; end
   class UserIdInvalidError < BadRequestError; end
   class UserIdOnUserEndpointError < BadRequestError; end
   class UserRequiredError < BadRequestError; end
 
-  class InvalidParamsError < APIError; end
-  class InvalidCursorError < InvalidParamsError; end
-  class NoValidInputParamsError < InvalidParamsError; end
-  class ReauthenticationNeededFieldsError < InvalidParamsError; end
-  class RequestParamPathCannotHaveTrailingWhitespaceError < InvalidParamsError; end
-  class RequestParamsContainInvalidCharacterError < InvalidParamsError; end
-  class RequestParamsInvalidError < InvalidParamsError; end
-  class RequestParamsRequiredError < InvalidParamsError; end
-  class UnsupportedCurrencyError < InvalidParamsError; end
-
-  class LockedError < APIError; end
-  class FileLockedError < LockedError; end
-  class FolderLockedError < LockedError; end
-  class ResourceLockedError < LockedError; end
-  class SubfolderLockedError < LockedError; end
-
   class NotAuthenticatedError < APIError; end
+  class AuthenticationRequiredError < NotAuthenticatedError; end
+  class BundleRegistrationCodeFailedError < NotAuthenticatedError; end
+  class InboxRegistrationCodeFailedError < NotAuthenticatedError; end
+  class InvalidCredentialsError < NotAuthenticatedError; end
+  class InvalidOauthError < NotAuthenticatedError; end
+  class InvalidOrExpiredCodeError < NotAuthenticatedError; end
+  class InvalidUsernameOrPasswordError < NotAuthenticatedError; end
+  class LockedOutError < NotAuthenticatedError; end
+  class LockoutRegionMismatchError < NotAuthenticatedError; end
   class OneTimePasswordIncorrectError < NotAuthenticatedError; end
   class TwoFactorAuthenticationErrorError < NotAuthenticatedError; end
-  class TwoFactorAuthenticationRequiredError < NotAuthenticatedError; end
   class TwoFactorAuthenticationSetupExpiredError < NotAuthenticatedError; end
 
   class NotAuthorizedError < APIError; end
@@ -111,20 +105,17 @@ module Files
   class ApiKeyIsPathRestrictedError < NotAuthorizedError; end
   class ApiKeyOnlyForDesktopAppError < NotAuthorizedError; end
   class ApiKeyOnlyForOfficeIntegrationError < NotAuthorizedError; end
-  class AuthenticationRequiredError < NotAuthorizedError; end
+  class BillingPermissionRequiredError < NotAuthorizedError; end
   class CannotLoginWhileUsingKeyError < NotAuthorizedError; end
   class CantActForOtherUserError < NotAuthorizedError; end
   class ContactAdminForPasswordChangeHelpError < NotAuthorizedError; end
-  class FolderAdminOrBillingPermissionError < NotAuthorizedError; end
+  class FolderAdminOrBillingPermissionRequiredError < NotAuthorizedError; end
   class FolderAdminPermissionRequiredError < NotAuthorizedError; end
   class HistoryExportNonAdminsMustQueryByFolderOrPathError < NotAuthorizedError; end
   class HistoryPermissionRequiredError < NotAuthorizedError; end
   class InsufficientPermissionForParamsError < NotAuthorizedError; end
-  class LockedOutError < NotAuthorizedError; end
-  class LockoutRegionMismatchError < NotAuthorizedError; end
   class MustAuthenticateWithApiKeyError < NotAuthorizedError; end
   class NeedAdminPermissionForInboxError < NotAuthorizedError; end
-  class NoBillingPermissionError < NotAuthorizedError; end
   class NotAllowedToCreateBundleError < NotAuthorizedError; end
   class PasswordChangeNotRequiredError < NotAuthorizedError; end
   class PasswordChangeRequiredError < NotAuthorizedError; end
@@ -134,7 +125,8 @@ module Files
   class ReauthenticationFailedFinalError < NotAuthorizedError; end
   class ReauthenticationNeededActionError < NotAuthorizedError; end
   class SelfManagedRequiredError < NotAuthorizedError; end
-  class UnauthorizedError < NotAuthorizedError; end
+  class SiteAdminRequiredError < NotAuthorizedError; end
+  class TwoFactorAuthenticationRequiredError < NotAuthorizedError; end
   class UserIdWithoutSiteAdminError < NotAuthorizedError; end
   class WritePermissionRequiredError < NotAuthorizedError; end
   class ZipDownloadIpMismatchError < NotAuthorizedError; end
@@ -147,7 +139,6 @@ module Files
   class FileUploadNotFoundError < NotFoundError; end
   class FolderNotFoundError < NotFoundError; end
   class GroupNotFoundError < NotFoundError; end
-  class HistoryExportNotReadyError < NotFoundError; end
   class InboxNotFoundError < NotFoundError; end
   class NestedNotFoundError < NotFoundError; end
   class PlanNotFoundError < NotFoundError; end
@@ -155,20 +146,23 @@ module Files
   class UserNotFoundError < NotFoundError; end
 
   class ProcessingFailureError < APIError; end
-  class BundleRegistrationCodeFailedError < ProcessingFailureError; end
   class DestinationExistsError < ProcessingFailureError; end
   class DestinationParentConflictError < ProcessingFailureError; end
   class DestinationParentDoesNotExistError < ProcessingFailureError; end
   class FailedToChangePasswordError < ProcessingFailureError; end
+  class FileLockedError < ProcessingFailureError; end
   class FileNotUploadedError < ProcessingFailureError; end
+  class FilePendingProcessingError < ProcessingFailureError; end
+  class FolderLockedError < ProcessingFailureError; end
   class FolderNotEmptyError < ProcessingFailureError; end
   class HistoryExportFailureError < ProcessingFailureError; end
+  class HistoryExportNotReadyError < ProcessingFailureError; end
   class HistoryUnavailableError < ProcessingFailureError; end
-  class InboxRegistrationCodeFailedError < ProcessingFailureError; end
   class InvalidBundleCodeError < ProcessingFailureError; end
-  class InvalidOrExpiredCodeError < ProcessingFailureError; end
   class ModelSaveErrorError < ProcessingFailureError; end
   class RemoteServerErrorError < ProcessingFailureError; end
+  class ResourceLockedError < ProcessingFailureError; end
+  class SubfolderLockedError < ProcessingFailureError; end
   class TwoFactorAuthenticationCodeAlreadySentError < ProcessingFailureError; end
   class UnprocessableEntityError < ProcessingFailureError; end
 
@@ -179,8 +173,8 @@ module Files
 
   class SiteConfigurationError < APIError; end
   class AccountAlreadyExistsError < SiteConfigurationError; end
+  class AccountOverdueError < SiteConfigurationError; end
   class NoAccountForSiteError < SiteConfigurationError; end
-  class SiteAdminRequiredError < SiteConfigurationError; end
   class SiteWasRemovedError < SiteConfigurationError; end
   class TrialExpiredError < SiteConfigurationError; end
   class TrialLockedError < SiteConfigurationError; end

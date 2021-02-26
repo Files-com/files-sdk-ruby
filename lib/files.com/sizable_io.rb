@@ -17,6 +17,11 @@ module Files
       read_io.content_length_promise.execute
     end
 
+    def close
+      super
+      read_io.content_length_promise.try_set(nil)
+    end
+
     protected
 
     attr_accessor :content_length
