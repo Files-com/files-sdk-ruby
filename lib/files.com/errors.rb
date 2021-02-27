@@ -164,7 +164,6 @@ module Files
   class ResourceLockedError < ProcessingFailureError; end
   class SubfolderLockedError < ProcessingFailureError; end
   class TwoFactorAuthenticationCodeAlreadySentError < ProcessingFailureError; end
-  class UnprocessableEntityError < ProcessingFailureError; end
 
   class RateLimitedError < APIError; end
   class ReauthenticationRateLimitedError < RateLimitedError; end
