@@ -64,7 +64,9 @@ module Files
   class DatetimeParseError < BadRequestError; end
   class DestinationSameError < BadRequestError; end
   class FolderMustNotBeAFileError < BadRequestError; end
+  class InvalidBodyError < BadRequestError; end
   class InvalidCursorError < BadRequestError; end
+  class InvalidEtagsError < BadRequestError; end
   class InvalidFilterCombinationError < BadRequestError; end
   class InvalidFilterFieldError < BadRequestError; end
   class InvalidInputEncodingError < BadRequestError; end
@@ -72,8 +74,12 @@ module Files
   class InvalidOauthProviderError < BadRequestError; end
   class InvalidReturnToUrlError < BadRequestError; end
   class InvalidUploadOffsetError < BadRequestError; end
+  class InvalidUploadPartGapError < BadRequestError; end
+  class InvalidUploadPartSizeError < BadRequestError; end
+  class MethodNotAllowedError < BadRequestError; end
   class NoValidInputParamsError < BadRequestError; end
   class OperationOnNonScimResourceError < BadRequestError; end
+  class PartNumberTooLargeError < BadRequestError; end
   class ReauthenticationNeededFieldsError < BadRequestError; end
   class RequestParamPathCannotHaveTrailingWhitespaceError < BadRequestError; end
   class RequestParamsContainInvalidCharacterError < BadRequestError; end
@@ -106,6 +112,7 @@ module Files
   class ApiKeyOnlyForDesktopAppError < NotAuthorizedError; end
   class ApiKeyOnlyForOfficeIntegrationError < NotAuthorizedError; end
   class BillingPermissionRequiredError < NotAuthorizedError; end
+  class BundleMaximumUsesReachedError < NotAuthorizedError; end
   class CannotLoginWhileUsingKeyError < NotAuthorizedError; end
   class CantActForOtherUserError < NotAuthorizedError; end
   class ContactAdminForPasswordChangeHelpError < NotAuthorizedError; end
@@ -147,23 +154,32 @@ module Files
 
   class ProcessingFailureError < APIError; end
   class DestinationExistsError < ProcessingFailureError; end
+  class DestinationFolderLimitedError < ProcessingFailureError; end
   class DestinationParentConflictError < ProcessingFailureError; end
   class DestinationParentDoesNotExistError < ProcessingFailureError; end
+  class ExpiredPublicKeyError < ProcessingFailureError; end
   class FailedToChangePasswordError < ProcessingFailureError; end
   class FileLockedError < ProcessingFailureError; end
   class FileNotUploadedError < ProcessingFailureError; end
   class FilePendingProcessingError < ProcessingFailureError; end
+  class FileUploadedToWrongRegionError < ProcessingFailureError; end
   class FolderLockedError < ProcessingFailureError; end
   class FolderNotEmptyError < ProcessingFailureError; end
   class HistoryExportFailureError < ProcessingFailureError; end
   class HistoryExportNotReadyError < ProcessingFailureError; end
   class HistoryUnavailableError < ProcessingFailureError; end
   class InvalidBundleCodeError < ProcessingFailureError; end
+  class InvalidFileTypeError < ProcessingFailureError; end
+  class InvalidFilenameError < ProcessingFailureError; end
+  class InvalidRangeError < ProcessingFailureError; end
   class ModelSaveErrorError < ProcessingFailureError; end
+  class MultipartUploadsRequiredForRemotesError < ProcessingFailureError; end
+  class MultipleProcessingErrorsError < ProcessingFailureError; end
   class RemoteServerErrorError < ProcessingFailureError; end
   class ResourceLockedError < ProcessingFailureError; end
   class SubfolderLockedError < ProcessingFailureError; end
   class TwoFactorAuthenticationCodeAlreadySentError < ProcessingFailureError; end
+  class UpdatesNotAllowedForRemotesError < ProcessingFailureError; end
 
   class RateLimitedError < APIError; end
   class ReauthenticationRateLimitedError < RateLimitedError; end
