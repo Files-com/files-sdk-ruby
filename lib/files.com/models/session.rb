@@ -235,13 +235,7 @@ module Files
       Session.new(response.data, options)
     end
 
-    # Parameters:
-    #   format - string
-    #   session - object
     def self.delete(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: format must be an String") if params.dig(:format) and !params.dig(:format).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: session must be an Hash") if params.dig(:session) and !params.dig(:session).is_a?(Hash)
-
       response, _options = Api.send_request("/sessions", :delete, params, options)
       response.data
     end

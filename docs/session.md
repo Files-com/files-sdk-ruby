@@ -74,13 +74,5 @@ Files::Session.create(
 ## Delete user session (log out)
 
 ```
-Files::Session.delete(
-  format: "", 
-  session: ""
-)
+Files::Session.delete
 ```
-
-### Parameters
-
-* `format` (string): 
-* `session` (object): 
