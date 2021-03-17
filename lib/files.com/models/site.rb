@@ -574,12 +574,24 @@ module Files
       @attributes[:disable_users_from_inactivity_period_days]
     end
 
+    # Parameters:
+    #   format - string
+    #   site - object
     def self.get(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: format must be an String") if params.dig(:format) and !params.dig(:format).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: site must be an Hash") if params.dig(:site) and !params.dig(:site).is_a?(Hash)
+
       response, options = Api.send_request("/site", :get, params, options)
       Site.new(response.data, options)
     end
 
+    # Parameters:
+    #   format - string
+    #   site - object
     def self.get_usage(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: format must be an String") if params.dig(:format) and !params.dig(:format).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: site must be an Hash") if params.dig(:site) and !params.dig(:site).is_a?(Hash)
+
       response, options = Api.send_request("/site/usage", :get, params, options)
       UsageSnapshot.new(response.data, options)
     end

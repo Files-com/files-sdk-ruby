@@ -176,7 +176,13 @@ module Files
       list(params, options)
     end
 
+    # Parameters:
+    #   format - string
+    #   api_key - object
     def self.find_current(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: format must be an String") if params.dig(:format) and !params.dig(:format).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: api_key must be an Hash") if params.dig(:api_key) and !params.dig(:api_key).is_a?(Hash)
+
       response, options = Api.send_request("/api_key", :get, params, options)
       ApiKey.new(response.data, options)
     end
@@ -244,7 +250,13 @@ module Files
       ApiKey.new(response.data, options)
     end
 
+    # Parameters:
+    #   format - string
+    #   api_key - object
     def self.delete_current(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: format must be an String") if params.dig(:format) and !params.dig(:format).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: api_key must be an Hash") if params.dig(:api_key) and !params.dig(:api_key).is_a?(Hash)
+
       response, _options = Api.send_request("/api_key", :delete, params, options)
       response.data
     end

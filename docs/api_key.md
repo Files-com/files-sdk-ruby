@@ -61,8 +61,16 @@ Files::ApiKey.list(
 ## Show information about current API key.  (Requires current API connection to be using an API key.)
 
 ```
-Files::ApiKey.find_current
+Files::ApiKey.find_current(
+  format: "", 
+  api_key: ""
+)
 ```
+
+### Parameters
+
+* `format` (string): 
+* `api_key` (object): 
 
 
 ---
@@ -145,8 +153,16 @@ Files::ApiKey.update(id,
 ## Delete current API key.  (Requires current API connection to be using an API key.)
 
 ```
-Files::ApiKey.delete_current
+Files::ApiKey.delete_current(
+  format: "", 
+  api_key: ""
+)
 ```
+
+### Parameters
+
+* `format` (string): 
+* `api_key` (object): 
 
 
 ---
