@@ -29,6 +29,11 @@ module Files
       @attributes[:created_at]
     end
 
+    # double - Site usage report highest usage in time period
+    def high_water_user_count
+      @attributes[:high_water_user_count]
+    end
+
     # double - Current site usage as of report
     def current_storage
       @attributes[:current_storage]
