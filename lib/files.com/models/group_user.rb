@@ -103,7 +103,12 @@ module Files
     end
 
     def save
-      update(@attributes)
+      if @attributes[:id]
+        update(@attributes)
+      else
+        new_obj = GroupUser.create(@attributes, @options)
+        @attributes = new_obj.attributes
+      end
     end
 
     # Parameters:
@@ -124,6 +129,20 @@ module Files
 
     def self.all(params = {}, options = {})
       list(params, options)
+    end
+
+    # Parameters:
+    #   group_id (required) - int64 - Group ID to add user to.
+    #   user_id (required) - int64 - User ID to add to group.
+    #   admin - boolean - Is the user a group administrator?
+    def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: group_id") unless params.dig(:group_id)
+      raise MissingParameterError.new("Parameter missing: user_id") unless params.dig(:user_id)
+
+      response, options = Api.send_request("/group_users", :post, params, options)
+      GroupUser.new(response.data, options)
     end
 
     # Parameters:
