@@ -45,6 +45,33 @@ module Files
       @attributes[:form_fields] = value
     end
 
+    # boolean - Any associated InboxRegistrations or BundleRegistrations can be saved without providing name
+    def skip_name
+      @attributes[:skip_name]
+    end
+
+    def skip_name=(value)
+      @attributes[:skip_name] = value
+    end
+
+    # boolean - Any associated InboxRegistrations or BundleRegistrations can be saved without providing email
+    def skip_email
+      @attributes[:skip_email]
+    end
+
+    def skip_email=(value)
+      @attributes[:skip_email] = value
+    end
+
+    # boolean - Any associated InboxRegistrations or BundleRegistrations can be saved without providing company
+    def skip_company
+      @attributes[:skip_company]
+    end
+
+    def skip_company=(value)
+      @attributes[:skip_company] = value
+    end
+
     # int64 - User ID.  Provide a value of `0` to operate the current session's user.
     def user_id
       @attributes[:user_id]
@@ -56,6 +83,9 @@ module Files
 
     # Parameters:
     #   title - string - Title to be displayed
+    #   skip_email - boolean - Skip validating form email
+    #   skip_name - boolean - Skip validating form name
+    #   skip_company - boolean - Skip validating company
     #   form_fields - array(object)
     def update(params = {})
       params ||= {}
@@ -129,6 +159,9 @@ module Files
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   title - string - Title to be displayed
+    #   skip_email - boolean - Skip validating form email
+    #   skip_name - boolean - Skip validating form name
+    #   skip_company - boolean - Skip validating company
     #   form_fields - array(object)
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
@@ -141,6 +174,9 @@ module Files
 
     # Parameters:
     #   title - string - Title to be displayed
+    #   skip_email - boolean - Skip validating form email
+    #   skip_name - boolean - Skip validating form name
+    #   skip_company - boolean - Skip validating company
     #   form_fields - array(object)
     def self.update(id, params = {}, options = {})
       params ||= {}
