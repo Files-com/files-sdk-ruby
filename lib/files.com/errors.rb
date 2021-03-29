@@ -175,6 +175,7 @@ module Files
   class ModelSaveErrorError < ProcessingFailureError; end
   class MultipartUploadsRequiredForRemotesError < ProcessingFailureError; end
   class MultipleProcessingErrorsError < ProcessingFailureError; end
+  class RecipientAlreadySharedError < ProcessingFailureError; end
   class RemoteServerErrorError < ProcessingFailureError; end
   class ResourceLockedError < ProcessingFailureError; end
   class SubfolderLockedError < ProcessingFailureError; end
