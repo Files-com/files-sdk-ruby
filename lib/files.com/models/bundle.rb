@@ -197,9 +197,9 @@ module Files
     # Send email(s) with a link to bundle
     #
     # Parameters:
-    #   to (required) - array(string) - A list of email addresses to share this bundle with.
+    #   to - array(string) - A list of email addresses to share this bundle with. Required unless `recipients` is used.
     #   note - string - Note to include in email.
-    #   recipients - array(object) - A list of recipients to share this bundle with.
+    #   recipients - array(object) - A list of recipients to share this bundle with. Required unless `to` is used.
     def share(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -209,7 +209,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recipients must be an Array") if params.dig(:recipients) and !params.dig(:recipients).is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-      raise MissingParameterError.new("Parameter missing: to") unless params.dig(:to)
 
       Api.send_request("/bundles/#{@attributes[:id]}/share", :post, params, @options)
     end
@@ -353,9 +352,9 @@ module Files
     # Send email(s) with a link to bundle
     #
     # Parameters:
-    #   to (required) - array(string) - A list of email addresses to share this bundle with.
+    #   to - array(string) - A list of email addresses to share this bundle with. Required unless `recipients` is used.
     #   note - string - Note to include in email.
-    #   recipients - array(object) - A list of recipients to share this bundle with.
+    #   recipients - array(object) - A list of recipients to share this bundle with. Required unless `to` is used.
     def self.share(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -364,7 +363,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recipients must be an Array") if params.dig(:recipients) and !params.dig(:recipients).is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-      raise MissingParameterError.new("Parameter missing: to") unless params.dig(:to)
 
       response, _options = Api.send_request("/bundles/#{params[:id]}/share", :post, params, options)
       response.data
