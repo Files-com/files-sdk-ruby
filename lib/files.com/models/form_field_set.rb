@@ -36,7 +36,7 @@ module Files
       @attributes[:form_layout] = value
     end
 
-    # array - Associated form fields
+    # Associated form fields
     def form_fields
       @attributes[:form_fields]
     end

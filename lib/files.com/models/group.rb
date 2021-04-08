@@ -27,7 +27,7 @@ module Files
       @attributes[:name] = value
     end
 
-    # array - List of user IDs who are group administrators (separated by commas)
+    # string - List of user IDs who are group administrators (separated by commas)
     def admin_ids
       @attributes[:admin_ids]
     end

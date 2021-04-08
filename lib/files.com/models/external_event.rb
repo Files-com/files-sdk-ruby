@@ -9,12 +9,12 @@ module Files
       @options = options || {}
     end
 
-    # string - Type of event being recorded. Valid values: `remote_server_sync`, `lockout`, `ldap_login`, `saml_login`
+    # string - Type of event being recorded.
     def event_type
       @attributes[:event_type]
     end
 
-    # string - Status of event. Valid values: `error`
+    # string - Status of event.
     def status
       @attributes[:status]
     end

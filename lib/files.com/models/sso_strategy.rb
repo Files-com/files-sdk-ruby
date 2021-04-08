@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # array - SSO Protocol
+    # string - SSO Protocol
     def protocol
       @attributes[:protocol]
     end

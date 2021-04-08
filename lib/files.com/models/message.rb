@@ -36,7 +36,7 @@ module Files
       @attributes[:body] = value
     end
 
-    # array - Comments.
+    # Comments.
     def comments
       @attributes[:comments]
     end
