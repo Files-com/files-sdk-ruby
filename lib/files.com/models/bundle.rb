@@ -45,6 +45,15 @@ module Files
       @attributes[:password_protected] = value
     end
 
+    # boolean - Restrict users to previewing files only?
+    def preview_only
+      @attributes[:preview_only]
+    end
+
+    def preview_only=(value)
+      @attributes[:preview_only] = value
+    end
+
     # boolean - Show a registration page that captures the downloader's name and email address?
     def require_registration
       @attributes[:require_registration]
@@ -224,6 +233,7 @@ module Files
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   note - string - Bundle internal note
+    #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
     def update(params = {})
@@ -327,6 +337,7 @@ module Files
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
+    #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   inbox_id - int64 - ID of the associated inbox, if available.
@@ -379,6 +390,7 @@ module Files
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   note - string - Bundle internal note
+    #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
     def self.update(id, params = {}, options = {})
