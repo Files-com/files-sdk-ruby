@@ -34,6 +34,11 @@ module Files
       @attributes[:inbox_code]
     end
 
+    # string - Clickwrap text that was shown to the registrant
+    def clickwrap_body
+      @attributes[:clickwrap_body]
+    end
+
     # int64 - Id of associated form field set
     def form_field_set_id
       @attributes[:form_field_set_id]
