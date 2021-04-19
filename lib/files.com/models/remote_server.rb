@@ -252,6 +252,15 @@ module Files
       @attributes[:one_drive_account_type] = value
     end
 
+    # string - Cloud hosted sharepoint hostname
+    def sharepoint_hostname
+      @attributes[:sharepoint_hostname]
+    end
+
+    def sharepoint_hostname=(value)
+      @attributes[:sharepoint_hostname] = value
+    end
+
     # string - Azure Blob Storage Account name
     def azure_blob_storage_account
       @attributes[:azure_blob_storage_account]
@@ -422,6 +431,7 @@ module Files
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     #   one_drive_account_type - string - Either personal or business_other account types
+    #   sharepoint_hostname - string - Cloud hosted sharepoint hostname
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     def update(params = {})
@@ -462,6 +472,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_hostname must be an String") if params.dig(:sharepoint_hostname) and !params.dig(:sharepoint_hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
@@ -559,6 +570,7 @@ module Files
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     #   one_drive_account_type - string - Either personal or business_other account types
+    #   sharepoint_hostname - string - Cloud hosted sharepoint hostname
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     def self.create(params = {}, options = {})
@@ -595,6 +607,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_hostname must be an String") if params.dig(:sharepoint_hostname) and !params.dig(:sharepoint_hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
 
@@ -637,6 +650,7 @@ module Files
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     #   one_drive_account_type - string - Either personal or business_other account types
+    #   sharepoint_hostname - string - Cloud hosted sharepoint hostname
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     def self.update(id, params = {}, options = {})
@@ -676,6 +690,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params.dig(:rackspace_region) and !params.dig(:rackspace_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params.dig(:rackspace_container) and !params.dig(:rackspace_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_hostname must be an String") if params.dig(:sharepoint_hostname) and !params.dig(:sharepoint_hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
