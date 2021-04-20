@@ -69,6 +69,11 @@ module Files
       @attributes[:bundle_password_required]
     end
 
+    # boolean - Do Bundles require recipients for sharing?
+    def bundle_require_share_recipient
+      @attributes[:bundle_require_share_recipient]
+    end
+
     # string - Page link and button color
     def color2_left
       @attributes[:color2_left]
@@ -632,6 +637,7 @@ module Files
     #   immutable_files - boolean - Are files protected from modification?
     #   session_pinned_by_ip - boolean - Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
     #   bundle_password_required - boolean - Do Bundles require password protection?
+    #   bundle_require_share_recipient - boolean - Do Bundles require recipients for sharing?
     #   password_requirements_apply_to_bundles - boolean - Require bundles' passwords, and passwords for other items (inboxes, public shares, etc.) to conform to the same requirements as users' passwords?
     #   opt_out_global - boolean - Use servers in the USA only?
     #   use_provided_modified_at - boolean - Allow uploaders to set `provided_modified_at` for uploaded files?
