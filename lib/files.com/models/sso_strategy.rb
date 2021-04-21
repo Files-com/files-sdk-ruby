@@ -134,6 +134,11 @@ module Files
       @attributes[:provision_group_required]
     end
 
+    # string - Comma-separated list of group names whose members will be created with email_signup authentication.
+    def provision_email_signup_groups
+      @attributes[:provision_email_signup_groups]
+    end
+
     # string - Comma-separated list of group names whose members will be created as Site Admins.
     def provision_site_admin_groups
       @attributes[:provision_site_admin_groups]
