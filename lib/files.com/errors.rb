@@ -118,11 +118,11 @@ module Files
   class ContactAdminForPasswordChangeHelpError < NotAuthorizedError; end
   class FolderAdminOrBillingPermissionRequiredError < NotAuthorizedError; end
   class FolderAdminPermissionRequiredError < NotAuthorizedError; end
-  class HistoryExportNonAdminsMustQueryByFolderOrPathError < NotAuthorizedError; end
   class HistoryPermissionRequiredError < NotAuthorizedError; end
   class InsufficientPermissionForParamsError < NotAuthorizedError; end
   class MustAuthenticateWithApiKeyError < NotAuthorizedError; end
   class NeedAdminPermissionForInboxError < NotAuthorizedError; end
+  class NonAdminsMustQueryByFolderOrPathError < NotAuthorizedError; end
   class NotAllowedToCreateBundleError < NotAuthorizedError; end
   class PasswordChangeNotRequiredError < NotAuthorizedError; end
   class PasswordChangeRequiredError < NotAuthorizedError; end
@@ -158,6 +158,8 @@ module Files
   class DestinationParentConflictError < ProcessingFailureError; end
   class DestinationParentDoesNotExistError < ProcessingFailureError; end
   class ExpiredPublicKeyError < ProcessingFailureError; end
+  class ExportFailureError < ProcessingFailureError; end
+  class ExportNotReadyError < ProcessingFailureError; end
   class FailedToChangePasswordError < ProcessingFailureError; end
   class FileLockedError < ProcessingFailureError; end
   class FileNotUploadedError < ProcessingFailureError; end
@@ -165,8 +167,6 @@ module Files
   class FileUploadedToWrongRegionError < ProcessingFailureError; end
   class FolderLockedError < ProcessingFailureError; end
   class FolderNotEmptyError < ProcessingFailureError; end
-  class HistoryExportFailureError < ProcessingFailureError; end
-  class HistoryExportNotReadyError < ProcessingFailureError; end
   class HistoryUnavailableError < ProcessingFailureError; end
   class InvalidBundleCodeError < ProcessingFailureError; end
   class InvalidFileTypeError < ProcessingFailureError; end

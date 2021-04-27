@@ -225,7 +225,7 @@ module Files
       @attributes[:query_target_permission_set] = value
     end
 
-    # string - If `status` is `ready` and the query succeeded, this will be a URL where all the results can be downloaded at once as a CSV.
+    # string - If `status` is `ready`, this will be a URL where all the results can be downloaded at once as a CSV.
     def results_url
       @attributes[:results_url]
     end
