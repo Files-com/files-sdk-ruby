@@ -9,6 +9,11 @@ module Files
       @options = options || {}
     end
 
+    # int64 - Event ID
+    def id
+      @attributes[:id]
+    end
+
     # string - Type of event being recorded.
     def event_type
       @attributes[:event_type]
@@ -57,6 +62,22 @@ module Files
 
     def self.all(params = {}, options = {})
       list(params, options)
+    end
+
+    # Parameters:
+    #   id (required) - int64 - External Event ID.
+    def self.find(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+
+      response, options = Api.send_request("/external_events/#{params[:id]}", :get, params, options)
+      ExternalEvent.new(response.data, options)
+    end
+
+    def self.get(id, params = {}, options = {})
+      find(id, params, options)
     end
   end
 end
