@@ -334,6 +334,11 @@ module Files
       @attributes[:office_integration_available]
     end
 
+    # string - Link to scheduling a meeting with our Sales team
+    def oncehub_link
+      @attributes[:oncehub_link]
+    end
+
     # boolean - Use servers in the USA only?
     def opt_out_global
       @attributes[:opt_out_global]
