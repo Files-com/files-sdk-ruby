@@ -99,6 +99,11 @@ module Files
       @attributes[:color2_top_text]
     end
 
+    # string - Site main contact name
+    def contact_name
+      @attributes[:contact_name]
+    end
+
     # date-time - Time this site was created
     def created_at
       @attributes[:created_at]
