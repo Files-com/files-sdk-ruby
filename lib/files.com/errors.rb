@@ -153,6 +153,7 @@ module Files
   class UserNotFoundError < NotFoundError; end
 
   class ProcessingFailureError < APIError; end
+  class BundleOnlyAllowsPreviewsError < ProcessingFailureError; end
   class DestinationExistsError < ProcessingFailureError; end
   class DestinationFolderLimitedError < ProcessingFailureError; end
   class DestinationParentConflictError < ProcessingFailureError; end
