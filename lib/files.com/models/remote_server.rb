@@ -171,7 +171,7 @@ module Files
       @attributes[:backblaze_b2_bucket] = value
     end
 
-    # string - Wasabi region
+    # string - Wasabi Bucket name
     def wasabi_bucket
       @attributes[:wasabi_bucket]
     end
@@ -180,7 +180,7 @@ module Files
       @attributes[:wasabi_bucket] = value
     end
 
-    # string - Wasabi Bucket name
+    # string - Wasabi region
     def wasabi_region
       @attributes[:wasabi_region]
     end
@@ -268,6 +268,33 @@ module Files
 
     def azure_blob_storage_container=(value)
       @attributes[:azure_blob_storage_container] = value
+    end
+
+    # string - S3-compatible Bucket name
+    def s3_compatible_bucket
+      @attributes[:s3_compatible_bucket]
+    end
+
+    def s3_compatible_bucket=(value)
+      @attributes[:s3_compatible_bucket] = value
+    end
+
+    # string - S3-compatible Bucket name
+    def s3_compatible_region
+      @attributes[:s3_compatible_region]
+    end
+
+    def s3_compatible_region=(value)
+      @attributes[:s3_compatible_region] = value
+    end
+
+    # string - S3-compatible endpoint
+    def s3_compatible_endpoint
+      @attributes[:s3_compatible_endpoint]
+    end
+
+    def s3_compatible_endpoint=(value)
+      @attributes[:s3_compatible_endpoint] = value
     end
 
     # string - AWS Access Key.
@@ -387,6 +414,24 @@ module Files
       @attributes[:azure_blob_storage_access_key] = value
     end
 
+    # string - S3-compatible access key
+    def s3_compatible_access_key
+      @attributes[:s3_compatible_access_key]
+    end
+
+    def s3_compatible_access_key=(value)
+      @attributes[:s3_compatible_access_key] = value
+    end
+
+    # string - S3-compatible secret key
+    def s3_compatible_secret_key
+      @attributes[:s3_compatible_secret_key]
+    end
+
+    def s3_compatible_secret_key=(value)
+      @attributes[:s3_compatible_secret_key] = value
+    end
+
     # Parameters:
     #   aws_access_key - string - AWS Access Key.
     #   aws_secret_key - string - AWS secret key.
@@ -416,14 +461,19 @@ module Files
     #   google_cloud_storage_project_id - string - Google Cloud Project ID
     #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage Bucket name
     #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
-    #   wasabi_bucket - string - Wasabi region
-    #   wasabi_region - string - Wasabi Bucket name
+    #   wasabi_bucket - string - Wasabi Bucket name
+    #   wasabi_region - string - Wasabi region
     #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     #   one_drive_account_type - string - Either personal or business_other account types
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
+    #   s3_compatible_bucket - string - S3-compatible Bucket name
+    #   s3_compatible_region - string - S3-compatible Bucket name
+    #   s3_compatible_endpoint - string - S3-compatible endpoint
+    #   s3_compatible_access_key - string - S3-compatible access key
+    #   s3_compatible_secret_key - string - S3-compatible secret key
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -464,6 +514,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params.dig(:s3_compatible_access_key) and !params.dig(:s3_compatible_access_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params.dig(:s3_compatible_secret_key) and !params.dig(:s3_compatible_secret_key).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/remote_servers/#{@attributes[:id]}", :patch, params, @options)
@@ -553,14 +608,19 @@ module Files
     #   google_cloud_storage_project_id - string - Google Cloud Project ID
     #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage Bucket name
     #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
-    #   wasabi_bucket - string - Wasabi region
-    #   wasabi_region - string - Wasabi Bucket name
+    #   wasabi_bucket - string - Wasabi Bucket name
+    #   wasabi_region - string - Wasabi region
     #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     #   one_drive_account_type - string - Either personal or business_other account types
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
+    #   s3_compatible_bucket - string - S3-compatible Bucket name
+    #   s3_compatible_region - string - S3-compatible Bucket name
+    #   s3_compatible_endpoint - string - S3-compatible endpoint
+    #   s3_compatible_access_key - string - S3-compatible access key
+    #   s3_compatible_secret_key - string - S3-compatible secret key
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params.dig(:aws_access_key) and !params.dig(:aws_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
@@ -597,6 +657,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params.dig(:s3_compatible_access_key) and !params.dig(:s3_compatible_access_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params.dig(:s3_compatible_secret_key) and !params.dig(:s3_compatible_secret_key).is_a?(String)
 
       response, options = Api.send_request("/remote_servers", :post, params, options)
       RemoteServer.new(response.data, options)
@@ -631,14 +696,19 @@ module Files
     #   google_cloud_storage_project_id - string - Google Cloud Project ID
     #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage Bucket name
     #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
-    #   wasabi_bucket - string - Wasabi region
-    #   wasabi_region - string - Wasabi Bucket name
+    #   wasabi_bucket - string - Wasabi Bucket name
+    #   wasabi_region - string - Wasabi region
     #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
     #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     #   rackspace_container - string - The name of the container (top level directory) where files will sync.
     #   one_drive_account_type - string - Either personal or business_other account types
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
+    #   s3_compatible_bucket - string - S3-compatible Bucket name
+    #   s3_compatible_region - string - S3-compatible Bucket name
+    #   s3_compatible_endpoint - string - S3-compatible endpoint
+    #   s3_compatible_access_key - string - S3-compatible access key
+    #   s3_compatible_secret_key - string - S3-compatible secret key
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -678,6 +748,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params.dig(:s3_compatible_access_key) and !params.dig(:s3_compatible_access_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params.dig(:s3_compatible_secret_key) and !params.dig(:s3_compatible_secret_key).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}", :patch, params, options)
