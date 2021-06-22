@@ -396,7 +396,7 @@ module Files
                      ensure
                        w.close
                      end
-                     r
+                     r.wait!(5)
                    end
     end
 

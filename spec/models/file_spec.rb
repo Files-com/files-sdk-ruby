@@ -1,8 +1,8 @@
 require "spec_helper"
 require "tempfile"
 
-RSpec.describe Files::File, :with_test_folder do
-  xdescribe "#read" do
+RSpec.describe Files::File, :with_test_folder, skip: ENV["GITLAB"] do
+  describe "#read" do
     before do
       Files::File.open(test_folder.join("[[strange stuff]]#yes.text").to_s, 'w', options) do |f|
         f.write("contents")
@@ -13,9 +13,19 @@ RSpec.describe Files::File, :with_test_folder do
       file = Files::File.find(test_folder.join("[[strange stuff]]#yes.text").to_s, {}, options)
       expect(file.read).to eq("contents")
     end
+
+    context "stream failure" do
+      let(:expired_download) { "https://s3.amazonaws.com/objects.brickftp.com/metadata/37868/52f55a21-1685-46aa-aaff-99ca8b172c00?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIEWLY3MN4YGZQOWA%2F20210621%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210621T202802Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&response-cache-control=no-cache%2C%20no-store&response-content-disposition=attachment%3B%20filename%3D%22write-as-io.txt%22&response-content-type=text%2Fplain&X-Amz-Signature=83d5b5789cbd2282bfea6e560e4319385135204dc0df3217930f96905c9cb18f" }
+
+      it "waits for io to be ready" do
+        file = Files::File.new
+        allow(file).to receive(:download_uri_with_load).and_return(expired_download)
+        expect { file.read_io }.to raise_error('403 "Forbidden"')
+      end
+    end
   end
 
-  xdescribe "#read_io" do
+  describe "#read_io" do
     before do
       Files::File.open(test_folder.join("read.txt").to_s, 'w', options) do |f|
         f.write("contents")
@@ -28,9 +38,17 @@ RSpec.describe Files::File, :with_test_folder do
       expect(file.read_io.read).to eq("contents")
       expect(file.read_io.size).to eq("contents".length)
     end
+
+    it "works for file with zero bytes" do
+      file = Files::File.open("zero-byte.txt", 'w', options)
+      file.write("")
+      file.close
+      file = Files::File.find("zero-byte.txt", {}, options)
+      expect(file.read_io.read).to eq("")
+    end
   end
 
-  xdescribe "#write" do
+  describe "#write" do
     it "can take string" do
       Files::File.open(test_folder.join("write-as-string.txt").to_s, 'w', options) do |f|
         f.write("I am a string")
@@ -63,6 +81,20 @@ RSpec.describe Files::File, :with_test_folder do
 
       expect(file.read).to eq("I am a string via IO")
       temp_file.close
+    end
+  end
+
+  describe "#download_content" do
+    let(:file) {
+      Files::File.open(test_folder.join("write-as-string.txt").to_s, 'w', options) do |f|
+        f.write("I am a string")
+      end
+    }
+
+    it "can take arbitrary IO" do
+      file.download_content(io = StringIO.new)
+
+      expect(io.tap(&:rewind).read).to eq("I am a string")
     end
   end
 end

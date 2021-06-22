@@ -18,13 +18,18 @@ module Files
     end
 
     def close
+      raise @with_error if @with_error
       super
       read_io.content_length_promise.try_set(nil)
     end
 
+    def set_error(e)
+      read_io.with_error = e
+    end
+
     protected
 
-    attr_accessor :content_length
+    attr_accessor :content_length, :with_error
 
     def content_length_promise
       @content_length_promise ||= Concurrent::Promise.new { content_length }

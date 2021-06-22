@@ -154,7 +154,12 @@ module Files
           http.request request do |response|
             io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
             response.read_body do |chunk|
+              response.error! if response.code.to_i >= 300
+              io.ready! if io.respond_to?(:ready!)
               io << chunk
+            rescue => e
+              io.set_error(e)  if io.respond_to?(:set_error)
+              io.close
             end
           end
         end
