@@ -12,15 +12,30 @@ module Files
       read_io.content_length_promise.wait.value
     end
 
+    def wait!(timeout=nil)
+      read_io.ready_promise.wait(timeout)
+      error!
+      self
+    end
+
     def fulfill_content_length(length)
       read_io.content_length = length
       read_io.content_length_promise.execute
+    end
+
+    def ready!
+      read_io.ready_promise.execute
     end
 
     def close
       raise @with_error if @with_error
       super
       read_io.content_length_promise.try_set(nil)
+      read_io.ready_promise.try_set(true)
+    end
+
+    def error!
+      raise read_io.with_error if read_io.with_error
     end
 
     def set_error(e)
@@ -35,8 +50,16 @@ module Files
       @content_length_promise ||= Concurrent::Promise.new { content_length }
     end
 
+    def ready_promise
+      @ready_promise ||= Concurrent::Promise.new { true }
+    end
+
     def read_io
       @read_io || self
+    end
+
+    def read_io?
+      read_io == self
     end
   end
 end
