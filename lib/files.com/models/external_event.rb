@@ -14,9 +14,17 @@ module Files
       @attributes[:id]
     end
 
+    def id=(value)
+      @attributes[:id] = value
+    end
+
     # string - Type of event being recorded.
     def event_type
       @attributes[:event_type]
+    end
+
+    def event_type=(value)
+      @attributes[:event_type] = value
     end
 
     # string - Status of event.
@@ -24,9 +32,17 @@ module Files
       @attributes[:status]
     end
 
+    def status=(value)
+      @attributes[:status] = value
+    end
+
     # string - Event body
     def body
       @attributes[:body]
+    end
+
+    def body=(value)
+      @attributes[:body] = value
     end
 
     # date-time - External event create date/time
@@ -37,6 +53,19 @@ module Files
     # string - Link to log file.
     def body_url
       @attributes[:body_url]
+    end
+
+    def body_url=(value)
+      @attributes[:body_url] = value
+    end
+
+    def save
+      if @attributes[:id]
+        raise NotImplementedError.new("The ExternalEvent object doesn't support updates.")
+      else
+        new_obj = ExternalEvent.create(@attributes, @options)
+        @attributes = new_obj.attributes
+      end
     end
 
     # Parameters:
@@ -83,6 +112,19 @@ module Files
 
     def self.get(id, params = {}, options = {})
       find(id, params, options)
+    end
+
+    # Parameters:
+    #   status (required) - string - Status of event.
+    #   body (required) - string - Event body
+    def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: status must be an String") if params.dig(:status) and !params.dig(:status).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if params.dig(:body) and !params.dig(:body).is_a?(String)
+      raise MissingParameterError.new("Parameter missing: status") unless params.dig(:status)
+      raise MissingParameterError.new("Parameter missing: body") unless params.dig(:body)
+
+      response, options = Api.send_request("/external_events", :post, params, options)
+      ExternalEvent.new(response.data, options)
     end
   end
 end

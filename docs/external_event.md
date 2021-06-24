@@ -55,3 +55,20 @@ Files::ExternalEvent.find(id)
 ### Parameters
 
 * `id` (int64): Required - External Event ID.
+
+
+---
+
+## Create External Event
+
+```
+Files::ExternalEvent.create(
+  status: "status", 
+  body: "body"
+)
+```
+
+### Parameters
+
+* `status` (string): Required - Status of event.
+* `body` (string): Required - Event body
