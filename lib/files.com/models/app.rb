@@ -19,6 +19,11 @@ module Files
       @attributes[:extended_description]
     end
 
+    # string - Short description of the App
+    def short_description
+      @attributes[:short_description]
+    end
+
     # string - Collection of named links to documentation
     def documentation_links
       @attributes[:documentation_links]
