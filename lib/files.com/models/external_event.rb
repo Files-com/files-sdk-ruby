@@ -59,6 +59,51 @@ module Files
       @attributes[:body_url] = value
     end
 
+    # int64 - Folder Behavior ID
+    def folder_behavior_id
+      @attributes[:folder_behavior_id]
+    end
+
+    def folder_behavior_id=(value)
+      @attributes[:folder_behavior_id] = value
+    end
+
+    # int64 - For sync events, the number of files handled successfully.
+    def successful_files
+      @attributes[:successful_files]
+    end
+
+    def successful_files=(value)
+      @attributes[:successful_files] = value
+    end
+
+    # int64 - For sync events, the number of files that encountered errors.
+    def errored_files
+      @attributes[:errored_files]
+    end
+
+    def errored_files=(value)
+      @attributes[:errored_files] = value
+    end
+
+    # int64 - For sync events, the total number of bytes synced.
+    def bytes_synced
+      @attributes[:bytes_synced]
+    end
+
+    def bytes_synced=(value)
+      @attributes[:bytes_synced] = value
+    end
+
+    # string - Associated Remote Server type, if any
+    def remote_server_type
+      @attributes[:remote_server_type]
+    end
+
+    def remote_server_type=(value)
+      @attributes[:remote_server_type] = value
+    end
+
     def save
       if @attributes[:id]
         raise NotImplementedError.new("The ExternalEvent object doesn't support updates.")
@@ -71,13 +116,13 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  Send a cursor value to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor-Next header.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `remote_server_type`, `event_type`, `created_at` or `status`.
-    #   filter - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type` or `status`.
-    #   filter_gt - object - If set, return records where the specifiied field is greater than the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type` or `status`.
-    #   filter_gteq - object - If set, return records where the specifiied field is greater than or equal to the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type` or `status`.
-    #   filter_like - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type` or `status`.
-    #   filter_lt - object - If set, return records where the specifiied field is less than the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type` or `status`.
-    #   filter_lteq - object - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type` or `status`.
+    #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `remote_server_type`, `event_type`, `created_at`, `status`, `site_id` or `folder_behavior_id`.
+    #   filter - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type`, `status` or `folder_behavior_id`.
+    #   filter_gt - object - If set, return records where the specifiied field is greater than the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type`, `status` or `folder_behavior_id`.
+    #   filter_gteq - object - If set, return records where the specifiied field is greater than or equal to the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type`, `status` or `folder_behavior_id`.
+    #   filter_like - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type`, `status` or `folder_behavior_id`.
+    #   filter_lt - object - If set, return records where the specifiied field is less than the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type`, `status` or `folder_behavior_id`.
+    #   filter_lteq - object - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type`, `status` or `folder_behavior_id`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
