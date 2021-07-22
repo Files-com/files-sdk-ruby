@@ -18,7 +18,7 @@ module Files
       @attributes[:path] = value
     end
 
-    # int64 - Lock timeout
+    # int64 - Lock timeout in seconds
     def timeout
       @attributes[:timeout]
     end
@@ -27,7 +27,7 @@ module Files
       @attributes[:timeout] = value
     end
 
-    # string - Lock depth (0 or infinity)
+    # string - DEPRECATED: Lock depth
     def depth
       @attributes[:depth]
     end
@@ -36,7 +36,16 @@ module Files
       @attributes[:depth] = value
     end
 
-    # string - Owner of lock.  This can be any arbitrary string.
+    # boolean - Does lock apply to subfolders?
+    def recursive
+      @attributes[:recursive]
+    end
+
+    def recursive=(value)
+      @attributes[:recursive] = value
+    end
+
+    # string - Owner of the lock.  This can be any arbitrary string.
     def owner
       @attributes[:owner]
     end
@@ -45,13 +54,22 @@ module Files
       @attributes[:owner] = value
     end
 
-    # string - Lock scope(shared or exclusive)
+    # string - DEPRECATED: Lock scope
     def scope
       @attributes[:scope]
     end
 
     def scope=(value)
       @attributes[:scope] = value
+    end
+
+    # boolean - Is lock exclusive?
+    def exclusive
+      @attributes[:exclusive]
+    end
+
+    def exclusive=(value)
+      @attributes[:exclusive] = value
     end
 
     # string - Lock token.  Use to release lock.
@@ -63,13 +81,22 @@ module Files
       @attributes[:token] = value
     end
 
-    # string - Lock type
+    # string - DEPRECATED: Lock type
     def type
       @attributes[:type]
     end
 
     def type=(value)
       @attributes[:type] = value
+    end
+
+    # boolean - Can lock be modified by users other than its creator?
+    def allow_access_by_any_user
+      @attributes[:allow_access_by_any_user]
+    end
+
+    def allow_access_by_any_user=(value)
+      @attributes[:allow_access_by_any_user] = value
     end
 
     # int64 - Lock creator user ID
@@ -133,11 +160,15 @@ module Files
 
     # Parameters:
     #   path (required) - string - Path
+    #   allow_access_by_any_user - boolean - Allow lock to be updated by any user?
+    #   exclusive - boolean - Is lock exclusive?
+    #   recursive - string - Does lock apply to subfolders?
     #   timeout - int64 - Lock timeout length
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recursive must be an String") if params.dig(:recursive) and !params.dig(:recursive).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params.dig(:timeout) and !params.dig(:timeout).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
