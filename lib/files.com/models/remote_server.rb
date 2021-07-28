@@ -297,6 +297,15 @@ module Files
       @attributes[:s3_compatible_endpoint] = value
     end
 
+    # boolean - `true` if remote server only accepts connections from dedicated IPs
+    def enable_dedicated_ips
+      @attributes[:enable_dedicated_ips]
+    end
+
+    def enable_dedicated_ips=(value)
+      @attributes[:enable_dedicated_ips] = value
+    end
+
     # string - AWS Access Key.
     def aws_access_key
       @attributes[:aws_access_key]
@@ -472,6 +481,7 @@ module Files
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_region - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
+    #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   s3_compatible_access_key - string - S3-compatible access key
     #   s3_compatible_secret_key - string - S3-compatible secret key
     def update(params = {})
@@ -619,6 +629,7 @@ module Files
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_region - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
+    #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   s3_compatible_access_key - string - S3-compatible access key
     #   s3_compatible_secret_key - string - S3-compatible secret key
     def self.create(params = {}, options = {})
@@ -707,6 +718,7 @@ module Files
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_region - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
+    #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   s3_compatible_access_key - string - S3-compatible access key
     #   s3_compatible_secret_key - string - S3-compatible secret key
     def self.update(id, params = {}, options = {})
