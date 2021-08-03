@@ -99,6 +99,15 @@ module Files
       @attributes[:body] = value
     end
 
+    # string - raw body text
+    def raw_body
+      @attributes[:raw_body]
+    end
+
+    def raw_body=(value)
+      @attributes[:raw_body] = value
+    end
+
     # string - action for test body
     def action
       @attributes[:action]
@@ -123,6 +132,7 @@ module Files
     #   encoding - string - HTTP encoding method.  Can be JSON, XML, or RAW (form data).
     #   headers - object - Additional request headers.
     #   body - object - Additional body parameters.
+    #   raw_body - string - raw body text
     #   action - string - action for test body
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: url must be an String") if params.dig(:url) and !params.dig(:url).is_a?(String)
@@ -130,6 +140,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: encoding must be an String") if params.dig(:encoding) and !params.dig(:encoding).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if params.dig(:headers) and !params.dig(:headers).is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: body must be an Hash") if params.dig(:body) and !params.dig(:body).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: raw_body must be an String") if params.dig(:raw_body) and !params.dig(:raw_body).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
       raise MissingParameterError.new("Parameter missing: url") unless params.dig(:url)
 

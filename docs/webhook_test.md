@@ -22,6 +22,7 @@
 * `encoding` (string): HTTP encoding method.  Can be JSON, XML, or RAW (form data).
 * `headers` (object): Additional request headers.
 * `body` (object): Additional body parameters.
+* `raw_body` (string): raw body text
 * `action` (string): action for test body
 
 
@@ -36,6 +37,7 @@ Files::WebhookTest.create(
   encoding: "RAW", 
   headers: "x-test-header => testvalue", 
   body: "test-param => testvalue", 
+  raw_body: "test body", 
   action: "test"
 )
 ```
@@ -47,4 +49,5 @@ Files::WebhookTest.create(
 * `encoding` (string): HTTP encoding method.  Can be JSON, XML, or RAW (form data).
 * `headers` (object): Additional request headers.
 * `body` (object): Additional body parameters.
+* `raw_body` (string): raw body text
 * `action` (string): action for test body
