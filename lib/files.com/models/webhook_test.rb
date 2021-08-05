@@ -108,6 +108,24 @@ module Files
       @attributes[:raw_body] = value
     end
 
+    # boolean - Send the file data as the request body?
+    def file_as_body
+      @attributes[:file_as_body]
+    end
+
+    def file_as_body=(value)
+      @attributes[:file_as_body] = value
+    end
+
+    # string - Send the file data as a named parameter in the request POST body
+    def file_form_field
+      @attributes[:file_form_field]
+    end
+
+    def file_form_field=(value)
+      @attributes[:file_form_field] = value
+    end
+
     # string - action for test body
     def action
       @attributes[:action]
@@ -133,6 +151,8 @@ module Files
     #   headers - object - Additional request headers.
     #   body - object - Additional body parameters.
     #   raw_body - string - raw body text
+    #   file_as_body - boolean - Send the file data as the request body?
+    #   file_form_field - string - Send the file data as a named parameter in the request POST body
     #   action - string - action for test body
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: url must be an String") if params.dig(:url) and !params.dig(:url).is_a?(String)
@@ -141,6 +161,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if params.dig(:headers) and !params.dig(:headers).is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: body must be an Hash") if params.dig(:body) and !params.dig(:body).is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: raw_body must be an String") if params.dig(:raw_body) and !params.dig(:raw_body).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_form_field must be an String") if params.dig(:file_form_field) and !params.dig(:file_form_field).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
       raise MissingParameterError.new("Parameter missing: url") unless params.dig(:url)
 
