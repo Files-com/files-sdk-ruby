@@ -110,6 +110,7 @@ module Files
   class ApiKeyIsDisabledError < NotAuthorizedError; end
   class ApiKeyIsPathRestrictedError < NotAuthorizedError; end
   class ApiKeyOnlyForDesktopAppError < NotAuthorizedError; end
+  class ApiKeyOnlyForMobileAppError < NotAuthorizedError; end
   class ApiKeyOnlyForOfficeIntegrationError < NotAuthorizedError; end
   class BillingPermissionRequiredError < NotAuthorizedError; end
   class BundleMaximumUsesReachedError < NotAuthorizedError; end

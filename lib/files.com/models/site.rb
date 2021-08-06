@@ -144,6 +144,21 @@ module Files
       @attributes[:desktop_app_session_lifetime]
     end
 
+    # boolean - Is the mobile app enabled?
+    def mobile_app
+      @attributes[:mobile_app]
+    end
+
+    # boolean - Is mobile app session IP pinning enabled?
+    def mobile_app_session_ip_pinning
+      @attributes[:mobile_app_session_ip_pinning]
+    end
+
+    # int64 - Mobile app session lifetime (in hours)
+    def mobile_app_session_lifetime
+      @attributes[:mobile_app_session_lifetime]
+    end
+
     # string - Comma seperated list of disallowed Country codes
     def disallowed_countries
       @attributes[:disallowed_countries]
@@ -619,6 +634,9 @@ module Files
     #   desktop_app - boolean - Is the desktop app enabled?
     #   desktop_app_session_ip_pinning - boolean - Is desktop app session IP pinning enabled?
     #   desktop_app_session_lifetime - int64 - Desktop app session lifetime (in hours)
+    #   mobile_app - boolean - Is the mobile app enabled?
+    #   mobile_app_session_ip_pinning - boolean - Is mobile app session IP pinning enabled?
+    #   mobile_app_session_lifetime - int64 - Mobile app session lifetime (in hours)
     #   folder_permissions_groups_only - boolean - If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
     #   welcome_screen - string - Does the welcome screen appear?
     #   office_integration_available - boolean - Allow users to use Office for the web?
@@ -718,6 +736,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params.dig(:language) and !params.dig(:language).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: default_time_zone must be an String") if params.dig(:default_time_zone) and !params.dig(:default_time_zone).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: desktop_app_session_lifetime must be an Integer") if params.dig(:desktop_app_session_lifetime) and !params.dig(:desktop_app_session_lifetime).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: mobile_app_session_lifetime must be an Integer") if params.dig(:mobile_app_session_lifetime) and !params.dig(:mobile_app_session_lifetime).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: welcome_screen must be an String") if params.dig(:welcome_screen) and !params.dig(:welcome_screen).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: session_expiry must be an Float") if params.dig(:session_expiry) and !params.dig(:session_expiry).is_a?(Float)
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params.dig(:user_lockout_tries) and !params.dig(:user_lockout_tries).is_a?(Integer)
