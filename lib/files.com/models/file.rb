@@ -70,6 +70,10 @@ module Files
       new(name).each(*args, &block)
     end
 
+    def self.from_path(path)
+      File.metadata(path)
+    end
+
     def self.get(path, params = {}, options = {})
       find(path, params, options)
     end
