@@ -150,6 +150,85 @@ Files::File.delete(path,
 
 ---
 
+## Return metadata for file/folder
+
+```
+Files::File.metadata(path, 
+  with_previews: true, 
+  with_priority_color: true
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `preview_size` (string): Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
+* `with_previews` (boolean): Include file preview information?
+* `with_priority_color` (boolean): Include file priority color information?
+
+
+---
+
+## Copy file/folder
+
+```
+Files::File.copy(path, 
+  destination: "destination", 
+  structure: true
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `destination` (string): Required - Copy destination path.
+* `structure` (boolean): Copy structure only?
+
+
+---
+
+## Move file/folder
+
+```
+Files::File.move(path, 
+  destination: "destination"
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `destination` (string): Required - Move destination path.
+
+
+---
+
+## Begin file upload
+
+```
+Files::File.begin_upload(path, 
+  mkdir_parents: true, 
+  part: 1, 
+  parts: 1, 
+  ref: "upload-1", 
+  restart: 1, 
+  with_rename: true
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `mkdir_parents` (boolean): Create parent directories if they do not exist?
+* `part` (int64): Part if uploading a part.
+* `parts` (int64): How many parts to fetch?
+* `ref` (string): 
+* `restart` (int64): File byte offset to restart from.
+* `with_rename` (boolean): Allow file rename instead of overwrite?
+
+
+---
+
 ## Download file
 
 ```
@@ -206,3 +285,90 @@ file.delete(
 
 * `path` (string): Required - Path to operate on.
 * `recursive` (boolean): If true, will recursively delete folers.  Otherwise, will error on non-empty folders.
+
+
+---
+
+## Return metadata for file/folder
+
+```
+file = Files::File.list_for(path).first
+
+file.metadata(
+  with_previews: true,
+  with_priority_color: true
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `preview_size` (string): Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
+* `with_previews` (boolean): Include file preview information?
+* `with_priority_color` (boolean): Include file priority color information?
+
+
+---
+
+## Copy file/folder
+
+```
+file = Files::File.list_for(path).first
+
+file.copy(
+  destination: "destination",
+  structure: true
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `destination` (string): Required - Copy destination path.
+* `structure` (boolean): Copy structure only?
+
+
+---
+
+## Move file/folder
+
+```
+file = Files::File.list_for(path).first
+
+file.move(
+  destination: "destination"
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `destination` (string): Required - Move destination path.
+
+
+---
+
+## Begin file upload
+
+```
+file = Files::File.list_for(path).first
+
+file.begin_upload(
+  mkdir_parents: true,
+  part: 1,
+  parts: 1,
+  ref: "upload-1",
+  restart: 1,
+  with_rename: true
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `mkdir_parents` (boolean): Create parent directories if they do not exist?
+* `part` (int64): Part if uploading a part.
+* `parts` (int64): How many parts to fetch?
+* `ref` (string): 
+* `restart` (int64): File byte offset to restart from.
+* `with_rename` (boolean): Allow file rename instead of overwrite?

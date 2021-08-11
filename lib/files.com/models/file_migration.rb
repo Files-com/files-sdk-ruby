@@ -49,6 +49,11 @@ module Files
       @attributes[:status]
     end
 
+    # string - Link to download the log file for this migration.
+    def log_url
+      @attributes[:log_url]
+    end
+
     # Parameters:
     #   id (required) - int64 - File Migration ID.
     def self.find(id, params = {}, options = {})
