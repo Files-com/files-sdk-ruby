@@ -29,6 +29,11 @@ module Files
       @attributes[:email]
     end
 
+    # string - Registrant IP Address
+    def ip
+      @attributes[:ip]
+    end
+
     # string - InboxRegistration cookie code, if there is an associated InboxRegistration
     def inbox_code
       @attributes[:inbox_code]
