@@ -45,15 +45,6 @@ module Files
       @attributes[:interval] = value
     end
 
-    # string - If trigger is `daily`, date this automation will next run.
-    def next_process_on
-      @attributes[:next_process_on]
-    end
-
-    def next_process_on=(value)
-      @attributes[:next_process_on] = value
-    end
-
     # object - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run.
     def schedule
       @attributes[:schedule]
