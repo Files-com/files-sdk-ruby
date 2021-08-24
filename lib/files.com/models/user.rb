@@ -482,6 +482,15 @@ module Files
       @attributes[:group_id] = value
     end
 
+    # string - Pre-calculated hash of the user's password.
+    def imported_password_hash
+      @attributes[:imported_password_hash]
+    end
+
+    def imported_password_hash=(value)
+      @attributes[:imported_password_hash] = value
+    end
+
     # string - User password.
     def password
       @attributes[:password]
@@ -551,6 +560,7 @@ module Files
     #   grant_permission - string - Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
     #   group_id - int64 - Group ID to associate this user with.
     #   group_ids - string - A list of group ids to associate this user with.  Comma delimited.
+    #   imported_password_hash - string - Pre-calculated hash of the user's password.
     #   password - string - User password.
     #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
     #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
@@ -597,6 +607,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: grant_permission must be an String") if params.dig(:grant_permission) and !params.dig(:grant_permission).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params.dig(:imported_password_hash) and !params.dig(:imported_password_hash).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params.dig(:password_confirmation) and !params.dig(:password_confirmation).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
@@ -709,6 +720,7 @@ module Files
     #   grant_permission - string - Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
     #   group_id - int64 - Group ID to associate this user with.
     #   group_ids - string - A list of group ids to associate this user with.  Comma delimited.
+    #   imported_password_hash - string - Pre-calculated hash of the user's password.
     #   password - string - User password.
     #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
     #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
@@ -751,6 +763,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: grant_permission must be an String") if params.dig(:grant_permission) and !params.dig(:grant_permission).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params.dig(:imported_password_hash) and !params.dig(:imported_password_hash).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params.dig(:password_confirmation) and !params.dig(:password_confirmation).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
@@ -816,6 +829,7 @@ module Files
     #   grant_permission - string - Permission to grant on the user root.  Can be blank or `full`, `read`, `write`, `list`, or `history`.
     #   group_id - int64 - Group ID to associate this user with.
     #   group_ids - string - A list of group ids to associate this user with.  Comma delimited.
+    #   imported_password_hash - string - Pre-calculated hash of the user's password.
     #   password - string - User password.
     #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
     #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
@@ -861,6 +875,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: grant_permission must be an String") if params.dig(:grant_permission) and !params.dig(:grant_permission).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params.dig(:imported_password_hash) and !params.dig(:imported_password_hash).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params.dig(:password_confirmation) and !params.dig(:password_confirmation).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
