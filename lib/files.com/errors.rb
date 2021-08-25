@@ -119,6 +119,7 @@ module Files
   class ContactAdminForPasswordChangeHelpError < NotAuthorizedError; end
   class FolderAdminOrBillingPermissionRequiredError < NotAuthorizedError; end
   class FolderAdminPermissionRequiredError < NotAuthorizedError; end
+  class FullPermissionRequiredError < NotAuthorizedError; end
   class HistoryPermissionRequiredError < NotAuthorizedError; end
   class InsufficientPermissionForParamsError < NotAuthorizedError; end
   class MustAuthenticateWithApiKeyError < NotAuthorizedError; end
@@ -134,6 +135,7 @@ module Files
   class ReauthenticationNeededActionError < NotAuthorizedError; end
   class SelfManagedRequiredError < NotAuthorizedError; end
   class SiteAdminRequiredError < NotAuthorizedError; end
+  class SiteFilesAreImmutableError < NotAuthorizedError; end
   class TwoFactorAuthenticationRequiredError < NotAuthorizedError; end
   class UserIdWithoutSiteAdminError < NotAuthorizedError; end
   class WritePermissionRequiredError < NotAuthorizedError; end
