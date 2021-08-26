@@ -45,6 +45,15 @@ module Files
       @attributes[:interval] = value
     end
 
+    # string - Name for this automation.
+    def name
+      @attributes[:name]
+    end
+
+    def name=(value)
+      @attributes[:name] = value
+    end
+
     # object - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run.
     def schedule
       @attributes[:schedule]
@@ -88,6 +97,15 @@ module Files
 
     def destination_replace_to=(value)
       @attributes[:destination_replace_to] = value
+    end
+
+    # string - Description for the this Automation.
+    def description
+      @attributes[:description]
+    end
+
+    def description=(value)
+      @attributes[:description] = value
     end
 
     # string - Path on which this Automation runs.  Supports globs. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
@@ -183,6 +201,8 @@ module Files
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   schedule - object - Custom schedule for running this automation.
+    #   description - string - Description for the this Automation.
+    #   name - string - Name for this automation.
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   trigger_action_path - string - If trigger is `action`, this is the path to watch for the specified trigger actions.
@@ -202,6 +222,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params.dig(:user_ids) and !params.dig(:user_ids).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: trigger_action_path must be an String") if params.dig(:trigger_action_path) and !params.dig(:trigger_action_path).is_a?(String)
@@ -294,6 +316,8 @@ module Files
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   schedule - object - Custom schedule for running this automation.
+    #   description - string - Description for the this Automation.
+    #   name - string - Name for this automation.
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   trigger_action_path - string - If trigger is `action`, this is the path to watch for the specified trigger actions.
@@ -310,6 +334,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params.dig(:user_ids) and !params.dig(:user_ids).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule must be an Hash") if params.dig(:schedule) and !params.dig(:schedule).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: trigger_action_path must be an String") if params.dig(:trigger_action_path) and !params.dig(:trigger_action_path).is_a?(String)
@@ -332,6 +358,8 @@ module Files
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   schedule - object - Custom schedule for running this automation.
+    #   description - string - Description for the this Automation.
+    #   name - string - Name for this automation.
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   trigger_action_path - string - If trigger is `action`, this is the path to watch for the specified trigger actions.
@@ -351,6 +379,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params.dig(:user_ids) and !params.dig(:user_ids).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule must be an Hash") if params.dig(:schedule) and !params.dig(:schedule).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: trigger_action_path must be an String") if params.dig(:trigger_action_path) and !params.dig(:trigger_action_path).is_a?(String)

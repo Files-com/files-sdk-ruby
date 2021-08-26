@@ -45,6 +45,24 @@ module Files
       @attributes[:behavior] = value
     end
 
+    # string - Name for this behavior.
+    def name
+      @attributes[:name]
+    end
+
+    def name=(value)
+      @attributes[:name] = value
+    end
+
+    # string - Description for this behavior.
+    def description
+      @attributes[:description]
+    end
+
+    def description=(value)
+      @attributes[:description] = value
+    end
+
     # object - Settings for this behavior.  See the section above for an example value to provide here.  Formatting is different for each Behavior type.  May be sent as nested JSON or a single JSON-encoded string.  If using XML encoding for the API call, this data must be sent as a JSON-encoded string.
     def value
       @attributes[:value]
@@ -66,6 +84,8 @@ module Files
     # Parameters:
     #   value - string - The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    #   name - string - Name for this behavior.
+    #   description - string - Description for this behavior.
     #   behavior - string - Behavior type.
     #   path - string - Folder behaviors path.
     def update(params = {})
@@ -74,6 +94,8 @@ module Files
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: value must be an String") if params.dig(:value) and !params.dig(:value).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
@@ -190,10 +212,14 @@ module Files
     # Parameters:
     #   value - string - The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    #   name - string - Name for this behavior.
+    #   description - string - Description for this behavior.
     #   path (required) - string - Folder behaviors path.
     #   behavior (required) - string - Behavior type.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: value must be an String") if params.dig(:value) and !params.dig(:value).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
@@ -226,6 +252,8 @@ module Files
     # Parameters:
     #   value - string - The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    #   name - string - Name for this behavior.
+    #   description - string - Description for this behavior.
     #   behavior - string - Behavior type.
     #   path - string - Folder behaviors path.
     def self.update(id, params = {}, options = {})
@@ -233,6 +261,8 @@ module Files
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be one of String, Integer, Hash") if params.dig(:id) and [ String, Integer, Hash ].none? { |klass| params.dig(:id).is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: value must be an String") if params.dig(:value) and !params.dig(:value).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path must be one of String, Integer, Hash") if params.dig(:path) and [ String, Integer, Hash ].none? { |klass| params.dig(:path).is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
