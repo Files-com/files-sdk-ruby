@@ -54,6 +54,16 @@ module Files
       @attributes[:form_field_data]
     end
 
+    # int64 - Id of associated bundle
+    def bundle_id
+      @attributes[:bundle_id]
+    end
+
+    # int64 - Id of associated bundle recipient
+    def bundle_recipient_id
+      @attributes[:bundle_recipient_id]
+    end
+
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   cursor - string - Used for pagination.  Send a cursor value to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor-Next header.
