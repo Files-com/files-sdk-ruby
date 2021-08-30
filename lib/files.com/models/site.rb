@@ -184,6 +184,11 @@ module Files
       @attributes[:email]
     end
 
+    # boolean - Is FTP enabled?
+    def ftp_enabled
+      @attributes[:ftp_enabled]
+    end
+
     # email - Reply-to email for this site
     def reply_to_email
       @attributes[:reply_to_email]
@@ -449,6 +454,11 @@ module Files
       @attributes[:session_pinned_by_ip]
     end
 
+    # boolean - Is SFTP enabled?
+    def sftp_enabled
+      @attributes[:sftp_enabled]
+    end
+
     # boolean - Use user FTP roots also for SFTP?
     def sftp_user_root_enabled
       @attributes[:sftp_user_root_enabled]
@@ -675,6 +685,8 @@ module Files
     #   non_sso_users_allowed - boolean - If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
     #   sharing_enabled - boolean - Allow bundle creation
     #   user_requests_enabled - boolean - Enable User Requests feature
+    #   ftp_enabled - boolean - Is FTP enabled?
+    #   sftp_enabled - boolean - Is SFTP enabled?
     #   allowed_2fa_method_sms - boolean - Is SMS two factor authentication allowed?
     #   allowed_2fa_method_u2f - boolean - Is U2F two factor authentication allowed?
     #   allowed_2fa_method_totp - boolean - Is TOTP two factor authentication allowed?
