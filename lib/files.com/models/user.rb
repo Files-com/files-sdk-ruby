@@ -320,6 +320,15 @@ module Files
       @attributes[:require_password_change] = value
     end
 
+    # boolean - Is user's password expired?
+    def password_expired
+      @attributes[:password_expired]
+    end
+
+    def password_expired=(value)
+      @attributes[:password_expired] = value
+    end
+
     # boolean - Can this user access the REST API?
     def restapi_permission
       @attributes[:restapi_permission]
