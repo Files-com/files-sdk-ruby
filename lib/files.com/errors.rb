@@ -191,6 +191,9 @@ module Files
   class TooManyLoginAttemptsError < RateLimitedError; end
   class TooManyRequestsError < RateLimitedError; end
 
+  class ServiceUnavailableError < APIError; end
+  class UploadsUnavailableError < ServiceUnavailableError; end
+
   class SiteConfigurationError < APIError; end
   class AccountAlreadyExistsError < SiteConfigurationError; end
   class AccountOverdueError < SiteConfigurationError; end
