@@ -867,23 +867,6 @@ module Files
       delete(params)
     end
 
-    # Return metadata for file/folder
-    #
-    # Parameters:
-    #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
-    #   with_previews - boolean - Include file preview information?
-    #   with_priority_color - boolean - Include file priority color information?
-    def metadata(params = {})
-      params ||= {}
-      params[:path] = @attributes[:path]
-      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params.dig(:preview_size) and !params.dig(:preview_size).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-
-      Api.send_request("/file_actions/metadata/#{@attributes[:path]}", :get, params, @options)
-    end
-
     # Copy file/folder
     #
     # Parameters:
@@ -1029,13 +1012,12 @@ module Files
       delete(path, params, options)
     end
 
-    # Return metadata for file/folder
-    #
     # Parameters:
+    #   path (required) - string - Path to operate on.
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
-    def self.metadata(path, params = {}, options = {})
+    def self.find_by(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)

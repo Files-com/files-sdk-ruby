@@ -153,7 +153,7 @@ Files::File.delete(path,
 ## Return metadata for file/folder
 
 ```
-Files::File.metadata(path, 
+Files::File.find_by(path, 
   with_previews: true, 
   with_priority_color: true
 )
@@ -285,27 +285,6 @@ file.delete(
 
 * `path` (string): Required - Path to operate on.
 * `recursive` (boolean): If true, will recursively delete folers.  Otherwise, will error on non-empty folders.
-
-
----
-
-## Return metadata for file/folder
-
-```
-file = Files::File.list_for(path).first
-
-file.metadata(
-  with_previews: true,
-  with_priority_color: true
-)
-```
-
-### Parameters
-
-* `path` (string): Required - Path to operate on.
-* `preview_size` (string): Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
-* `with_previews` (boolean): Include file preview information?
-* `with_priority_color` (boolean): Include file priority color information?
 
 
 ---
