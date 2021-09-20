@@ -1017,7 +1017,7 @@ module Files
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
-    def self.find_by(path, params = {}, options = {})
+    def self.find(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
@@ -1026,6 +1026,10 @@ module Files
 
       response, options = Api.send_request("/file_actions/metadata/#{params[:path]}", :get, params, options)
       File.new(response.data, options)
+    end
+
+    def self.get(path, params = {}, options = {})
+      find(path, params, options)
     end
 
     # Copy file/folder

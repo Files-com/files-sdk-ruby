@@ -150,10 +150,10 @@ Files::File.delete(path,
 
 ---
 
-## Return metadata for file/folder
+## Find file/folder by path
 
 ```
-Files::File.find_by(path, 
+Files::File.find(path, 
   with_previews: true, 
   with_priority_color: true
 )

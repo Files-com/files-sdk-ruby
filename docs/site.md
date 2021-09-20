@@ -115,6 +115,7 @@
     "multiple_regions": true,
     "read_only": true,
     "root_path": "",
+    "sftp_insecure_ciphers": false,
     "site_id": 1,
     "ssl_required": true,
     "tls_disabled": false,
@@ -128,6 +129,7 @@
   },
   "session_pinned_by_ip": true,
   "sftp_enabled": true,
+  "sftp_insecure_ciphers": true,
   "sftp_user_root_enabled": true,
   "sharing_enabled": true,
   "show_request_access_link": true,
@@ -303,6 +305,7 @@
 * `session`: Current session
 * `session_pinned_by_ip` (boolean): Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
 * `sftp_enabled` (boolean): Is SFTP enabled?
+* `sftp_insecure_ciphers` (boolean): Are Insecure Ciphers allowed for SFTP?  Note:  Settting TLS Disabled -> True will always allow insecure ciphers for SFTP as well.  Enabling this is insecure.
 * `sftp_user_root_enabled` (boolean): Use user FTP roots also for SFTP?
 * `sharing_enabled` (boolean): Allow bundle creation
 * `show_request_access_link` (boolean): Show request access link for users without access?  Currently unused.
@@ -317,7 +320,7 @@
 * `ssl_required` (boolean): Is SSL required?  Disabling this is insecure.
 * `subdomain` (string): Site subdomain
 * `switch_to_plan_date` (date-time): If switching plans, when does the new plan take effect?
-* `tls_disabled` (boolean): Is TLS disabled(site setting)?
+* `tls_disabled` (boolean): Are Insecure TLS and SFTP Ciphers allowed?  Enabling this is insecure.
 * `trial_days_left` (int64): Number of days left in trial
 * `trial_until` (date-time): When does this Site trial expire?
 * `updated_at` (date-time): Last time this Site was updated
@@ -387,6 +390,7 @@ Files::Site.update(
   session_expiry: 1.0, 
   ssl_required: true, 
   tls_disabled: true, 
+  sftp_insecure_ciphers: true, 
   user_lockout: true, 
   user_lockout_tries: 1, 
   user_lockout_within: 1, 
@@ -487,7 +491,8 @@ Files::Site.update(
 * `office_integration_available` (boolean): Allow users to use Office for the web?
 * `session_expiry` (double): Session expiry in hours
 * `ssl_required` (boolean): Is SSL required?  Disabling this is insecure.
-* `tls_disabled` (boolean): Is TLS disabled(site setting)?
+* `tls_disabled` (boolean): Are Insecure TLS and SFTP Ciphers allowed?  Enabling this is insecure.
+* `sftp_insecure_ciphers` (boolean): Are Insecure Ciphers allowed for SFTP?  Note:  Settting TLS Disabled -> True will always allow insecure ciphers for SFTP as well.  Enabling this is insecure.
 * `user_lockout` (boolean): Will users be locked out after incorrect login attempts?
 * `user_lockout_tries` (int64): Number of login tries within `user_lockout_within` hours before users are locked out
 * `user_lockout_within` (int64): Number of hours for user lockout window

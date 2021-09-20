@@ -85,6 +85,15 @@ module Files
       @attributes[:root_path] = value
     end
 
+    # boolean - Are insecure SFTP ciphers allowed for this user? (If this is set to true, the site administrator has signaled that it is ok to use less secure SSH ciphers for this user.)
+    def sftp_insecure_ciphers
+      @attributes[:sftp_insecure_ciphers]
+    end
+
+    def sftp_insecure_ciphers=(value)
+      @attributes[:sftp_insecure_ciphers] = value
+    end
+
     # int64 - Site ID
     def site_id
       @attributes[:site_id]
@@ -103,7 +112,7 @@ module Files
       @attributes[:ssl_required] = value
     end
 
-    # boolean - Is strong TLS disabled for this user? (If this is set to true, the site administrator has signaled that it is ok to use less secure TLS versions for this user.)
+    # boolean - Aee insecure TLS versions allowed for this user? (If this is set to true, the site administrator has signaled that it is ok to use less secure TLS versions for this user.)
     def tls_disabled
       @attributes[:tls_disabled]
     end
