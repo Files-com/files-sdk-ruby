@@ -18,7 +18,7 @@ Files::ActionWebhookFailure.retry(id)
 ## retry Action Webhook Failure
 
 ```
-action_webhook_failure = Files::ActionWebhookFailure.list_for(path).first
+action_webhook_failure = Files::ActionWebhookFailure.new
 
 action_webhook_failure.retry
 ```

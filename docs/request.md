@@ -100,7 +100,7 @@ Files::Request.delete(id)
 ## Delete Request
 
 ```
-request = Files::Request.list_for(path).first
+request = Files::Request.list.first
 
 request.delete
 ```

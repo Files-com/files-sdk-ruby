@@ -103,7 +103,7 @@ Files::As2Key.delete(id)
 ## Update As2 Key
 
 ```
-as2_key = Files::As2Key.list_for(path).first
+as2_key = Files::As2Key.list.first
 
 as2_key.update(
   as2_partnership_name: "Test"
@@ -121,7 +121,7 @@ as2_key.update(
 ## Delete As2 Key
 
 ```
-as2_key = Files::As2Key.list_for(path).first
+as2_key = Files::As2Key.list.first
 
 as2_key.delete
 ```

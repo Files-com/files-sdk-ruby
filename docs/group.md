@@ -123,7 +123,7 @@ Files::Group.delete(id)
 ## Update Group
 
 ```
-group = Files::Group.list_for(path).first
+group = Files::Group.list.first
 
 group.update(
   name: "owners",
@@ -146,7 +146,7 @@ group.update(
 ## Delete Group
 
 ```
-group = Files::Group.list_for(path).first
+group = Files::Group.list.first
 
 group.delete
 ```

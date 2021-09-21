@@ -109,7 +109,7 @@ Files::Clickwrap.delete(id)
 ## Update Clickwrap
 
 ```
-clickwrap = Files::Clickwrap.list_for(path).first
+clickwrap = Files::Clickwrap.list.first
 
 clickwrap.update(
   name: "Example Site NDA for Files.com Use",
@@ -132,7 +132,7 @@ clickwrap.update(
 ## Delete Clickwrap
 
 ```
-clickwrap = Files::Clickwrap.list_for(path).first
+clickwrap = Files::Clickwrap.list.first
 
 clickwrap.delete
 ```

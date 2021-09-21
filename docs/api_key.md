@@ -167,7 +167,7 @@ Files::ApiKey.delete(id)
 ## Update Api Key
 
 ```
-api_key = Files::ApiKey.list_for(path).first
+api_key = Files::ApiKey.list.first
 
 api_key.update(
   name: "My Main API Key",
@@ -189,7 +189,7 @@ api_key.update(
 ## Delete Api Key
 
 ```
-api_key = Files::ApiKey.list_for(path).first
+api_key = Files::ApiKey.list.first
 
 api_key.delete
 ```

@@ -104,7 +104,7 @@ Files::GroupUser.delete(id,
 ## Update Group User
 
 ```
-group_user = Files::GroupUser.list_for(path).first
+group_user = Files::GroupUser.list.first
 
 group_user.update(
   group_id: 1,
@@ -126,7 +126,7 @@ group_user.update(
 ## Delete Group User
 
 ```
-group_user = Files::GroupUser.list_for(path).first
+group_user = Files::GroupUser.list.first
 
 group_user.delete(
   group_id: 1,

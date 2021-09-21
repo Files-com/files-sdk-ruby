@@ -103,7 +103,7 @@ Files::MessageComment.delete(id)
 ## Update Message Comment
 
 ```
-message_comment = Files::MessageComment.list_for(path).first
+message_comment = Files::MessageComment.list.first
 
 message_comment.update(
   body: "body"
@@ -121,7 +121,7 @@ message_comment.update(
 ## Delete Message Comment
 
 ```
-message_comment = Files::MessageComment.list_for(path).first
+message_comment = Files::MessageComment.list.first
 
 message_comment.delete
 ```

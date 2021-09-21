@@ -236,7 +236,7 @@ Files::Bundle.delete(id)
 ## Send email(s) with a link to bundle
 
 ```
-bundle = Files::Bundle.list_for(path).first
+bundle = Files::Bundle.list.first
 
 bundle.share(
   to: ["johndoe@gmail.com"],
@@ -258,7 +258,7 @@ bundle.share(
 ## Update Bundle
 
 ```
-bundle = Files::Bundle.list_for(path).first
+bundle = Files::Bundle.list.first
 
 bundle.update(
   paths: ["file.txt"],
@@ -300,7 +300,7 @@ bundle.update(
 ## Delete Bundle
 
 ```
-bundle = Files::Bundle.list_for(path).first
+bundle = Files::Bundle.list.first
 
 bundle.delete
 ```

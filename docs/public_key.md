@@ -103,7 +103,7 @@ Files::PublicKey.delete(id)
 ## Update Public Key
 
 ```
-public_key = Files::PublicKey.list_for(path).first
+public_key = Files::PublicKey.list.first
 
 public_key.update(
   title: "My Main Key"
@@ -121,7 +121,7 @@ public_key.update(
 ## Delete Public Key
 
 ```
-public_key = Files::PublicKey.list_for(path).first
+public_key = Files::PublicKey.list.first
 
 public_key.delete
 ```

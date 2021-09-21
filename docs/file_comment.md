@@ -87,7 +87,7 @@ Files::FileComment.delete(id)
 ## Update File Comment
 
 ```
-file_comment = Files::FileComment.list_for(path).first
+file_comment = Files::FileComment.list.first
 
 file_comment.update(
   body: "body"
@@ -105,7 +105,7 @@ file_comment.update(
 ## Delete File Comment
 
 ```
-file_comment = Files::FileComment.list_for(path).first
+file_comment = Files::FileComment.list.first
 
 file_comment.delete
 ```

@@ -97,7 +97,7 @@ Files::Permission.delete(id)
 ## Delete Permission
 
 ```
-permission = Files::Permission.list_for(path).first
+permission = Files::Permission.list.first
 
 permission.delete
 ```

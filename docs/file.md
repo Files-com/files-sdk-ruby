@@ -232,7 +232,7 @@ Files::File.begin_upload(path,
 ## Download file
 
 ```
-file = Files::File.list_for(path).first
+file = Files::File.new
 
 file.download(
   with_previews: true,
@@ -254,7 +254,7 @@ file.download(
 ## Update file/folder metadata
 
 ```
-file = Files::File.list_for(path).first
+file = Files::File.new
 
 file.update(
   provided_mtime: "2000-01-01T01:00:00Z",
@@ -274,7 +274,7 @@ file.update(
 ## Delete file/folder
 
 ```
-file = Files::File.list_for(path).first
+file = Files::File.new
 
 file.delete(
   recursive: true
@@ -292,7 +292,7 @@ file.delete(
 ## Copy file/folder
 
 ```
-file = Files::File.list_for(path).first
+file = Files::File.new
 
 file.copy(
   destination: "destination",
@@ -312,7 +312,7 @@ file.copy(
 ## Move file/folder
 
 ```
-file = Files::File.list_for(path).first
+file = Files::File.new
 
 file.move(
   destination: "destination"
@@ -330,7 +330,7 @@ file.move(
 ## Begin file upload
 
 ```
-file = Files::File.list_for(path).first
+file = Files::File.new
 
 file.begin_upload(
   mkdir_parents: true,

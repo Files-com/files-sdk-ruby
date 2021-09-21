@@ -91,7 +91,7 @@ Files::Project.delete(id)
 ## Update Project
 
 ```
-project = Files::Project.list_for(path).first
+project = Files::Project.list.first
 
 project.update(
   global_access: "global_access"
@@ -109,7 +109,7 @@ project.update(
 ## Delete Project
 
 ```
-project = Files::Project.list_for(path).first
+project = Files::Project.list.first
 
 project.delete
 ```

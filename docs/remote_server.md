@@ -298,7 +298,7 @@ Files::RemoteServer.delete(id)
 ## Update Remote Server
 
 ```
-remote_server = Files::RemoteServer.list_for(path).first
+remote_server = Files::RemoteServer.list.first
 
 remote_server.update(
   reset_authentication: true,
@@ -382,7 +382,7 @@ remote_server.update(
 ## Delete Remote Server
 
 ```
-remote_server = Files::RemoteServer.list_for(path).first
+remote_server = Files::RemoteServer.list.first
 
 remote_server.delete
 ```
