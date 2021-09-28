@@ -189,6 +189,11 @@ module Files
       @attributes[:domain]
     end
 
+    # boolean - Send HSTS (HTTP Strict Transport Security) header when visitors access the site via a custom domain?
+    def domain_hsts_header
+      @attributes[:domain_hsts_header]
+    end
+
     # email - Main email for this site
     def email
       @attributes[:email]
@@ -643,6 +648,7 @@ module Files
     #   name - string - Site name
     #   subdomain - string - Site subdomain
     #   domain - string - Custom domain
+    #   domain_hsts_header - boolean - Send HSTS (HTTP Strict Transport Security) header when visitors access the site via a custom domain?
     #   email - string - Main email for this site
     #   reply_to_email - string - Reply-to email for this site
     #   allow_bundle_names - boolean - Are manual Bundle names allowed?
