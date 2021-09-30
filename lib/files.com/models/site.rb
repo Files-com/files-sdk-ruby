@@ -194,6 +194,11 @@ module Files
       @attributes[:domain_hsts_header]
     end
 
+    # string - Letsencrypt chain to use when registering SSL Certificate for domain.
+    def domain_letsencrypt_chain
+      @attributes[:domain_letsencrypt_chain]
+    end
+
     # email - Main email for this site
     def email
       @attributes[:email]
@@ -649,6 +654,7 @@ module Files
     #   subdomain - string - Site subdomain
     #   domain - string - Custom domain
     #   domain_hsts_header - boolean - Send HSTS (HTTP Strict Transport Security) header when visitors access the site via a custom domain?
+    #   domain_letsencrypt_chain - string - Letsencrypt chain to use when registering SSL Certificate for domain.
     #   email - string - Main email for this site
     #   reply_to_email - string - Reply-to email for this site
     #   allow_bundle_names - boolean - Are manual Bundle names allowed?
@@ -764,6 +770,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subdomain must be an String") if params.dig(:subdomain) and !params.dig(:subdomain).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: domain must be an String") if params.dig(:domain) and !params.dig(:domain).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: domain_letsencrypt_chain must be an String") if params.dig(:domain_letsencrypt_chain) and !params.dig(:domain_letsencrypt_chain).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: email must be an String") if params.dig(:email) and !params.dig(:email).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: reply_to_email must be an String") if params.dig(:reply_to_email) and !params.dig(:reply_to_email).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: bundle_expiration must be an Integer") if params.dig(:bundle_expiration) and !params.dig(:bundle_expiration).is_a?(Integer)
