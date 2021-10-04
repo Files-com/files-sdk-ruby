@@ -155,7 +155,7 @@ module Files
       etags ||= []
       bytes_written = 0
       loop do
-        begin_upload = FileAction.begin_upload(path, { ref: upload&.ref, part: (upload&.part_number || 0) + 1 }, options)
+        begin_upload = File.begin_upload(path, { ref: upload&.ref, part: (upload&.part_number || 0) + 1 }, options)
         upload = begin_upload.is_a?(Enumerable) ? begin_upload.first : begin_upload
         buf = io.read(upload.partsize) || ""
         bytes_written += buf.length
