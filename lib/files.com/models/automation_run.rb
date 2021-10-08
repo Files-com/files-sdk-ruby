@@ -9,9 +9,24 @@ module Files
       @options = options || {}
     end
 
+    # int64 - ID.
+    def id
+      @attributes[:id]
+    end
+
     # int64 - ID of the associated Automation.
     def automation_id
       @attributes[:automation_id]
+    end
+
+    # date-time - Automation run completion/failure date/time.
+    def completed_at
+      @attributes[:completed_at]
+    end
+
+    # date-time - Automation run start date/time.
+    def created_at
+      @attributes[:created_at]
     end
 
     # string - The success status of the AutomationRun. One of `running`, `success`, `partial_failure`, or `failure`.
@@ -57,6 +72,22 @@ module Files
 
     def self.all(params = {}, options = {})
       list(params, options)
+    end
+
+    # Parameters:
+    #   id (required) - int64 - Automation Run ID.
+    def self.find(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+
+      response, options = Api.send_request("/automation_runs/#{params[:id]}", :get, params, options)
+      AutomationRun.new(response.data, options)
+    end
+
+    def self.get(id, params = {}, options = {})
+      find(id, params, options)
     end
   end
 end
