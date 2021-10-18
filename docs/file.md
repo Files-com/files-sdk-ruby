@@ -27,7 +27,8 @@ may places where a Ruby File object can be used.
     "status": "complete",
     "download_uri": "https://mysite.files.com/...",
     "type": "complete",
-    "size": 1024
+    "size": 1024,
+    "status_message": ""
   }
 }
 ```

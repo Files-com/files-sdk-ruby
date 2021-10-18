@@ -54,6 +54,11 @@ module Files
       @attributes[:form_field_data]
     end
 
+    # string - Bundle URL code
+    def bundle_code
+      @attributes[:bundle_code]
+    end
+
     # int64 - Id of associated bundle
     def bundle_id
       @attributes[:bundle_id]

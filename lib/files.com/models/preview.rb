@@ -33,5 +33,10 @@ module Files
     def size
       @attributes[:size]
     end
+
+    # string - Preview status message. Addtional context from the preview generation process about the status
+    def status_message
+      @attributes[:status_message]
+    end
   end
 end
