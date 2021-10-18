@@ -908,6 +908,7 @@ module Files
     #   parts - int64 - How many parts to fetch?
     #   ref - string -
     #   restart - int64 - File byte offset to restart from.
+    #   size - int64 - Total bytes of file being uploaded (include bytes being retained if appending/restarting).
     #   with_rename - boolean - Allow file rename instead of overwrite?
     def begin_upload(params = {})
       params ||= {}
@@ -918,6 +919,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params.dig(:parts) and !params.dig(:parts).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ref must be an String") if params.dig(:ref) and !params.dig(:ref).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params.dig(:restart) and !params.dig(:restart).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params.dig(:size) and !params.dig(:size).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
       Api.send_request("/file_actions/begin_upload/#{@attributes[:path]}", :post, params, @options)
@@ -1073,6 +1075,7 @@ module Files
     #   parts - int64 - How many parts to fetch?
     #   ref - string -
     #   restart - int64 - File byte offset to restart from.
+    #   size - int64 - Total bytes of file being uploaded (include bytes being retained if appending/restarting).
     #   with_rename - boolean - Allow file rename instead of overwrite?
     def self.begin_upload(path, params = {}, options = {})
       params ||= {}
@@ -1082,6 +1085,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params.dig(:parts) and !params.dig(:parts).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ref must be an String") if params.dig(:ref) and !params.dig(:ref).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params.dig(:restart) and !params.dig(:restart).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params.dig(:size) and !params.dig(:size).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
 
       response, options = Api.send_request("/file_actions/begin_upload/#{params[:path]}", :post, params, options)
