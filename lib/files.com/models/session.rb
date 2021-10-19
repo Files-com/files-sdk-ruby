@@ -112,7 +112,7 @@ module Files
       @attributes[:ssl_required] = value
     end
 
-    # boolean - Aee insecure TLS versions allowed for this user? (If this is set to true, the site administrator has signaled that it is ok to use less secure TLS versions for this user.)
+    # boolean - Are insecure TLS versions allowed for this user? (If this is set to true, the site administrator has signaled that it is ok to use less secure TLS versions for this user.)
     def tls_disabled
       @attributes[:tls_disabled]
     end
