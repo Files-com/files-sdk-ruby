@@ -9,12 +9,12 @@ module Files
       @options = options || {}
     end
 
-    # string - Status of file operation. Possible values: completed, enqueued.
+    # string - Status of file operation.
     def status
       @attributes[:status]
     end
 
-    # int64 - If status is enqueued, this is the id of the FileMigration to check for status updates.
+    # int64 - If status is pending, this is the id of the FileMigration to check for status updates.
     def file_migration_id
       @attributes[:file_migration_id]
     end
