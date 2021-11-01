@@ -49,7 +49,7 @@ module Files
       @attributes[:form_field_set_id]
     end
 
-    # string - Data for form field set with form field ids as keys and user data as values
+    # object - Data for form field set with form field ids as keys and user data as values
     def form_field_data
       @attributes[:form_field_data]
     end

@@ -24,7 +24,7 @@ module Files
       @attributes[:short_description]
     end
 
-    # string - Collection of named links to documentation
+    # object - Collection of named links to documentation
     def documentation_links
       @attributes[:documentation_links]
     end
@@ -93,12 +93,12 @@ module Files
     #   cursor - string - Used for pagination.  Send a cursor value to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor-Next header.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `name` and `app_type`.
-    #   filter - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `name` and `app_type`.
-    #   filter_gt - object - If set, return records where the specifiied field is greater than the supplied value. Valid fields are `name` and `app_type`.
-    #   filter_gteq - object - If set, return records where the specifiied field is greater than or equal to the supplied value. Valid fields are `name` and `app_type`.
-    #   filter_like - object - If set, return records where the specifiied field is equal to the supplied value. Valid fields are `name` and `app_type`.
-    #   filter_lt - object - If set, return records where the specifiied field is less than the supplied value. Valid fields are `name` and `app_type`.
-    #   filter_lteq - object - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `name` and `app_type`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `name` and `app_type`.
+    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `name` and `app_type`.
+    #   filter_gteq - object - If set, return records where the specified field is greater than or equal to the supplied value. Valid fields are `name` and `app_type`.
+    #   filter_like - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `name` and `app_type`.
+    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `name` and `app_type`.
+    #   filter_lteq - object - If set, return records where the specified field is less than or equal to the supplied value. Valid fields are `name` and `app_type`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
