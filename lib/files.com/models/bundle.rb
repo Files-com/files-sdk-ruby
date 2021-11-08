@@ -167,6 +167,24 @@ module Files
       @attributes[:inbox_id] = value
     end
 
+    # Preview watermark image applied to all bundle items.
+    def watermark_attachment
+      @attributes[:watermark_attachment]
+    end
+
+    def watermark_attachment=(value)
+      @attributes[:watermark_attachment] = value
+    end
+
+    # object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
+    def watermark_value
+      @attributes[:watermark_value]
+    end
+
+    def watermark_value=(value)
+      @attributes[:watermark_value] = value
+    end
+
     # boolean - Does this bundle have an associated inbox?
     def has_inbox
       @attributes[:has_inbox]
@@ -203,6 +221,24 @@ module Files
       @attributes[:form_field_set_id] = value
     end
 
+    # file - Preview watermark image applied to all bundle items.
+    def watermark_attachment_file
+      @attributes[:watermark_attachment_file]
+    end
+
+    def watermark_attachment_file=(value)
+      @attributes[:watermark_attachment_file] = value
+    end
+
+    # boolean - If true, will delete the file stored in watermark_attachment
+    def watermark_attachment_delete
+      @attributes[:watermark_attachment_delete]
+    end
+
+    def watermark_attachment_delete=(value)
+      @attributes[:watermark_attachment_delete] = value
+    end
+
     # Send email(s) with a link to bundle
     #
     # Parameters:
@@ -236,6 +272,8 @@ module Files
     #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    #   watermark_attachment_delete - boolean - If true, will delete the file stored in watermark_attachment
+    #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -342,6 +380,7 @@ module Files
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
@@ -393,6 +432,8 @@ module Files
     #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    #   watermark_attachment_delete - boolean - If true, will delete the file stored in watermark_attachment
+    #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

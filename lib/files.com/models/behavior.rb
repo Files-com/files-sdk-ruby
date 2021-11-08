@@ -81,6 +81,15 @@ module Files
       @attributes[:attachment_file] = value
     end
 
+    # boolean - If true, will delete the file stored in attachment
+    def attachment_delete
+      @attributes[:attachment_delete]
+    end
+
+    def attachment_delete=(value)
+      @attributes[:attachment_delete] = value
+    end
+
     # Parameters:
     #   value - string - The value of the folder behavior.  Can be a integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
@@ -88,6 +97,7 @@ module Files
     #   description - string - Description for this behavior.
     #   behavior - string - Behavior type.
     #   path - string - Folder behaviors path.
+    #   attachment_delete - boolean - If true, will delete the file stored in attachment
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -256,6 +266,7 @@ module Files
     #   description - string - Description for this behavior.
     #   behavior - string - Behavior type.
     #   path - string - Folder behaviors path.
+    #   attachment_delete - boolean - If true, will delete the file stored in attachment
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -264,7 +275,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be one of String, Integer, Hash") if params.dig(:path) and [ String, Integer, Hash ].none? { |klass| params.dig(:path).is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: attachment_delete must be one of String, Integer, Hash") if params.dig(:attachment_delete) and [ String, Integer, Hash ].none? { |klass| params.dig(:attachment_delete).is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/behaviors/#{params[:id]}", :patch, params, options)

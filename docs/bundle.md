@@ -48,6 +48,11 @@
   "username": "user",
   "clickwrap_id": 1,
   "inbox_id": 1,
+  "watermark_attachment": {
+    "name": "My logo",
+    "uri": "https://mysite.files.com/.../my_image.png"
+  },
+  "watermark_value": "",
   "has_inbox": true,
   "paths": [
     "file.txt"
@@ -73,10 +78,14 @@
 * `username` (string): Bundle creator username
 * `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
 * `inbox_id` (int64): ID of the associated inbox, if available.
+* `watermark_attachment`: Preview watermark image applied to all bundle items.
+* `watermark_value` (object): Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
 * `has_inbox` (boolean): Does this bundle have an associated inbox?
 * `paths` (array): A list of paths in this bundle
 * `password` (string): Password for this bundle.
 * `form_field_set_id` (int64): Id of Form Field Set to use with this bundle
+* `watermark_attachment_file` (file): Preview watermark image applied to all bundle items.
+* `watermark_attachment_delete` (boolean): If true, will delete the file stored in watermark_attachment
 
 
 ---
@@ -156,6 +165,7 @@ Files::Bundle.create(
 * `clickwrap_id` (int64): ID of the clickwrap to use with this bundle.
 * `inbox_id` (int64): ID of the associated inbox, if available.
 * `require_share_recipient` (boolean): Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+* `watermark_attachment_file` (file): Preview watermark image applied to all bundle items.
 
 
 ---
@@ -196,7 +206,8 @@ Files::Bundle.update(id,
   note: "The internal note on the bundle.", 
   preview_only: true, 
   require_registration: true, 
-  require_share_recipient: true
+  require_share_recipient: true, 
+  watermark_attachment_delete: true
 )
 ```
 
@@ -216,6 +227,8 @@ Files::Bundle.update(id,
 * `preview_only` (boolean): Restrict users to previewing files only?
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 * `require_share_recipient` (boolean): Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+* `watermark_attachment_delete` (boolean): If true, will delete the file stored in watermark_attachment
+* `watermark_attachment_file` (file): Preview watermark image applied to all bundle items.
 
 
 ---
@@ -273,7 +286,8 @@ bundle.update(
   note: "The internal note on the bundle.",
   preview_only: true,
   require_registration: true,
-  require_share_recipient: true
+  require_share_recipient: true,
+  watermark_attachment_delete: true
 )
 ```
 
@@ -293,6 +307,8 @@ bundle.update(
 * `preview_only` (boolean): Restrict users to previewing files only?
 * `require_registration` (boolean): Show a registration page that captures the downloader's name and email address?
 * `require_share_recipient` (boolean): Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+* `watermark_attachment_delete` (boolean): If true, will delete the file stored in watermark_attachment
+* `watermark_attachment_file` (file): Preview watermark image applied to all bundle items.
 
 
 ---
