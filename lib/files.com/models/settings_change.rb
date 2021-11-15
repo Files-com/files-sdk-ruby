@@ -14,6 +14,11 @@ module Files
       @attributes[:change_details]
     end
 
+    # string - Markdown-formatted change messages.
+    def changes
+      @attributes[:changes]
+    end
+
     # date-time - The time this change was made
     def created_at
       @attributes[:created_at]
