@@ -162,15 +162,6 @@ module Files
       @attributes[:trigger_actions] = value
     end
 
-    # string - If trigger is `action`, this is the path to watch for the specified trigger actions.
-    def trigger_action_path
-      @attributes[:trigger_action_path]
-    end
-
-    def trigger_action_path=(value)
-      @attributes[:trigger_action_path] = value
-    end
-
     # object - A Hash of attributes specific to the automation type.
     def value
       @attributes[:value]
@@ -205,7 +196,6 @@ module Files
     #   name - string - Name for this automation.
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
-    #   trigger_action_path - string - If trigger is `action`, this is the path to watch for the specified trigger actions.
     #   value - object - A Hash of attributes specific to the automation type.
     def update(params = {})
       params ||= {}
@@ -226,7 +216,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: trigger_action_path must be an String") if params.dig(:trigger_action_path) and !params.dig(:trigger_action_path).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
       raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
@@ -320,7 +309,6 @@ module Files
     #   name - string - Name for this automation.
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
-    #   trigger_action_path - string - If trigger is `action`, this is the path to watch for the specified trigger actions.
     #   value - object - A Hash of attributes specific to the automation type.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
@@ -338,7 +326,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: trigger_action_path must be an String") if params.dig(:trigger_action_path) and !params.dig(:trigger_action_path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params.dig(:value) and !params.dig(:value).is_a?(Hash)
       raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
@@ -362,7 +349,6 @@ module Files
     #   name - string - Name for this automation.
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
-    #   trigger_action_path - string - If trigger is `action`, this is the path to watch for the specified trigger actions.
     #   value - object - A Hash of attributes specific to the automation type.
     def self.update(id, params = {}, options = {})
       params ||= {}
@@ -383,7 +369,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: trigger_action_path must be an String") if params.dig(:trigger_action_path) and !params.dig(:trigger_action_path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params.dig(:value) and !params.dig(:value).is_a?(Hash)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
       raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
