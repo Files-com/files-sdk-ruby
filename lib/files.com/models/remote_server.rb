@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # boolean - If true, this server has been disabled due to failures.  Make any change or set disabled to false to clear this flag.
+    def disabled
+      @attributes[:disabled]
+    end
+
+    def disabled=(value)
+      @attributes[:disabled] = value
+    end
+
     # string - Type of authentication method
     def authentication_method
       @attributes[:authentication_method]

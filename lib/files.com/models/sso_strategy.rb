@@ -184,7 +184,7 @@ module Files
       @attributes[:ldap_domain]
     end
 
-    # boolean - Is strategy enabled?
+    # boolean - Is strategy enabled?  This may become automatically set to `false` after a high number and duration of failures.
     def enabled
       @attributes[:enabled]
     end
