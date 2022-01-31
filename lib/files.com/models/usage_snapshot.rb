@@ -9,74 +9,99 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Site usage ID
+    # int64 - Usage snapshot ID
     def id
       @attributes[:id]
     end
 
-    # date-time - Site usage report start date/time
+    # date-time - Usage snapshot start date/time
     def start_at
       @attributes[:start_at]
     end
 
-    # date-time - Site usage report end date/time
+    # date-time - Usage snapshot end date/time
     def end_at
       @attributes[:end_at]
     end
 
-    # date-time - Site usage report created at date/time
+    # date-time - DEPRECATED: Usage snapshot created at date/time
     def created_at
       @attributes[:created_at]
     end
 
-    # double - Site usage report highest usage in time period
+    # double - Highest user count number in time period
     def high_water_user_count
       @attributes[:high_water_user_count]
     end
 
-    # double - Current site usage as of report
+    # double - Current total Storage Usage GB as of end date (not necessarily high water mark, which is used for billing)
     def current_storage
       @attributes[:current_storage]
     end
 
-    # double - Site usage report highest usage in time period
+    # double - Highest Storage Usage GB recorded in time period (used for billing)
     def high_water_storage
       @attributes[:high_water_storage]
     end
 
-    # int64 - Number of downloads in report time period
+    # int64 - DEPRECATED: Number of downloads in report time period
     def total_downloads
       @attributes[:total_downloads]
     end
 
-    # int64 - Number of uploads in time period
+    # int64 - DEPRECATED: Number of uploads in time period
     def total_uploads
       @attributes[:total_uploads]
     end
 
-    # date-time - The last time this site usage report was updated
+    # date-time - DEPRECATED: The last time this site usage report was updated
     def updated_at
       @attributes[:updated_at]
     end
 
-    # object - A map of root folders to their total usage
+    # object - Storage Usage - map of root folders to their usage as of end date (not necessarily high water mark, which is used for billing)
     def usage_by_top_level_dir
       @attributes[:usage_by_top_level_dir]
     end
 
-    # double - Usage for root folder
+    # double - Storage Usage for root folder as of end date (not necessarily high water mark, which is used for billing)
     def root_storage
       @attributes[:root_storage]
     end
 
-    # double - Usage for files that are deleted but uploaded within last 30 days
+    # double - Storage Usage for files that are deleted but uploaded within last 30 days as of end date (not necessarily high water mark, which is used for billing)
     def deleted_files_counted_in_minimum
       @attributes[:deleted_files_counted_in_minimum]
     end
 
-    # double - Usage for files that are deleted but retained as backups
+    # double - Storage Usage for files that are deleted but retained as backups as of end date (not necessarily high water mark, which is used for billing)
     def deleted_files_storage
       @attributes[:deleted_files_storage]
+    end
+
+    # double - Storage + Transfer Usage - Total Billable amount
+    def total_billable_usage
+      @attributes[:total_billable_usage]
+    end
+
+    # double - Transfer usage for period - Total Billable amount
+    def total_billable_transfer_usage
+      @attributes[:total_billable_transfer_usage]
+    end
+
+    # double - Transfer Usage for period - Outbound GB from Files Native Storage
+    def bytes_sent
+      @attributes[:bytes_sent]
+    end
+
+    # double - Transfer Usage for period - Inbound GB to Remote Servers (Sync/Mount)
+    def sync_bytes_received
+      @attributes[:sync_bytes_received]
+    end
+
+    # double - Transfer Usage for period - Outbound GB from Remote Servers (Sync/Mount)
+    def sync_bytes_sent
+      @attributes[:sync_bytes_sent]
     end
 
     # Parameters:

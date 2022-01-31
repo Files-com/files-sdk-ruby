@@ -19,9 +19,44 @@ module Files
       @attributes[:date]
     end
 
-    # int64 - The quantity of storage held for this site
+    # boolean - True if the API usage fields `read_api_usage` and `write_api_usage` can be relied upon.  If this is false, we suggest hiding that value from any UI.
+    def api_usage_available
+      @attributes[:api_usage_available]
+    end
+
+    # int64 - Read API Calls used on this day. Note: only updated for days before the current day.
+    def read_api_usage
+      @attributes[:read_api_usage]
+    end
+
+    # int64 - Write API Calls used on this day. Note: only updated for days before the current day.
+    def write_api_usage
+      @attributes[:write_api_usage]
+    end
+
+    # int64 - Number of billable users as of this day.
+    def user_count
+      @attributes[:user_count]
+    end
+
+    # int64 - GB of Files Native Storage used on this day.
     def current_storage
       @attributes[:current_storage]
+    end
+
+    # int64 - GB of Files Native Storage used on this day for files that have been deleted and are stored as backups.
+    def deleted_files_storage
+      @attributes[:deleted_files_storage]
+    end
+
+    # int64 - GB of Files Native Storage used on this day for files that have been permanently deleted but were uploaded less than 30 days ago, and are still billable.
+    def deleted_files_counted_in_minimum
+      @attributes[:deleted_files_counted_in_minimum]
+    end
+
+    # int64 - GB of Files Native Storage used for the root folder.  Included here because this value will not be part of `usage_by_top_level_dir`
+    def root_storage
+      @attributes[:root_storage]
     end
 
     # array - Usage broken down by each top-level folder
