@@ -157,6 +157,15 @@ module Files
       @attributes[:allowed_2fa_method_u2f] = value
     end
 
+    # boolean - Sent only if 2FA setup is needed. Is WebAuthn two factor authentication allowed?
+    def allowed_2fa_method_webauthn
+      @attributes[:allowed_2fa_method_webauthn]
+    end
+
+    def allowed_2fa_method_webauthn=(value)
+      @attributes[:allowed_2fa_method_webauthn] = value
+    end
+
     # boolean - Sent only if 2FA setup is needed. Is Yubikey two factor authentication allowed?
     def allowed_2fa_method_yubi
       @attributes[:allowed_2fa_method_yubi]

@@ -29,6 +29,11 @@ module Files
       @attributes[:allowed_2fa_method_u2f]
     end
 
+    # boolean - Is WebAuthn two factor authentication allowed?
+    def allowed_2fa_method_webauthn
+      @attributes[:allowed_2fa_method_webauthn]
+    end
+
     # boolean - Is yubikey two factor authentication allowed?
     def allowed_2fa_method_yubi
       @attributes[:allowed_2fa_method_yubi]
@@ -718,6 +723,7 @@ module Files
     #   allowed_2fa_method_sms - boolean - Is SMS two factor authentication allowed?
     #   allowed_2fa_method_u2f - boolean - Is U2F two factor authentication allowed?
     #   allowed_2fa_method_totp - boolean - Is TOTP two factor authentication allowed?
+    #   allowed_2fa_method_webauthn - boolean - Is WebAuthn two factor authentication allowed?
     #   allowed_2fa_method_yubi - boolean - Is yubikey two factor authentication allowed?
     #   require_2fa - boolean - Require two-factor authentication for all users?
     #   require_2fa_user_type - string - What type of user is required to use two-factor authentication (when require_2fa is set to `true` for this site)?
