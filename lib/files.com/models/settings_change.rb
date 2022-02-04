@@ -9,11 +9,6 @@ module Files
       @options = options || {}
     end
 
-    # object - Specifics on what changed.
-    def change_details
-      @attributes[:change_details]
-    end
-
     # string - Markdown-formatted change messages.
     def changes
       @attributes[:changes]
