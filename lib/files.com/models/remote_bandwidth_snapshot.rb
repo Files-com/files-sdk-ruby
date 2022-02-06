@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Files
-  class BandwidthSnapshot
+  class RemoteBandwidthSnapshot
     attr_reader :options, :attributes
 
     def initialize(attributes = {}, options = {})
@@ -14,16 +14,6 @@ module Files
       @attributes[:id]
     end
 
-    # double - Site bandwidth report bytes received
-    def bytes_received
-      @attributes[:bytes_received]
-    end
-
-    # double - Site bandwidth report bytes sent
-    def bytes_sent
-      @attributes[:bytes_sent]
-    end
-
     # double - Site sync bandwidth report bytes received
     def sync_bytes_received
       @attributes[:sync_bytes_received]
@@ -34,24 +24,14 @@ module Files
       @attributes[:sync_bytes_sent]
     end
 
-    # double - Site bandwidth report get requests
-    def requests_get
-      @attributes[:requests_get]
-    end
-
-    # double - Site bandwidth report put requests
-    def requests_put
-      @attributes[:requests_put]
-    end
-
-    # double - Site bandwidth report other requests
-    def requests_other
-      @attributes[:requests_other]
-    end
-
     # date-time - Time the site bandwidth report was logged
     def logged_at
       @attributes[:logged_at]
+    end
+
+    # int64 - ID of related Remote Server
+    def remote_server_id
+      @attributes[:remote_server_id]
     end
 
     # Parameters:
@@ -75,8 +55,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params.dig(:filter_lt) and !params.dig(:filter_lt).is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params.dig(:filter_lteq) and !params.dig(:filter_lteq).is_a?(Hash)
 
-      List.new(BandwidthSnapshot, params) do
-        Api.send_request("/bandwidth_snapshots", :get, params, options)
+      List.new(RemoteBandwidthSnapshot, params) do
+        Api.send_request("/remote_bandwidth_snapshots", :get, params, options)
       end
     end
 
