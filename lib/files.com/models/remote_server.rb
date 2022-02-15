@@ -99,6 +99,15 @@ module Files
       @attributes[:s3_region] = value
     end
 
+    # string - AWS Access Key.
+    def aws_access_key
+      @attributes[:aws_access_key]
+    end
+
+    def aws_access_key=(value)
+      @attributes[:aws_access_key] = value
+    end
+
     # string - Remote server certificate
     def server_certificate
       @attributes[:server_certificate]
@@ -196,6 +205,15 @@ module Files
 
     def wasabi_region=(value)
       @attributes[:wasabi_region] = value
+    end
+
+    # string - Wasabi access key.
+    def wasabi_access_key
+      @attributes[:wasabi_access_key]
+    end
+
+    def wasabi_access_key=(value)
+      @attributes[:wasabi_access_key] = value
     end
 
     # string - Rackspace username used to login to the Rackspace Cloud Control Panel.
@@ -297,6 +315,15 @@ module Files
       @attributes[:s3_compatible_endpoint] = value
     end
 
+    # string - S3-compatible Access Key.
+    def s3_compatible_access_key
+      @attributes[:s3_compatible_access_key]
+    end
+
+    def s3_compatible_access_key=(value)
+      @attributes[:s3_compatible_access_key] = value
+    end
+
     # boolean - `true` if remote server only accepts connections from dedicated IPs
     def enable_dedicated_ips
       @attributes[:enable_dedicated_ips]
@@ -304,15 +331,6 @@ module Files
 
     def enable_dedicated_ips=(value)
       @attributes[:enable_dedicated_ips] = value
-    end
-
-    # string - AWS Access Key.
-    def aws_access_key
-      @attributes[:aws_access_key]
-    end
-
-    def aws_access_key=(value)
-      @attributes[:aws_access_key] = value
     end
 
     # string - AWS secret key.
@@ -358,15 +376,6 @@ module Files
 
     def google_cloud_storage_credentials_json=(value)
       @attributes[:google_cloud_storage_credentials_json] = value
-    end
-
-    # string - Wasabi access key.
-    def wasabi_access_key
-      @attributes[:wasabi_access_key]
-    end
-
-    def wasabi_access_key=(value)
-      @attributes[:wasabi_access_key] = value
     end
 
     # string - Wasabi secret key.
@@ -423,15 +432,6 @@ module Files
       @attributes[:azure_blob_storage_access_key] = value
     end
 
-    # string - S3-compatible access key
-    def s3_compatible_access_key
-      @attributes[:s3_compatible_access_key]
-    end
-
-    def s3_compatible_access_key=(value)
-      @attributes[:s3_compatible_access_key] = value
-    end
-
     # string - S3-compatible secret key
     def s3_compatible_secret_key
       @attributes[:s3_compatible_secret_key]
@@ -481,7 +481,7 @@ module Files
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
-    #   s3_compatible_access_key - string - S3-compatible access key
+    #   s3_compatible_access_key - string - S3-compatible Access Key.
     #   s3_compatible_secret_key - string - S3-compatible secret key
     def update(params = {})
       params ||= {}
@@ -627,7 +627,7 @@ module Files
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
-    #   s3_compatible_access_key - string - S3-compatible access key
+    #   s3_compatible_access_key - string - S3-compatible Access Key.
     #   s3_compatible_secret_key - string - S3-compatible secret key
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params.dig(:aws_access_key) and !params.dig(:aws_access_key).is_a?(String)
@@ -714,7 +714,7 @@ module Files
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
-    #   s3_compatible_access_key - string - S3-compatible access key
+    #   s3_compatible_access_key - string - S3-compatible Access Key.
     #   s3_compatible_secret_key - string - S3-compatible secret key
     def self.update(id, params = {}, options = {})
       params ||= {}
