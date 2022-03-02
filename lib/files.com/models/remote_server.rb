@@ -315,6 +315,15 @@ module Files
       @attributes[:s3_compatible_endpoint] = value
     end
 
+    # string - S3-compatible endpoint
+    def s3_compatible_region
+      @attributes[:s3_compatible_region]
+    end
+
+    def s3_compatible_region=(value)
+      @attributes[:s3_compatible_region] = value
+    end
+
     # string - S3-compatible Access Key.
     def s3_compatible_access_key
       @attributes[:s3_compatible_access_key]
@@ -480,6 +489,7 @@ module Files
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
+    #   s3_compatible_region - string - S3-compatible endpoint
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   s3_compatible_access_key - string - S3-compatible Access Key.
     #   s3_compatible_secret_key - string - S3-compatible secret key
@@ -525,6 +535,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params.dig(:s3_compatible_access_key) and !params.dig(:s3_compatible_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params.dig(:s3_compatible_secret_key) and !params.dig(:s3_compatible_secret_key).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
@@ -626,6 +637,7 @@ module Files
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
+    #   s3_compatible_region - string - S3-compatible endpoint
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   s3_compatible_access_key - string - S3-compatible Access Key.
     #   s3_compatible_secret_key - string - S3-compatible secret key
@@ -667,6 +679,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params.dig(:s3_compatible_access_key) and !params.dig(:s3_compatible_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params.dig(:s3_compatible_secret_key) and !params.dig(:s3_compatible_secret_key).is_a?(String)
 
@@ -713,6 +726,7 @@ module Files
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
+    #   s3_compatible_region - string - S3-compatible endpoint
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   s3_compatible_access_key - string - S3-compatible Access Key.
     #   s3_compatible_secret_key - string - S3-compatible secret key
@@ -757,6 +771,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params.dig(:s3_compatible_access_key) and !params.dig(:s3_compatible_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params.dig(:s3_compatible_secret_key) and !params.dig(:s3_compatible_secret_key).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
