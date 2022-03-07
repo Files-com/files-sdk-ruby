@@ -122,3 +122,31 @@ Files::SsoStrategy.find(id)
 ### Parameters
 
 * `id` (int64): Required - Sso Strategy ID.
+
+
+---
+
+## Synchronize provisioning data with the SSO remote server
+
+```
+Files::SsoStrategy.sync(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Sso Strategy ID.
+
+
+---
+
+## Synchronize provisioning data with the SSO remote server
+
+```
+sso_strategy = Files::SsoStrategy.list.first
+
+sso_strategy.sync
+```
+
+### Parameters
+
+* `id` (int64): Required - Sso Strategy ID.

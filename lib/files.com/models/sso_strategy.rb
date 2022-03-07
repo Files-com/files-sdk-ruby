@@ -224,6 +224,17 @@ module Files
       @attributes[:ldap_username_field]
     end
 
+    # Synchronize provisioning data with the SSO remote server
+    def sync(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+
+      Api.send_request("/sso_strategies/#{@attributes[:id]}/sync", :post, params, @options)
+    end
+
     # Parameters:
     #   cursor - string - Used for pagination.  Send a cursor value to resume an existing list from the point at which you left off.  Get a cursor from an existing list via either the X-Files-Cursor-Next header or the X-Files-Cursor-Prev header.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
@@ -254,6 +265,17 @@ module Files
 
     def self.get(id, params = {}, options = {})
       find(id, params, options)
+    end
+
+    # Synchronize provisioning data with the SSO remote server
+    def self.sync(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+
+      response, _options = Api.send_request("/sso_strategies/#{params[:id]}/sync", :post, params, options)
+      response.data
     end
   end
 end
