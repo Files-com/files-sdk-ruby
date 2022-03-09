@@ -27,7 +27,7 @@ module Files
       @attributes[:body] = value
     end
 
-    # Reactions to this comment.
+    # MessageCommentReaction - Reactions to this comment.
     def reactions
       @attributes[:reactions]
     end

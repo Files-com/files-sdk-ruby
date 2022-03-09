@@ -79,7 +79,7 @@ module Files
       @attributes[:bundle_require_share_recipient]
     end
 
-    # Preview watermark image applied to all bundle items.
+    # Image - Preview watermark image applied to all bundle items.
     def bundle_watermark_attachment
       @attributes[:bundle_watermark_attachment]
     end
@@ -239,22 +239,22 @@ module Files
       @attributes[:hipaa]
     end
 
-    # Branded icon 128x128
+    # Image - Branded icon 128x128
     def icon128
       @attributes[:icon128]
     end
 
-    # Branded icon 16x16
+    # Image - Branded icon 16x16
     def icon16
       @attributes[:icon16]
     end
 
-    # Branded icon 32x32
+    # Image - Branded icon 32x32
     def icon32
       @attributes[:icon32]
     end
 
-    # Branded icon 48x48
+    # Image - Branded icon 48x48
     def icon48
       @attributes[:icon48]
     end
@@ -359,7 +359,7 @@ module Files
       @attributes[:login_help_text]
     end
 
-    # Branded logo
+    # Image - Branded logo
     def logo
       @attributes[:logo]
     end
@@ -469,7 +469,7 @@ module Files
       @attributes[:require_2fa_user_type]
     end
 
-    # Current session
+    # Session - Current session
     def session
       @attributes[:session]
     end
@@ -584,7 +584,7 @@ module Files
       @attributes[:use_provided_modified_at]
     end
 
-    # User of current session
+    # User - User of current session
     def user
       @attributes[:user]
     end

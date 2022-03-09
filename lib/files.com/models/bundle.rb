@@ -81,7 +81,7 @@ module Files
       @attributes[:clickwrap_body] = value
     end
 
-    # Custom Form to use
+    # FormFieldSet - Custom Form to use
     def form_field_set
       @attributes[:form_field_set]
     end
@@ -167,7 +167,7 @@ module Files
       @attributes[:inbox_id] = value
     end
 
-    # Preview watermark image applied to all bundle items.
+    # Image - Preview watermark image applied to all bundle items.
     def watermark_attachment
       @attributes[:watermark_attachment]
     end

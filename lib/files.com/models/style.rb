@@ -27,7 +27,7 @@ module Files
       @attributes[:path] = value
     end
 
-    # Logo
+    # Image - Logo
     def logo
       @attributes[:logo]
     end
@@ -36,7 +36,7 @@ module Files
       @attributes[:logo] = value
     end
 
-    # Logo thumbnail
+    # Image - Logo thumbnail
     def thumbnail
       @attributes[:thumbnail]
     end

@@ -9,6 +9,7 @@ module Files
       @options = options || {}
     end
 
+    # InboxRegistration
     def inbox_registration
       @attributes[:inbox_registration]
     end

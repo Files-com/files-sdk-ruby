@@ -727,7 +727,7 @@ module Files
       @attributes[:preview_id] = value
     end
 
-    # File preview
+    # Preview - File preview
     def preview
       @attributes[:preview]
     end

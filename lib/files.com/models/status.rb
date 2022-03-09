@@ -24,12 +24,12 @@ module Files
       @attributes[:status]
     end
 
-    # Additional data
+    # Auto - Additional data
     def data
       @attributes[:data]
     end
 
-    # A list of api errors
+    # Errors - A list of api errors
     def errors
       @attributes[:errors]
     end

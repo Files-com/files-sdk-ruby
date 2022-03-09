@@ -36,7 +36,7 @@ module Files
       @attributes[:status] = value
     end
 
-    # Additional data
+    # Auto - Additional data
     def data
       @attributes[:data]
     end

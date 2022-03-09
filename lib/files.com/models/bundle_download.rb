@@ -9,6 +9,7 @@ module Files
       @options = options || {}
     end
 
+    # BundleRegistration
     def bundle_registration
       @attributes[:bundle_registration]
     end
