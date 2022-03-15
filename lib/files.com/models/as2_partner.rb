@@ -54,6 +54,51 @@ module Files
       @attributes[:public_certificate_md5] = value
     end
 
+    # string - Subject of public certificate used for message security.
+    def public_certificate_subject
+      @attributes[:public_certificate_subject]
+    end
+
+    def public_certificate_subject=(value)
+      @attributes[:public_certificate_subject] = value
+    end
+
+    # string - Issuer of public certificate used for message security.
+    def public_certificate_issuer
+      @attributes[:public_certificate_issuer]
+    end
+
+    def public_certificate_issuer=(value)
+      @attributes[:public_certificate_issuer] = value
+    end
+
+    # string - Serial of public certificate used for message security.
+    def public_certificate_serial
+      @attributes[:public_certificate_serial]
+    end
+
+    def public_certificate_serial=(value)
+      @attributes[:public_certificate_serial] = value
+    end
+
+    # string - Not before value of public certificate used for message security.
+    def public_certificate_not_before
+      @attributes[:public_certificate_not_before]
+    end
+
+    def public_certificate_not_before=(value)
+      @attributes[:public_certificate_not_before] = value
+    end
+
+    # string - Not after value of public certificate used for message security.
+    def public_certificate_not_after
+      @attributes[:public_certificate_not_after]
+    end
+
+    def public_certificate_not_after=(value)
+      @attributes[:public_certificate_not_after] = value
+    end
+
     # string
     def public_certificate
       @attributes[:public_certificate]
