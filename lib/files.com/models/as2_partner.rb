@@ -45,6 +45,15 @@ module Files
       @attributes[:uri] = value
     end
 
+    # string - Remote server certificate security setting
+    def server_certificate
+      @attributes[:server_certificate]
+    end
+
+    def server_certificate=(value)
+      @attributes[:server_certificate] = value
+    end
+
     # string - MD5 hash of public certificate used for message security.
     def public_certificate_md5
       @attributes[:public_certificate_md5]
@@ -111,6 +120,7 @@ module Files
     # Parameters:
     #   name - string - AS2 Name
     #   uri - string - URL base for AS2 responses
+    #   server_certificate - string - Remote server certificate security setting
     #   public_certificate - string
     def update(params = {})
       params ||= {}
@@ -119,6 +129,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uri must be an String") if params.dig(:uri) and !params.dig(:uri).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params.dig(:server_certificate) and !params.dig(:server_certificate).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params.dig(:public_certificate) and !params.dig(:public_certificate).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
@@ -185,11 +196,13 @@ module Files
     #   uri (required) - string - URL base for AS2 responses
     #   public_certificate (required) - string
     #   as2_station_id (required) - int64 - Id of As2Station for this partner
+    #   server_certificate - string - Remote server certificate security setting
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uri must be an String") if params.dig(:uri) and !params.dig(:uri).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params.dig(:public_certificate) and !params.dig(:public_certificate).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: as2_station_id must be an Integer") if params.dig(:as2_station_id) and !params.dig(:as2_station_id).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params.dig(:server_certificate) and !params.dig(:server_certificate).is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") unless params.dig(:name)
       raise MissingParameterError.new("Parameter missing: uri") unless params.dig(:uri)
       raise MissingParameterError.new("Parameter missing: public_certificate") unless params.dig(:public_certificate)
@@ -202,6 +215,7 @@ module Files
     # Parameters:
     #   name - string - AS2 Name
     #   uri - string - URL base for AS2 responses
+    #   server_certificate - string - Remote server certificate security setting
     #   public_certificate - string
     def self.update(id, params = {}, options = {})
       params ||= {}
@@ -209,6 +223,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uri must be an String") if params.dig(:uri) and !params.dig(:uri).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params.dig(:server_certificate) and !params.dig(:server_certificate).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params.dig(:public_certificate) and !params.dig(:public_certificate).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
