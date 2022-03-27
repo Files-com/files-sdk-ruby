@@ -34,7 +34,7 @@ module Files
       @attributes[:activity_log]
     end
 
-    # string - Result of processing. Valid values: `send_failed`, `send_success`
+    # string - Result of processing. Valid values: `send_failed`, `send_success`, `send_no_mdn`
     def processing_result
       @attributes[:processing_result]
     end

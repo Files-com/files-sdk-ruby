@@ -108,6 +108,15 @@ module Files
       @attributes[:public_certificate_not_after] = value
     end
 
+    # string - MD5 hash of private key password used for message security.
+    def private_key_password_md5
+      @attributes[:private_key_password_md5]
+    end
+
+    def private_key_password_md5=(value)
+      @attributes[:private_key_password_md5] = value
+    end
+
     # string
     def public_certificate
       @attributes[:public_certificate]
@@ -126,10 +135,20 @@ module Files
       @attributes[:private_key] = value
     end
 
+    # string
+    def private_key_password
+      @attributes[:private_key_password]
+    end
+
+    def private_key_password=(value)
+      @attributes[:private_key_password] = value
+    end
+
     # Parameters:
     #   name - string - AS2 Name
     #   public_certificate - string
     #   private_key - string
+    #   private_key_password - string
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -138,6 +157,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params.dig(:public_certificate) and !params.dig(:public_certificate).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params.dig(:private_key_password) and !params.dig(:private_key_password).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/as2_stations/#{@attributes[:id]}", :patch, params, @options)
@@ -202,10 +222,12 @@ module Files
     #   name (required) - string - AS2 Name
     #   public_certificate (required) - string
     #   private_key (required) - string
+    #   private_key_password - string
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params.dig(:public_certificate) and !params.dig(:public_certificate).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params.dig(:private_key_password) and !params.dig(:private_key_password).is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") unless params.dig(:name)
       raise MissingParameterError.new("Parameter missing: public_certificate") unless params.dig(:public_certificate)
       raise MissingParameterError.new("Parameter missing: private_key") unless params.dig(:private_key)
@@ -218,6 +240,7 @@ module Files
     #   name - string - AS2 Name
     #   public_certificate - string
     #   private_key - string
+    #   private_key_password - string
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -225,6 +248,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params.dig(:public_certificate) and !params.dig(:public_certificate).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params.dig(:private_key_password) and !params.dig(:private_key_password).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/as2_stations/#{params[:id]}", :patch, params, options)
