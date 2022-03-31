@@ -90,6 +90,33 @@ module Files
       @attributes[:form_field_set] = value
     end
 
+    # boolean - BundleRegistrations can be saved without providing name?
+    def skip_name
+      @attributes[:skip_name]
+    end
+
+    def skip_name=(value)
+      @attributes[:skip_name] = value
+    end
+
+    # boolean - BundleRegistrations can be saved without providing email?
+    def skip_email
+      @attributes[:skip_email]
+    end
+
+    def skip_email=(value)
+      @attributes[:skip_email] = value
+    end
+
+    # boolean - BundleRegistrations can be saved without providing company?
+    def skip_company
+      @attributes[:skip_company]
+    end
+
+    def skip_company=(value)
+      @attributes[:skip_company] = value
+    end
+
     # int64 - Bundle ID
     def id
       @attributes[:id]
