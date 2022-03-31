@@ -39,7 +39,7 @@ module Files
       @attributes[:activity_log]
     end
 
-    # string - Result of processing. Valid values: `unable_to_find_station`, `unable_to_find_partner`, `unable_to_validate_signature`, `decrypt_fail`, `file_save_fail`, `success`
+    # string - Result of processing.
     def processing_result
       @attributes[:processing_result]
     end
