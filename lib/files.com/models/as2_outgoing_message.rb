@@ -19,6 +19,11 @@ module Files
       @attributes[:as2_partner_id]
     end
 
+    # int64 - Id of the AS2 Station associated with this message.
+    def as2_station_id
+      @attributes[:as2_station_id]
+    end
+
     # string - UUID assigned to this message.
     def uuid
       @attributes[:uuid]
@@ -39,9 +44,24 @@ module Files
       @attributes[:processing_result]
     end
 
-    # string - AS2 Message Integrity Check
+    # string - AS2 Message Integrity Check SHA1
     def mic
       @attributes[:mic]
+    end
+
+    # string - AS2 Message Integrity Check SHA256
+    def mic_sha_256
+      @attributes[:mic_sha_256]
+    end
+
+    # string - AS2 TO
+    def as2_to
+      @attributes[:as2_to]
+    end
+
+    # string - AS2 FROM
+    def as2_from
+      @attributes[:as2_from]
     end
 
     # string - AS2 Message Id
@@ -62,6 +82,71 @@ module Files
     # date-time - Message creation date/time
     def created_at
       @attributes[:created_at]
+    end
+
+    # string - HTTP Response Code received for this message
+    def http_response_code
+      @attributes[:http_response_code]
+    end
+
+    # object - HTTP Headers received for this message.
+    def http_response_headers
+      @attributes[:http_response_headers]
+    end
+
+    # boolean - Did the partner give a response body?
+    def mdn_received
+      @attributes[:mdn_received]
+    end
+
+    # boolean - Is the response in MDN format?
+    def mdn_valid
+      @attributes[:mdn_valid]
+    end
+
+    # boolean - MDN signature verified?
+    def mdn_signature_verified
+      @attributes[:mdn_signature_verified]
+    end
+
+    # boolean - MDN message id matched?
+    def mdn_message_id_matched
+      @attributes[:mdn_message_id_matched]
+    end
+
+    # boolean - MDN MIC matched?
+    def mdn_mic_matched
+      @attributes[:mdn_mic_matched]
+    end
+
+    # boolean - MDN disposition indicate a successful processing?
+    def mdn_processing_success
+      @attributes[:mdn_processing_success]
+    end
+
+    # string - URL to download the original file contents
+    def raw_uri
+      @attributes[:raw_uri]
+    end
+
+    # string - URL to download the file contents encoded as smime
+    def smime_uri
+      @attributes[:smime_uri]
+    end
+
+    # string - URL to download the file contents as smime with signature
+    def smime_signed_uri
+      @attributes[:smime_signed_uri]
+    end
+
+    # string - URL to download the encrypted signed smime that is to sent as AS2 body
+    def encrypted_uri
+      @attributes[:encrypted_uri]
+    end
+
+    # string - URL to download the http response body
+    def mdn_response_uri
+      @attributes[:mdn_response_uri]
     end
 
     # Parameters:

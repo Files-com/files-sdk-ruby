@@ -19,6 +19,11 @@ module Files
       @attributes[:as2_partner_id]
     end
 
+    # int64 - Id of the AS2 Station associated with this message.
+    def as2_station_id
+      @attributes[:as2_station_id]
+    end
+
     # string - UUID assigned to this message.
     def uuid
       @attributes[:uuid]
@@ -42,6 +47,16 @@ module Files
     # string - Result of processing.
     def processing_result
       @attributes[:processing_result]
+    end
+
+    # string - AS2 Message Integrity Check
+    def mic
+      @attributes[:mic]
+    end
+
+    # string - AS2 Message Integrity Check Algorithm Used
+    def mic_algo
+      @attributes[:mic_algo]
     end
 
     # string - AS2 TO header of message
@@ -74,9 +89,74 @@ module Files
       @attributes[:attachment_filename]
     end
 
+    # string - IP Address of the Sender
+    def ip
+      @attributes[:ip]
+    end
+
     # date-time - Message creation date/time
     def created_at
       @attributes[:created_at]
+    end
+
+    # string - HTTP Response Code sent for this message
+    def http_response_code
+      @attributes[:http_response_code]
+    end
+
+    # object - HTTP Headers sent for this message.
+    def http_response_headers
+      @attributes[:http_response_headers]
+    end
+
+    # boolean - Message body received?
+    def message_received
+      @attributes[:message_received]
+    end
+
+    # boolean - Message decrypted successfully?
+    def message_decrypted
+      @attributes[:message_decrypted]
+    end
+
+    # boolean - Message signature verified?
+    def message_signature_verified
+      @attributes[:message_signature_verified]
+    end
+
+    # boolean - Message processed successfully?
+    def message_processing_success
+      @attributes[:message_processing_success]
+    end
+
+    # boolean - MDN returned?
+    def message_mdn_returned
+      @attributes[:message_mdn_returned]
+    end
+
+    # string - URL to download the encrypted signed smime that is to sent as AS2 body
+    def encrypted_uri
+      @attributes[:encrypted_uri]
+    end
+
+    # string - URL to download the file contents as smime with signature
+    def smime_signed_uri
+      @attributes[:smime_signed_uri]
+    end
+
+    # string - URL to download the file contents encoded as smime
+    def smime_uri
+      @attributes[:smime_uri]
+    end
+
+    # string - URL to download the original file contents
+    def raw_uri
+      @attributes[:raw_uri]
+    end
+
+    # string - URL to download the http response body
+    def mdn_response_uri
+      @attributes[:mdn_response_uri]
     end
 
     # Parameters:

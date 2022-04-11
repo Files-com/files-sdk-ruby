@@ -54,6 +54,15 @@ module Files
       @attributes[:server_certificate] = value
     end
 
+    # string - Serial of public certificate used for message security in hex format.
+    def hex_public_certificate_serial
+      @attributes[:hex_public_certificate_serial]
+    end
+
+    def hex_public_certificate_serial=(value)
+      @attributes[:hex_public_certificate_serial] = value
+    end
+
     # string - MD5 hash of public certificate used for message security.
     def public_certificate_md5
       @attributes[:public_certificate_md5]
