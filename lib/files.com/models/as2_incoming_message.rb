@@ -109,6 +109,21 @@ module Files
       @attributes[:http_response_headers]
     end
 
+    # string - Incoming Message Recipient(the Client Cert used to encrypt this message)'s serial
+    def recipient_serial
+      @attributes[:recipient_serial]
+    end
+
+    # string - Incoming Message Recipient(the Client Cert used to encrypt this message)'s serial in hex format.
+    def hex_recipient_serial
+      @attributes[:hex_recipient_serial]
+    end
+
+    # string - Incoming Message Recipient(the Client Cert used to encrypt this message)'s issuer
+    def recipient_issuer
+      @attributes[:recipient_issuer]
+    end
+
     # boolean - Message body received?
     def message_received
       @attributes[:message_received]
