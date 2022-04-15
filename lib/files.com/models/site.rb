@@ -624,6 +624,11 @@ module Files
       @attributes[:welcome_email_cc]
     end
 
+    # string - Include this email subject in welcome emails if enabled
+    def welcome_email_subject
+      @attributes[:welcome_email_subject]
+    end
+
     # boolean - Will the welcome email be sent to new users?
     def welcome_email_enabled
       @attributes[:welcome_email_enabled]
@@ -669,6 +674,7 @@ module Files
     #   ask_about_overwrites - boolean - If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
     #   show_request_access_link - boolean - Show request access link for users without access?  Currently unused.
     #   welcome_email_cc - string - Include this email in welcome emails if enabled
+    #   welcome_email_subject - string - Include this email subject in welcome emails if enabled
     #   welcome_custom_text - string - Custom text send in user welcome email
     #   language - string - Site default language
     #   windows_mode_ftp - boolean - Does FTP user Windows emulation mode?
@@ -781,6 +787,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: reply_to_email must be an String") if params.dig(:reply_to_email) and !params.dig(:reply_to_email).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: bundle_expiration must be an Integer") if params.dig(:bundle_expiration) and !params.dig(:bundle_expiration).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: welcome_email_cc must be an String") if params.dig(:welcome_email_cc) and !params.dig(:welcome_email_cc).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: welcome_email_subject must be an String") if params.dig(:welcome_email_subject) and !params.dig(:welcome_email_subject).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: welcome_custom_text must be an String") if params.dig(:welcome_custom_text) and !params.dig(:welcome_custom_text).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params.dig(:language) and !params.dig(:language).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: default_time_zone must be an String") if params.dig(:default_time_zone) and !params.dig(:default_time_zone).is_a?(String)
