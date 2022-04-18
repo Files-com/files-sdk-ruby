@@ -79,6 +79,11 @@ module Files
       @attributes[:subject]
     end
 
+    # string - Date Header
+    def date
+      @attributes[:date]
+    end
+
     # string - Encrypted Payload Body Size
     def body_size
       @attributes[:body_size]

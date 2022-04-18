@@ -64,6 +64,11 @@ module Files
       @attributes[:as2_from]
     end
 
+    # string - Date Header
+    def date
+      @attributes[:date]
+    end
+
     # string - AS2 Message Id
     def message_id
       @attributes[:message_id]
