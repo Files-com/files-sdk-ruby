@@ -294,6 +294,15 @@ module Files
       @attributes[:preview] = value
     end
 
+    # boolean - Create parent directories if they do not exist?
+    def mkdir_parents
+      @attributes[:mkdir_parents]
+    end
+
+    def mkdir_parents=(value)
+      @attributes[:mkdir_parents] = value
+    end
+
     def save
       new_obj = Folder.create(path, @attributes, @options)
       @attributes = new_obj.attributes
@@ -327,6 +336,7 @@ module Files
 
     # Parameters:
     #   path (required) - string - Path to operate on.
+    #   mkdir_parents - boolean - Create parent directories if they do not exist?
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
