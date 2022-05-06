@@ -73,12 +73,12 @@ module Files
     end
 
     # string - Subject of public certificate used for message security.
-    def public_certificate_subject
-      @attributes[:public_certificate_subject]
+    def public_certificate_subjec
+      @attributes[:public_certificate_subjec]
     end
 
-    def public_certificate_subject=(value)
-      @attributes[:public_certificate_subject] = value
+    def public_certificate_subjec=(value)
+      @attributes[:public_certificate_subjec] = value
     end
 
     # string - Issuer of public certificate used for message security.

@@ -44,6 +44,11 @@ module Files
       @attributes[:processing_result]
     end
 
+    # string - Result of processing description.
+    def processing_result_description
+      @attributes[:processing_result_description]
+    end
+
     # string - AS2 Message Integrity Check SHA1
     def mic
       @attributes[:mic]
@@ -97,6 +102,11 @@ module Files
     # object - HTTP Headers received for this message.
     def http_response_headers
       @attributes[:http_response_headers]
+    end
+
+    # double - HTTP transmission duration in seceonds
+    def http_transmission_duration
+      @attributes[:http_transmission_duration]
     end
 
     # boolean - Did the partner give a response body?

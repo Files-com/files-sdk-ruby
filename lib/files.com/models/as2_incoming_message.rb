@@ -49,6 +49,11 @@ module Files
       @attributes[:processing_result]
     end
 
+    # string - Result of processing description.
+    def processing_result_description
+      @attributes[:processing_result_description]
+    end
+
     # string - AS2 Message Integrity Check
     def mic
       @attributes[:mic]
