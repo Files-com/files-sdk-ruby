@@ -12,6 +12,7 @@
   "notify_on_copy": true,
   "recursive": true,
   "send_interval": "fifteen_minutes",
+  "message": "custom notification email message",
   "unsubscribed": true,
   "unsubscribed_reason": "",
   "user_id": 1,
@@ -28,6 +29,7 @@
 * `notify_on_copy` (boolean): Triggers notification when moving or copying files to this path
 * `recursive` (boolean): Enable notifications for each subfolder in this path
 * `send_interval` (string): The time interval that notifications are aggregated to
+* `message` (string): Custom message to include in notification emails.
 * `unsubscribed` (boolean): Is the user unsubscribed from this notification?
 * `unsubscribed_reason` (string): The reason that the user unsubscribed
 * `user_id` (int64): Notification user ID
@@ -89,6 +91,7 @@ Files::Notification.create(
   notify_user_actions: true, 
   recursive: true, 
   send_interval: "daily", 
+  message: "custom notification email message", 
   group_id: 1, 
   username: "User"
 )
@@ -101,6 +104,7 @@ Files::Notification.create(
 * `notify_user_actions` (boolean): If `true` actions initiated by the user will still result in a notification
 * `recursive` (boolean): If `true`, enable notifications for each subfolder in this path
 * `send_interval` (string): The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+* `message` (string): Custom message to include in notification emails.
 * `group_id` (int64): The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
 * `path` (string): Path
 * `username` (string): The username of the user to notify.  Provide `user_id`, `username` or `group_id`.
@@ -115,7 +119,8 @@ Files::Notification.update(id,
   notify_on_copy: true, 
   notify_user_actions: true, 
   recursive: true, 
-  send_interval: "daily"
+  send_interval: "daily", 
+  message: "custom notification email message"
 )
 ```
 
@@ -126,6 +131,7 @@ Files::Notification.update(id,
 * `notify_user_actions` (boolean): If `true` actions initiated by the user will still result in a notification
 * `recursive` (boolean): If `true`, enable notifications for each subfolder in this path
 * `send_interval` (string): The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+* `message` (string): Custom message to include in notification emails.
 
 
 ---
@@ -152,7 +158,8 @@ notification.update(
   notify_on_copy: true,
   notify_user_actions: true,
   recursive: true,
-  send_interval: "daily"
+  send_interval: "daily",
+  message: "custom notification email message"
 )
 ```
 
@@ -163,6 +170,7 @@ notification.update(
 * `notify_user_actions` (boolean): If `true` actions initiated by the user will still result in a notification
 * `recursive` (boolean): If `true`, enable notifications for each subfolder in this path
 * `send_interval` (string): The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+* `message` (string): Custom message to include in notification emails.
 
 
 ---

@@ -81,6 +81,15 @@ module Files
       @attributes[:send_interval] = value
     end
 
+    # string - Custom message to include in notification emails.
+    def message
+      @attributes[:message]
+    end
+
+    def message=(value)
+      @attributes[:message] = value
+    end
+
     # boolean - Is the user unsubscribed from this notification?
     def unsubscribed
       @attributes[:unsubscribed]
@@ -131,12 +140,14 @@ module Files
     #   notify_user_actions - boolean - If `true` actions initiated by the user will still result in a notification
     #   recursive - boolean - If `true`, enable notifications for each subfolder in this path
     #   send_interval - string - The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+    #   message - string - Custom message to include in notification emails.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if params.dig(:send_interval) and !params.dig(:send_interval).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message must be an String") if params.dig(:message) and !params.dig(:message).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/notifications/#{@attributes[:id]}", :patch, params, @options)
@@ -224,12 +235,14 @@ module Files
     #   notify_user_actions - boolean - If `true` actions initiated by the user will still result in a notification
     #   recursive - boolean - If `true`, enable notifications for each subfolder in this path
     #   send_interval - string - The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+    #   message - string - Custom message to include in notification emails.
     #   group_id - int64 - The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
     #   path - string - Path
     #   username - string - The username of the user to notify.  Provide `user_id`, `username` or `group_id`.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if params.dig(:send_interval) and !params.dig(:send_interval).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message must be an String") if params.dig(:message) and !params.dig(:message).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
@@ -243,11 +256,13 @@ module Files
     #   notify_user_actions - boolean - If `true` actions initiated by the user will still result in a notification
     #   recursive - boolean - If `true`, enable notifications for each subfolder in this path
     #   send_interval - string - The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
+    #   message - string - Custom message to include in notification emails.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if params.dig(:send_interval) and !params.dig(:send_interval).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message must be an String") if params.dig(:message) and !params.dig(:message).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/notifications/#{params[:id]}", :patch, params, options)
