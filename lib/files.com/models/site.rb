@@ -39,6 +39,11 @@ module Files
       @attributes[:allowed_2fa_method_yubi]
     end
 
+    # boolean - Are users allowed to configure their two factor authentication to be bypassed for FTP/SFTP/WebDAV?
+    def allowed_2fa_method_bypass_for_ftp_sftp_dav
+      @attributes[:allowed_2fa_method_bypass_for_ftp_sftp_dav]
+    end
+
     # int64 - User ID for the main site administrator
     def admin_user_id
       @attributes[:admin_user_id]
@@ -731,6 +736,7 @@ module Files
     #   allowed_2fa_method_totp - boolean - Is TOTP two factor authentication allowed?
     #   allowed_2fa_method_webauthn - boolean - Is WebAuthn two factor authentication allowed?
     #   allowed_2fa_method_yubi - boolean - Is yubikey two factor authentication allowed?
+    #   allowed_2fa_method_bypass_for_ftp_sftp_dav - boolean - Are users allowed to configure their two factor authentication to be bypassed for FTP/SFTP/WebDAV?
     #   require_2fa - boolean - Require two-factor authentication for all users?
     #   require_2fa_user_type - string - What type of user is required to use two-factor authentication (when require_2fa is set to `true` for this site)?
     #   color2_top - string - Top bar background color
