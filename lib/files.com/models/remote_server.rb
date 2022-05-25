@@ -288,6 +288,15 @@ module Files
       @attributes[:azure_blob_storage_account] = value
     end
 
+    # string - Shared Access Signature (SAS) token
+    def azure_blob_storage_sas_token
+      @attributes[:azure_blob_storage_sas_token]
+    end
+
+    def azure_blob_storage_sas_token=(value)
+      @attributes[:azure_blob_storage_sas_token] = value
+    end
+
     # string - Azure Blob Storage Container name
     def azure_blob_storage_container
       @attributes[:azure_blob_storage_container]
@@ -487,6 +496,7 @@ module Files
     #   one_drive_account_type - string - Either personal or business_other account types
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
+    #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   s3_compatible_region - string - S3-compatible endpoint
@@ -533,6 +543,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params.dig(:azure_blob_storage_sas_token) and !params.dig(:azure_blob_storage_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
@@ -635,6 +646,7 @@ module Files
     #   one_drive_account_type - string - Either personal or business_other account types
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
+    #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   s3_compatible_region - string - S3-compatible endpoint
@@ -677,6 +689,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params.dig(:azure_blob_storage_sas_token) and !params.dig(:azure_blob_storage_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
@@ -724,6 +737,7 @@ module Files
     #   one_drive_account_type - string - Either personal or business_other account types
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
+    #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   s3_compatible_region - string - S3-compatible endpoint
@@ -769,6 +783,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params.dig(:one_drive_account_type) and !params.dig(:one_drive_account_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params.dig(:azure_blob_storage_sas_token) and !params.dig(:azure_blob_storage_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)

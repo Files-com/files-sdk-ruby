@@ -27,6 +27,15 @@ module Files
       @attributes[:automation] = value
     end
 
+    # boolean - Indicates if the automation has been deleted.
+    def deleted
+      @attributes[:deleted]
+    end
+
+    def deleted=(value)
+      @attributes[:deleted] = value
+    end
+
     # boolean - If true, this automation will not run.
     def disabled
       @attributes[:disabled]
@@ -52,6 +61,15 @@ module Files
 
     def interval=(value)
       @attributes[:interval] = value
+    end
+
+    # date-time - Time when automation was last modified. Does not change for name or description updates.
+    def last_modified_at
+      @attributes[:last_modified_at]
+    end
+
+    def last_modified_at=(value)
+      @attributes[:last_modified_at] = value
     end
 
     # string - Name for this automation.
@@ -189,8 +207,16 @@ module Files
       @attributes[:destination] = value
     end
 
+    # int64 - Set to the ID of automation used a clone template. For
+    def cloned_from
+      @attributes[:cloned_from]
+    end
+
+    def cloned_from=(value)
+      @attributes[:cloned_from] = value
+    end
+
     # Parameters:
-    #   automation (required) - string - Automation type
     #   source - string - Source Path
     #   destination - string - DEPRECATED: Destination Path. Use `destinations` instead.
     #   destinations - array(string) - A list of String destination paths or Hash of folder_path and optional file_path.
@@ -207,12 +233,12 @@ module Files
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
+    #   automation - string - Automation type
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params.dig(:source) and !params.dig(:source).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destinations must be an Array") if params.dig(:destinations) and !params.dig(:destinations).is_a?(Array)
@@ -226,8 +252,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-      raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
       Api.send_request("/automations/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -258,13 +284,14 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  Send a cursor value to resume an existing list from the point at which you left off.  Get a cursor from an existing list via either the X-Files-Cursor-Next header or the X-Files-Cursor-Prev header.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `automation`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `automation`.
-    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `automation`.
-    #   filter_gteq - object - If set, return records where the specified field is greater than or equal to the supplied value. Valid fields are `automation`.
-    #   filter_like - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `automation`.
-    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `automation`.
-    #   filter_lteq - object - If set, return records where the specified field is less than or equal to the supplied value. Valid fields are `automation`.
+    #   sort_by - object - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `automation`, `last_modified_at` or `disabled`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `automation`, `last_modified_at` or `disabled`. Valid field combinations are `[ disabled, automation ]`.
+    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `automation`, `last_modified_at` or `disabled`. Valid field combinations are `[ disabled, automation ]`.
+    #   filter_gteq - object - If set, return records where the specified field is greater than or equal to the supplied value. Valid fields are `automation`, `last_modified_at` or `disabled`. Valid field combinations are `[ disabled, automation ]`.
+    #   filter_like - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `automation`, `last_modified_at` or `disabled`. Valid field combinations are `[ disabled, automation ]`.
+    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `automation`, `last_modified_at` or `disabled`. Valid field combinations are `[ disabled, automation ]`.
+    #   filter_lteq - object - If set, return records where the specified field is less than or equal to the supplied value. Valid fields are `automation`, `last_modified_at` or `disabled`. Valid field combinations are `[ disabled, automation ]`.
+    #   with_deleted - boolean - Set to true to include deleted automations in the results.
     #   automation - string - DEPRECATED: Type of automation to filter by. Use `filter[automation]` instead.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
@@ -304,7 +331,6 @@ module Files
     end
 
     # Parameters:
-    #   automation (required) - string - Automation type
     #   source - string - Source Path
     #   destination - string - DEPRECATED: Destination Path. Use `destinations` instead.
     #   destinations - array(string) - A list of String destination paths or Hash of folder_path and optional file_path.
@@ -321,8 +347,9 @@ module Files
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
+    #   automation (required) - string - Automation type
+    #   cloned_from - int64 - Set to the ID of automation used a clone template. For
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params.dig(:source) and !params.dig(:source).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destinations must be an Array") if params.dig(:destinations) and !params.dig(:destinations).is_a?(Array)
@@ -338,6 +365,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params.dig(:value) and !params.dig(:value).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloned_from must be an Integer") if params.dig(:cloned_from) and !params.dig(:cloned_from).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
       response, options = Api.send_request("/automations", :post, params, options)
@@ -345,7 +374,6 @@ module Files
     end
 
     # Parameters:
-    #   automation (required) - string - Automation type
     #   source - string - Source Path
     #   destination - string - DEPRECATED: Destination Path. Use `destinations` instead.
     #   destinations - array(string) - A list of String destination paths or Hash of folder_path and optional file_path.
@@ -362,11 +390,11 @@ module Files
     #   trigger - string - How this automation is triggered to run. One of: `realtime`, `daily`, `custom_schedule`, `webhook`, `email`, or `action`.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
+    #   automation - string - Automation type
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params.dig(:source) and !params.dig(:source).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destinations must be an Array") if params.dig(:destinations) and !params.dig(:destinations).is_a?(Array)
@@ -382,8 +410,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params.dig(:trigger) and !params.dig(:trigger).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params.dig(:value) and !params.dig(:value).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-      raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
       response, options = Api.send_request("/automations/#{params[:id]}", :patch, params, options)
       Automation.new(response.data, options)
