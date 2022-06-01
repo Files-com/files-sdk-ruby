@@ -306,6 +306,33 @@ module Files
       @attributes[:azure_blob_storage_container] = value
     end
 
+    # string - Azure File Storage Account name
+    def azure_files_storage_account
+      @attributes[:azure_files_storage_account]
+    end
+
+    def azure_files_storage_account=(value)
+      @attributes[:azure_files_storage_account] = value
+    end
+
+    # string - Shared Access Signature (SAS) token
+    def azure_files_sas_token
+      @attributes[:azure_files_sas_token]
+    end
+
+    def azure_files_sas_token=(value)
+      @attributes[:azure_files_sas_token] = value
+    end
+
+    # string - Azure File Storage Share name
+    def azure_files_share_name
+      @attributes[:azure_files_share_name]
+    end
+
+    def azure_files_share_name=(value)
+      @attributes[:azure_files_share_name] = value
+    end
+
     # string - S3-compatible Bucket name
     def s3_compatible_bucket
       @attributes[:s3_compatible_bucket]
@@ -450,6 +477,15 @@ module Files
       @attributes[:azure_blob_storage_access_key] = value
     end
 
+    # string - Azure File Storage access key.
+    def azure_files_storage_access_key
+      @attributes[:azure_files_storage_access_key]
+    end
+
+    def azure_files_storage_access_key=(value)
+      @attributes[:azure_files_storage_access_key] = value
+    end
+
     # string - S3-compatible secret key
     def s3_compatible_secret_key
       @attributes[:s3_compatible_secret_key]
@@ -473,6 +509,7 @@ module Files
     #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
     #   reset_authentication - boolean - Reset authenticated account
     #   azure_blob_storage_access_key - string - Azure Blob Storage secret key.
+    #   azure_files_storage_access_key - string - Azure File Storage access key.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -497,6 +534,9 @@ module Files
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
+    #   azure_files_storage_account - string - Azure File Storage Account name
+    #   azure_files_share_name - string - Azure File Storage Share name
+    #   azure_files_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   s3_compatible_region - string - S3-compatible endpoint
@@ -520,6 +560,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params.dig(:rackspace_api_key) and !params.dig(:rackspace_api_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params.dig(:azure_blob_storage_access_key) and !params.dig(:azure_blob_storage_access_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_access_key must be an String") if params.dig(:azure_files_storage_access_key) and !params.dig(:azure_files_storage_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -544,6 +585,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params.dig(:azure_blob_storage_sas_token) and !params.dig(:azure_blob_storage_sas_token).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params.dig(:azure_files_storage_account) and !params.dig(:azure_files_storage_account).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_share_name must be an String") if params.dig(:azure_files_share_name) and !params.dig(:azure_files_share_name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_sas_token must be an String") if params.dig(:azure_files_sas_token) and !params.dig(:azure_files_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
@@ -623,6 +667,7 @@ module Files
     #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
     #   reset_authentication - boolean - Reset authenticated account
     #   azure_blob_storage_access_key - string - Azure Blob Storage secret key.
+    #   azure_files_storage_access_key - string - Azure File Storage access key.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -647,6 +692,9 @@ module Files
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
+    #   azure_files_storage_account - string - Azure File Storage Account name
+    #   azure_files_share_name - string - Azure File Storage Share name
+    #   azure_files_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   s3_compatible_region - string - S3-compatible endpoint
@@ -666,6 +714,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params.dig(:rackspace_api_key) and !params.dig(:rackspace_api_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params.dig(:azure_blob_storage_access_key) and !params.dig(:azure_blob_storage_access_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_access_key must be an String") if params.dig(:azure_files_storage_access_key) and !params.dig(:azure_files_storage_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -690,6 +739,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params.dig(:azure_blob_storage_sas_token) and !params.dig(:azure_blob_storage_sas_token).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params.dig(:azure_files_storage_account) and !params.dig(:azure_files_storage_account).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_share_name must be an String") if params.dig(:azure_files_share_name) and !params.dig(:azure_files_share_name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_sas_token must be an String") if params.dig(:azure_files_sas_token) and !params.dig(:azure_files_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
@@ -714,6 +766,7 @@ module Files
     #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
     #   reset_authentication - boolean - Reset authenticated account
     #   azure_blob_storage_access_key - string - Azure Blob Storage secret key.
+    #   azure_files_storage_access_key - string - Azure File Storage access key.
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -738,6 +791,9 @@ module Files
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
+    #   azure_files_storage_account - string - Azure File Storage Account name
+    #   azure_files_share_name - string - Azure File Storage Share name
+    #   azure_files_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   s3_compatible_region - string - S3-compatible endpoint
@@ -760,6 +816,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params.dig(:backblaze_b2_application_key) and !params.dig(:backblaze_b2_application_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params.dig(:rackspace_api_key) and !params.dig(:rackspace_api_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params.dig(:azure_blob_storage_access_key) and !params.dig(:azure_blob_storage_access_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_access_key must be an String") if params.dig(:azure_files_storage_access_key) and !params.dig(:azure_files_storage_access_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params.dig(:hostname) and !params.dig(:hostname).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params.dig(:max_connections) and !params.dig(:max_connections).is_a?(Integer)
@@ -784,6 +841,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params.dig(:azure_blob_storage_account) and !params.dig(:azure_blob_storage_account).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params.dig(:azure_blob_storage_sas_token) and !params.dig(:azure_blob_storage_sas_token).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params.dig(:azure_files_storage_account) and !params.dig(:azure_files_storage_account).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_share_name must be an String") if params.dig(:azure_files_share_name) and !params.dig(:azure_files_share_name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_sas_token must be an String") if params.dig(:azure_files_sas_token) and !params.dig(:azure_files_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
