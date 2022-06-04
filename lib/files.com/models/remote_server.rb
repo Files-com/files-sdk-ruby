@@ -316,21 +316,21 @@ module Files
     end
 
     # string - Shared Access Signature (SAS) token
-    def azure_files_sas_token
-      @attributes[:azure_files_sas_token]
+    def azure_files_storage_sas_token
+      @attributes[:azure_files_storage_sas_token]
     end
 
-    def azure_files_sas_token=(value)
-      @attributes[:azure_files_sas_token] = value
+    def azure_files_storage_sas_token=(value)
+      @attributes[:azure_files_storage_sas_token] = value
     end
 
     # string - Azure File Storage Share name
-    def azure_files_share_name
-      @attributes[:azure_files_share_name]
+    def azure_files_storage_share_name
+      @attributes[:azure_files_storage_share_name]
     end
 
-    def azure_files_share_name=(value)
-      @attributes[:azure_files_share_name] = value
+    def azure_files_storage_share_name=(value)
+      @attributes[:azure_files_storage_share_name] = value
     end
 
     # string - S3-compatible Bucket name
@@ -535,8 +535,8 @@ module Files
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   azure_files_storage_account - string - Azure File Storage Account name
-    #   azure_files_share_name - string - Azure File Storage Share name
-    #   azure_files_sas_token - string - Shared Access Signature (SAS) token
+    #   azure_files_storage_share_name - string - Azure File Storage Share name
+    #   azure_files_storage_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   s3_compatible_region - string - S3-compatible endpoint
@@ -586,8 +586,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params.dig(:azure_blob_storage_sas_token) and !params.dig(:azure_blob_storage_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params.dig(:azure_files_storage_account) and !params.dig(:azure_files_storage_account).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_share_name must be an String") if params.dig(:azure_files_share_name) and !params.dig(:azure_files_share_name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_sas_token must be an String") if params.dig(:azure_files_sas_token) and !params.dig(:azure_files_sas_token).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params.dig(:azure_files_storage_share_name) and !params.dig(:azure_files_storage_share_name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params.dig(:azure_files_storage_sas_token) and !params.dig(:azure_files_storage_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
@@ -693,8 +693,8 @@ module Files
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   azure_files_storage_account - string - Azure File Storage Account name
-    #   azure_files_share_name - string - Azure File Storage Share name
-    #   azure_files_sas_token - string - Shared Access Signature (SAS) token
+    #   azure_files_storage_share_name - string - Azure File Storage Share name
+    #   azure_files_storage_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   s3_compatible_region - string - S3-compatible endpoint
@@ -740,8 +740,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params.dig(:azure_blob_storage_sas_token) and !params.dig(:azure_blob_storage_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params.dig(:azure_files_storage_account) and !params.dig(:azure_files_storage_account).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_share_name must be an String") if params.dig(:azure_files_share_name) and !params.dig(:azure_files_share_name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_sas_token must be an String") if params.dig(:azure_files_sas_token) and !params.dig(:azure_files_sas_token).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params.dig(:azure_files_storage_share_name) and !params.dig(:azure_files_storage_share_name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params.dig(:azure_files_storage_sas_token) and !params.dig(:azure_files_storage_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
@@ -792,8 +792,8 @@ module Files
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   azure_files_storage_account - string - Azure File Storage Account name
-    #   azure_files_share_name - string - Azure File Storage Share name
-    #   azure_files_sas_token - string - Shared Access Signature (SAS) token
+    #   azure_files_storage_share_name - string - Azure File Storage Share name
+    #   azure_files_storage_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
     #   s3_compatible_region - string - S3-compatible endpoint
@@ -842,8 +842,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params.dig(:azure_blob_storage_container) and !params.dig(:azure_blob_storage_container).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params.dig(:azure_blob_storage_sas_token) and !params.dig(:azure_blob_storage_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params.dig(:azure_files_storage_account) and !params.dig(:azure_files_storage_account).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_share_name must be an String") if params.dig(:azure_files_share_name) and !params.dig(:azure_files_share_name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_sas_token must be an String") if params.dig(:azure_files_sas_token) and !params.dig(:azure_files_sas_token).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params.dig(:azure_files_storage_share_name) and !params.dig(:azure_files_storage_share_name).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params.dig(:azure_files_storage_sas_token) and !params.dig(:azure_files_storage_sas_token).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params.dig(:s3_compatible_bucket) and !params.dig(:s3_compatible_bucket).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params.dig(:s3_compatible_endpoint) and !params.dig(:s3_compatible_endpoint).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params.dig(:s3_compatible_region) and !params.dig(:s3_compatible_region).is_a?(String)
