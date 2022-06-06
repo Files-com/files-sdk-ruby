@@ -85,6 +85,7 @@ module Files
   class RequestParamsContainInvalidCharacterError < BadRequestError; end
   class RequestParamsInvalidError < BadRequestError; end
   class RequestParamsRequiredError < BadRequestError; end
+  class SearchAllOnChildPathError < BadRequestError; end
   class UnsupportedCurrencyError < BadRequestError; end
   class UnsupportedHttpResponseFormatError < BadRequestError; end
   class UnsupportedMediaTypeError < BadRequestError; end
