@@ -193,6 +193,7 @@ module Files
 
   class RateLimitedError < APIError; end
   class ReauthenticationRateLimitedError < RateLimitedError; end
+  class TooManyConcurrentRequestsError < RateLimitedError; end
   class TooManyLoginAttemptsError < RateLimitedError; end
   class TooManyRequestsError < RateLimitedError; end
 
