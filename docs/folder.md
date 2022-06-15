@@ -28,8 +28,8 @@ Files::Dir is an alias of Files::Folder
     "id": 1,
     "status": "complete",
     "download_uri": "https://mysite.files.com/...",
-    "type": "complete",
-    "size": 1024
+    "type": "image",
+    "size": "large"
   }
 }
 ```

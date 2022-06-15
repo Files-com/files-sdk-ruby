@@ -24,12 +24,12 @@ module Files
       @attributes[:download_uri]
     end
 
-    # string - Preview status.  Can be invalid, not_generated, generating, complete, or file_too_large
+    # string - Preview type. Can be image, pdf, pdf_native, video, or audio
     def type
       @attributes[:type]
     end
 
-    # int64 - Preview size
+    # string - Preview size
     def size
       @attributes[:size]
     end

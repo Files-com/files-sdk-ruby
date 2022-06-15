@@ -207,15 +207,6 @@ module Files
       @attributes[:destination] = value
     end
 
-    # int64 - Set to the ID of automation used a clone template. For
-    def cloned_from
-      @attributes[:cloned_from]
-    end
-
-    def cloned_from=(value)
-      @attributes[:cloned_from] = value
-    end
-
     # Parameters:
     #   source - string - Source Path
     #   destination - string - DEPRECATED: Destination Path. Use `destinations` instead.
@@ -348,7 +339,6 @@ module Files
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
     #   automation (required) - string - Automation type
-    #   cloned_from - int64 - Set to the ID of automation used a clone template. For
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params.dig(:source) and !params.dig(:source).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
@@ -366,7 +356,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params.dig(:trigger_actions) and !params.dig(:trigger_actions).is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params.dig(:value) and !params.dig(:value).is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params.dig(:automation) and !params.dig(:automation).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloned_from must be an Integer") if params.dig(:cloned_from) and !params.dig(:cloned_from).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: automation") unless params.dig(:automation)
 
       response, options = Api.send_request("/automations", :post, params, options)
