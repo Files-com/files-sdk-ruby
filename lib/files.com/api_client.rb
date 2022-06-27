@@ -150,7 +150,7 @@ module Files
         uri = URI(uri)
         Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
           request = Net::HTTP::Get.new uri
-          request["RANGE"] = "bytes=#{range[0]}-#{range[1]}" if range
+          request["RANGE"] = "bytes=#{range[0]}-#{range[1]}" unless range.empty?
           http.request request do |response|
             io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
             response.read_body do |chunk|
