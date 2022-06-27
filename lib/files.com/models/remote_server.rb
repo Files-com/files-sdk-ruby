@@ -405,6 +405,15 @@ module Files
       @attributes[:private_key] = value
     end
 
+    # string - Passphrase for private key if needed.
+    def private_key_passphrase
+      @attributes[:private_key_passphrase]
+    end
+
+    def private_key_passphrase=(value)
+      @attributes[:private_key_passphrase] = value
+    end
+
     # string - SSL client certificate.
     def ssl_certificate
       @attributes[:ssl_certificate]
@@ -500,6 +509,7 @@ module Files
     #   aws_secret_key - string - AWS secret key.
     #   password - string - Password if needed.
     #   private_key - string - Private key if needed.
+    #   private_key_passphrase - string - Passphrase for private key if needed.
     #   ssl_certificate - string - SSL client certificate.
     #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     #   wasabi_access_key - string - Wasabi access key.
@@ -552,6 +562,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if params.dig(:private_key_passphrase) and !params.dig(:private_key_passphrase).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if params.dig(:ssl_certificate) and !params.dig(:ssl_certificate).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params.dig(:google_cloud_storage_credentials_json) and !params.dig(:google_cloud_storage_credentials_json).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params.dig(:wasabi_access_key) and !params.dig(:wasabi_access_key).is_a?(String)
@@ -658,6 +669,7 @@ module Files
     #   aws_secret_key - string - AWS secret key.
     #   password - string - Password if needed.
     #   private_key - string - Private key if needed.
+    #   private_key_passphrase - string - Passphrase for private key if needed.
     #   ssl_certificate - string - SSL client certificate.
     #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     #   wasabi_access_key - string - Wasabi access key.
@@ -706,6 +718,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if params.dig(:private_key_passphrase) and !params.dig(:private_key_passphrase).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if params.dig(:ssl_certificate) and !params.dig(:ssl_certificate).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params.dig(:google_cloud_storage_credentials_json) and !params.dig(:google_cloud_storage_credentials_json).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params.dig(:wasabi_access_key) and !params.dig(:wasabi_access_key).is_a?(String)
@@ -757,6 +770,7 @@ module Files
     #   aws_secret_key - string - AWS secret key.
     #   password - string - Password if needed.
     #   private_key - string - Private key if needed.
+    #   private_key_passphrase - string - Passphrase for private key if needed.
     #   ssl_certificate - string - SSL client certificate.
     #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     #   wasabi_access_key - string - Wasabi access key.
@@ -808,6 +822,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params.dig(:aws_secret_key) and !params.dig(:aws_secret_key).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params.dig(:private_key) and !params.dig(:private_key).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if params.dig(:private_key_passphrase) and !params.dig(:private_key_passphrase).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if params.dig(:ssl_certificate) and !params.dig(:ssl_certificate).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params.dig(:google_cloud_storage_credentials_json) and !params.dig(:google_cloud_storage_credentials_json).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params.dig(:wasabi_access_key) and !params.dig(:wasabi_access_key).is_a?(String)
