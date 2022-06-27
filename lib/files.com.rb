@@ -2,6 +2,7 @@
 
 require "cgi"
 require "faraday"
+require 'faraday/multipart' unless defined? Faraday::Request::Multipart
 require "json"
 require "logger"
 require "openssl"
@@ -12,6 +13,9 @@ require "socket"
 require "uri"
 require "addressable/uri"
 require "concurrent/promise"
+
+require 'faraday/net_http_persistent'
+require 'net/http/persistent'
 
 $LOAD_PATH.push __dir__
 

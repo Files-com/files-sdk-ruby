@@ -71,7 +71,7 @@ module Files
     end
 
     def self.from_path(path)
-      File.metadata(path)
+      File.find(path)
     end
 
     def self.get(path, params = {}, options = {})

@@ -99,16 +99,16 @@ RSpec.describe Files::File, :with_test_folder, skip: ENV["GITLAB"] do
   end
 
   describe ".from_path" do
-    it "returns a File object for a file" do
+    it "returns a file type" do
       Files::File.open(test_folder.join("read.txt").to_s, 'w', options) do |f|
         f.write("contents")
       end
-      expect(Files::File.from_path("read.txt")).to be_a_kind_of(Files::File)
+      expect(Files::File.from_path(test_folder.join("read.txt").to_s).type).to eq("file")
     end
 
-    it "returns a Folder object for a Folder" do
-      Files::Folder.mkdir("testdir")
-      expect(Files::File.from_path("testdir")).to be_a_kind_of(Files::Folder)
+    it "returns a directory type" do
+      Files::Folder.mkdir("testdir") unless Files::Folder.exist?("testdir")
+      expect(Files::File.from_path("testdir").type).to eq("directory")
     end
   end
 end

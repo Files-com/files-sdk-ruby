@@ -16,7 +16,7 @@ Or add this to your app's Gemfile:
 
 ### Requirements
 
-* Ruby 2.3+
+* Ruby 2.7+
 
 
 ## Usage

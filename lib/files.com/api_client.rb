@@ -34,7 +34,11 @@ module Files
 
     def self.build_default_conn(force_net_http: false)
       conn = Faraday.new do |builder|
-        builder.use Faraday::Request::Multipart
+        if defined? Faraday::Request::Multipart
+          builder.use Faraday::Request::Multipart
+        else
+          builder.request :multipart
+        end
         builder.use Faraday::Request::UrlEncoded
         builder.use Faraday::Response::RaiseError
 
