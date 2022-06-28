@@ -181,6 +181,7 @@ module Files
     private def api_url(url = "", base_url = nil)
       uri        = Addressable::URI.new
       uri.host   = Addressable::URI.parse(base_url).host
+      uri.port   = Addressable::URI.parse(base_url).port
       uri.path   = "/api/rest/v1" + Files::URI.normalized_path(url)
       uri.scheme = Addressable::URI.parse(base_url).scheme
 
