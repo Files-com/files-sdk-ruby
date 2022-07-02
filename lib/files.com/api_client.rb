@@ -287,13 +287,13 @@ module Files
         code: error_data[:code] || resp.http_status,
       }
 
-      return APIError.new(error_data[:message], opts) unless resp&.data&.dig(:type)
+      return APIError.new(error_data[:message], **opts) unless resp&.data&.dig(:type)
 
       begin
         error_class = Files.const_get(resp.data[:type].split("/").map { |piece| piece.split("-").map(&:capitalize).join('') + 'Error' }.join("::"))
         error_class.new(error_data[:message], opts)
       rescue NameError
-        APIError.new(error_data[:message], opts)
+        APIError.new(error_data[:message], **opts)
       end
     end
 
