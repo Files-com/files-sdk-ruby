@@ -158,6 +158,7 @@ module Files
 
   class ProcessingFailureError < APIError; end
   class BundleOnlyAllowsPreviewsError < ProcessingFailureError; end
+  class CouldNotCreateParentError < ProcessingFailureError; end
   class DestinationExistsError < ProcessingFailureError; end
   class DestinationFolderLimitedError < ProcessingFailureError; end
   class DestinationParentConflictError < ProcessingFailureError; end
