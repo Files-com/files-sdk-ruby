@@ -149,6 +149,15 @@ module Files
       @attributes[:email] = value
     end
 
+    # date-time - User's first login time
+    def first_login_at
+      @attributes[:first_login_at]
+    end
+
+    def first_login_at=(value)
+      @attributes[:first_login_at] = value
+    end
+
     # boolean - Can the user access with FTP/FTPS?
     def ftp_permission
       @attributes[:ftp_permission]
@@ -426,6 +435,11 @@ module Files
 
     def type_of_2fa=(value)
       @attributes[:type_of_2fa] = value
+    end
+
+    # date-time - User record last updated at.  Note this may be incremented because of internal or external updates.
+    def updated_at
+      @attributes[:updated_at]
     end
 
     # string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
