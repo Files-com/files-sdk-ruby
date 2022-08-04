@@ -186,6 +186,11 @@ module Files
       @attributes[:size] = value
     end
 
+    # date-time - File created date/time
+    def created_at
+      @attributes[:created_at]
+    end
+
     # date-time - File last modified date/time, according to the server.  This is the timestamp of the last Files.com operation of the file, regardless of what modified timestamp was sent.
     def mtime
       @attributes[:mtime]
