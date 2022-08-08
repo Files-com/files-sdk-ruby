@@ -160,7 +160,7 @@ module Files
         buf = io.read(upload.partsize) || ""
         bytes_written += buf.length
         method = upload.http_method.downcase.to_sym
-        response = client(options).remote_request(method, upload.upload_uri, { "Content-Length": buf.length.to_s }, buf)
+        response = client(options).remote_request(method, upload.upload_uri, { "Content-Length": buf.length.to_s, "Content-Type": "application/octet-stream" }, buf)
         etags << { etag: response.headers["ETag"], part: upload.part_number }
         return upload, etags, bytes_written if io.eof?
       end
