@@ -43,9 +43,11 @@
   ],
   "webhook_url": "https://app.files.com/api/webhooks/abc123",
   "trigger_actions": [
-    "[ \"create\" ]"
+    "create"
   ],
-  "value": "{\"limit\": \"1\"}"
+  "value": {
+    "limit": "1"
+  }
 }
 ```
 
@@ -127,8 +129,8 @@ Files::Automation.create(
   schedule: "{\"days_of_week\": [ 0, 1, 3 ], \"times_of_day\": [ \"7:30\", \"11:30\" ], \"time_zone\": \"Eastern Time (US & Canada)\"}", 
   disabled: true, 
   trigger: "realtime", 
-  trigger_actions: ["[ \"create\" ]"], 
-  value: "{\"limit\": \"1\"}", 
+  trigger_actions: ["create"], 
+  value: {"limit":"1"}, 
   automation: "create_folder"
 )
 ```
@@ -168,8 +170,8 @@ Files::Automation.update(id,
   schedule: "{\"days_of_week\": [ 0, 1, 3 ], \"times_of_day\": [ \"7:30\", \"11:30\" ], \"time_zone\": \"Eastern Time (US & Canada)\"}", 
   disabled: true, 
   trigger: "realtime", 
-  trigger_actions: ["[ \"create\" ]"], 
-  value: "{\"limit\": \"1\"}", 
+  trigger_actions: ["create"], 
+  value: {"limit":"1"}, 
   automation: "create_folder"
 )
 ```
@@ -225,8 +227,8 @@ automation.update(
   schedule: "{\"days_of_week\": [ 0, 1, 3 ], \"times_of_day\": [ \"7:30\", \"11:30\" ], \"time_zone\": \"Eastern Time (US & Canada)\"}",
   disabled: true,
   trigger: "realtime",
-  trigger_actions: ["[ \"create\" ]"],
-  value: "{\"limit\": \"1\"}",
+  trigger_actions: ["create"],
+  value: {"limit":"1"},
   automation: "create_folder"
 )
 ```
