@@ -45,6 +45,15 @@ module Files
       @attributes[:password_protected] = value
     end
 
+    # string - Permissions that apply to Folders in this Share Link.
+    def permissions
+      @attributes[:permissions]
+    end
+
+    def permissions=(value)
+      @attributes[:permissions] = value
+    end
+
     # boolean - Restrict users to previewing files only?
     def preview_only
       @attributes[:preview_only]
@@ -296,6 +305,7 @@ module Files
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   note - string - Bundle internal note
+    #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
@@ -319,6 +329,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params.dig(:max_uses) and !params.dig(:max_uses).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params.dig(:permissions) and !params.dig(:permissions).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       Api.send_request("/bundles/#{@attributes[:id]}", :patch, params, @options)
@@ -405,6 +416,7 @@ module Files
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
+    #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
@@ -424,6 +436,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params.dig(:permissions) and !params.dig(:permissions).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: paths") unless params.dig(:paths)
@@ -462,6 +475,7 @@ module Files
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   note - string - Bundle internal note
+    #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
@@ -484,6 +498,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params.dig(:max_uses) and !params.dig(:max_uses).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params.dig(:permissions) and !params.dig(:permissions).is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
 
       response, options = Api.send_request("/bundles/#{params[:id]}", :patch, params, options)

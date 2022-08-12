@@ -99,7 +99,7 @@ module Files
       @attributes[:source] = value
     end
 
-    # string - Destination Path
+    # array - Destination Path
     def destinations
       @attributes[:destinations]
     end
@@ -180,7 +180,7 @@ module Files
       @attributes[:webhook_url] = value
     end
 
-    # string - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
+    # array - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     def trigger_actions
       @attributes[:trigger_actions]
     end

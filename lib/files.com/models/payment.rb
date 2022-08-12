@@ -39,7 +39,7 @@ module Files
       @attributes[:download_uri]
     end
 
-    # InvoiceLineItem - Associated invoice line items
+    # array - Associated invoice line items
     def invoice_line_items
       @attributes[:invoice_line_items]
     end
@@ -49,7 +49,7 @@ module Files
       @attributes[:method]
     end
 
-    # PaymentLineItem - Associated payment line items
+    # array - Associated payment line items
     def payment_line_items
       @attributes[:payment_line_items]
     end

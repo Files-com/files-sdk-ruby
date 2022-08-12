@@ -45,7 +45,7 @@ module Files
       @attributes[:group_name] = value
     end
 
-    # int64 - Only notify on actions made by a member of one of the specified groups
+    # array - Only notify on actions made by a member of one of the specified groups
     def triggering_group_ids
       @attributes[:triggering_group_ids]
     end
@@ -54,7 +54,7 @@ module Files
       @attributes[:triggering_group_ids] = value
     end
 
-    # int64 - Only notify on actions made one of the specified users
+    # array - Only notify on actions made one of the specified users
     def triggering_user_ids
       @attributes[:triggering_user_ids]
     end

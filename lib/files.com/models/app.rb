@@ -39,7 +39,7 @@ module Files
       @attributes[:logo_url]
     end
 
-    # string - Screenshots of the App
+    # array - Screenshots of the App
     def screenshot_list_urls
       @attributes[:screenshot_list_urls]
     end

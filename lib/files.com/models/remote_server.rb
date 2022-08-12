@@ -81,6 +81,24 @@ module Files
       @attributes[:max_connections] = value
     end
 
+    # boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a sitewide setting which will force it to true.
+    def pin_to_site_region
+      @attributes[:pin_to_site_region]
+    end
+
+    def pin_to_site_region=(value)
+      @attributes[:pin_to_site_region] = value
+    end
+
+    # string - If set, all communciations with this remote server are made through the provided region.
+    def pinned_region
+      @attributes[:pinned_region]
+    end
+
+    def pinned_region=(value)
+      @attributes[:pinned_region] = value
+    end
+
     # string - S3 bucket name
     def s3_bucket
       @attributes[:s3_bucket]
@@ -523,6 +541,7 @@ module Files
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a sitewide setting which will force it to true.
     #   port - int64 - Port for remote server.  Not needed for S3.
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
@@ -683,6 +702,7 @@ module Files
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a sitewide setting which will force it to true.
     #   port - int64 - Port for remote server.  Not needed for S3.
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region
@@ -784,6 +804,7 @@ module Files
     #   hostname - string - Hostname or IP address
     #   name - string - Internal name for your reference
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a sitewide setting which will force it to true.
     #   port - int64 - Port for remote server.  Not needed for S3.
     #   s3_bucket - string - S3 bucket name
     #   s3_region - string - S3 region

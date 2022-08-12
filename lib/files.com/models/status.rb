@@ -29,7 +29,7 @@ module Files
       @attributes[:data]
     end
 
-    # Errors - A list of api errors
+    # array - A list of api errors
     def errors
       @attributes[:errors]
     end

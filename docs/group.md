@@ -6,25 +6,19 @@
 {
   "id": 1,
   "name": "owners",
-  "admin_ids": [
-    1
-  ],
+  "admin_ids": "1",
   "notes": "",
-  "user_ids": [
-    1
-  ],
-  "usernames": [
-    "user"
-  ]
+  "user_ids": "1",
+  "usernames": "user"
 }
 ```
 
 * `id` (int64): Group ID
 * `name` (string): Group name
-* `admin_ids` (string): List of user IDs who are group administrators (separated by commas)
+* `admin_ids` (string): Comma-delimited list of user IDs who are group administrators (separated by commas)
 * `notes` (string): Notes about this group
-* `user_ids` (array): List of user IDs who belong to this group (separated by commas)
-* `usernames` (array): List of usernames who belong to this group (separated by commas)
+* `user_ids` (string): Comma-delimited list of user IDs who belong to this group (separated by commas)
+* `usernames` (string): Comma-delimited list of usernames who belong to this group (separated by commas)
 
 
 ---
@@ -71,8 +65,8 @@ Files::Group.find(id)
 ```
 Files::Group.create(
   name: "owners", 
-  user_ids: [1], 
-  admin_ids: [1]
+  user_ids: "1", 
+  admin_ids: "1"
 )
 ```
 
@@ -91,8 +85,8 @@ Files::Group.create(
 ```
 Files::Group.update(id, 
   name: "owners", 
-  user_ids: [1], 
-  admin_ids: [1]
+  user_ids: "1", 
+  admin_ids: "1"
 )
 ```
 
@@ -127,8 +121,8 @@ group = Files::Group.list.first
 
 group.update(
   name: "owners",
-  user_ids: [1],
-  admin_ids: [1]
+  user_ids: "1",
+  admin_ids: "1"
 )
 ```
 
