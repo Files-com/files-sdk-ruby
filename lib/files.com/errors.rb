@@ -197,6 +197,7 @@ module Files
   class TooManyConcurrentRequestsError < RateLimitedError; end
   class TooManyLoginAttemptsError < RateLimitedError; end
   class TooManyRequestsError < RateLimitedError; end
+  class TooManySharesError < RateLimitedError; end
 
   class ServiceUnavailableError < APIError; end
   class UploadsUnavailableError < ServiceUnavailableError; end
