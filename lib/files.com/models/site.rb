@@ -743,6 +743,7 @@ module Files
     #   user_requests_notify_admins - boolean - Send email to site admins when a user request is received?
     #   ftp_enabled - boolean - Is FTP enabled?
     #   sftp_enabled - boolean - Is SFTP enabled?
+    #   bundle_watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     #   allowed_2fa_method_sms - boolean - Is SMS two factor authentication allowed?
     #   allowed_2fa_method_u2f - boolean - Is U2F two factor authentication allowed?
     #   allowed_2fa_method_totp - boolean - Is TOTP two factor authentication allowed?
@@ -824,6 +825,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params.dig(:password_validity_days) and !params.dig(:password_validity_days).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_min_length must be an Integer") if params.dig(:password_min_length) and !params.dig(:password_min_length).is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: disable_users_from_inactivity_period_days must be an Integer") if params.dig(:disable_users_from_inactivity_period_days) and !params.dig(:disable_users_from_inactivity_period_days).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: bundle_watermark_value must be an Hash") if params.dig(:bundle_watermark_value) and !params.dig(:bundle_watermark_value).is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: require_2fa_user_type must be an String") if params.dig(:require_2fa_user_type) and !params.dig(:require_2fa_user_type).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: color2_top must be an String") if params.dig(:color2_top) and !params.dig(:color2_top).is_a?(String)
       raise InvalidParameterError.new("Bad parameter: color2_left must be an String") if params.dig(:color2_left) and !params.dig(:color2_left).is_a?(String)

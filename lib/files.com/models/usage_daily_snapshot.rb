@@ -59,7 +59,7 @@ module Files
       @attributes[:root_storage]
     end
 
-    # array - Usage broken down by each top-level folder
+    # object - Usage broken down by each top-level folder
     def usage_by_top_level_dir
       @attributes[:usage_by_top_level_dir]
     end
