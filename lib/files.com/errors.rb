@@ -145,6 +145,7 @@ module Files
   class NotFoundError < APIError; end
   class ApiKeyNotFoundError < NotFoundError; end
   class BundlePathNotFoundError < NotFoundError; end
+  class BundleRegistrationNotFoundError < NotFoundError; end
   class CodeNotFoundError < NotFoundError; end
   class FileNotFoundError < NotFoundError; end
   class FileUploadNotFoundError < NotFoundError; end
