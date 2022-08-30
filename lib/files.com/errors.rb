@@ -56,7 +56,6 @@ module Files
     end
   end
 
-
   class BadRequestError < APIError; end
   class AttachmentTooLargeError < BadRequestError; end
   class CannotDownloadDirectoryError < BadRequestError; end

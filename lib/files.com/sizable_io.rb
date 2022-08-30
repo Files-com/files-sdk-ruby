@@ -12,7 +12,7 @@ module Files
       read_io.content_length_promise.wait.value
     end
 
-    def wait!(timeout=nil)
+    def wait!(timeout = nil)
       read_io.ready_promise.wait(timeout)
       error!
       self
@@ -29,6 +29,7 @@ module Files
 
     def close
       raise @with_error if @with_error
+
       super
       read_io.content_length_promise.try_set(nil)
       read_io.ready_promise.try_set(true)
@@ -38,7 +39,7 @@ module Files
       raise read_io.with_error if read_io.with_error
     end
 
-    def set_error(e)
+    def do_set_error(e)
       read_io.with_error = e
     end
 

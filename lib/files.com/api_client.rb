@@ -161,8 +161,8 @@ module Files
               response.error! if response.code.to_i >= 300
               io.ready! if io.respond_to?(:ready!)
               io << chunk
-            rescue => e
-              io.set_error(e)  if io.respond_to?(:set_error)
+            rescue StandardError => e
+              io.do_set_error(e) if io.respond_to?(:do_set_error)
               io.close
             end
           end

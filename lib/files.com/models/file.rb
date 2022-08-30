@@ -25,10 +25,6 @@ module Files
       options[:client] || ApiClient.active_client
     end
 
-    def self.copy(old_path, new_path)
-      FileAction.copy(old_path, destination: new_path)
-    end
-
     def self.copy_stream(*_args)
       raise NotImplementedError
     end
@@ -57,11 +53,6 @@ module Files
       exist?(path, options)
     end
 
-    def self.find(path, params = {}, options = {})
-      params[:action] = "stat"
-      download(path, params, options)
-    end
-
     def self.for_fd(*_args)
       raise NotImplementedError
     end
@@ -74,20 +65,12 @@ module Files
       File.find(path)
     end
 
-    def self.get(path, params = {}, options = {})
-      find(path, params, options)
-    end
-
     def self.identical?(path1, path2)
       new(path1).crc32 == new(path2).crc32
     end
 
     def self.lstat(path)
       new(path).stat
-    end
-
-    def self.move(old_path, new_path)
-      FileAction.move(old_path, destination: new_path)
     end
 
     def self.mtime(path)
@@ -287,10 +270,6 @@ module Files
       @write_io.codepoints *args, &block
     end
 
-    def copy(destination)
-      File.copy(path, destination)
-    end
-
     def ctime(*_args)
       mtime
     end
@@ -428,10 +407,6 @@ module Files
 
     def lstat(*_args)
       stats
-    end
-
-    def move(destination)
-      File.move(path, destination)
     end
 
     def mv(destination)
