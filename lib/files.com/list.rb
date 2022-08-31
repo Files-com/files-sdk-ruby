@@ -16,7 +16,7 @@ module Files
     # Note that this method will make as many API calls as necessary to fetch
     # all resources. For more granular control, please see +each+ and
     # +next_page+.
-    def auto_paging_each
+    def auto_paging_each(&block)
       return enum_for(:auto_paging_each).lazy unless block_given?
 
       loop do
@@ -26,8 +26,9 @@ module Files
         page.set_cursor
 
         page.wrap_data do |data|
-          yield data
+          block.call(data)
         end
+
         break if page.on_last_page?
       end
     end

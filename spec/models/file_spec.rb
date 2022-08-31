@@ -1,7 +1,7 @@
 require "spec_helper"
 require "tempfile"
 
-RSpec.describe Files::File, :with_test_folder, skip: ENV["GITLAB"] do
+RSpec.describe Files::File, :with_test_folder, skip: ENV.fetch("GITLAB", nil) do
   describe "#read" do
     before do
       Files::File.open(test_folder.join("[[strange stuff]]#yes.text").to_s, 'w', options) do |f|

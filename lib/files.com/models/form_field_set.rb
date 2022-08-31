@@ -91,10 +91,10 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: title must be an String") if params.dig(:title) and !params.dig(:title).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params.dig(:form_fields) and !params.dig(:form_fields).is_a?(Array)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: title must be an String") if params[:title] and !params[:title].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params[:form_fields] and !params[:form_fields].is_a?(Array)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/form_field_sets/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -103,8 +103,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/form_field_sets/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -127,9 +127,9 @@ module Files
     #   cursor - string - Used for pagination.  Send a cursor value to resume an existing list from the point at which you left off.  Get a cursor from an existing list via either the X-Files-Cursor-Next header or the X-Files-Cursor-Prev header.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
 
       List.new(FormFieldSet, params) do
         Api.send_request("/form_field_sets", :get, params, options)
@@ -145,8 +145,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/form_field_sets/#{params[:id]}", :get, params, options)
       FormFieldSet.new(response.data, options)
@@ -164,9 +164,9 @@ module Files
     #   skip_company - boolean - Skip validating company
     #   form_fields - array(object)
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: title must be an String") if params.dig(:title) and !params.dig(:title).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params.dig(:form_fields) and !params.dig(:form_fields).is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: title must be an String") if params[:title] and !params[:title].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params[:form_fields] and !params[:form_fields].is_a?(Array)
 
       response, options = Api.send_request("/form_field_sets", :post, params, options)
       FormFieldSet.new(response.data, options)
@@ -181,10 +181,10 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: title must be an String") if params.dig(:title) and !params.dig(:title).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params.dig(:form_fields) and !params.dig(:form_fields).is_a?(Array)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: title must be an String") if params[:title] and !params[:title].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params[:form_fields] and !params[:form_fields].is_a?(Array)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/form_field_sets/#{params[:id]}", :patch, params, options)
       FormFieldSet.new(response.data, options)
@@ -193,8 +193,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/form_field_sets/#{params[:id]}", :delete, params, options)
       response.data

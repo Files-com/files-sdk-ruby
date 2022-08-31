@@ -36,7 +36,7 @@ module Files
 
     def self.log_error(message, data = {})
       if !Files.logger.nil? ||
-         !Files.log_level.nil? && Files.log_level <= Files::LEVEL_ERROR
+         (!Files.log_level.nil? && Files.log_level <= Files::LEVEL_ERROR)
         log_internal(message, data, color: :cyan, level: Files::LEVEL_ERROR,
                                     logger: Files.logger, out: $stderr
         )
@@ -45,7 +45,7 @@ module Files
 
     def self.log_info(message, data = {})
       if !Files.logger.nil? ||
-         !Files.log_level.nil? && Files.log_level <= Files::LEVEL_INFO
+         (!Files.log_level.nil? && Files.log_level <= Files::LEVEL_INFO)
         log_internal(message, data, color: :cyan, level: Files::LEVEL_INFO,
                                     logger: Files.logger, out: $stdout
         )
@@ -54,7 +54,7 @@ module Files
 
     def self.log_debug(message, data = {})
       if !Files.logger.nil? ||
-         !Files.log_level.nil? && Files.log_level <= Files::LEVEL_DEBUG
+         (!Files.log_level.nil? && Files.log_level <= Files::LEVEL_DEBUG)
         log_internal(message, data, color: :blue, level: Files::LEVEL_DEBUG,
                                     logger: Files.logger, out: $stdout
         )
@@ -63,8 +63,7 @@ module Files
 
     def self.log_internal(message, data = {}, color: nil, level: nil,
                           logger: nil, out: nil)
-      data_str = data.reject { |_k, v| v.nil? }
-                     .map do |(k, v)|
+      data_str = data.compact.map do |(k, v)|
         format("%<key>s=%<value>s",
                key: colorize(k, color, logger.nil? && !out.nil? && out.isatty),
                value: v

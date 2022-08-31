@@ -130,11 +130,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   history_export_id (required) - int64 - ID of the associated history export.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: history_export_id must be an Integer") if params.dig(:history_export_id) and !params.dig(:history_export_id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: history_export_id") unless params.dig(:history_export_id)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: history_export_id must be an Integer") if params[:history_export_id] and !params[:history_export_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: history_export_id") unless params[:history_export_id]
 
       List.new(HistoryExportResult, params) do
         Api.send_request("/history_export_results", :get, params, options)

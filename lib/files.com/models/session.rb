@@ -100,10 +100,10 @@ module Files
     #   otp - string - If this user has a 2FA device, provide its OTP or code here.
     #   partial_session_id - string - Identifier for a partially-completed login
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: otp must be an String") if params.dig(:otp) and !params.dig(:otp).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: partial_session_id must be an String") if params.dig(:partial_session_id) and !params.dig(:partial_session_id).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: otp must be an String") if params[:otp] and !params[:otp].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partial_session_id must be an String") if params[:partial_session_id] and !params[:partial_session_id].is_a?(String)
 
       response, options = Api.send_request("/sessions", :post, params, options)
       Session.new(response.data, options)

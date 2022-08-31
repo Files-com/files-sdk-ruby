@@ -71,14 +71,14 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: project_id must be an Integer") if params.dig(:project_id) and !params.dig(:project_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params.dig(:subject) and !params.dig(:subject).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params.dig(:body) and !params.dig(:body).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-      raise MissingParameterError.new("Parameter missing: project_id") unless params.dig(:project_id)
-      raise MissingParameterError.new("Parameter missing: subject") unless params.dig(:subject)
-      raise MissingParameterError.new("Parameter missing: body") unless params.dig(:body)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: project_id must be an Integer") if params[:project_id] and !params[:project_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params[:subject] and !params[:subject].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise MissingParameterError.new("Parameter missing: project_id") unless params[:project_id]
+      raise MissingParameterError.new("Parameter missing: subject") unless params[:subject]
+      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
 
       Api.send_request("/messages/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -87,8 +87,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/messages/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -112,11 +112,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   project_id (required) - int64 - Project for which to return messages.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: project_id must be an Integer") if params.dig(:project_id) and !params.dig(:project_id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: project_id") unless params.dig(:project_id)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: project_id must be an Integer") if params[:project_id] and !params[:project_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: project_id") unless params[:project_id]
 
       List.new(Message, params) do
         Api.send_request("/messages", :get, params, options)
@@ -132,8 +132,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/messages/#{params[:id]}", :get, params, options)
       Message.new(response.data, options)
@@ -149,13 +149,13 @@ module Files
     #   subject (required) - string - Message subject.
     #   body (required) - string - Message body.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: project_id must be an Integer") if params.dig(:project_id) and !params.dig(:project_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params.dig(:subject) and !params.dig(:subject).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params.dig(:body) and !params.dig(:body).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: project_id") unless params.dig(:project_id)
-      raise MissingParameterError.new("Parameter missing: subject") unless params.dig(:subject)
-      raise MissingParameterError.new("Parameter missing: body") unless params.dig(:body)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: project_id must be an Integer") if params[:project_id] and !params[:project_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params[:subject] and !params[:subject].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: project_id") unless params[:project_id]
+      raise MissingParameterError.new("Parameter missing: subject") unless params[:subject]
+      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
 
       response, options = Api.send_request("/messages", :post, params, options)
       Message.new(response.data, options)
@@ -168,14 +168,14 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: project_id must be an Integer") if params.dig(:project_id) and !params.dig(:project_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params.dig(:subject) and !params.dig(:subject).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params.dig(:body) and !params.dig(:body).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-      raise MissingParameterError.new("Parameter missing: project_id") unless params.dig(:project_id)
-      raise MissingParameterError.new("Parameter missing: subject") unless params.dig(:subject)
-      raise MissingParameterError.new("Parameter missing: body") unless params.dig(:body)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: project_id must be an Integer") if params[:project_id] and !params[:project_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params[:subject] and !params[:subject].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise MissingParameterError.new("Parameter missing: project_id") unless params[:project_id]
+      raise MissingParameterError.new("Parameter missing: subject") unless params[:subject]
+      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
 
       response, options = Api.send_request("/messages/#{params[:id]}", :patch, params, options)
       Message.new(response.data, options)
@@ -184,8 +184,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/messages/#{params[:id]}", :delete, params, options)
       response.data

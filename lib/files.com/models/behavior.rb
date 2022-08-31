@@ -102,13 +102,13 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: value must be an String") if params.dig(:value) and !params.dig(:value).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: value must be an String") if params[:value] and !params[:value].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params[:behavior] and !params[:behavior].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/behaviors/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -117,8 +117,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/behaviors/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -148,16 +148,16 @@ module Files
     #   filter_lteq - object - If set, return records where the specified field is less than or equal to the supplied value. Valid fields are `behavior`.
     #   behavior - string - If set, only shows folder behaviors matching this behavior type.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params.dig(:sort_by) and !params.dig(:sort_by).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params.dig(:filter) and !params.dig(:filter).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params.dig(:filter_gt) and !params.dig(:filter_gt).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params.dig(:filter_gteq) and !params.dig(:filter_gteq).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params.dig(:filter_like) and !params.dig(:filter_like).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params.dig(:filter_lt) and !params.dig(:filter_lt).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params.dig(:filter_lteq) and !params.dig(:filter_lteq).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params[:filter_like] and !params[:filter_like].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params[:behavior] and !params[:behavior].is_a?(String)
 
       List.new(Behavior, params) do
         Api.send_request("/behaviors", :get, params, options)
@@ -173,8 +173,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/behaviors/#{params[:id]}", :get, params, options)
       Behavior.new(response.data, options)
@@ -200,19 +200,19 @@ module Files
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params.dig(:sort_by) and !params.dig(:sort_by).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params.dig(:filter) and !params.dig(:filter).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params.dig(:filter_gt) and !params.dig(:filter_gt).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params.dig(:filter_gteq) and !params.dig(:filter_gteq).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params.dig(:filter_like) and !params.dig(:filter_like).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params.dig(:filter_lt) and !params.dig(:filter_lt).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params.dig(:filter_lteq) and !params.dig(:filter_lteq).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recursive must be an String") if params.dig(:recursive) and !params.dig(:recursive).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params[:filter_like] and !params[:filter_like].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recursive must be an String") if params[:recursive] and !params[:recursive].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params[:behavior] and !params[:behavior].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       List.new(Behavior, params) do
         Api.send_request("/behaviors/folders/#{params[:path]}", :get, params, options)
@@ -227,13 +227,13 @@ module Files
     #   path (required) - string - Folder behaviors path.
     #   behavior (required) - string - Behavior type.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: value must be an String") if params.dig(:value) and !params.dig(:value).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: behavior") unless params.dig(:behavior)
+      raise InvalidParameterError.new("Bad parameter: value must be an String") if params[:value] and !params[:value].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params[:behavior] and !params[:behavior].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: behavior") unless params[:behavior]
 
       response, options = Api.send_request("/behaviors", :post, params, options)
       Behavior.new(response.data, options)
@@ -247,13 +247,13 @@ module Files
     #   body - object - Additional body parameters.
     #   action - string - action for test body
     def self.webhook_test(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: url must be an String") if params.dig(:url) and !params.dig(:url).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: method must be an String") if params.dig(:method) and !params.dig(:method).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: encoding must be an String") if params.dig(:encoding) and !params.dig(:encoding).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if params.dig(:headers) and !params.dig(:headers).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: body must be an Hash") if params.dig(:body) and !params.dig(:body).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: url") unless params.dig(:url)
+      raise InvalidParameterError.new("Bad parameter: url must be an String") if params[:url] and !params[:url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: method must be an String") if params[:method] and !params[:method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: encoding must be an String") if params[:encoding] and !params[:encoding].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if params[:headers] and !params[:headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: body must be an Hash") if params[:body] and !params[:body].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: url") unless params[:url]
 
       response, _options = Api.send_request("/behaviors/webhook/test", :post, params, options)
       response.data
@@ -270,14 +270,14 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be one of String, Integer, Hash") if params.dig(:id) and [ String, Integer, Hash ].none? { |klass| params.dig(:id).is_a?(klass) }
-      raise InvalidParameterError.new("Bad parameter: value must be an String") if params.dig(:value) and !params.dig(:value).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params.dig(:behavior) and !params.dig(:behavior).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: attachment_delete must be one of String, Integer, Hash") if params.dig(:attachment_delete) and [ String, Integer, Hash ].none? { |klass| params.dig(:attachment_delete).is_a?(klass) }
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be one of String, Integer, Hash") if params[:id] and [ String, Integer, Hash ].none? { |klass| params[:id].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: value must be an String") if params[:value] and !params[:value].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params[:behavior] and !params[:behavior].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: attachment_delete must be one of String, Integer, Hash") if params[:attachment_delete] and [ String, Integer, Hash ].none? { |klass| params[:attachment_delete].is_a?(klass) }
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/behaviors/#{params[:id]}", :patch, params, options)
       Behavior.new(response.data, options)
@@ -286,8 +286,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/behaviors/#{params[:id]}", :delete, params, options)
       response.data

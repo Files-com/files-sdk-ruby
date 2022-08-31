@@ -85,8 +85,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/requests/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -111,10 +111,10 @@ module Files
     #   mine - boolean - Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
     #   path - string - Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params.dig(:sort_by) and !params.dig(:sort_by).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
 
       List.new(Request, params) do
         Api.send_request("/requests", :get, params, options)
@@ -134,11 +134,11 @@ module Files
     def self.get_folder(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params.dig(:sort_by) and !params.dig(:sort_by).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       List.new(Request, params) do
         Api.send_request("/requests/folders/#{params[:path]}", :get, params, options)
@@ -151,12 +151,12 @@ module Files
     #   user_ids - string - A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params.dig(:user_ids) and !params.dig(:user_ids).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: destination") unless params.dig(:destination)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params[:group_ids] and !params[:group_ids].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
       response, options = Api.send_request("/requests", :post, params, options)
       Request.new(response.data, options)
@@ -165,8 +165,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/requests/#{params[:id]}", :delete, params, options)
       response.data

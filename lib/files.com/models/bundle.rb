@@ -285,11 +285,11 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: to must be an Array") if params.dig(:to) and !params.dig(:to).is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recipients must be an Array") if params.dig(:recipients) and !params.dig(:recipients).is_a?(Array)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: to must be an Array") if params[:to] and !params[:to].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recipients must be an Array") if params[:recipients] and !params[:recipients].is_a?(Array)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/bundles/#{@attributes[:id]}/share", :post, params, @options)
     end
@@ -318,19 +318,19 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if params.dig(:form_field_set_id) and !params.dig(:form_field_set_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params.dig(:max_uses) and !params.dig(:max_uses).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params.dig(:permissions) and !params.dig(:permissions).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if params[:form_field_set_id] and !params[:form_field_set_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params[:clickwrap_id] and !params[:clickwrap_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: code must be an String") if params[:code] and !params[:code].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params[:max_uses] and !params[:max_uses].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/bundles/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -339,8 +339,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/bundles/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -370,16 +370,16 @@ module Files
     #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
     #   filter_lteq - object - If set, return records where the specified field is less than or equal to the supplied value. Valid fields are `created_at`.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params.dig(:sort_by) and !params.dig(:sort_by).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params.dig(:filter) and !params.dig(:filter).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params.dig(:filter_gt) and !params.dig(:filter_gt).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params.dig(:filter_gteq) and !params.dig(:filter_gteq).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params.dig(:filter_like) and !params.dig(:filter_like).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params.dig(:filter_lt) and !params.dig(:filter_lt).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params.dig(:filter_lteq) and !params.dig(:filter_lteq).is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params[:filter_like] and !params[:filter_like].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
 
       List.new(Bundle, params) do
         Api.send_request("/bundles", :get, params, options)
@@ -395,8 +395,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/bundles/#{params[:id]}", :get, params, options)
       Bundle.new(response.data, options)
@@ -427,19 +427,19 @@ module Files
     #   skip_company - boolean - BundleRegistrations can be saved without providing company?
     #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if params.dig(:form_field_set_id) and !params.dig(:form_field_set_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params.dig(:max_uses) and !params.dig(:max_uses).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params.dig(:permissions) and !params.dig(:permissions).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: paths") unless params.dig(:paths)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if params[:form_field_set_id] and !params[:form_field_set_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params[:max_uses] and !params[:max_uses].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: code must be an String") if params[:code] and !params[:code].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params[:clickwrap_id] and !params[:clickwrap_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: paths") unless params[:paths]
 
       response, options = Api.send_request("/bundles", :post, params, options)
       Bundle.new(response.data, options)
@@ -454,11 +454,11 @@ module Files
     def self.share(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: to must be an Array") if params.dig(:to) and !params.dig(:to).is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recipients must be an Array") if params.dig(:recipients) and !params.dig(:recipients).is_a?(Array)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: to must be an Array") if params[:to] and !params[:to].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recipients must be an Array") if params[:recipients] and !params[:recipients].is_a?(Array)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/bundles/#{params[:id]}/share", :post, params, options)
       response.data
@@ -487,19 +487,19 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params.dig(:paths) and !params.dig(:paths).is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if params.dig(:form_field_set_id) and !params.dig(:form_field_set_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params.dig(:clickwrap_id) and !params.dig(:clickwrap_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: code must be an String") if params.dig(:code) and !params.dig(:code).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params.dig(:description) and !params.dig(:description).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params.dig(:expires_at) and !params.dig(:expires_at).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params.dig(:inbox_id) and !params.dig(:inbox_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params.dig(:max_uses) and !params.dig(:max_uses).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: note must be an String") if params.dig(:note) and !params.dig(:note).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params.dig(:permissions) and !params.dig(:permissions).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if params[:form_field_set_id] and !params[:form_field_set_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params[:clickwrap_id] and !params[:clickwrap_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: code must be an String") if params[:code] and !params[:code].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params[:max_uses] and !params[:max_uses].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/bundles/#{params[:id]}", :patch, params, options)
       Bundle.new(response.data, options)
@@ -508,8 +508,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/bundles/#{params[:id]}", :delete, params, options)
       response.data

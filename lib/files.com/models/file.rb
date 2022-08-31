@@ -143,7 +143,7 @@ module Files
         buf = io.read(upload.partsize) || ""
         bytes_written += buf.length
         method = upload.http_method.downcase.to_sym
-        response = client(options).remote_request(method, upload.upload_uri, { "Content-Length": buf.length.to_s, "Content-Type": "application/octet-stream" }, buf)
+        response = client(options).remote_request(method, upload.upload_uri, { 'Content-Length': buf.length.to_s, 'Content-Type': 'application/octet-stream' }, buf)
         etags << { etag: response.headers["ETag"], part: upload.part_number }
         return upload, etags, bytes_written if io.eof?
       end
@@ -232,11 +232,11 @@ module Files
 
       if @upload
         end_options = {
-          "action": "end",
-          "etags": @etags,
-          "provided_mtime": Time.now.to_s,
-          "ref": @upload.ref,
-          "size": @bytes_written
+          action: "end",
+          etags: @etags,
+          provided_mtime: Time.now.to_s,
+          ref: @upload.ref,
+          size: @bytes_written
         }
 
         file = File.create(path, end_options, @options)
@@ -373,14 +373,14 @@ module Files
 
     def read_io(**options)
       @read_io ||= begin
-                     r, w = SizableIO.pipe
-                     Thread.new do
-                       download_content(w, **options)
-                     ensure
-                       w.close
-                     end
-                     r.wait!(5)
-                   end
+        r, w = SizableIO.pipe
+        Thread.new do
+          download_content(w, **options)
+        ensure
+          w.close
+        end
+        r.wait!(5)
+      end
     end
 
     def internal_encoding(*_args)
@@ -399,7 +399,7 @@ module Files
       @lineno ||= 0
     end
 
-    attr_writer :lineno
+    attr_writer :lineno, :pos, :sync
 
     def lines(*args, &block)
       each_line *args, &block
@@ -420,8 +420,6 @@ module Files
     def pos
       @pos ||= 0
     end
-
-    attr_writer :pos
 
     def pread(*args)
       read_io.pread *args
@@ -491,7 +489,7 @@ module Files
       @pos = pos
     end
 
-    def set_encoding(*_args) # rubocop:disable Naming/AccessorMethodName
+    def set_encoding(*_args)
       raise NotImplementedError
     end
 
@@ -502,8 +500,6 @@ module Files
     def sync
       @sync ||= false
     end
-
-    attr_writer :sync
 
     def sysread(*args)
       read *args
@@ -808,10 +804,10 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params.dig(:preview_size) and !params.dig(:preview_size).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       Api.send_request("/files/#{@attributes[:path]}", :get, params, @options)
     end
@@ -823,10 +819,10 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params.dig(:provided_mtime) and !params.dig(:provided_mtime).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if params.dig(:priority_color) and !params.dig(:priority_color).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params[:provided_mtime] and !params[:provided_mtime].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if params[:priority_color] and !params[:priority_color].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       Api.send_request("/files/#{@attributes[:path]}", :patch, params, @options)
     end
@@ -837,8 +833,8 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       Api.send_request("/files/#{@attributes[:path]}", :delete, params, @options)
     end
@@ -856,10 +852,10 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: destination") unless params.dig(:destination)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
       Api.send_request("/file_actions/copy/#{@attributes[:path]}", :post, params, @options)
     end
@@ -872,10 +868,10 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: destination") unless params.dig(:destination)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
       Api.send_request("/file_actions/move/#{@attributes[:path]}", :post, params, @options)
     end
@@ -894,13 +890,13 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: part must be an Integer") if params.dig(:part) and !params.dig(:part).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params.dig(:parts) and !params.dig(:parts).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: ref must be an String") if params.dig(:ref) and !params.dig(:ref).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params.dig(:restart) and !params.dig(:restart).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params.dig(:size) and !params.dig(:size).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: part must be an Integer") if params[:part] and !params[:part].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params[:parts] and !params[:parts].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ref must be an String") if params[:ref] and !params[:ref].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params[:restart] and !params[:restart].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params[:size] and !params[:size].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       Api.send_request("/file_actions/begin_upload/#{@attributes[:path]}", :post, params, @options)
     end
@@ -920,10 +916,10 @@ module Files
     def self.download(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params.dig(:preview_size) and !params.dig(:preview_size).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/files/#{params[:path]}", :get, params, options)
       File.new(response.data, options)
@@ -947,17 +943,17 @@ module Files
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: length must be an Integer") if params.dig(:length) and !params.dig(:length).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: part must be an Integer") if params.dig(:part) and !params.dig(:part).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params.dig(:parts) and !params.dig(:parts).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params.dig(:provided_mtime) and !params.dig(:provided_mtime).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ref must be an String") if params.dig(:ref) and !params.dig(:ref).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params.dig(:restart) and !params.dig(:restart).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params.dig(:size) and !params.dig(:size).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: structure must be an String") if params.dig(:structure) and !params.dig(:structure).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: length must be an Integer") if params[:length] and !params[:length].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: part must be an Integer") if params[:part] and !params[:part].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params[:parts] and !params[:parts].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params[:provided_mtime] and !params[:provided_mtime].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ref must be an String") if params[:ref] and !params[:ref].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params[:restart] and !params[:restart].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params[:size] and !params[:size].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: structure must be an String") if params[:structure] and !params[:structure].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/files/#{params[:path]}", :post, params, options)
       File.new(response.data, options)
@@ -969,10 +965,10 @@ module Files
     def self.update(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params.dig(:provided_mtime) and !params.dig(:provided_mtime).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if params.dig(:priority_color) and !params.dig(:priority_color).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params[:provided_mtime] and !params[:provided_mtime].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if params[:priority_color] and !params[:priority_color].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/files/#{params[:path]}", :patch, params, options)
       File.new(response.data, options)
@@ -983,8 +979,8 @@ module Files
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, _options = Api.send_request("/files/#{params[:path]}", :delete, params, options)
       response.data
@@ -1002,9 +998,9 @@ module Files
     def self.find(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params.dig(:preview_size) and !params.dig(:preview_size).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/file_actions/metadata/#{params[:path]}", :get, params, options)
       File.new(response.data, options)
@@ -1022,10 +1018,10 @@ module Files
     def self.copy(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: destination") unless params.dig(:destination)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
       response, options = Api.send_request("/file_actions/copy/#{params[:path]}", :post, params, options)
       FileAction.new(response.data, options)
@@ -1038,10 +1034,10 @@ module Files
     def self.move(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params.dig(:destination) and !params.dig(:destination).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: destination") unless params.dig(:destination)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
       response, options = Api.send_request("/file_actions/move/#{params[:path]}", :post, params, options)
       FileAction.new(response.data, options)
@@ -1060,13 +1056,13 @@ module Files
     def self.begin_upload(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: part must be an Integer") if params.dig(:part) and !params.dig(:part).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params.dig(:parts) and !params.dig(:parts).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: ref must be an String") if params.dig(:ref) and !params.dig(:ref).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params.dig(:restart) and !params.dig(:restart).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params.dig(:size) and !params.dig(:size).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: part must be an Integer") if params[:part] and !params[:part].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params[:parts] and !params[:parts].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ref must be an String") if params[:ref] and !params[:ref].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params[:restart] and !params[:restart].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params[:size] and !params[:size].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/file_actions/begin_upload/#{params[:path]}", :post, params, options)
       response.data.map do |entity_data|

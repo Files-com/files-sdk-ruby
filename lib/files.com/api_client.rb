@@ -140,7 +140,7 @@ module Files
       context.method       = method
       context.path         = url
 
-      execute_request_with_rescues(Files.base_url, context, true) do
+      execute_request_with_rescues(Files.base_url, context, skip_body_logging: true) do
         conn.run_request(method, url, body, headers) do |req|
           req.options.open_timeout = Files.open_timeout
           req.options.timeout = Files.read_timeout
@@ -182,18 +182,14 @@ module Files
       uri        = Addressable::URI.new
       uri.host   = Addressable::URI.parse(base_url).host
       uri.port   = Addressable::URI.parse(base_url).port
-      uri.path   = "/api/rest/v1" + Files::URI.normalized_path(url)
+      uri.path   = "/api/rest/v1#{Files::URI.normalized_path(url)}"
       uri.scheme = Addressable::URI.parse(base_url).scheme
 
       uri.to_s
     end
 
     private def check_api_key!(api_key)
-      unless api_key
-        raise AuthenticationError, "No Files.com API key provided. " \
-          'Set your API key using "Files.api_key = <API-KEY>". ' \
-          "You can generate API keys from the Files.com's web interface. "
-      end
+      raise AuthenticationError, "No Files.com API key provided. Set your API key using \"Files.api_key = <API-KEY>\". You can generate API keys from the Files.com's web interface. " unless api_key
 
       return unless api_key =~ /\s/
 
@@ -206,20 +202,20 @@ module Files
       raise AuthenticationError, "The provided Session ID is invalid (it contains whitespace)"
     end
 
-    def execute_request_with_rescues(base_url, context, skip_body_logging = false)
+    def execute_request_with_rescues(base_url, context, skip_body_logging: false)
       num_retries = 0
       begin
         request_start = Time.now
-        log_request(context, num_retries, skip_body_logging)
+        log_request(context, num_retries, no_body: skip_body_logging)
         resp = yield
-        log_response(context, request_start, resp.status, resp.body, skip_body_logging)
+        log_response(context, request_start, resp.status, resp.body, no_body: skip_body_logging)
       rescue StandardError => e
         error_context = context
 
         if e.respond_to?(:response) && e.response
           error_context = context
           log_response(error_context, request_start,
-                       e.response[:status], e.response[:body], skip_body_logging
+                       e.response[:status], e.response[:body], no_body: skip_body_logging
           )
         else
           log_response_error(error_context, request_start, e)
@@ -290,7 +286,7 @@ module Files
       return APIError.new(error_data[:message], **opts) unless resp&.data&.dig(:type)
 
       begin
-        error_class = Files.const_get(resp.data[:type].split("/").map { |piece| piece.split("-").map(&:capitalize).join('') + 'Error' }.join("::"))
+        error_class = Files.const_get(resp.data[:type].split("/").map { |piece| "#{piece.split("-").map(&:capitalize).join}Error" }.join("::"))
         error_class.new(error_data[:message], **opts)
       rescue NameError
         APIError.new(error_data[:message], **opts)
@@ -310,7 +306,7 @@ module Files
 
     private def request_headers(api_key, session_id, _method)
       user_agent = "Files.com Ruby SDK v#{Files::VERSION}"
-      user_agent += " " + format_app_info(Files.app_info) unless Files.app_info.nil?
+      user_agent += " #{format_app_info(Files.app_info)}" unless Files.app_info.nil?
 
       headers = {
         "User-Agent" => user_agent,
@@ -332,12 +328,12 @@ module Files
       headers
     end
 
-    private def log_request(context, num_retries, no_body = false)
+    private def log_request(context, num_retries, no_body: false)
       Util.log_info("Request", method: context.method, num_retries: num_retries, path: context.path)
       Util.log_debug("Request details", body: context.body, query_params: context.query_params) unless no_body
     end
 
-    private def log_response(context, request_start, status, body, no_body = false)
+    private def log_response(context, request_start, status, body, no_body: false)
       Util.log_info("Response", elapsed: Time.now - request_start, method: context.method, path: context.path, status: status)
       Util.log_debug("Response details", body: body) unless no_body
     end

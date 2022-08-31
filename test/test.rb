@@ -5,9 +5,9 @@ def assert(value)
   raise "failed assertion" unless value
 end
 
-Files.api_key = File.open(File.expand_path("../../../.test_credentials", __dir__)).read.strip
+Files.api_key = File.read(File.expand_path("../../../.test_credentials", __dir__)).strip
 Files.base_url = "https://sdk.filesstaging.av"
-Files.logger = Logger.new(STDOUT)
+Files.logger = Logger.new($stdout)
 Files.log_level = 'debug'
 
 def test_user_list_and_update

@@ -149,8 +149,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/action_notification_exports/#{params[:id]}", :get, params, options)
       ActionNotificationExport.new(response.data, options)
@@ -172,15 +172,15 @@ module Files
     #   query_path - string - Return notifications that were triggered by actions on this specific path.
     #   query_folder - string - Return notifications that were triggered by actions in this folder.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params.dig(:start_at) and !params.dig(:start_at).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params.dig(:end_at) and !params.dig(:end_at).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_message must be an String") if params.dig(:query_message) and !params.dig(:query_message).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_request_method must be an String") if params.dig(:query_request_method) and !params.dig(:query_request_method).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_request_url must be an String") if params.dig(:query_request_url) and !params.dig(:query_request_url).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_status must be an String") if params.dig(:query_status) and !params.dig(:query_status).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_path must be an String") if params.dig(:query_path) and !params.dig(:query_path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_folder must be an String") if params.dig(:query_folder) and !params.dig(:query_folder).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params[:end_at] and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_message must be an String") if params[:query_message] and !params[:query_message].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_request_method must be an String") if params[:query_request_method] and !params[:query_request_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_request_url must be an String") if params[:query_request_url] and !params[:query_request_url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_status must be an String") if params[:query_status] and !params[:query_status].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_path must be an String") if params[:query_path] and !params[:query_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_folder must be an String") if params[:query_folder] and !params[:query_folder].is_a?(String)
 
       response, options = Api.send_request("/action_notification_exports", :post, params, options)
       ActionNotificationExport.new(response.data, options)

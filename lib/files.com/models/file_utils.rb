@@ -54,7 +54,7 @@ module Files
     def self.mkdir(list, params = {}, options = {})
       list = [ list ] if list.is_a? String
       list.each do |path|
-        Folder.mkdir(path, params, options) unless File.exist?(path, options)
+        Folder.mkdir(path, params, options) unless File.exist?(path, options) # rubocop:disable Lint/NonAtomicFileOperation
       end
     end
 
@@ -88,7 +88,8 @@ module Files
       list.each do |fname|
         raise Errno::EPERM.new(fname) if File.directory?(fname, options)
       end
-      list.each do |fname|
+
+      list.each do |fname| # rubocop:disable Style/CombinableLoops
         File.delete(fname, {}, options)
       end
     end

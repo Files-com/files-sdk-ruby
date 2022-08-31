@@ -3,14 +3,7 @@
 module Files
   class Error < StandardError
     attr_accessor :response
-
-    attr_reader :code
-    attr_reader :http_body
-    attr_reader :http_headers
-    attr_reader :http_status
-    attr_reader :json_body
-    attr_reader :message
-    attr_reader :request_id
+    attr_reader :code, :http_body, :http_headers, :http_status, :json_body, :message, :request_id
 
     def initialize(message = nil, http_status: nil, http_body: nil, json_body: nil, http_headers: nil, code: nil)
       @message = message
@@ -19,6 +12,8 @@ module Files
       @http_headers = http_headers || {}
       @json_body = json_body
       @code = code
+
+      super(message)
     end
 
     def to_s
@@ -33,14 +28,7 @@ module Files
   class NotImplementedError < Error; end
 
   class APIError < Error
-    attr_reader :detail
-    attr_reader :error
-    attr_reader :errors
-    attr_reader :http_code
-    attr_reader :instance
-    attr_reader :model_errors
-    attr_reader :title
-    attr_reader :type
+    attr_reader :detail, :error, :errors, :http_code, :instance, :model_errors, :title, :type
 
     def initialize(message = nil, **kwargs)
       @detail = kwargs.dig(:json_body, 'detail')

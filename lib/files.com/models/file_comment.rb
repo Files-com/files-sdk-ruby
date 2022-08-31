@@ -51,10 +51,10 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params.dig(:body) and !params.dig(:body).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-      raise MissingParameterError.new("Parameter missing: body") unless params.dig(:body)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
 
       Api.send_request("/file_comments/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -63,8 +63,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/file_comments/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -89,10 +89,10 @@ module Files
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       List.new(FileComment, params) do
         Api.send_request("/file_comments/files/#{params[:path]}", :get, params, options)
@@ -103,10 +103,10 @@ module Files
     #   body (required) - string - Comment body.
     #   path (required) - string - File path.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params.dig(:body) and !params.dig(:body).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: body") unless params.dig(:body)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/file_comments", :post, params, options)
       FileComment.new(response.data, options)
@@ -117,10 +117,10 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params.dig(:body) and !params.dig(:body).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
-      raise MissingParameterError.new("Parameter missing: body") unless params.dig(:body)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
 
       response, options = Api.send_request("/file_comments/#{params[:id]}", :patch, params, options)
       FileComment.new(response.data, options)
@@ -129,8 +129,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/file_comments/#{params[:id]}", :delete, params, options)
       response.data

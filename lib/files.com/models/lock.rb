@@ -123,10 +123,10 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: token must be an String") if params.dig(:token) and !params.dig(:token).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: token") unless params.dig(:token)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: token must be an String") if params[:token] and !params[:token].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: token") unless params[:token]
 
       Api.send_request("/locks/#{@attributes[:path]}", :delete, params, @options)
     end
@@ -148,10 +148,10 @@ module Files
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       List.new(Lock, params) do
         Api.send_request("/locks/#{params[:path]}", :get, params, options)
@@ -167,10 +167,10 @@ module Files
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recursive must be an String") if params.dig(:recursive) and !params.dig(:recursive).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params.dig(:timeout) and !params.dig(:timeout).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recursive must be an String") if params[:recursive] and !params[:recursive].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params[:timeout] and !params[:timeout].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/locks/#{params[:path]}", :post, params, options)
       Lock.new(response.data, options)
@@ -181,10 +181,10 @@ module Files
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: token must be an String") if params.dig(:token) and !params.dig(:token).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: token") unless params.dig(:token)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: token must be an String") if params[:token] and !params[:token].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: token") unless params[:token]
 
       response, _options = Api.send_request("/locks/#{params[:path]}", :delete, params, options)
       response.data

@@ -546,8 +546,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/users/#{@attributes[:id]}/unlock", :post, params, @options)
     end
@@ -557,8 +557,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/users/#{@attributes[:id]}/resend_welcome_email", :post, params, @options)
     end
@@ -568,8 +568,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/users/#{@attributes[:id]}/2fa/reset", :post, params, @options)
     end
@@ -623,33 +623,33 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: change_password must be an String") if params.dig(:change_password) and !params.dig(:change_password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if params.dig(:change_password_confirmation) and !params.dig(:change_password_confirmation).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: email must be an String") if params.dig(:email) and !params.dig(:email).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: grant_permission must be an String") if params.dig(:grant_permission) and !params.dig(:grant_permission).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params.dig(:imported_password_hash) and !params.dig(:imported_password_hash).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params.dig(:password_confirmation) and !params.dig(:password_confirmation).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params.dig(:authenticate_until) and !params.dig(:authenticate_until).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params.dig(:authentication_method) and !params.dig(:authentication_method).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params.dig(:header_text) and !params.dig(:header_text).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: language must be an String") if params.dig(:language) and !params.dig(:language).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params.dig(:notification_daily_send_time) and !params.dig(:notification_daily_send_time).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: company must be an String") if params.dig(:company) and !params.dig(:company).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params.dig(:notes) and !params.dig(:notes).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params.dig(:password_validity_days) and !params.dig(:password_validity_days).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params.dig(:ssl_required) and !params.dig(:ssl_required).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params.dig(:sso_strategy_id) and !params.dig(:sso_strategy_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params.dig(:require_2fa) and !params.dig(:require_2fa).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params.dig(:time_zone) and !params.dig(:time_zone).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params.dig(:user_root) and !params.dig(:user_root).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: change_password must be an String") if params[:change_password] and !params[:change_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if params[:change_password_confirmation] and !params[:change_password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: email must be an String") if params[:email] and !params[:email].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: grant_permission must be an String") if params[:grant_permission] and !params[:grant_permission].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params[:group_ids] and !params[:group_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params[:imported_password_hash] and !params[:imported_password_hash].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params[:password_confirmation] and !params[:password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params[:authenticate_until] and !params[:authenticate_until].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params[:header_text] and !params[:header_text].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: language must be an String") if params[:language] and !params[:language].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params[:notification_daily_send_time] and !params[:notification_daily_send_time].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: company must be an String") if params[:company] and !params[:company].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params[:sso_strategy_id] and !params[:sso_strategy_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params[:require_2fa] and !params[:require_2fa].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params[:time_zone] and !params[:time_zone].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/users/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -658,8 +658,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/users/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -697,17 +697,17 @@ module Files
     #   q[ssl_required] - string - If set, list only users with overridden SSL required setting.
     #   search - string - Searches for partial matches of name, username, or email.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params.dig(:cursor) and !params.dig(:cursor).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params.dig(:per_page) and !params.dig(:per_page).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params.dig(:sort_by) and !params.dig(:sort_by).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params.dig(:filter) and !params.dig(:filter).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params.dig(:filter_gt) and !params.dig(:filter_gt).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params.dig(:filter_gteq) and !params.dig(:filter_gteq).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params.dig(:filter_like) and !params.dig(:filter_like).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params.dig(:filter_lt) and !params.dig(:filter_lt).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params.dig(:filter_lteq) and !params.dig(:filter_lteq).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: ids must be an String") if params.dig(:ids) and !params.dig(:ids).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: search must be an String") if params.dig(:search) and !params.dig(:search).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params[:filter_like] and !params[:filter_like].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: ids must be an String") if params[:ids] and !params[:ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: search must be an String") if params[:search] and !params[:search].is_a?(String)
 
       List.new(User, params) do
         Api.send_request("/users", :get, params, options)
@@ -723,8 +723,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/users/#{params[:id]}", :get, params, options)
       User.new(response.data, options)
@@ -780,31 +780,31 @@ module Files
     #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
     #   username - string - User's username
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: change_password must be an String") if params.dig(:change_password) and !params.dig(:change_password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if params.dig(:change_password_confirmation) and !params.dig(:change_password_confirmation).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: email must be an String") if params.dig(:email) and !params.dig(:email).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: grant_permission must be an String") if params.dig(:grant_permission) and !params.dig(:grant_permission).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params.dig(:imported_password_hash) and !params.dig(:imported_password_hash).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params.dig(:password_confirmation) and !params.dig(:password_confirmation).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params.dig(:authenticate_until) and !params.dig(:authenticate_until).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params.dig(:authentication_method) and !params.dig(:authentication_method).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params.dig(:header_text) and !params.dig(:header_text).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: language must be an String") if params.dig(:language) and !params.dig(:language).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params.dig(:notification_daily_send_time) and !params.dig(:notification_daily_send_time).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: company must be an String") if params.dig(:company) and !params.dig(:company).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params.dig(:notes) and !params.dig(:notes).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params.dig(:password_validity_days) and !params.dig(:password_validity_days).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params.dig(:ssl_required) and !params.dig(:ssl_required).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params.dig(:sso_strategy_id) and !params.dig(:sso_strategy_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params.dig(:require_2fa) and !params.dig(:require_2fa).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params.dig(:time_zone) and !params.dig(:time_zone).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params.dig(:user_root) and !params.dig(:user_root).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: change_password must be an String") if params[:change_password] and !params[:change_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if params[:change_password_confirmation] and !params[:change_password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: email must be an String") if params[:email] and !params[:email].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: grant_permission must be an String") if params[:grant_permission] and !params[:grant_permission].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params[:group_ids] and !params[:group_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params[:imported_password_hash] and !params[:imported_password_hash].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params[:password_confirmation] and !params[:password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params[:authenticate_until] and !params[:authenticate_until].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params[:header_text] and !params[:header_text].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: language must be an String") if params[:language] and !params[:language].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params[:notification_daily_send_time] and !params[:notification_daily_send_time].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: company must be an String") if params[:company] and !params[:company].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params[:sso_strategy_id] and !params[:sso_strategy_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params[:require_2fa] and !params[:require_2fa].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params[:time_zone] and !params[:time_zone].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
 
       response, options = Api.send_request("/users", :post, params, options)
       User.new(response.data, options)
@@ -814,8 +814,8 @@ module Files
     def self.unlock(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/users/#{params[:id]}/unlock", :post, params, options)
       response.data
@@ -825,8 +825,8 @@ module Files
     def self.resend_welcome_email(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/users/#{params[:id]}/resend_welcome_email", :post, params, options)
       response.data
@@ -836,8 +836,8 @@ module Files
     def self.user_2fa_reset(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/users/#{params[:id]}/2fa/reset", :post, params, options)
       response.data
@@ -891,33 +891,33 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: change_password must be an String") if params.dig(:change_password) and !params.dig(:change_password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if params.dig(:change_password_confirmation) and !params.dig(:change_password_confirmation).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: email must be an String") if params.dig(:email) and !params.dig(:email).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: grant_permission must be an String") if params.dig(:grant_permission) and !params.dig(:grant_permission).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params.dig(:group_id) and !params.dig(:group_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params.dig(:group_ids) and !params.dig(:group_ids).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params.dig(:imported_password_hash) and !params.dig(:imported_password_hash).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params.dig(:password) and !params.dig(:password).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params.dig(:password_confirmation) and !params.dig(:password_confirmation).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params.dig(:allowed_ips) and !params.dig(:allowed_ips).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params.dig(:authenticate_until) and !params.dig(:authenticate_until).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params.dig(:authentication_method) and !params.dig(:authentication_method).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params.dig(:header_text) and !params.dig(:header_text).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: language must be an String") if params.dig(:language) and !params.dig(:language).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params.dig(:notification_daily_send_time) and !params.dig(:notification_daily_send_time).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params.dig(:name) and !params.dig(:name).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: company must be an String") if params.dig(:company) and !params.dig(:company).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params.dig(:notes) and !params.dig(:notes).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params.dig(:password_validity_days) and !params.dig(:password_validity_days).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params.dig(:ssl_required) and !params.dig(:ssl_required).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params.dig(:sso_strategy_id) and !params.dig(:sso_strategy_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params.dig(:require_2fa) and !params.dig(:require_2fa).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params.dig(:time_zone) and !params.dig(:time_zone).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params.dig(:user_root) and !params.dig(:user_root).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: username must be an String") if params.dig(:username) and !params.dig(:username).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: change_password must be an String") if params[:change_password] and !params[:change_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if params[:change_password_confirmation] and !params[:change_password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: email must be an String") if params[:email] and !params[:email].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: grant_permission must be an String") if params[:grant_permission] and !params[:grant_permission].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params[:group_ids] and !params[:group_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params[:imported_password_hash] and !params[:imported_password_hash].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params[:password_confirmation] and !params[:password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params[:authenticate_until] and !params[:authenticate_until].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params[:header_text] and !params[:header_text].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: language must be an String") if params[:language] and !params[:language].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params[:notification_daily_send_time] and !params[:notification_daily_send_time].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: company must be an String") if params[:company] and !params[:company].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params[:sso_strategy_id] and !params[:sso_strategy_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params[:require_2fa] and !params[:require_2fa].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params[:time_zone] and !params[:time_zone].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/users/#{params[:id]}", :patch, params, options)
       User.new(response.data, options)
@@ -926,8 +926,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/users/#{params[:id]}", :delete, params, options)
       response.data

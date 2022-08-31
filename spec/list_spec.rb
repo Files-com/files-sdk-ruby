@@ -1,7 +1,8 @@
 require "spec_helper"
 
+ResourceWrapper = Struct.new(:object, :options)
+
 RSpec.describe Files::List do
-  ResourceWrapper = Struct.new(:object, :options)
   let(:options) { { client: client } }
   let(:client) { instance_double(Files::ApiClient, cursor: nil) }
   let(:params) { {} }

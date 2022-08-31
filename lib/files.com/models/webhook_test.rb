@@ -155,15 +155,15 @@ module Files
     #   file_form_field - string - Send the file data as a named parameter in the request POST body
     #   action - string - action for test body
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: url must be an String") if params.dig(:url) and !params.dig(:url).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: method must be an String") if params.dig(:method) and !params.dig(:method).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: encoding must be an String") if params.dig(:encoding) and !params.dig(:encoding).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if params.dig(:headers) and !params.dig(:headers).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: body must be an Hash") if params.dig(:body) and !params.dig(:body).is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: raw_body must be an String") if params.dig(:raw_body) and !params.dig(:raw_body).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_form_field must be an String") if params.dig(:file_form_field) and !params.dig(:file_form_field).is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params.dig(:action) and !params.dig(:action).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: url") unless params.dig(:url)
+      raise InvalidParameterError.new("Bad parameter: url must be an String") if params[:url] and !params[:url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: method must be an String") if params[:method] and !params[:method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: encoding must be an String") if params[:encoding] and !params[:encoding].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if params[:headers] and !params[:headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: body must be an Hash") if params[:body] and !params[:body].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: raw_body must be an String") if params[:raw_body] and !params[:raw_body].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_form_field must be an String") if params[:file_form_field] and !params[:file_form_field].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: url") unless params[:url]
 
       response, options = Api.send_request("/webhook_tests", :post, params, options)
       WebhookTest.new(response.data, options)

@@ -49,8 +49,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/file_comment_reactions/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -73,11 +73,11 @@ module Files
     #   file_comment_id (required) - int64 - ID of file comment to attach reaction to.
     #   emoji (required) - string - Emoji to react with.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params.dig(:user_id) and !params.dig(:user_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: file_comment_id must be an Integer") if params.dig(:file_comment_id) and !params.dig(:file_comment_id).is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: emoji must be an String") if params.dig(:emoji) and !params.dig(:emoji).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: file_comment_id") unless params.dig(:file_comment_id)
-      raise MissingParameterError.new("Parameter missing: emoji") unless params.dig(:emoji)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: file_comment_id must be an Integer") if params[:file_comment_id] and !params[:file_comment_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: emoji must be an String") if params[:emoji] and !params[:emoji].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: file_comment_id") unless params[:file_comment_id]
+      raise MissingParameterError.new("Parameter missing: emoji") unless params[:emoji]
 
       response, options = Api.send_request("/file_comment_reactions", :post, params, options)
       FileCommentReaction.new(response.data, options)
@@ -86,8 +86,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params.dig(:id) and !params.dig(:id).is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params.dig(:id)
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, _options = Api.send_request("/file_comment_reactions/#{params[:id]}", :delete, params, options)
       response.data

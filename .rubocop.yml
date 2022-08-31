@@ -2,6 +2,9 @@ AllCops:
   TargetRubyVersion: 2.7
   NewCops: enable
 
+Gemspec/RequireMFA:
+  Enabled: false
+
 Layout/ArgumentAlignment:
   Enabled: false
 
@@ -58,6 +61,7 @@ Metrics/ClassLength:
 
 Metrics/CyclomaticComplexity:
   Enabled: false
+
 Metrics/MethodLength:
   Enabled: false
 
@@ -79,10 +83,19 @@ Naming/MethodParameterName:
 Naming/PredicateName:
   Enabled: false
 
+Naming/VariableNumber:
+  Enabled: false
+
 Security/YAMLLoad:
   Enabled: false
 
 Style/AccessModifierDeclarations:
+  Enabled: false
+
+Style/AccessorGrouping:
+  Enabled: false
+
+Style/ArgumentsForwarding:
   Enabled: false
 
 Style/AndOr:

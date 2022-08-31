@@ -60,9 +60,9 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: file") unless params.dig(:file)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: file") unless params[:file]
 
       Api.send_request("/styles/#{@attributes[:path]}", :patch, params, @options)
     end
@@ -71,8 +71,8 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       Api.send_request("/styles/#{@attributes[:path]}", :delete, params, @options)
     end
@@ -90,8 +90,8 @@ module Files
     def self.find(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/styles/#{params[:path]}", :get, params, options)
       Style.new(response.data, options)
@@ -106,9 +106,9 @@ module Files
     def self.update(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
-      raise MissingParameterError.new("Parameter missing: file") unless params.dig(:file)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: file") unless params[:file]
 
       response, options = Api.send_request("/styles/#{params[:path]}", :patch, params, options)
       Style.new(response.data, options)
@@ -117,8 +117,8 @@ module Files
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params.dig(:path) and !params.dig(:path).is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params.dig(:path)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, _options = Api.send_request("/styles/#{params[:path]}", :delete, params, options)
       response.data

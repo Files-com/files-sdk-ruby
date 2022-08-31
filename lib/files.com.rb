@@ -147,9 +147,10 @@ module Files
 
   def self.log_level=(val)
     # Backwards compatibility for values that we briefly allowed
-    if val == "debug"
+    case val
+    when "debug"
       val = LEVEL_DEBUG
-    elsif val == "info"
+    when "info"
       val = LEVEL_INFO
     end
 
