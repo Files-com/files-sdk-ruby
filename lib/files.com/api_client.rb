@@ -60,6 +60,7 @@ module Files
       return true if error.is_a?(Faraday::TimeoutError)
       return true if error.is_a?(Faraday::ConnectionFailed)
       return true if error.is_a?(Faraday::ServerError)
+      return true if error.is_a?(Faraday::ClientError) and error.response_status == 405
 
       false
     end
