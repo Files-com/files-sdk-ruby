@@ -53,6 +53,7 @@ module Files
   class FolderMustNotBeAFileError < BadRequestError; end
   class InvalidBodyError < BadRequestError; end
   class InvalidCursorError < BadRequestError; end
+  class InvalidCursorTypeForSortError < BadRequestError; end
   class InvalidEtagsError < BadRequestError; end
   class InvalidFilterCombinationError < BadRequestError; end
   class InvalidFilterFieldError < BadRequestError; end
