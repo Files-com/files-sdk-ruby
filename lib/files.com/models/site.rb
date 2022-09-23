@@ -379,6 +379,21 @@ module Files
       @attributes[:max_prior_passwords]
     end
 
+    # string - A message to show users when they connect via FTP or SFTP.
+    def motd_text
+      @attributes[:motd_text]
+    end
+
+    # boolean - Show message to users connecting via FTP
+    def motd_use_for_ftp
+      @attributes[:motd_use_for_ftp]
+    end
+
+    # boolean - Show message to users connecting via SFTP
+    def motd_use_for_sftp
+      @attributes[:motd_use_for_sftp]
+    end
+
     # double - Next billing amount
     def next_billing_amount
       @attributes[:next_billing_amount]
@@ -709,6 +724,9 @@ module Files
     #   welcome_screen - string - Does the welcome screen appear?
     #   office_integration_available - boolean - Allow users to use Office for the web?
     #   pin_all_remote_servers_to_site_region - boolean - If true, we will ensure that all internal communications with any remote server are made through the primary region of the site. This setting overrides individual remote server settings.
+    #   motd_text - string - A message to show users when they connect via FTP or SFTP.
+    #   motd_use_for_ftp - boolean - Show message to users connecting via FTP
+    #   motd_use_for_sftp - boolean - Show message to users connecting via SFTP
     #   session_expiry - double - Session expiry in hours
     #   ssl_required - boolean - Is SSL required?  Disabling this is insecure.
     #   tls_disabled - boolean - Are Insecure TLS and SFTP Ciphers allowed?  Enabling this is insecure.
@@ -819,6 +837,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: desktop_app_session_lifetime must be an Integer") if params[:desktop_app_session_lifetime] and !params[:desktop_app_session_lifetime].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: mobile_app_session_lifetime must be an Integer") if params[:mobile_app_session_lifetime] and !params[:mobile_app_session_lifetime].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: welcome_screen must be an String") if params[:welcome_screen] and !params[:welcome_screen].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: motd_text must be an String") if params[:motd_text] and !params[:motd_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: session_expiry must be an Float") if params[:session_expiry] and !params[:session_expiry].is_a?(Float)
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params[:user_lockout_tries] and !params[:user_lockout_tries].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_within must be an Integer") if params[:user_lockout_within] and !params[:user_lockout_within].is_a?(Integer)
