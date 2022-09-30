@@ -16,7 +16,7 @@
   "pinned_region": "us-east-1",
   "s3_bucket": "my-bucket",
   "s3_region": "us-east-1",
-  "aws_access_key": "",
+  "aws_access_key": "example",
   "server_certificate": "require_match",
   "server_host_key": "[public key]",
   "server_type": "s3",
@@ -28,7 +28,7 @@
   "backblaze_b2_bucket": "my-bucket",
   "wasabi_bucket": "my-bucket",
   "wasabi_region": "us-west-1",
-  "wasabi_access_key": "",
+  "wasabi_access_key": "example",
   "rackspace_username": "rackspaceuser",
   "rackspace_region": "dfw",
   "rackspace_container": "my-container",
@@ -45,7 +45,7 @@
   "s3_compatible_bucket": "my-bucket",
   "s3_compatible_endpoint": "mys3platform.com",
   "s3_compatible_region": "us-east-1",
-  "s3_compatible_access_key": "",
+  "s3_compatible_access_key": "example",
   "enable_dedicated_ips": true
 }
 ```
@@ -144,6 +144,8 @@ Files::RemoteServer.find(id)
 
 ```
 Files::RemoteServer.create(
+  aws_access_key: "example", 
+  wasabi_access_key: "example", 
   reset_authentication: true, 
   hostname: "remote-server.com", 
   name: "My Remote server", 
@@ -176,7 +178,8 @@ Files::RemoteServer.create(
   s3_compatible_bucket: "my-bucket", 
   s3_compatible_endpoint: "mys3platform.com", 
   s3_compatible_region: "us-east-1", 
-  enable_dedicated_ips: true
+  enable_dedicated_ips: true, 
+  s3_compatible_access_key: "example"
 )
 ```
 
@@ -239,6 +242,8 @@ Files::RemoteServer.create(
 
 ```
 Files::RemoteServer.update(id, 
+  aws_access_key: "example", 
+  wasabi_access_key: "example", 
   reset_authentication: true, 
   hostname: "remote-server.com", 
   name: "My Remote server", 
@@ -271,7 +276,8 @@ Files::RemoteServer.update(id,
   s3_compatible_bucket: "my-bucket", 
   s3_compatible_endpoint: "mys3platform.com", 
   s3_compatible_region: "us-east-1", 
-  enable_dedicated_ips: true
+  enable_dedicated_ips: true, 
+  s3_compatible_access_key: "example"
 )
 ```
 
@@ -350,6 +356,8 @@ Files::RemoteServer.delete(id)
 remote_server = Files::RemoteServer.list.first
 
 remote_server.update(
+  aws_access_key: "example",
+  wasabi_access_key: "example",
   reset_authentication: true,
   hostname: "remote-server.com",
   name: "My Remote server",
@@ -382,7 +390,8 @@ remote_server.update(
   s3_compatible_bucket: "my-bucket",
   s3_compatible_endpoint: "mys3platform.com",
   s3_compatible_region: "us-east-1",
-  enable_dedicated_ips: true
+  enable_dedicated_ips: true,
+  s3_compatible_access_key: "example"
 )
 ```
 

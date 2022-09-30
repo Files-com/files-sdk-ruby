@@ -5,9 +5,9 @@
 ```
 {
   "id": 1,
-  "name": "",
-  "fingerprint_md5": "",
-  "fingerprint_sha256": ""
+  "name": "example",
+  "fingerprint_md5": "example",
+  "fingerprint_sha256": "example"
 }
 ```
 
@@ -53,8 +53,7 @@ Files::SftpHostKey.find(id)
 
 ```
 Files::SftpHostKey.create(
-  name: "", 
-  private_key: ""
+  name: "example"
 )
 ```
 
@@ -70,8 +69,7 @@ Files::SftpHostKey.create(
 
 ```
 Files::SftpHostKey.update(id, 
-  name: "", 
-  private_key: ""
+  name: "example"
 )
 ```
 
@@ -103,8 +101,7 @@ Files::SftpHostKey.delete(id)
 sftp_host_key = Files::SftpHostKey.list.first
 
 sftp_host_key.update(
-  name: "",
-  private_key: ""
+  name: "example"
 )
 ```
 

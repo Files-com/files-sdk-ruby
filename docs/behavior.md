@@ -5,13 +5,13 @@
 ```
 {
   "id": 1,
-  "path": "",
-  "attachment_url": "",
+  "path": "example",
+  "attachment_url": "example",
   "behavior": "webhook",
-  "name": "",
-  "description": "",
+  "name": "example",
+  "description": "example",
   "value": {
-    "method": "GET"
+    "key": "example value"
   }
 }
 ```
@@ -99,6 +99,8 @@ Files::Behavior.list_for(path,
 ```
 Files::Behavior.create(
   value: "{\"method\": \"GET\"}", 
+  name: "example", 
+  description: "example", 
   path: "path", 
   behavior: "webhook"
 )
@@ -123,8 +125,8 @@ Files::Behavior.webhook_test(
   url: "https://www.site.com/...", 
   method: "GET", 
   encoding: "RAW", 
-  headers: "x-test-header => testvalue", 
-  body: "test-param => testvalue", 
+  headers: {"x-test-header":"testvalue"}, 
+  body: {"test-param":"testvalue"}, 
   action: "test"
 )
 ```
@@ -146,7 +148,10 @@ Files::Behavior.webhook_test(
 ```
 Files::Behavior.update(id, 
   value: "{\"method\": \"GET\"}", 
+  name: "example", 
+  description: "example", 
   behavior: "webhook", 
+  path: "example", 
   attachment_delete: true
 )
 ```
@@ -185,7 +190,10 @@ behavior = Files::Behavior.list.first
 
 behavior.update(
   value: "{\"method\": \"GET\"}",
+  name: "example",
+  description: "example",
   behavior: "webhook",
+  path: "example",
   attachment_delete: true
 )
 ```

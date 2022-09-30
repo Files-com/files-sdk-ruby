@@ -7,9 +7,9 @@
   "id": 1,
   "name": "Example Site NDA for Files.com Use",
   "body": "[Legal body text]",
-  "use_with_users": "",
-  "use_with_bundles": "",
-  "use_with_inboxes": ""
+  "use_with_users": "example",
+  "use_with_bundles": "example",
+  "use_with_inboxes": "example"
 }
 ```
 
@@ -57,7 +57,10 @@ Files::Clickwrap.find(id)
 ```
 Files::Clickwrap.create(
   name: "Example Site NDA for Files.com Use", 
-  body: "[Legal body text]"
+  body: "[Legal body text]", 
+  use_with_bundles: "example", 
+  use_with_inboxes: "example", 
+  use_with_users: "example"
 )
 ```
 
@@ -77,7 +80,10 @@ Files::Clickwrap.create(
 ```
 Files::Clickwrap.update(id, 
   name: "Example Site NDA for Files.com Use", 
-  body: "[Legal body text]"
+  body: "[Legal body text]", 
+  use_with_bundles: "example", 
+  use_with_inboxes: "example", 
+  use_with_users: "example"
 )
 ```
 
@@ -113,7 +119,10 @@ clickwrap = Files::Clickwrap.list.first
 
 clickwrap.update(
   name: "Example Site NDA for Files.com Use",
-  body: "[Legal body text]"
+  body: "[Legal body text]",
+  use_with_bundles: "example",
+  use_with_inboxes: "example",
+  use_with_users: "example"
 )
 ```
 

@@ -6,7 +6,7 @@
 {
   "id": 1,
   "descriptive_label": "Site-wide API key for https://site.files.com/ (key ID #1)",
-  "description": "",
+  "description": "example",
   "created_at": "2000-01-01T01:00:00Z",
   "expires_at": "2000-01-01T01:00:00Z",
   "key": "[key]",
@@ -88,6 +88,7 @@ Files::ApiKey.find(id)
 Files::ApiKey.create(
   user_id: 1, 
   name: "My Main API Key", 
+  description: "example", 
   expires_at: "2000-01-01T01:00:00Z", 
   permission_set: "full", 
   path: "shared/docs"
@@ -130,6 +131,7 @@ Files::ApiKey.update_current(
 ```
 Files::ApiKey.update(id, 
   name: "My Main API Key", 
+  description: "example", 
   expires_at: "2000-01-01T01:00:00Z", 
   permission_set: "full"
 )
@@ -175,6 +177,7 @@ api_key = Files::ApiKey.list.first
 
 api_key.update(
   name: "My Main API Key",
+  description: "example",
   expires_at: "2000-01-01T01:00:00Z",
   permission_set: "full"
 )

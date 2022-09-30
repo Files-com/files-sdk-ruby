@@ -25,13 +25,7 @@ Files::Dir is an alias of Files::Folder
   "download_uri": "https://mysite.files.com/...",
   "priority_color": "red",
   "preview_id": 1,
-  "preview": {
-    "id": 1,
-    "status": "complete",
-    "download_uri": "https://mysite.files.com/...",
-    "type": "image",
-    "size": "large"
-  }
+  "preview": ""
 }
 ```
 

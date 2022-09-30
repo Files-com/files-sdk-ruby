@@ -7,9 +7,9 @@
   "id": 1,
   "name": "owners",
   "admin_ids": "1",
-  "notes": "",
+  "notes": "example",
   "user_ids": "1",
-  "usernames": "user"
+  "usernames": "example"
 }
 ```
 
@@ -65,6 +65,7 @@ Files::Group.find(id)
 ```
 Files::Group.create(
   name: "owners", 
+  notes: "example", 
   user_ids: "1", 
   admin_ids: "1"
 )
@@ -85,6 +86,7 @@ Files::Group.create(
 ```
 Files::Group.update(id, 
   name: "owners", 
+  notes: "example", 
   user_ids: "1", 
   admin_ids: "1"
 )
@@ -121,6 +123,7 @@ group = Files::Group.list.first
 
 group.update(
   name: "owners",
+  notes: "example",
   user_ids: "1",
   admin_ids: "1"
 )
