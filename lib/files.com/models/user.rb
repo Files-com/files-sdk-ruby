@@ -194,7 +194,7 @@ module Files
       @attributes[:language] = value
     end
 
-    # date-time - User's last login time
+    # date-time - User's most recent login time via any protocol
     def last_login_at
       @attributes[:last_login_at]
     end
@@ -203,7 +203,79 @@ module Files
       @attributes[:last_login_at] = value
     end
 
-    # string - The last protocol and cipher used
+    # date-time - User's most recent login time via web
+    def last_web_login_at
+      @attributes[:last_web_login_at]
+    end
+
+    def last_web_login_at=(value)
+      @attributes[:last_web_login_at] = value
+    end
+
+    # date-time - User's most recent login time via FTP
+    def last_ftp_login_at
+      @attributes[:last_ftp_login_at]
+    end
+
+    def last_ftp_login_at=(value)
+      @attributes[:last_ftp_login_at] = value
+    end
+
+    # date-time - User's most recent login time via SFTP
+    def last_sftp_login_at
+      @attributes[:last_sftp_login_at]
+    end
+
+    def last_sftp_login_at=(value)
+      @attributes[:last_sftp_login_at] = value
+    end
+
+    # date-time - User's most recent login time via WebDAV
+    def last_dav_login_at
+      @attributes[:last_dav_login_at]
+    end
+
+    def last_dav_login_at=(value)
+      @attributes[:last_dav_login_at] = value
+    end
+
+    # date-time - User's most recent login time via Desktop app
+    def last_desktop_login_at
+      @attributes[:last_desktop_login_at]
+    end
+
+    def last_desktop_login_at=(value)
+      @attributes[:last_desktop_login_at] = value
+    end
+
+    # date-time - User's most recent login time via Rest API
+    def last_restapi_login_at
+      @attributes[:last_restapi_login_at]
+    end
+
+    def last_restapi_login_at=(value)
+      @attributes[:last_restapi_login_at] = value
+    end
+
+    # date-time - User's most recent API use time
+    def last_api_use_at
+      @attributes[:last_api_use_at]
+    end
+
+    def last_api_use_at=(value)
+      @attributes[:last_api_use_at] = value
+    end
+
+    # date-time - User's most recent activity time, which is the latest of most recent login, most recent API use, enablement, or creation
+    def last_active_at
+      @attributes[:last_active_at]
+    end
+
+    def last_active_at=(value)
+      @attributes[:last_active_at] = value
+    end
+
+    # string - The most recent protocol and cipher used
     def last_protocol_cipher
       @attributes[:last_protocol_cipher]
     end
@@ -437,7 +509,7 @@ module Files
       @attributes[:type_of_2fa] = value
     end
 
-    # date-time - User record last updated at.  Note this may be incremented because of internal or external updates.
+    # date-time - User record most recently updated at.  Note this may be incremented because of internal or external updates.
     def updated_at
       @attributes[:updated_at]
     end
