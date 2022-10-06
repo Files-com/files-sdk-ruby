@@ -104,6 +104,15 @@ module Files
       @attributes[:platform] = value
     end
 
+    # string - URL for API host.
+    def url
+      @attributes[:url]
+    end
+
+    def url=(value)
+      @attributes[:url] = value
+    end
+
     # int64 - User ID for the owner of this API Key.  May be blank for Site-wide API Keys.
     def user_id
       @attributes[:user_id]
