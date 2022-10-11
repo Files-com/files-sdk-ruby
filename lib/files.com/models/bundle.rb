@@ -140,6 +140,15 @@ module Files
       @attributes[:created_at]
     end
 
+    # boolean - Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
+    def dont_separate_submissions_by_folder
+      @attributes[:dont_separate_submissions_by_folder]
+    end
+
+    def dont_separate_submissions_by_folder=(value)
+      @attributes[:dont_separate_submissions_by_folder] = value
+    end
+
     # date-time - Bundle expiration date/time
     def expires_at
       @attributes[:expires_at]
@@ -165,6 +174,15 @@ module Files
 
     def note=(value)
       @attributes[:note] = value
+    end
+
+    # string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, and any custom form data.
+    def path_template
+      @attributes[:path_template]
+    end
+
+    def path_template=(value)
+      @attributes[:path_template] = value
     end
 
     # int64 - Bundle creator user ID
@@ -301,10 +319,12 @@ module Files
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
     #   description - string - Public description
+    #   dont_separate_submissions_by_folder - boolean - Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     #   expires_at - string - Bundle expiration date/time
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   note - string - Bundle internal note
+    #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, and any custom form data.
     #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
@@ -329,6 +349,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params[:max_uses] and !params[:max_uses].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path_template must be an String") if params[:path_template] and !params[:path_template].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
@@ -411,11 +432,13 @@ module Files
     #   paths (required) - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
     #   form_field_set_id - int64 - Id of Form Field Set to use with this bundle
+    #   dont_separate_submissions_by_folder - boolean - Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     #   expires_at - string - Bundle expiration date/time
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
+    #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, and any custom form data.
     #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
@@ -436,6 +459,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params[:code] and !params[:code].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path_template must be an String") if params[:path_template] and !params[:path_template].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params[:clickwrap_id] and !params[:clickwrap_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
@@ -471,10 +495,12 @@ module Files
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
     #   description - string - Public description
+    #   dont_separate_submissions_by_folder - boolean - Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     #   expires_at - string - Bundle expiration date/time
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   note - string - Bundle internal note
+    #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, and any custom form data.
     #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   preview_only - boolean - Restrict users to previewing files only?
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
@@ -498,6 +524,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params[:max_uses] and !params[:max_uses].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path_template must be an String") if params[:path_template] and !params[:path_template].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
