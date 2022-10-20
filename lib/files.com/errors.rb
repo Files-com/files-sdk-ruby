@@ -171,7 +171,6 @@ module Files
   class InvalidFilenameError < ProcessingFailureError; end
   class InvalidRangeError < ProcessingFailureError; end
   class ModelSaveErrorError < ProcessingFailureError; end
-  class MultipartUploadsRequiredForRemotesError < ProcessingFailureError; end
   class MultipleProcessingErrorsError < ProcessingFailureError; end
   class PathTooLongError < ProcessingFailureError; end
   class RecipientAlreadySharedError < ProcessingFailureError; end
