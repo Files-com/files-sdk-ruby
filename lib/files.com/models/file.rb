@@ -676,6 +676,15 @@ module Files
       @attributes[:subfolders_locked?] = value
     end
 
+    # boolean - Is this folder locked and unable to be modified?
+    def is_locked
+      @attributes[:is_locked]
+    end
+
+    def is_locked=(value)
+      @attributes[:is_locked] = value
+    end
+
     # string - Link to download file. Provided only in response to a download request.
     def download_uri
       @attributes[:download_uri]
