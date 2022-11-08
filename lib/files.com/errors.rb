@@ -45,6 +45,7 @@ module Files
   end
 
   class BadRequestError < APIError; end
+  class AgentUpgradeRequiredError < BadRequestError; end
   class AttachmentTooLargeError < BadRequestError; end
   class CannotDownloadDirectoryError < BadRequestError; end
   class CantMoveWithMultipleLocationsError < BadRequestError; end
@@ -84,6 +85,7 @@ module Files
   class NotAuthenticatedError < APIError; end
   class AuthenticationRequiredError < NotAuthenticatedError; end
   class BundleRegistrationCodeFailedError < NotAuthenticatedError; end
+  class FilesAgentTokenFailedError < NotAuthenticatedError; end
   class InboxRegistrationCodeFailedError < NotAuthenticatedError; end
   class InvalidCredentialsError < NotAuthenticatedError; end
   class InvalidOauthError < NotAuthenticatedError; end

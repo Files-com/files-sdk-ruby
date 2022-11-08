@@ -79,6 +79,11 @@ module Files
       @attributes[:bundle_password_required]
     end
 
+    # string - Do Bundle owners receive registration notification?
+    def bundle_registration_notifications
+      @attributes[:bundle_registration_notifications]
+    end
+
     # boolean - Do Bundles require recipients for sharing?
     def bundle_require_share_recipient
       @attributes[:bundle_require_share_recipient]
@@ -765,6 +770,7 @@ module Files
     #   session_pinned_by_ip - boolean - Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
     #   bundle_password_required - boolean - Do Bundles require password protection?
     #   bundle_require_share_recipient - boolean - Do Bundles require recipients for sharing?
+    #   bundle_registration_notifications - string - Do Bundle owners receive registration notification?
     #   password_requirements_apply_to_bundles - boolean - Require bundles' passwords, and passwords for other items (inboxes, public shares, etc.) to conform to the same requirements as users' passwords?
     #   opt_out_global - boolean - Use servers in the USA only?
     #   use_provided_modified_at - boolean - Allow uploaders to set `provided_modified_at` for uploaded files?
@@ -861,6 +867,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: max_prior_passwords must be an Integer") if params[:max_prior_passwords] and !params[:max_prior_passwords].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_min_length must be an Integer") if params[:password_min_length] and !params[:password_min_length].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: bundle_registration_notifications must be an String") if params[:bundle_registration_notifications] and !params[:bundle_registration_notifications].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: disable_users_from_inactivity_period_days must be an Integer") if params[:disable_users_from_inactivity_period_days] and !params[:disable_users_from_inactivity_period_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sftp_host_key_type must be an String") if params[:sftp_host_key_type] and !params[:sftp_host_key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: active_sftp_host_key_id must be an Integer") if params[:active_sftp_host_key_id] and !params[:active_sftp_host_key_id].is_a?(Integer)

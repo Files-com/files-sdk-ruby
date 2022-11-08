@@ -29,7 +29,7 @@ module Files
       @attributes[:files_moved]
     end
 
-    # int64 - Total number of files to process
+    # int64 - Deprecated: used to return a count of the applicable files.  Currently returns 0 always.  On remote servers, it is not possible to reliably determine the number of affected files for every migration operation.
     def files_total
       @attributes[:files_total]
     end
