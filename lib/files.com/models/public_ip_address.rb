@@ -19,12 +19,12 @@ module Files
       @attributes[:server_name]
     end
 
-    # string
+    # boolean
     def ftp_enabled
       @attributes[:ftp_enabled]
     end
 
-    # string
+    # boolean
     def sftp_enabled
       @attributes[:sftp_enabled]
     end
