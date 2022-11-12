@@ -273,7 +273,8 @@ Files::RemoteServer.configuration_file(id,
   status: "example", 
   config_version: "example", 
   private_key: "example", 
-  public_key: "example"
+  public_key: "example", 
+  server_host_key: "example"
 )
 ```
 
@@ -289,6 +290,7 @@ Files::RemoteServer.configuration_file(id,
 * `config_version` (string): agent config version
 * `private_key` (string): private key
 * `public_key` (string): public key
+* `server_host_key` (string): 
 
 
 ---
@@ -423,7 +425,8 @@ remote_server.configuration_file(
   status: "example",
   config_version: "example",
   private_key: "example",
-  public_key: "example"
+  public_key: "example",
+  server_host_key: "example"
 )
 ```
 
@@ -439,6 +442,7 @@ remote_server.configuration_file(
 * `config_version` (string): agent config version
 * `private_key` (string): private key
 * `public_key` (string): public key
+* `server_host_key` (string): 
 
 
 ---

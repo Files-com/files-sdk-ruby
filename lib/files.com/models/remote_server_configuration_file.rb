@@ -58,5 +58,10 @@ module Files
     def config_version
       @attributes[:config_version]
     end
+
+    # string
+    def server_host_key
+      @attributes[:server_host_key]
+    end
   end
 end
