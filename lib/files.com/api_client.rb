@@ -287,7 +287,9 @@ module Files
       return APIError.new(error_data[:message], **opts) unless resp&.data&.dig(:type)
 
       begin
-        error_class = Files.const_get(resp.data[:type].split("/").map { |piece| "#{piece.split("-").map(&:capitalize).join}Error" }.join("::"))
+        error_type = resp.data[:type].split("/").last
+        error_class_name = "#{error_type.split("-").map(&:capitalize).join}Error"
+        error_class = Files.const_get(error_class_name)
         error_class.new(error_data[:message], **opts)
       rescue NameError
         APIError.new(error_data[:message], **opts)
