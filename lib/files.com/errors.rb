@@ -17,7 +17,7 @@ module Files
     end
 
     def to_s
-      "#{@http_status.nil? ? "" : "[HTTP #{@http_status}] "}#{@message}"
+      @message
     end
   end
 
