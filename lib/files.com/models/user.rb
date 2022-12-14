@@ -523,6 +523,24 @@ module Files
       @attributes[:user_root] = value
     end
 
+    # date-time - Number of days remaining until password expires
+    def days_remaining_until_password_expire
+      @attributes[:days_remaining_until_password_expire]
+    end
+
+    def days_remaining_until_password_expire=(value)
+      @attributes[:days_remaining_until_password_expire] = value
+    end
+
+    # date-time - Password expiration datetime
+    def password_expire_at
+      @attributes[:password_expire_at]
+    end
+
+    def password_expire_at=(value)
+      @attributes[:password_expire_at] = value
+    end
+
     # file - An image file for your user avatar.
     def avatar_file
       @attributes[:avatar_file]

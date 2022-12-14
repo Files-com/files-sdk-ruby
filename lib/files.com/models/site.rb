@@ -69,6 +69,11 @@ module Files
       @attributes[:ask_about_overwrites]
     end
 
+    # string - Do Bundle owners receive activity notifications?
+    def bundle_activity_notifications
+      @attributes[:bundle_activity_notifications]
+    end
+
     # int64 - Site-wide Bundle expiration in days
     def bundle_expiration
       @attributes[:bundle_expiration]
@@ -87,6 +92,11 @@ module Files
     # boolean - Do Bundles require recipients for sharing?
     def bundle_require_share_recipient
       @attributes[:bundle_require_share_recipient]
+    end
+
+    # string - Do Bundle uploaders receive upload confirmation notifications?
+    def bundle_upload_receipt_notifications
+      @attributes[:bundle_upload_receipt_notifications]
     end
 
     # Image - Preview watermark image applied to all bundle items.
@@ -771,6 +781,8 @@ module Files
     #   bundle_password_required - boolean - Do Bundles require password protection?
     #   bundle_require_share_recipient - boolean - Do Bundles require recipients for sharing?
     #   bundle_registration_notifications - string - Do Bundle owners receive registration notification?
+    #   bundle_activity_notifications - string - Do Bundle owners receive activity notifications?
+    #   bundle_upload_receipt_notifications - string - Do Bundle uploaders receive upload confirmation notifications?
     #   password_requirements_apply_to_bundles - boolean - Require bundles' passwords, and passwords for other items (inboxes, public shares, etc.) to conform to the same requirements as users' passwords?
     #   opt_out_global - boolean - Use servers in the USA only?
     #   use_provided_modified_at - boolean - Allow uploaders to set `provided_modified_at` for uploaded files?
@@ -868,6 +880,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_min_length must be an Integer") if params[:password_min_length] and !params[:password_min_length].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: bundle_registration_notifications must be an String") if params[:bundle_registration_notifications] and !params[:bundle_registration_notifications].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: bundle_activity_notifications must be an String") if params[:bundle_activity_notifications] and !params[:bundle_activity_notifications].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: bundle_upload_receipt_notifications must be an String") if params[:bundle_upload_receipt_notifications] and !params[:bundle_upload_receipt_notifications].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: disable_users_from_inactivity_period_days must be an Integer") if params[:disable_users_from_inactivity_period_days] and !params[:disable_users_from_inactivity_period_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sftp_host_key_type must be an String") if params[:sftp_host_key_type] and !params[:sftp_host_key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: active_sftp_host_key_id must be an Integer") if params[:active_sftp_host_key_id] and !params[:active_sftp_host_key_id].is_a?(Integer)
