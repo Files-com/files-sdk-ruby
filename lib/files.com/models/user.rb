@@ -523,7 +523,7 @@ module Files
       @attributes[:user_root] = value
     end
 
-    # date-time - Number of days remaining until password expires
+    # int64 - Number of days remaining until password expires
     def days_remaining_until_password_expire
       @attributes[:days_remaining_until_password_expire]
     end
