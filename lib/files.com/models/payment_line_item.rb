@@ -28,10 +28,5 @@ module Files
     def payment_id
       @attributes[:payment_id]
     end
-
-    # date-time - Payment line item updated at date/time
-    def updated_at
-      @attributes[:updated_at]
-    end
   end
 end

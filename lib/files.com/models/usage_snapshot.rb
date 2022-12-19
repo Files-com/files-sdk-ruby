@@ -24,11 +24,6 @@ module Files
       @attributes[:end_at]
     end
 
-    # date-time - DEPRECATED: Usage snapshot created at date/time
-    def created_at
-      @attributes[:created_at]
-    end
-
     # double - Highest user count number in time period
     def high_water_user_count
       @attributes[:high_water_user_count]
@@ -42,21 +37,6 @@ module Files
     # double - Highest Storage Usage GB recorded in time period (used for billing)
     def high_water_storage
       @attributes[:high_water_storage]
-    end
-
-    # int64 - DEPRECATED: Number of downloads in report time period
-    def total_downloads
-      @attributes[:total_downloads]
-    end
-
-    # int64 - DEPRECATED: Number of uploads in time period
-    def total_uploads
-      @attributes[:total_uploads]
-    end
-
-    # date-time - DEPRECATED: The last time this site usage report was updated
-    def updated_at
-      @attributes[:updated_at]
     end
 
     # object - Storage Usage - map of root folders to their usage as of end date (not necessarily high water mark, which is used for billing)
