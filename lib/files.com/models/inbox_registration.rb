@@ -59,6 +59,11 @@ module Files
       @attributes[:inbox_title]
     end
 
+    # date-time - Registration creation date/time
+    def created_at
+      @attributes[:created_at]
+    end
+
     # Parameters:
     #   cursor - string - Used for pagination.  Send a cursor value to resume an existing list from the point at which you left off.  Get a cursor from an existing list via either the X-Files-Cursor-Next header or the X-Files-Cursor-Prev header.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).

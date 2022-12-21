@@ -69,6 +69,11 @@ module Files
       @attributes[:bundle_recipient_id]
     end
 
+    # date-time - Registration creation date/time
+    def created_at
+      @attributes[:created_at]
+    end
+
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   cursor - string - Used for pagination.  Send a cursor value to resume an existing list from the point at which you left off.  Get a cursor from an existing list via either the X-Files-Cursor-Next header or the X-Files-Cursor-Prev header.

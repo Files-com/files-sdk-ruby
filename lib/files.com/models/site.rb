@@ -599,6 +599,11 @@ module Files
       @attributes[:session_expiry]
     end
 
+    # int64 - Session expiry in minutes
+    def session_expiry_minutes
+      @attributes[:session_expiry_minutes]
+    end
+
     # boolean - Is SSL required?  Disabling this is insecure.
     def ssl_required
       @attributes[:ssl_required]
