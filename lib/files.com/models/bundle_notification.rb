@@ -36,6 +36,15 @@ module Files
       @attributes[:notify_on_registration] = value
     end
 
+    # boolean - Triggers bundle notification when a upload action occurs for it.
+    def notify_on_upload
+      @attributes[:notify_on_upload]
+    end
+
+    def notify_on_upload=(value)
+      @attributes[:notify_on_upload] = value
+    end
+
     # int64 - The id of the user to notify.
     def user_id
       @attributes[:user_id]
@@ -43,6 +52,19 @@ module Files
 
     def user_id=(value)
       @attributes[:user_id] = value
+    end
+
+    # Parameters:
+    #   notify_on_registration - boolean - Triggers bundle notification when a registration action occurs for it.
+    #   notify_on_upload - boolean - Triggers bundle notification when a upload action occurs for it.
+    def update(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/bundle_notifications/#{@attributes[:id]}", :patch, params, @options)
     end
 
     def delete(params = {})
@@ -61,7 +83,7 @@ module Files
 
     def save
       if @attributes[:id]
-        raise NotImplementedError.new("The BundleNotification object doesn't support updates.")
+        update(@attributes)
       else
         new_obj = BundleNotification.create(@attributes, @options)
         @attributes = new_obj.attributes
@@ -107,6 +129,7 @@ module Files
     # Parameters:
     #   user_id (required) - int64 - The id of the user to notify.
     #   notify_on_registration - boolean - Triggers bundle notification when a registration action occurs for it.
+    #   notify_on_upload - boolean - Triggers bundle notification when a upload action occurs for it.
     #   bundle_id (required) - int64 - Bundle ID to notify on
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
@@ -115,6 +138,19 @@ module Files
       raise MissingParameterError.new("Parameter missing: bundle_id") unless params[:bundle_id]
 
       response, options = Api.send_request("/bundle_notifications", :post, params, options)
+      BundleNotification.new(response.data, options)
+    end
+
+    # Parameters:
+    #   notify_on_registration - boolean - Triggers bundle notification when a registration action occurs for it.
+    #   notify_on_upload - boolean - Triggers bundle notification when a upload action occurs for it.
+    def self.update(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      response, options = Api.send_request("/bundle_notifications/#{params[:id]}", :patch, params, options)
       BundleNotification.new(response.data, options)
     end
 
