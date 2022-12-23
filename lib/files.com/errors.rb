@@ -61,6 +61,7 @@ module Files
   class InvalidInputEncodingError < BadRequestError; end
   class InvalidInterfaceError < BadRequestError; end
   class InvalidOauthProviderError < BadRequestError; end
+  class InvalidPathError < BadRequestError; end
   class InvalidReturnToUrlError < BadRequestError; end
   class InvalidUploadOffsetError < BadRequestError; end
   class InvalidUploadPartGapError < BadRequestError; end
