@@ -351,10 +351,12 @@ module Files
     # Parameters:
     #   path (required) - string - Path to operate on.
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
+    #   provided_mtime - string - User provided modification time.
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params[:provided_mtime] and !params[:provided_mtime].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/folders/#{params[:path]}", :post, params, options)
