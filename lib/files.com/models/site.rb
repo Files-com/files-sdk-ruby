@@ -856,6 +856,7 @@ module Files
     #   ldap_password_change - string - New LDAP password.
     #   ldap_password_change_confirmation - string - Confirm new LDAP password.
     #   smtp_password - string - Password for SMTP server.
+    #   session_expiry_minutes - int64 - Session expiry in minutes
     def self.update(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subdomain must be an String") if params[:subdomain] and !params[:subdomain].is_a?(String)
@@ -922,6 +923,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ldap_password_change must be an String") if params[:ldap_password_change] and !params[:ldap_password_change].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_password_change_confirmation must be an String") if params[:ldap_password_change_confirmation] and !params[:ldap_password_change_confirmation].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_password must be an String") if params[:smtp_password] and !params[:smtp_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: session_expiry_minutes must be an Integer") if params[:session_expiry_minutes] and !params[:session_expiry_minutes].is_a?(Integer)
 
       response, options = Api.send_request("/site", :patch, params, options)
       Site.new(response.data, options)
