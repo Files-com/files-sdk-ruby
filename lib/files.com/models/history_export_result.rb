@@ -19,6 +19,11 @@ module Files
       @attributes[:created_at]
     end
 
+    # int64 - When the action happened, in ISO8601 format.
+    def created_at_iso8601
+      @attributes[:created_at_iso8601]
+    end
+
     # int64 - User ID
     def user_id
       @attributes[:user_id]
