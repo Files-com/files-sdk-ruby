@@ -82,6 +82,25 @@ RSpec.describe Files::File, :with_test_folder, skip: ENV.fetch("GITLAB", nil) do
       expect(file.read).to eq("I am a string via IO")
       temp_file.close
     end
+
+    it "will send with_rename" do
+      path = test_folder.join("with_rename_test.txt").to_s
+      io = StringIO.new("I am a string via IO")
+      file = Files::File.new({ path: path, with_rename: true }, options)
+      file.write(io)
+      file.close
+
+      io = StringIO.new("I am a string via IO")
+      file = Files::File.new({ path: path, with_rename: true }, options)
+      file.write(io)
+      file.close
+
+      file = Files::File.find(test_folder.join("with_rename_test.txt").to_s, {}, options)
+      expect(file.read).to eq("I am a string via IO")
+
+      file = Files::File.find(test_folder.join("with_rename_test_1.txt").to_s, {}, options)
+      expect(file.read).to eq("I am a string via IO")
+    end
   end
 
   describe "#download_content" do

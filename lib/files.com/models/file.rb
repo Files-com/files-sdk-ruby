@@ -134,11 +134,11 @@ module Files
       paths.map { |p| delete(p) }
     end
 
-    def self.upload_chunks(io, path, options, upload = nil, etags = [])
+    def self.upload_chunks(io, path, options, upload = nil, etags = [], params: {})
       etags ||= []
       bytes_written = 0
       loop do
-        begin_upload = File.begin_upload(path, { ref: upload&.ref, part: (upload&.part_number || 0) + 1 }, options)
+        begin_upload = File.begin_upload(path, params.merge(ref: upload&.ref, part: (upload&.part_number || 0) + 1), options)
         upload = begin_upload.is_a?(Enumerable) ? begin_upload.first : begin_upload
         buf = io.read(upload.partsize) || ""
         bytes_written += buf.length
@@ -149,10 +149,10 @@ module Files
       end
     end
 
-    def self.upload_file(path, destination = nil, options = {})
+    def self.upload_file(path, destination = nil, options = {}, params: {})
       local_file = ::File.open(path, 'r')
       destination ||= File.basename(path)
-      upload, etags = upload_chunks(local_file, destination, options)
+      upload, etags = upload_chunks(local_file, destination, options, params: params)
 
       params = {
         action: "end",
@@ -348,7 +348,7 @@ module Files
       if mode.include? "w"
         @write_io.rewind if @write_io.is_a?(StringIO)
 
-        @upload, @etags, bytes_written = File.upload_chunks(@write_io, path, options, @upload, @etags)
+        @upload, @etags, bytes_written = File.upload_chunks(@write_io, path, options, @upload, @etags, params: @attributes)
         @bytes_written += bytes_written
       elsif mode.include? "a"
         raise NotImplementedError
@@ -546,7 +546,7 @@ module Files
     end
 
     def upload_file(local_file)
-      File.upload_file(local_file.path)
+      File.upload_file(local_file.path, params: @attributes)
     end
 
     def write(*args)
