@@ -127,14 +127,13 @@ module Files
     end
 
     # Parameters:
-    #   user_id (required) - int64 - The id of the user to notify.
+    #   user_id - int64 - The id of the user to notify.
     #   notify_on_registration - boolean - Triggers bundle notification when a registration action occurs for it.
     #   notify_on_upload - boolean - Triggers bundle notification when a upload action occurs for it.
     #   bundle_id (required) - int64 - Bundle ID to notify on
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
       raise MissingParameterError.new("Parameter missing: bundle_id") unless params[:bundle_id]
 
       response, options = Api.send_request("/bundle_notifications", :post, params, options)
