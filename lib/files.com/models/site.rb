@@ -424,6 +424,11 @@ module Files
       @attributes[:office_integration_available]
     end
 
+    # string - Office integration application used to edit and view the MS Office documents
+    def office_integration_type
+      @attributes[:office_integration_type]
+    end
+
     # string - Link to scheduling a meeting with our Sales team
     def oncehub_link
       @attributes[:oncehub_link]
@@ -753,6 +758,7 @@ module Files
     #   folder_permissions_groups_only - boolean - If true, permissions for this site must be bound to a group (not a user). Otherwise, permissions must be bound to a user.
     #   welcome_screen - string - Does the welcome screen appear?
     #   office_integration_available - boolean - Allow users to use Office for the web?
+    #   office_integration_type - string - Office integration application used to edit and view the MS Office documents
     #   pin_all_remote_servers_to_site_region - boolean - If true, we will ensure that all internal communications with any remote server are made through the primary region of the site. This setting overrides individual remote server settings.
     #   motd_text - string - A message to show users when they connect via FTP or SFTP.
     #   motd_use_for_ftp - boolean - Show message to users connecting via FTP
@@ -873,6 +879,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: desktop_app_session_lifetime must be an Integer") if params[:desktop_app_session_lifetime] and !params[:desktop_app_session_lifetime].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: mobile_app_session_lifetime must be an Integer") if params[:mobile_app_session_lifetime] and !params[:mobile_app_session_lifetime].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: welcome_screen must be an String") if params[:welcome_screen] and !params[:welcome_screen].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: office_integration_type must be an String") if params[:office_integration_type] and !params[:office_integration_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: motd_text must be an String") if params[:motd_text] and !params[:motd_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: session_expiry must be an Float") if params[:session_expiry] and !params[:session_expiry].is_a?(Float)
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params[:user_lockout_tries] and !params[:user_lockout_tries].is_a?(Integer)
