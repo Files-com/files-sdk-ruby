@@ -562,6 +562,7 @@ module Files
     #   private_key - string - private key
     #   public_key - string - public key
     #   server_host_key - string
+    #   subdomain - string
     def configuration_file(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -577,6 +578,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: subdomain must be an String") if params[:subdomain] and !params[:subdomain].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/remote_servers/#{@attributes[:id]}/configuration_file", :post, params, @options)
@@ -878,6 +880,7 @@ module Files
     #   private_key - string - private key
     #   public_key - string - public key
     #   server_host_key - string
+    #   subdomain - string
     def self.configuration_file(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -892,6 +895,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: subdomain must be an String") if params[:subdomain] and !params[:subdomain].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}/configuration_file", :post, params, options)

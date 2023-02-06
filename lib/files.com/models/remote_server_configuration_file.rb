@@ -63,5 +63,10 @@ module Files
     def server_host_key
       @attributes[:server_host_key]
     end
+
+    # string
+    def subdomain
+      @attributes[:subdomain]
+    end
   end
 end
