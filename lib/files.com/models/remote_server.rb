@@ -423,6 +423,15 @@ module Files
       @attributes[:files_agent_api_token] = value
     end
 
+    # string - Filebase Bucket name
+    def filebase_bucket
+      @attributes[:filebase_bucket]
+    end
+
+    def filebase_bucket=(value)
+      @attributes[:filebase_bucket] = value
+    end
+
     # string - AWS secret key.
     def aws_secret_key
       @attributes[:aws_secret_key]
