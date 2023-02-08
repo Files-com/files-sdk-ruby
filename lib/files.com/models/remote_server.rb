@@ -432,6 +432,15 @@ module Files
       @attributes[:filebase_bucket] = value
     end
 
+    # string - Filebase Access Key.
+    def filebase_access_key
+      @attributes[:filebase_access_key]
+    end
+
+    def filebase_access_key=(value)
+      @attributes[:filebase_access_key] = value
+    end
+
     # string - AWS secret key.
     def aws_secret_key
       @attributes[:aws_secret_key]
@@ -558,6 +567,15 @@ module Files
       @attributes[:s3_compatible_secret_key] = value
     end
 
+    # string - Filebase secret key
+    def filebase_secret_key
+      @attributes[:filebase_secret_key]
+    end
+
+    def filebase_secret_key=(value)
+      @attributes[:filebase_secret_key] = value
+    end
+
     # Post local changes, check in, and download configuration file (used by some Remote Server integrations, such as the Files.com Agent)
     #
     # Parameters:
@@ -645,6 +663,9 @@ module Files
     #   s3_compatible_secret_key - string - S3-compatible secret key
     #   files_agent_root - string - Agent local root path
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
+    #   filebase_access_key - string - Filebase Access Key.
+    #   filebase_secret_key - string - Filebase secret key
+    #   filebase_bucket - string - Filebase Bucket name
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -698,6 +719,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/remote_servers/#{@attributes[:id]}", :patch, params, @options)
@@ -822,6 +846,9 @@ module Files
     #   s3_compatible_secret_key - string - S3-compatible secret key
     #   files_agent_root - string - Agent local root path
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
+    #   filebase_access_key - string - Filebase Access Key.
+    #   filebase_secret_key - string - Filebase secret key
+    #   filebase_bucket - string - Filebase Bucket name
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
@@ -871,6 +898,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
 
       response, options = Api.send_request("/remote_servers", :post, params, options)
       RemoteServer.new(response.data, options)
@@ -963,6 +993,9 @@ module Files
     #   s3_compatible_secret_key - string - S3-compatible secret key
     #   files_agent_root - string - Agent local root path
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
+    #   filebase_access_key - string - Filebase Access Key.
+    #   filebase_secret_key - string - Filebase secret key
+    #   filebase_bucket - string - Filebase Bucket name
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -1015,6 +1048,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}", :patch, params, options)
