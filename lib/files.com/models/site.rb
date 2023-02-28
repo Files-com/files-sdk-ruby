@@ -109,6 +109,11 @@ module Files
       @attributes[:bundle_watermark_value]
     end
 
+    # boolean - Do incoming emails in the Inboxes require checking for SPF/DKIM/DMARC?
+    def uploads_via_email_authentication
+      @attributes[:uploads_via_email_authentication]
+    end
+
     # string - Page link and button color
     def color2_left
       @attributes[:color2_left]
@@ -846,6 +851,7 @@ module Files
     #   ldap_group_exclusion - string - Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
     #   ldap_group_inclusion - string - Comma or newline separated list of group names (with optional wildcards) to include when syncing.
     #   ldap_base_dn - string - Base DN for looking up users in LDAP server
+    #   uploads_via_email_authentication - boolean - Do incoming emails in the Inboxes require checking for SPF/DKIM/DMARC?
     #   icon16_file - file
     #   icon16_delete - boolean - If true, will delete the file stored in icon16
     #   icon32_file - file
