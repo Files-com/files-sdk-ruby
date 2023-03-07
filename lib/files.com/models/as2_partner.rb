@@ -54,6 +54,15 @@ module Files
       @attributes[:server_certificate] = value
     end
 
+    # boolean - `true` if remote server only accepts connections from dedicated IPs
+    def enable_dedicated_ips
+      @attributes[:enable_dedicated_ips]
+    end
+
+    def enable_dedicated_ips=(value)
+      @attributes[:enable_dedicated_ips] = value
+    end
+
     # string - Serial of public certificate used for message security in hex format.
     def hex_public_certificate_serial
       @attributes[:hex_public_certificate_serial]
@@ -131,6 +140,7 @@ module Files
     #   uri - string - URL base for AS2 responses
     #   server_certificate - string - Remote server certificate security setting
     #   public_certificate - string
+    #   enable_dedicated_ips - boolean
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -206,6 +216,7 @@ module Files
     #   public_certificate (required) - string
     #   as2_station_id (required) - int64 - Id of As2Station for this partner
     #   server_certificate - string - Remote server certificate security setting
+    #   enable_dedicated_ips - boolean
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uri must be an String") if params[:uri] and !params[:uri].is_a?(String)
@@ -226,6 +237,7 @@ module Files
     #   uri - string - URL base for AS2 responses
     #   server_certificate - string - Remote server certificate security setting
     #   public_certificate - string
+    #   enable_dedicated_ips - boolean
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
