@@ -170,10 +170,9 @@ module Files
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction (e.g. `sort_by[created_at]=desc`). Valid fields are `created_at` and `as2_partner_id`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at`.
     #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `created_at`.
-    #   filter_gteq - object - If set, return records where the specified field is greater than or equal to the supplied value. Valid fields are `created_at`.
-    #   filter_like - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at`.
+    #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at`.
     #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
-    #   filter_lteq - object - If set, return records where the specified field is less than or equal to the supplied value. Valid fields are `created_at`.
+    #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at`.
     #   as2_partner_id - int64 - As2 Partner ID.  If provided, will return message specific to that partner.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
@@ -182,7 +181,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_like must be an Hash") if params[:filter_like] and !params[:filter_like].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: as2_partner_id must be an Integer") if params[:as2_partner_id] and !params[:as2_partner_id].is_a?(Integer)

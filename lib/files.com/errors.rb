@@ -58,6 +58,7 @@ module Files
   class InvalidEtagsError < BadRequestError; end
   class InvalidFilterCombinationError < BadRequestError; end
   class InvalidFilterFieldError < BadRequestError; end
+  class InvalidFilterParamError < BadRequestError; end
   class InvalidInputEncodingError < BadRequestError; end
   class InvalidInterfaceError < BadRequestError; end
   class InvalidOauthProviderError < BadRequestError; end
