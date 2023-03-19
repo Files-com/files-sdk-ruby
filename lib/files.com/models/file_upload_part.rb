@@ -54,6 +54,11 @@ module Files
       @attributes[:parallel_parts]
     end
 
+    # boolean - If `true`, parts may be retried. If `false`, a part cannot be retried and the upload should be restarted.
+    def retry_parts
+      @attributes[:retry_parts]
+    end
+
     # object - Additional HTTP parameters to send with the upload
     def parameters
       @attributes[:parameters]
