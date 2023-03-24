@@ -30,6 +30,7 @@ require "files.com/system_profiler"
 require "files.com/util"
 require "files.com/list"
 require "files.com/uri"
+require "files.com/path_util"
 
 require "files.com/models/account_line_item"
 require "files.com/models/action"
