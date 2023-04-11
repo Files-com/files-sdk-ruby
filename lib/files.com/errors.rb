@@ -56,6 +56,7 @@ module Files
   class InvalidCursorError < BadRequestError; end
   class InvalidCursorTypeForSortError < BadRequestError; end
   class InvalidEtagsError < BadRequestError; end
+  class InvalidFilterAliasCombinationError < BadRequestError; end
   class InvalidFilterCombinationError < BadRequestError; end
   class InvalidFilterFieldError < BadRequestError; end
   class InvalidFilterParamError < BadRequestError; end
