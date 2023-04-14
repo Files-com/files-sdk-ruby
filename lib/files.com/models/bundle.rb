@@ -257,7 +257,7 @@ module Files
       @attributes[:has_inbox] = value
     end
 
-    # array - A list of paths in this bundle
+    # array - A list of paths in this bundle.  For performance reasons, this is not provided when listing bundles.
     def paths
       @attributes[:paths]
     end
