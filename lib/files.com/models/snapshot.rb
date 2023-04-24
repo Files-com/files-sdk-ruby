@@ -9,6 +9,51 @@ module Files
       @options = options || {}
     end
 
+    # date-time - When the snapshot expires.
+    def expires_at
+      @attributes[:expires_at]
+    end
+
+    def expires_at=(value)
+      @attributes[:expires_at] = value
+    end
+
+    # date-time - When the snapshot was finalized.
+    def finalized_at
+      @attributes[:finalized_at]
+    end
+
+    def finalized_at=(value)
+      @attributes[:finalized_at] = value
+    end
+
+    # string - A name for the snapshot.
+    def name
+      @attributes[:name]
+    end
+
+    def name=(value)
+      @attributes[:name] = value
+    end
+
+    # int64 - The user that created this snapshot, if applicable.
+    def user_id
+      @attributes[:user_id]
+    end
+
+    def user_id=(value)
+      @attributes[:user_id] = value
+    end
+
+    # int64 - The bundle using this snapshot, if applicable.
+    def bundle_id
+      @attributes[:bundle_id]
+    end
+
+    def bundle_id=(value)
+      @attributes[:bundle_id] = value
+    end
+
     # int64 - Snapshot ID.
     def id
       @attributes[:id]
@@ -58,8 +103,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
 
-      response, _options = Api.send_request("/snapshots", :get, params, options)
-      response.data
+      List.new(Snapshot, params) do
+        Api.send_request("/snapshots", :get, params, options)
+      end
     end
 
     def self.all(params = {}, options = {})
@@ -74,8 +120,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, _options = Api.send_request("/snapshots/#{params[:id]}", :get, params, options)
-      response.data
+      response, options = Api.send_request("/snapshots/#{params[:id]}", :get, params, options)
+      Snapshot.new(response.data, options)
     end
 
     def self.get(id, params = {}, options = {})
@@ -83,8 +129,8 @@ module Files
     end
 
     def self.create(params = {}, options = {})
-      response, _options = Api.send_request("/snapshots", :post, params, options)
-      response.data
+      response, options = Api.send_request("/snapshots", :post, params, options)
+      Snapshot.new(response.data, options)
     end
 
     def self.update(id, params = {}, options = {})
@@ -93,8 +139,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, _options = Api.send_request("/snapshots/#{params[:id]}", :patch, params, options)
-      response.data
+      response, options = Api.send_request("/snapshots/#{params[:id]}", :patch, params, options)
+      Snapshot.new(response.data, options)
     end
 
     def self.delete(id, params = {}, options = {})
