@@ -194,6 +194,15 @@ module Files
       @attributes[:send_email_receipt_to_uploader] = value
     end
 
+    # int64 - ID of the snapshot containing this bundle's contents.
+    def snapshot_id
+      @attributes[:snapshot_id]
+    end
+
+    def snapshot_id=(value)
+      @attributes[:snapshot_id] = value
+    end
+
     # int64 - Bundle creator user ID
     def user_id
       @attributes[:user_id]
@@ -284,6 +293,24 @@ module Files
       @attributes[:form_field_set_id] = value
     end
 
+    # boolean - If true, create a snapshot of this bundle's contents.
+    def create_snapshot
+      @attributes[:create_snapshot]
+    end
+
+    def create_snapshot=(value)
+      @attributes[:create_snapshot] = value
+    end
+
+    # boolean - If true, finalize the snapshot of this bundle's contents. Note that `create_snapshot` must also be true.
+    def finalize_snapshot
+      @attributes[:finalize_snapshot]
+    end
+
+    def finalize_snapshot=(value)
+      @attributes[:finalize_snapshot] = value
+    end
+
     # file - Preview watermark image applied to all bundle items.
     def watermark_attachment_file
       @attributes[:watermark_attachment_file]
@@ -327,9 +354,11 @@ module Files
     #   form_field_set_id - int64 - Id of Form Field Set to use with this bundle
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
+    #   create_snapshot - boolean - If true, create a snapshot of this bundle's contents.
     #   description - string - Public description
     #   dont_separate_submissions_by_folder - boolean - Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     #   expires_at - string - Bundle expiration date/time
+    #   finalize_snapshot - boolean - If true, finalize the snapshot of this bundle's contents. Note that `create_snapshot` must also be true.
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   note - string - Bundle internal note
@@ -440,8 +469,10 @@ module Files
     #   paths (required) - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
     #   form_field_set_id - int64 - Id of Form Field Set to use with this bundle
+    #   create_snapshot - boolean - If true, create a snapshot of this bundle's contents.
     #   dont_separate_submissions_by_folder - boolean - Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     #   expires_at - string - Bundle expiration date/time
+    #   finalize_snapshot - boolean - If true, finalize the snapshot of this bundle's contents. Note that `create_snapshot` must also be true.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   description - string - Public description
     #   note - string - Bundle internal note
@@ -503,9 +534,11 @@ module Files
     #   form_field_set_id - int64 - Id of Form Field Set to use with this bundle
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
+    #   create_snapshot - boolean - If true, create a snapshot of this bundle's contents.
     #   description - string - Public description
     #   dont_separate_submissions_by_folder - boolean - Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     #   expires_at - string - Bundle expiration date/time
+    #   finalize_snapshot - boolean - If true, finalize the snapshot of this bundle's contents. Note that `create_snapshot` must also be true.
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   note - string - Bundle internal note
