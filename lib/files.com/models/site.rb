@@ -714,6 +714,11 @@ module Files
       @attributes[:disable_users_from_inactivity_period_days]
     end
 
+    # boolean - Allow group admins set password authentication method
+    def group_admins_can_set_user_password
+      @attributes[:group_admins_can_set_user_password]
+    end
+
     def self.get(params = {}, options = {})
       response, options = Api.send_request("/site", :get, params, options)
       Site.new(response.data, options)
@@ -803,6 +808,7 @@ module Files
     #   sftp_host_key_type - string - Sftp Host Key Type
     #   active_sftp_host_key_id - int64 - Id of the currently selected custom SFTP Host Key
     #   bundle_watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
+    #   group_admins_can_set_user_password - boolean - Allow group admins set password authentication method
     #   allowed_2fa_method_sms - boolean - Is SMS two factor authentication allowed?
     #   allowed_2fa_method_u2f - boolean - Is U2F two factor authentication allowed?
     #   allowed_2fa_method_totp - boolean - Is TOTP two factor authentication allowed?
