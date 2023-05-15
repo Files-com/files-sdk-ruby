@@ -488,6 +488,7 @@ module Files
     #   skip_email - boolean - BundleRegistrations can be saved without providing email?
     #   skip_name - boolean - BundleRegistrations can be saved without providing name?
     #   skip_company - boolean - BundleRegistrations can be saved without providing company?
+    #   snapshot_id - int64 - ID of the snapshot containing this bundle's contents.
     #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
@@ -503,6 +504,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params[:clickwrap_id] and !params[:clickwrap_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: snapshot_id must be an Integer") if params[:snapshot_id] and !params[:snapshot_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: paths") unless params[:paths]
 
       response, options = Api.send_request("/bundles", :post, params, options)

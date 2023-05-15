@@ -54,6 +54,15 @@ module Files
       @attributes[:bundle_id] = value
     end
 
+    # array(string) - An array of paths to add to the snapshot.
+    def paths
+      @attributes[:paths]
+    end
+
+    def paths=(value)
+      @attributes[:paths] = value
+    end
+
     # int64 - Snapshot ID.
     def id
       @attributes[:id]
@@ -63,11 +72,18 @@ module Files
       @attributes[:id] = value
     end
 
+    # Parameters:
+    #   expires_at - string - When the snapshot expires.
+    #   name - string - A name for the snapshot.
+    #   paths - array(string) - An array of paths to add to the snapshot.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/snapshots/#{@attributes[:id]}", :patch, params, @options)
@@ -128,15 +144,30 @@ module Files
       find(id, params, options)
     end
 
+    # Parameters:
+    #   expires_at - string - When the snapshot expires.
+    #   name - string - A name for the snapshot.
+    #   paths - array(string) - An array of paths to add to the snapshot.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
+
       response, options = Api.send_request("/snapshots", :post, params, options)
       Snapshot.new(response.data, options)
     end
 
+    # Parameters:
+    #   expires_at - string - When the snapshot expires.
+    #   name - string - A name for the snapshot.
+    #   paths - array(string) - An array of paths to add to the snapshot.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/snapshots/#{params[:id]}", :patch, params, options)
