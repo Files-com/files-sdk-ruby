@@ -34,7 +34,7 @@ module Files
 
     def self.build_default_conn(force_net_http: false)
       conn = Faraday.new do |builder|
-        if defined? Faraday::Request::Multipart
+        if Gem::Version.new(Faraday::VERSION) < Gem::Version.new("2.0.0")
           builder.use Faraday::Request::Multipart
         else
           builder.request :multipart
