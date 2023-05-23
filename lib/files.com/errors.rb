@@ -132,6 +132,7 @@ module Files
   class SiteFilesAreImmutableError < NotAuthorizedError; end
   class TwoFactorAuthenticationRequiredError < NotAuthorizedError; end
   class UserIdWithoutSiteAdminError < NotAuthorizedError; end
+  class WriteAndBundlePermissionRequiredError < NotAuthorizedError; end
   class WritePermissionRequiredError < NotAuthorizedError; end
   class ZipDownloadIpMismatchError < NotAuthorizedError; end
 
