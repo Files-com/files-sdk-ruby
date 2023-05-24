@@ -9,6 +9,15 @@ module Files
       @options = options || {}
     end
 
+    # int64 - The snapshot's unique ID.
+    def id
+      @attributes[:id]
+    end
+
+    def id=(value)
+      @attributes[:id] = value
+    end
+
     # date-time - When the snapshot expires.
     def expires_at
       @attributes[:expires_at]
@@ -61,15 +70,6 @@ module Files
 
     def paths=(value)
       @attributes[:paths] = value
-    end
-
-    # int64 - Snapshot ID.
-    def id
-      @attributes[:id]
-    end
-
-    def id=(value)
-      @attributes[:id] = value
     end
 
     # Parameters:
