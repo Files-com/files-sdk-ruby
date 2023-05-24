@@ -519,6 +519,11 @@ module Files
       @attributes[:require_2fa_user_type]
     end
 
+    # boolean - If true, we will hide the 'Remember Me' box on Inbox and Bundle registration pages, requiring that the user logout and log back in every time they visit the page.
+    def require_logout_from_bundles_and_inboxes
+      @attributes[:require_logout_from_bundles_and_inboxes]
+    end
+
     # Session - Current session
     def session
       @attributes[:session]
@@ -789,6 +794,7 @@ module Files
     #   password_require_special - boolean - Require special characters in password?
     #   password_require_number - boolean - Require a number in passwords?
     #   password_require_unbreached - boolean - Require passwords that have not been previously breached? (see https://haveibeenpwned.com/)
+    #   require_logout_from_bundles_and_inboxes - boolean - If true, we will hide the 'Remember Me' box on Inbox and Bundle registration pages, requiring that the user logout and log back in every time they visit the page.
     #   sftp_user_root_enabled - boolean - Use user FTP roots also for SFTP?
     #   disable_password_reset - boolean - Is password reset disabled?
     #   immutable_files - boolean - Are files protected from modification?
