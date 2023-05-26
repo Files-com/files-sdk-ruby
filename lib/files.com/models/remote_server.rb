@@ -441,6 +441,15 @@ module Files
       @attributes[:filebase_access_key] = value
     end
 
+    # boolean - List Team folders in root
+    def dropbox_teams
+      @attributes[:dropbox_teams]
+    end
+
+    def dropbox_teams=(value)
+      @attributes[:dropbox_teams] = value
+    end
+
     # string - AWS secret key.
     def aws_secret_key
       @attributes[:aws_secret_key]
@@ -666,6 +675,7 @@ module Files
     #   filebase_access_key - string - Filebase Access Key.
     #   filebase_secret_key - string - Filebase secret key
     #   filebase_bucket - string - Filebase Bucket name
+    #   dropbox_teams - boolean - List Team folders in root
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -849,6 +859,7 @@ module Files
     #   filebase_access_key - string - Filebase Access Key.
     #   filebase_secret_key - string - Filebase secret key
     #   filebase_bucket - string - Filebase Bucket name
+    #   dropbox_teams - boolean - List Team folders in root
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
@@ -996,6 +1007,7 @@ module Files
     #   filebase_access_key - string - Filebase Access Key.
     #   filebase_secret_key - string - Filebase secret key
     #   filebase_bucket - string - Filebase Bucket name
+    #   dropbox_teams - boolean - List Team folders in root
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
