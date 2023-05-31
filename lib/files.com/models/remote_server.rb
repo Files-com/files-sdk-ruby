@@ -441,6 +441,33 @@ module Files
       @attributes[:filebase_access_key] = value
     end
 
+    # string - Cloudflare Bucket name
+    def cloudflare_bucket
+      @attributes[:cloudflare_bucket]
+    end
+
+    def cloudflare_bucket=(value)
+      @attributes[:cloudflare_bucket] = value
+    end
+
+    # string - Cloudflare Access Key.
+    def cloudflare_access_key
+      @attributes[:cloudflare_access_key]
+    end
+
+    def cloudflare_access_key=(value)
+      @attributes[:cloudflare_access_key] = value
+    end
+
+    # string - Cloudflare endpoint
+    def cloudflare_endpoint
+      @attributes[:cloudflare_endpoint]
+    end
+
+    def cloudflare_endpoint=(value)
+      @attributes[:cloudflare_endpoint] = value
+    end
+
     # boolean - List Team folders in root
     def dropbox_teams
       @attributes[:dropbox_teams]
@@ -585,6 +612,15 @@ module Files
       @attributes[:filebase_secret_key] = value
     end
 
+    # string - Cloudflare secret key
+    def cloudflare_secret_key
+      @attributes[:cloudflare_secret_key]
+    end
+
+    def cloudflare_secret_key=(value)
+      @attributes[:cloudflare_secret_key] = value
+    end
+
     # Post local changes, check in, and download configuration file (used by some Remote Server integrations, such as the Files.com Agent)
     #
     # Parameters:
@@ -675,6 +711,10 @@ module Files
     #   filebase_access_key - string - Filebase Access Key.
     #   filebase_secret_key - string - Filebase secret key
     #   filebase_bucket - string - Filebase Bucket name
+    #   cloudflare_access_key - string - Cloudflare Access Key.
+    #   cloudflare_secret_key - string - Cloudflare secret key
+    #   cloudflare_bucket - string - Cloudflare Bucket name
+    #   cloudflare_endpoint - string - Cloudflare endpoint
     #   dropbox_teams - boolean - List Team folders in root
     def update(params = {})
       params ||= {}
@@ -732,6 +772,10 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/remote_servers/#{@attributes[:id]}", :patch, params, @options)
@@ -859,6 +903,10 @@ module Files
     #   filebase_access_key - string - Filebase Access Key.
     #   filebase_secret_key - string - Filebase secret key
     #   filebase_bucket - string - Filebase Bucket name
+    #   cloudflare_access_key - string - Cloudflare Access Key.
+    #   cloudflare_secret_key - string - Cloudflare secret key
+    #   cloudflare_bucket - string - Cloudflare Bucket name
+    #   cloudflare_endpoint - string - Cloudflare endpoint
     #   dropbox_teams - boolean - List Team folders in root
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
@@ -912,6 +960,10 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
 
       response, options = Api.send_request("/remote_servers", :post, params, options)
       RemoteServer.new(response.data, options)
@@ -1007,6 +1059,10 @@ module Files
     #   filebase_access_key - string - Filebase Access Key.
     #   filebase_secret_key - string - Filebase secret key
     #   filebase_bucket - string - Filebase Bucket name
+    #   cloudflare_access_key - string - Cloudflare Access Key.
+    #   cloudflare_secret_key - string - Cloudflare secret key
+    #   cloudflare_bucket - string - Cloudflare Bucket name
+    #   cloudflare_endpoint - string - Cloudflare endpoint
     #   dropbox_teams - boolean - List Team folders in root
     def self.update(id, params = {}, options = {})
       params ||= {}
@@ -1063,6 +1119,10 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}", :patch, params, options)
