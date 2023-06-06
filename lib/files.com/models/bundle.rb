@@ -36,6 +36,15 @@ module Files
       @attributes[:description] = value
     end
 
+    # date-time - Bundle expiration date/time
+    def expires_at
+      @attributes[:expires_at]
+    end
+
+    def expires_at=(value)
+      @attributes[:expires_at] = value
+    end
+
     # boolean - Is this bundle password protected?
     def password_protected
       @attributes[:password_protected]
@@ -147,15 +156,6 @@ module Files
 
     def dont_separate_submissions_by_folder=(value)
       @attributes[:dont_separate_submissions_by_folder] = value
-    end
-
-    # date-time - Bundle expiration date/time
-    def expires_at
-      @attributes[:expires_at]
-    end
-
-    def expires_at=(value)
-      @attributes[:expires_at] = value
     end
 
     # int64 - Maximum number of times bundle can be accessed
