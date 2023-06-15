@@ -477,6 +477,33 @@ module Files
       @attributes[:dropbox_teams] = value
     end
 
+    # string - Linode Bucket name
+    def linode_bucket
+      @attributes[:linode_bucket]
+    end
+
+    def linode_bucket=(value)
+      @attributes[:linode_bucket] = value
+    end
+
+    # string - Linode Access Key.
+    def linode_access_key
+      @attributes[:linode_access_key]
+    end
+
+    def linode_access_key=(value)
+      @attributes[:linode_access_key] = value
+    end
+
+    # string - Linode region
+    def linode_region
+      @attributes[:linode_region]
+    end
+
+    def linode_region=(value)
+      @attributes[:linode_region] = value
+    end
+
     # string - AWS secret key.
     def aws_secret_key
       @attributes[:aws_secret_key]
@@ -621,6 +648,15 @@ module Files
       @attributes[:cloudflare_secret_key] = value
     end
 
+    # string - Linode secret key
+    def linode_secret_key
+      @attributes[:linode_secret_key]
+    end
+
+    def linode_secret_key=(value)
+      @attributes[:linode_secret_key] = value
+    end
+
     # Post local changes, check in, and download configuration file (used by some Remote Server integrations, such as the Files.com Agent)
     #
     # Parameters:
@@ -716,6 +752,10 @@ module Files
     #   cloudflare_bucket - string - Cloudflare Bucket name
     #   cloudflare_endpoint - string - Cloudflare endpoint
     #   dropbox_teams - boolean - List Team folders in root
+    #   linode_access_key - string - Linode Access Key.
+    #   linode_secret_key - string - Linode secret key
+    #   linode_bucket - string - Linode Bucket name
+    #   linode_region - string - Linode region
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -776,6 +816,10 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_bucket must be an String") if params[:linode_bucket] and !params[:linode_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_region must be an String") if params[:linode_region] and !params[:linode_region].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/remote_servers/#{@attributes[:id]}", :patch, params, @options)
@@ -908,6 +952,10 @@ module Files
     #   cloudflare_bucket - string - Cloudflare Bucket name
     #   cloudflare_endpoint - string - Cloudflare endpoint
     #   dropbox_teams - boolean - List Team folders in root
+    #   linode_access_key - string - Linode Access Key.
+    #   linode_secret_key - string - Linode secret key
+    #   linode_bucket - string - Linode Bucket name
+    #   linode_region - string - Linode region
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
@@ -964,6 +1012,10 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_bucket must be an String") if params[:linode_bucket] and !params[:linode_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_region must be an String") if params[:linode_region] and !params[:linode_region].is_a?(String)
 
       response, options = Api.send_request("/remote_servers", :post, params, options)
       RemoteServer.new(response.data, options)
@@ -1064,6 +1116,10 @@ module Files
     #   cloudflare_bucket - string - Cloudflare Bucket name
     #   cloudflare_endpoint - string - Cloudflare endpoint
     #   dropbox_teams - boolean - List Team folders in root
+    #   linode_access_key - string - Linode Access Key.
+    #   linode_secret_key - string - Linode secret key
+    #   linode_bucket - string - Linode Bucket name
+    #   linode_region - string - Linode region
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -1123,6 +1179,10 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_bucket must be an String") if params[:linode_bucket] and !params[:linode_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_region must be an String") if params[:linode_region] and !params[:linode_region].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}", :patch, params, options)
