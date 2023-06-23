@@ -152,6 +152,7 @@ module Files
   class UserNotFoundError < NotFoundError; end
 
   class ProcessingFailureError < APIError; end
+  class AutomationCannotBeRunManuallyError < ProcessingFailureError; end
   class BundleOnlyAllowsPreviewsError < ProcessingFailureError; end
   class BundleOperationRequiresSubfolderError < ProcessingFailureError; end
   class CouldNotCreateParentError < ProcessingFailureError; end

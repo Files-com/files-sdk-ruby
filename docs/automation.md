@@ -160,6 +160,19 @@ Files::Automation.create(
 
 ---
 
+## Manually run automation
+
+```
+Files::Automation.manual_run(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Automation ID.
+
+
+---
+
 ## Update Automation
 
 ```
@@ -215,6 +228,21 @@ Files::Automation.update(id,
 
 ```
 Files::Automation.delete(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Automation ID.
+
+
+---
+
+## Manually run automation
+
+```
+automation = Files::Automation.list.first
+
+automation.manual_run
 ```
 
 ### Parameters

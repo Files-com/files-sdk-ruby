@@ -225,6 +225,17 @@ module Files
       @attributes[:destination] = value
     end
 
+    # Manually run automation
+    def manual_run(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/automations/#{@attributes[:id]}/manual_run", :post, params, @options)
+    end
+
     # Parameters:
     #   source - string - Source Path
     #   destination - string - DEPRECATED: Destination Path. Use `destinations` instead.
@@ -382,6 +393,17 @@ module Files
 
       response, options = Api.send_request("/automations", :post, params, options)
       Automation.new(response.data, options)
+    end
+
+    # Manually run automation
+    def self.manual_run(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      response, _options = Api.send_request("/automations/#{params[:id]}/manual_run", :post, params, options)
+      response.data
     end
 
     # Parameters:
