@@ -189,6 +189,7 @@ module Files
   class UpdatesNotAllowedForRemotesError < ProcessingFailureError; end
 
   class RateLimitedError < APIError; end
+  class DuplicateShareRecipientError < RateLimitedError; end
   class ReauthenticationRateLimitedError < RateLimitedError; end
   class TooManyConcurrentRequestsError < RateLimitedError; end
   class TooManyLoginAttemptsError < RateLimitedError; end
