@@ -90,6 +90,15 @@ module Files
       @attributes[:require_share_recipient] = value
     end
 
+    # boolean - If true, we will hide the 'Remember Me' box on the Bundle registration page, requiring that the user logout and log back in every time they visit the page.
+    def require_logout
+      @attributes[:require_logout]
+    end
+
+    def require_logout=(value)
+      @attributes[:require_logout] = value
+    end
+
     # string - Legal text that must be agreed to prior to accessing Bundle.
     def clickwrap_body
       @attributes[:clickwrap_body]
