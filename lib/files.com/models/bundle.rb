@@ -18,6 +18,51 @@ module Files
       @attributes[:code] = value
     end
 
+    # string - Page link and button color
+    def color_left
+      @attributes[:color_left]
+    end
+
+    def color_left=(value)
+      @attributes[:color_left] = value
+    end
+
+    # string - Top bar link color
+    def color_link
+      @attributes[:color_link]
+    end
+
+    def color_link=(value)
+      @attributes[:color_link] = value
+    end
+
+    # string - Page link and button color
+    def color_text
+      @attributes[:color_text]
+    end
+
+    def color_text=(value)
+      @attributes[:color_text] = value
+    end
+
+    # string - Top bar background color
+    def color_top
+      @attributes[:color_top]
+    end
+
+    def color_top=(value)
+      @attributes[:color_top] = value
+    end
+
+    # string - Top bar text color
+    def color_top_text
+      @attributes[:color_top_text]
+    end
+
+    def color_top_text=(value)
+      @attributes[:color_top_text] = value
+    end
+
     # string - Public URL of Share Link
     def url
       @attributes[:url]
