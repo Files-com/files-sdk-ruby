@@ -197,6 +197,7 @@ module Files
   class TooManySharesError < RateLimitedError; end
 
   class ServiceUnavailableError < APIError; end
+  class AutomationsUnavailableError < ServiceUnavailableError; end
   class UploadsUnavailableError < ServiceUnavailableError; end
 
   class SiteConfigurationError < APIError; end
