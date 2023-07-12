@@ -24,9 +24,19 @@ module Files
       @attributes[:sender]
     end
 
+    # string - Sender name
+    def sender_name
+      @attributes[:sender_name]
+    end
+
     # string - Status of the message
     def status
       @attributes[:status]
+    end
+
+    # string - Body of the email
+    def body
+      @attributes[:body]
     end
 
     # string - Message describing the failure
