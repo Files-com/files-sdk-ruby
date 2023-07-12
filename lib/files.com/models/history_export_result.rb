@@ -19,7 +19,7 @@ module Files
       @attributes[:created_at]
     end
 
-    # int64 - When the action happened, in ISO8601 format.
+    # string - When the action happened, in ISO8601 format.
     def created_at_iso8601
       @attributes[:created_at_iso8601]
     end
