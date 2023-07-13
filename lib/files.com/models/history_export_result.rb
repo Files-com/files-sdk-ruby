@@ -104,9 +104,14 @@ module Files
       @attributes[:target_recursive]
     end
 
-    # int64 - If searching for Histories about API keys, this is when the API key will expire
+    # int64 - If searching for Histories about API keys, this is when the API key will expire. Represented as a Unix timestamp.
     def target_expires_at
       @attributes[:target_expires_at]
+    end
+
+    # string - If searching for Histories about API keys, this is when the API key will expire. Represented in ISO8601 format.
+    def target_expires_at_iso8601
+      @attributes[:target_expires_at_iso8601]
     end
 
     # string - If searching for Histories about API keys, this represents the permission set of the associated  API key
