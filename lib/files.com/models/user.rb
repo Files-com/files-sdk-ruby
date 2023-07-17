@@ -383,6 +383,15 @@ module Files
       @attributes[:require_2fa] = value
     end
 
+    # date-time - Require user to login by specified date otherwise it will be disabled.
+    def require_login_by
+      @attributes[:require_login_by]
+    end
+
+    def require_login_by=(value)
+      @attributes[:require_login_by] = value
+    end
+
     # boolean - Is 2fa active for the user?
     def active_2fa
       @attributes[:active_2fa]
