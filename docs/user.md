@@ -216,6 +216,7 @@ Files::User.create(
   office_integration_enabled: true, 
   password_validity_days: 1, 
   receive_admin_alerts: true, 
+  require_login_by: "2000-01-01T01:00:00Z", 
   require_password_change: true, 
   restapi_permission: true, 
   self_managed: true, 
@@ -265,6 +266,7 @@ Files::User.create(
 * `office_integration_enabled` (boolean): Enable integration with Office for the web?
 * `password_validity_days` (int64): Number of days to allow user to use the same password
 * `receive_admin_alerts` (boolean): Should the user receive admin alerts such a certificate expiration notifications and overages?
+* `require_login_by` (string): Require user to login by specified date otherwise it will be disabled.
 * `require_password_change` (boolean): Is a password change required upon next user login?
 * `restapi_permission` (boolean): Can this user access the REST API?
 * `self_managed` (boolean): Does this user manage it's own credentials or is it a shared/bot user?
@@ -349,6 +351,7 @@ Files::User.update(id,
   office_integration_enabled: true, 
   password_validity_days: 1, 
   receive_admin_alerts: true, 
+  require_login_by: "2000-01-01T01:00:00Z", 
   require_password_change: true, 
   restapi_permission: true, 
   self_managed: true, 
@@ -399,6 +402,7 @@ Files::User.update(id,
 * `office_integration_enabled` (boolean): Enable integration with Office for the web?
 * `password_validity_days` (int64): Number of days to allow user to use the same password
 * `receive_admin_alerts` (boolean): Should the user receive admin alerts such a certificate expiration notifications and overages?
+* `require_login_by` (string): Require user to login by specified date otherwise it will be disabled.
 * `require_password_change` (boolean): Is a password change required upon next user login?
 * `restapi_permission` (boolean): Can this user access the REST API?
 * `self_managed` (boolean): Does this user manage it's own credentials or is it a shared/bot user?
@@ -504,6 +508,7 @@ user.update(
   office_integration_enabled: true,
   password_validity_days: 1,
   receive_admin_alerts: true,
+  require_login_by: "2000-01-01T01:00:00Z",
   require_password_change: true,
   restapi_permission: true,
   self_managed: true,
@@ -554,6 +559,7 @@ user.update(
 * `office_integration_enabled` (boolean): Enable integration with Office for the web?
 * `password_validity_days` (int64): Number of days to allow user to use the same password
 * `receive_admin_alerts` (boolean): Should the user receive admin alerts such a certificate expiration notifications and overages?
+* `require_login_by` (string): Require user to login by specified date otherwise it will be disabled.
 * `require_password_change` (boolean): Is a password change required upon next user login?
 * `restapi_permission` (boolean): Can this user access the REST API?
 * `self_managed` (boolean): Does this user manage it's own credentials or is it a shared/bot user?

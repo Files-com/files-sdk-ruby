@@ -41,7 +41,16 @@ module Files
       @attributes[:fingerprint] = value
     end
 
-    # int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    # string - Username of the user this public key is associated with
+    def username
+      @attributes[:username]
+    end
+
+    def username=(value)
+      @attributes[:username] = value
+    end
+
+    # int64 - User ID this public key is associated with
     def user_id
       @attributes[:user_id]
     end
