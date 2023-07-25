@@ -89,6 +89,11 @@ module Files
       @attributes[:bundle_registration_notifications]
     end
 
+    # boolean - Do Bundles require registration?
+    def bundle_require_registration
+      @attributes[:bundle_require_registration]
+    end
+
     # boolean - Do Bundles require recipients for sharing?
     def bundle_require_share_recipient
       @attributes[:bundle_require_share_recipient]
@@ -800,6 +805,7 @@ module Files
     #   immutable_files - boolean - Are files protected from modification?
     #   session_pinned_by_ip - boolean - Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
     #   bundle_password_required - boolean - Do Bundles require password protection?
+    #   bundle_require_registration - boolean - Do Bundles require registration?
     #   bundle_require_share_recipient - boolean - Do Bundles require recipients for sharing?
     #   bundle_registration_notifications - string - Do Bundle owners receive registration notification?
     #   bundle_activity_notifications - string - Do Bundle owners receive activity notifications?

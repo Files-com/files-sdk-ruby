@@ -180,6 +180,15 @@ module Files
       @attributes[:skip_email] = value
     end
 
+    # date-time - Date when share will start to be accessible. If `nil` access granted right after create.
+    def start_access_on_date
+      @attributes[:start_access_on_date]
+    end
+
+    def start_access_on_date=(value)
+      @attributes[:start_access_on_date] = value
+    end
+
     # boolean - BundleRegistrations can be saved without providing company?
     def skip_company
       @attributes[:skip_company]
@@ -542,6 +551,7 @@ module Files
     #   skip_email - boolean - BundleRegistrations can be saved without providing email?
     #   skip_name - boolean - BundleRegistrations can be saved without providing name?
     #   skip_company - boolean - BundleRegistrations can be saved without providing company?
+    #   start_access_on_date - string - Date when share will start to be accessible. If `nil` access granted right after create.
     #   snapshot_id - int64 - ID of the snapshot containing this bundle's contents.
     #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
     def self.create(params = {}, options = {})
@@ -558,6 +568,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params[:clickwrap_id] and !params[:clickwrap_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if params[:start_access_on_date] and !params[:start_access_on_date].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: snapshot_id must be an Integer") if params[:snapshot_id] and !params[:snapshot_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: paths") unless params[:paths]
 
