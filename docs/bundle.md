@@ -255,6 +255,7 @@ Files::Bundle.update(id,
   require_share_recipient: true, 
   send_email_receipt_to_uploader: true, 
   skip_company: true, 
+  start_access_on_date: "2000-01-01T01:00:00Z", 
   skip_email: true, 
   skip_name: true, 
   watermark_attachment_delete: true
@@ -284,6 +285,7 @@ Files::Bundle.update(id,
 * `require_share_recipient` (boolean): Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
 * `send_email_receipt_to_uploader` (boolean): Send delivery receipt to the uploader. Note: For writable share only
 * `skip_company` (boolean): BundleRegistrations can be saved without providing company?
+* `start_access_on_date` (string): Date when share will start to be accessible. If `nil` access granted right after create.
 * `skip_email` (boolean): BundleRegistrations can be saved without providing email?
 * `skip_name` (boolean): BundleRegistrations can be saved without providing name?
 * `watermark_attachment_delete` (boolean): If true, will delete the file stored in watermark_attachment
@@ -353,6 +355,7 @@ bundle.update(
   require_share_recipient: true,
   send_email_receipt_to_uploader: true,
   skip_company: true,
+  start_access_on_date: "2000-01-01T01:00:00Z",
   skip_email: true,
   skip_name: true,
   watermark_attachment_delete: true
@@ -382,6 +385,7 @@ bundle.update(
 * `require_share_recipient` (boolean): Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
 * `send_email_receipt_to_uploader` (boolean): Send delivery receipt to the uploader. Note: For writable share only
 * `skip_company` (boolean): BundleRegistrations can be saved without providing company?
+* `start_access_on_date` (string): Date when share will start to be accessible. If `nil` access granted right after create.
 * `skip_email` (boolean): BundleRegistrations can be saved without providing email?
 * `skip_name` (boolean): BundleRegistrations can be saved without providing name?
 * `watermark_attachment_delete` (boolean): If true, will delete the file stored in watermark_attachment

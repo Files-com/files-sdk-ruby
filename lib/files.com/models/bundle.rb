@@ -432,6 +432,7 @@ module Files
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
     #   send_email_receipt_to_uploader - boolean - Send delivery receipt to the uploader. Note: For writable share only
     #   skip_company - boolean - BundleRegistrations can be saved without providing company?
+    #   start_access_on_date - string - Date when share will start to be accessible. If `nil` access granted right after create.
     #   skip_email - boolean - BundleRegistrations can be saved without providing email?
     #   skip_name - boolean - BundleRegistrations can be saved without providing name?
     #   watermark_attachment_delete - boolean - If true, will delete the file stored in watermark_attachment
@@ -453,6 +454,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_template must be an String") if params[:path_template] and !params[:path_template].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if params[:start_access_on_date] and !params[:start_access_on_date].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/bundles/#{@attributes[:id]}", :patch, params, @options)
@@ -616,6 +618,7 @@ module Files
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
     #   send_email_receipt_to_uploader - boolean - Send delivery receipt to the uploader. Note: For writable share only
     #   skip_company - boolean - BundleRegistrations can be saved without providing company?
+    #   start_access_on_date - string - Date when share will start to be accessible. If `nil` access granted right after create.
     #   skip_email - boolean - BundleRegistrations can be saved without providing email?
     #   skip_name - boolean - BundleRegistrations can be saved without providing name?
     #   watermark_attachment_delete - boolean - If true, will delete the file stored in watermark_attachment
@@ -636,6 +639,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_template must be an String") if params[:path_template] and !params[:path_template].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if params[:start_access_on_date] and !params[:start_access_on_date].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/bundles/#{params[:id]}", :patch, params, options)
