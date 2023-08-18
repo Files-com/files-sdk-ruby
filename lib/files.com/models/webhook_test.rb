@@ -135,6 +135,15 @@ module Files
       @attributes[:action] = value
     end
 
+    # boolean - Use dedicated IPs for sending the webhook?
+    def use_dedicated_ips
+      @attributes[:use_dedicated_ips]
+    end
+
+    def use_dedicated_ips=(value)
+      @attributes[:use_dedicated_ips] = value
+    end
+
     def save
       if @attributes[:id]
         raise NotImplementedError.new("The WebhookTest object doesn't support updates.")
@@ -154,6 +163,7 @@ module Files
     #   file_as_body - boolean - Send the file data as the request body?
     #   file_form_field - string - Send the file data as a named parameter in the request POST body
     #   action - string - action for test body
+    #   use_dedicated_ips - boolean - Use dedicated IPs for sending the webhook?
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: url must be an String") if params[:url] and !params[:url].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: method must be an String") if params[:method] and !params[:method].is_a?(String)
