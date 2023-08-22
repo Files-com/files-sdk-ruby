@@ -73,21 +73,20 @@ module Files
     end
 
     # Parameters:
-    #   name (required) - string - Your GPG key name.
     #   public_key - string - Your GPG public key
     #   private_key - string - Your GPG private key.
     #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
+    #   name - string - Your GPG key name.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
       Api.send_request("/gpg_keys/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -151,16 +150,16 @@ module Files
 
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   name (required) - string - Your GPG key name.
     #   public_key - string - Your GPG public key
     #   private_key - string - Your GPG private key.
     #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
+    #   name (required) - string - Your GPG key name.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
       response, options = Api.send_request("/gpg_keys", :post, params, options)
@@ -168,20 +167,19 @@ module Files
     end
 
     # Parameters:
-    #   name (required) - string - Your GPG key name.
     #   public_key - string - Your GPG public key
     #   private_key - string - Your GPG private key.
     #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
+    #   name - string - Your GPG key name.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
       response, options = Api.send_request("/gpg_keys/#{params[:id]}", :patch, params, options)
       GpgKey.new(response.data, options)

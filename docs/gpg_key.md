@@ -61,20 +61,20 @@ Files::GpgKey.find(id)
 ```
 Files::GpgKey.create(
   user_id: 1, 
-  name: "key name", 
   public_key: "7f8bc1210b09b9ddf469e6b6b8920e76", 
   private_key: "ab236cfe4a195f0226bc2e674afdd6b0", 
-  private_key_password: "[your GPG private key password]"
+  private_key_password: "[your GPG private key password]", 
+  name: "key name"
 )
 ```
 
 ### Parameters
 
 * `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
-* `name` (string): Required - Your GPG key name.
 * `public_key` (string): Your GPG public key
 * `private_key` (string): Your GPG private key.
 * `private_key_password` (string): Your GPG private key password. Only required for password protected keys.
+* `name` (string): Required - Your GPG key name.
 
 
 ---
@@ -83,20 +83,20 @@ Files::GpgKey.create(
 
 ```
 Files::GpgKey.update(id, 
-  name: "key name", 
   public_key: "7f8bc1210b09b9ddf469e6b6b8920e76", 
   private_key: "ab236cfe4a195f0226bc2e674afdd6b0", 
-  private_key_password: "[your GPG private key password]"
+  private_key_password: "[your GPG private key password]", 
+  name: "key name"
 )
 ```
 
 ### Parameters
 
 * `id` (int64): Required - Gpg Key ID.
-* `name` (string): Required - Your GPG key name.
 * `public_key` (string): Your GPG public key
 * `private_key` (string): Your GPG private key.
 * `private_key_password` (string): Your GPG private key password. Only required for password protected keys.
+* `name` (string): Your GPG key name.
 
 
 ---
@@ -120,20 +120,20 @@ Files::GpgKey.delete(id)
 gpg_key = Files::GpgKey.list.first
 
 gpg_key.update(
-  name: "key name",
   public_key: "7f8bc1210b09b9ddf469e6b6b8920e76",
   private_key: "ab236cfe4a195f0226bc2e674afdd6b0",
-  private_key_password: "[your GPG private key password]"
+  private_key_password: "[your GPG private key password]",
+  name: "key name"
 )
 ```
 
 ### Parameters
 
 * `id` (int64): Required - Gpg Key ID.
-* `name` (string): Required - Your GPG key name.
 * `public_key` (string): Your GPG public key
 * `private_key` (string): Your GPG private key.
 * `private_key_password` (string): Your GPG private key password. Only required for password protected keys.
+* `name` (string): Your GPG key name.
 
 
 ---
