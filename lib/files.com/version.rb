@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Files
-  VERSION = "1.0.468"
+  VERSION = "1.0.469"
 end
