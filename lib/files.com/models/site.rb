@@ -79,6 +79,11 @@ module Files
       @attributes[:bundle_expiration]
     end
 
+    # string - Custom error message to show when bundle is not found.
+    def bundle_not_found_message
+      @attributes[:bundle_not_found_message]
+    end
+
     # boolean - Do Bundles require password protection?
     def bundle_password_required
       @attributes[:bundle_password_required]
@@ -809,6 +814,7 @@ module Files
     #   disable_password_reset - boolean - Is password reset disabled?
     #   immutable_files - boolean - Are files protected from modification?
     #   session_pinned_by_ip - boolean - Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
+    #   bundle_not_found_message - string - Custom error message to show when bundle is not found.
     #   bundle_password_required - boolean - Do Bundles require password protection?
     #   bundle_require_registration - boolean - Do Bundles require registration?
     #   bundle_require_share_recipient - boolean - Do Bundles require recipients for sharing?
@@ -918,6 +924,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: max_prior_passwords must be an Integer") if params[:max_prior_passwords] and !params[:max_prior_passwords].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_min_length must be an Integer") if params[:password_min_length] and !params[:password_min_length].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: bundle_not_found_message must be an String") if params[:bundle_not_found_message] and !params[:bundle_not_found_message].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: bundle_registration_notifications must be an String") if params[:bundle_registration_notifications] and !params[:bundle_registration_notifications].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: bundle_activity_notifications must be an String") if params[:bundle_activity_notifications] and !params[:bundle_activity_notifications].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: bundle_upload_receipt_notifications must be an String") if params[:bundle_upload_receipt_notifications] and !params[:bundle_upload_receipt_notifications].is_a?(String)
