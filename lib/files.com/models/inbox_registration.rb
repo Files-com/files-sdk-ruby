@@ -29,6 +29,11 @@ module Files
       @attributes[:email]
     end
 
+    # string - Registrant IP Address
+    def ip
+      @attributes[:ip]
+    end
+
     # string - Clickwrap text that was shown to the registrant
     def clickwrap_body
       @attributes[:clickwrap_body]
