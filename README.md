@@ -86,7 +86,7 @@ Files::Folder).
     Files::Folder.list_for("/").each do |file|
       puts file.path
     end
-    
+
 
 #### Writing a file example
 
