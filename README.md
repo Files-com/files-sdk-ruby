@@ -90,8 +90,12 @@ Files::Folder).
 
 #### Writing a file example
 
-    Files::File.open("foo.txt", 'w') do |f|
-      f.write("contents")
+    Files::upload_file("local.txt", "/remote.txt")
+
+    File.open("local.txt") do |read_file|
+      Files::File.open("remote.txt", "w") do |write_file|
+        write_file.write(read_file.read)
+      end
     end
 
 
