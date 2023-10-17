@@ -34,8 +34,14 @@ module Files
 
     def self.build_default_conn(force_net_http: false)
       conn = Faraday.new do |builder|
-        if Gem::Version.new(Faraday::VERSION) < Gem::Version.new("2.0.0")
-          builder.use Faraday::Request::Multipart
+        if Gem::Version.new(Faraday::VERSION) < Gem::Version.new("2.0.0") && defined?(Faraday::Request::Multipart)
+          begin
+            # Raise LoadError if not available in Faraday version 1.x
+            Faraday::Request::Multipart # rubocop:disable Lint/Void
+            builder.use Faraday::Request::Multipart
+          rescue LoadError
+            builder.request :multipart
+          end
         else
           builder.request :multipart
         end
