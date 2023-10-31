@@ -89,6 +89,16 @@ module Files
       @attributes[:bundle_password_required]
     end
 
+    # array - List of email domains to disallow when entering a Bundle/Inbox recipients
+    def bundle_recipient_blacklist_domains
+      @attributes[:bundle_recipient_blacklist_domains]
+    end
+
+    # boolean - Disallow free email domains for Bundle/Inbox recipients?
+    def bundle_recipient_blacklist_free_email_domains
+      @attributes[:bundle_recipient_blacklist_free_email_domains]
+    end
+
     # string - Do Bundle owners receive registration notification?
     def bundle_registration_notifications
       @attributes[:bundle_registration_notifications]
@@ -838,6 +848,8 @@ module Files
     #   active_sftp_host_key_id - int64 - Id of the currently selected custom SFTP Host Key
     #   bundle_watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     #   group_admins_can_set_user_password - boolean - Allow group admins set password authentication method
+    #   bundle_recipient_blacklist_free_email_domains - boolean - Disallow free email domains for Bundle/Inbox recipients?
+    #   bundle_recipient_blacklist_domains - array(string) - List of email domains to disallow when entering a Bundle/Inbox recipients
     #   allowed_2fa_method_sms - boolean - Is SMS two factor authentication allowed?
     #   allowed_2fa_method_u2f - boolean - Is U2F two factor authentication allowed?
     #   allowed_2fa_method_totp - boolean - Is TOTP two factor authentication allowed?
@@ -932,6 +944,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sftp_host_key_type must be an String") if params[:sftp_host_key_type] and !params[:sftp_host_key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: active_sftp_host_key_id must be an Integer") if params[:active_sftp_host_key_id] and !params[:active_sftp_host_key_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: bundle_watermark_value must be an Hash") if params[:bundle_watermark_value] and !params[:bundle_watermark_value].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: bundle_recipient_blacklist_domains must be an Array") if params[:bundle_recipient_blacklist_domains] and !params[:bundle_recipient_blacklist_domains].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: require_2fa_user_type must be an String") if params[:require_2fa_user_type] and !params[:require_2fa_user_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: color2_top must be an String") if params[:color2_top] and !params[:color2_top].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: color2_left must be an String") if params[:color2_left] and !params[:color2_left].is_a?(String)
