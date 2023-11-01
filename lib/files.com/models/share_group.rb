@@ -46,15 +46,6 @@ module Files
     end
 
     # array - A list of share group members
-    def share_group_members
-      @attributes[:share_group_members]
-    end
-
-    def share_group_members=(value)
-      @attributes[:share_group_members] = value
-    end
-
-    # array(object) - A list of share group members.
     def members
       @attributes[:members]
     end
