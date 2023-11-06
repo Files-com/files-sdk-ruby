@@ -60,19 +60,19 @@ Files::Group.find(id)
 
 ```
 Files::Group.create(
-  name: "owners", 
   notes: "example", 
   user_ids: "1", 
-  admin_ids: "1"
+  admin_ids: "1", 
+  name: "name"
 )
 ```
 
 ### Parameters
 
-* `name` (string): Group name.
 * `notes` (string): Group notes.
 * `user_ids` (string): A list of user ids. If sent as a string, should be comma-delimited.
 * `admin_ids` (string): A list of group admin user ids. If sent as a string, should be comma-delimited.
+* `name` (string): Required - Group name.
 
 
 ---
@@ -81,20 +81,20 @@ Files::Group.create(
 
 ```
 Files::Group.update(id, 
-  name: "owners", 
   notes: "example", 
   user_ids: "1", 
-  admin_ids: "1"
+  admin_ids: "1", 
+  name: "owners"
 )
 ```
 
 ### Parameters
 
 * `id` (int64): Required - Group ID.
-* `name` (string): Group name.
 * `notes` (string): Group notes.
 * `user_ids` (string): A list of user ids. If sent as a string, should be comma-delimited.
 * `admin_ids` (string): A list of group admin user ids. If sent as a string, should be comma-delimited.
+* `name` (string): Group name.
 
 
 ---
@@ -118,20 +118,20 @@ Files::Group.delete(id)
 group = Files::Group.list.first
 
 group.update(
-  name: "owners",
   notes: "example",
   user_ids: "1",
-  admin_ids: "1"
+  admin_ids: "1",
+  name: "owners"
 )
 ```
 
 ### Parameters
 
 * `id` (int64): Required - Group ID.
-* `name` (string): Group name.
 * `notes` (string): Group notes.
 * `user_ids` (string): A list of user ids. If sent as a string, should be comma-delimited.
 * `admin_ids` (string): A list of group admin user ids. If sent as a string, should be comma-delimited.
+* `name` (string): Group name.
 
 
 ---

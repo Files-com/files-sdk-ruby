@@ -875,7 +875,7 @@ module Files
     #   require_2fa - string - 2FA required setting
     #   time_zone - string - User time zone
     #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
-    #   username - string - User's username
+    #   username (required) - string - User's username
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: change_password must be an String") if params[:change_password] and !params[:change_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if params[:change_password_confirmation] and !params[:change_password_confirmation].is_a?(String)
@@ -903,6 +903,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params[:time_zone] and !params[:time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: username") unless params[:username]
 
       response, options = Api.send_request("/users", :post, params, options)
       User.new(response.data, options)
