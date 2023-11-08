@@ -9,19 +9,9 @@ module Files
       @options = options || {}
     end
 
-    # string - Name of the App
-    def name
-      @attributes[:name]
-    end
-
-    # string - Long form description of the App
-    def extended_description
-      @attributes[:extended_description]
-    end
-
-    # string - Short description of the App
-    def short_description
-      @attributes[:short_description]
+    # string - The type of the App
+    def app_type
+      @attributes[:app_type]
     end
 
     # object - Collection of named links to documentation
@@ -29,39 +19,14 @@ module Files
       @attributes[:documentation_links]
     end
 
-    # string - App icon
-    def icon_url
-      @attributes[:icon_url]
+    # string - Long description for the in-App landing page
+    def extended_description
+      @attributes[:extended_description]
     end
 
-    # string - Full size logo for the App
-    def logo_url
-      @attributes[:logo_url]
-    end
-
-    # array - Screenshots of the App
-    def screenshot_list_urls
-      @attributes[:screenshot_list_urls]
-    end
-
-    # string - Logo thumbnail for the App
-    def logo_thumbnail_url
-      @attributes[:logo_thumbnail_url]
-    end
-
-    # string - Associated SSO Strategy type, if any
-    def sso_strategy_type
-      @attributes[:sso_strategy_type]
-    end
-
-    # string - Associated Remote Server type, if any
-    def remote_server_type
-      @attributes[:remote_server_type]
-    end
-
-    # string - Associated Folder Behavior type, if any
-    def folder_behavior_type
-      @attributes[:folder_behavior_type]
+    # string - Long form description of the App
+    def extended_description_for_marketing_site
+      @attributes[:extended_description_for_marketing_site]
     end
 
     # string - Link to external homepage
@@ -69,24 +34,79 @@ module Files
       @attributes[:external_homepage_url]
     end
 
+    # boolean - Is featured on the App listing?
+    def featured
+      @attributes[:featured]
+    end
+
+    # string - Associated Folder Behavior type, if any
+    def folder_behavior_type
+      @attributes[:folder_behavior_type]
+    end
+
+    # string - App icon
+    def icon_url
+      @attributes[:icon_url]
+    end
+
+    # string - Logo thumbnail for the App
+    def logo_thumbnail_url
+      @attributes[:logo_thumbnail_url]
+    end
+
+    # string - Full size logo for the App
+    def logo_url
+      @attributes[:logo_url]
+    end
+
+    # string - Marketing introdution of the App
+    def marketing_intro
+      @attributes[:marketing_intro]
+    end
+
     # string - Marketing video page
     def marketing_youtube_url
       @attributes[:marketing_youtube_url]
     end
 
+    # string - Name of the App
+    def name
+      @attributes[:name]
+    end
+
+    # string - Package manager install command
+    def package_manager_install_command
+      @attributes[:package_manager_install_command]
+    end
+
+    # string - Associated Remote Server type, if any
+    def remote_server_type
+      @attributes[:remote_server_type]
+    end
+
+    # array - Screenshots of the App
+    def screenshot_list_urls
+      @attributes[:screenshot_list_urls]
+    end
+
+    # string - Link to SDK installation instructions
+    def sdk_installation_instructions_link
+      @attributes[:sdk_installation_instructions_link]
+    end
+
+    # string - Short description of the App
+    def short_description
+      @attributes[:short_description]
+    end
+
+    # string - Associated SSO Strategy type, if any
+    def sso_strategy_type
+      @attributes[:sso_strategy_type]
+    end
+
     # string - Tutorial video page
     def tutorial_youtube_url
       @attributes[:tutorial_youtube_url]
-    end
-
-    # string - The type of the App
-    def app_type
-      @attributes[:app_type]
-    end
-
-    # boolean - Is featured on the App listing?
-    def featured
-      @attributes[:featured]
     end
 
     # Parameters:
