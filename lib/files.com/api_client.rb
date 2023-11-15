@@ -235,10 +235,13 @@ module Files
         end
 
         case e
-        when Faraday::ClientError
-          handle_error_response(e.response, error_context)
-        when Faraday::ServerError
-          handle_network_error(e, error_context, num_retries, base_url)
+        when Faraday::ClientError, Faraday::ServerError
+          if e.response
+            handle_error_response(e.response, error_context)
+          else
+            handle_network_error(e, error_context, num_retries, base_url)
+          end
+
         else
           raise
         end
@@ -299,10 +302,10 @@ module Files
       end
     end
 
-    private def handle_network_error(error, _context, num_retries, base_url = nil)
+    private def handle_network_error(error, context, num_retries, base_url = nil)
       base_url ||= Files.base_url
 
-      Util.log_error("Network error", error_message: error.message)
+      Util.log_error("Network error", error_message: error.message, request_id: context.request_id)
       message = "Could not connect to Files.com at URL #{base_url}. Please check your internet connection and try again. If this problem persists, you should check Files.com's service status at https://status.files.com, or contact your primary account representative."
       message += " Request was retried #{num_retries} times." if num_retries > 0
       message += "\n\n(Network error: #{error.message})"
