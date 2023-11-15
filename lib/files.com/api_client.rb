@@ -236,12 +236,11 @@ module Files
 
         case e
         when Faraday::ClientError, Faraday::ServerError
-          if e.response
+          if e.response and has_error_type?(e)
             handle_error_response(e.response, error_context)
           else
             handle_network_error(e, error_context, num_retries, base_url)
           end
-
         else
           raise
         end
@@ -302,13 +301,15 @@ module Files
       end
     end
 
-    private def handle_network_error(error, context, num_retries, base_url = nil)
+    private def handle_network_error(error, _context, num_retries, base_url = nil)
       base_url ||= Files.base_url
 
-      Util.log_error("Network error", error_message: error.message, request_id: context.request_id)
+      error_message = error.message.empty? ? error.response[:body] : error.message
+
+      Util.log_error("Network error", error_message: error_message)
       message = "Could not connect to Files.com at URL #{base_url}. Please check your internet connection and try again. If this problem persists, you should check Files.com's service status at https://status.files.com, or contact your primary account representative."
       message += " Request was retried #{num_retries} times." if num_retries > 0
-      message += "\n\n(Network error: #{error.message})"
+      message += "\n\n(Network error: #{error_message})"
 
       raise APIConnectionError, message
     end
@@ -335,6 +336,12 @@ module Files
       end
 
       headers
+    end
+
+    private def has_error_type?(e)
+      Response.from_faraday_hash(e.response).data&.dig(:type) ? true : false
+    rescue JSON::ParserError, Error
+      false
     end
 
     private def log_request(context, num_retries, no_body: false)
