@@ -186,6 +186,8 @@ module Files
   class ResourceLockedError < ProcessingFailureError; end
   class SubfolderLockedError < ProcessingFailureError; end
   class TwoFactorAuthenticationCodeAlreadySentError < ProcessingFailureError; end
+  class TwoFactorAuthenticationCountryBlacklistedError < ProcessingFailureError; end
+  class TwoFactorAuthenticationGeneralErrorError < ProcessingFailureError; end
   class UpdatesNotAllowedForRemotesError < ProcessingFailureError; end
 
   class RateLimitedError < APIError; end
