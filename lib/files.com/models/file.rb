@@ -137,9 +137,10 @@ module Files
     def self.upload_chunks(io, path, options, upload = nil, etags = [], params: {})
       etags ||= []
       bytes_written = 0
+      request_parts = options[:size] and options[:size] < 5.megabytes ? 1 : 5
       loop do
-        begin_upload = File.begin_upload(path, params.merge(ref: upload&.ref, part: (upload&.part_number || 0) + 1), options)
-        upload = begin_upload.is_a?(Enumerable) ? begin_upload.first : begin_upload
+        begin_upload = File.begin_upload(path, params.merge(ref: upload&.ref, parts: request_parts, part: (upload&.part_number || 0) + 1), options) if begin_upload.nil? || begin_upload.empty?
+        upload = begin_upload.is_a?(Enumerable) ? begin_upload.shift : begin_upload
         buf = io.read(upload.partsize) || ""
         bytes_written += buf.length
         method = upload.http_method.downcase.to_sym
@@ -152,6 +153,7 @@ module Files
     def self.upload_file(path, destination = nil, options = {}, params: {})
       local_file = ::File.open(path, 'r')
       destination ||= File.basename(path)
+      params[:size] ||= local_file.size
       upload, etags = upload_chunks(local_file, destination, options, params: params)
 
       params = {
