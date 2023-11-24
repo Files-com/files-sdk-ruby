@@ -39,6 +39,7 @@
   "azure_blob_storage_account": "storage-account-name",
   "azure_blob_storage_sas_token": "storage-sas-token",
   "azure_blob_storage_container": "container-name",
+  "azure_blob_storage_hierarchical_namespace": true,
   "azure_files_storage_account": "storage-account-name",
   "azure_files_storage_sas_token": "storage-sas-token",
   "azure_files_storage_share_name": "share-name",
@@ -97,6 +98,7 @@
 * `azure_blob_storage_account` (string): Azure Blob Storage Account name
 * `azure_blob_storage_sas_token` (string): Shared Access Signature (SAS) token
 * `azure_blob_storage_container` (string): Azure Blob Storage Container name
+* `azure_blob_storage_hierarchical_namespace` (boolean): Enable when storage account has hierarchical namespace feature enabled
 * `azure_files_storage_account` (string): Azure File Storage Account name
 * `azure_files_storage_sas_token` (string): Shared Access Signature (SAS) token
 * `azure_files_storage_share_name` (string): Azure File Storage Share name
@@ -211,6 +213,7 @@ Files::RemoteServer.create(
   one_drive_account_type: "personal", 
   azure_blob_storage_account: "storage-account-name", 
   azure_blob_storage_container: "container-name", 
+  azure_blob_storage_hierarchical_namespace: true, 
   azure_blob_storage_sas_token: "storage-sas-token", 
   azure_files_storage_account: "storage-account-name", 
   azure_files_storage_share_name: "share-name", 
@@ -275,6 +278,7 @@ Files::RemoteServer.create(
 * `one_drive_account_type` (string): Either personal or business_other account types
 * `azure_blob_storage_account` (string): Azure Blob Storage Account name
 * `azure_blob_storage_container` (string): Azure Blob Storage Container name
+* `azure_blob_storage_hierarchical_namespace` (boolean): Enable when storage account has hierarchical namespace feature enabled
 * `azure_blob_storage_sas_token` (string): Shared Access Signature (SAS) token
 * `azure_files_storage_account` (string): Azure File Storage Account name
 * `azure_files_storage_share_name` (string): Azure File Storage Share name
@@ -370,6 +374,7 @@ Files::RemoteServer.update(id,
   one_drive_account_type: "personal", 
   azure_blob_storage_account: "storage-account-name", 
   azure_blob_storage_container: "container-name", 
+  azure_blob_storage_hierarchical_namespace: true, 
   azure_blob_storage_sas_token: "storage-sas-token", 
   azure_files_storage_account: "storage-account-name", 
   azure_files_storage_share_name: "share-name", 
@@ -435,6 +440,7 @@ Files::RemoteServer.update(id,
 * `one_drive_account_type` (string): Either personal or business_other account types
 * `azure_blob_storage_account` (string): Azure Blob Storage Account name
 * `azure_blob_storage_container` (string): Azure Blob Storage Container name
+* `azure_blob_storage_hierarchical_namespace` (boolean): Enable when storage account has hierarchical namespace feature enabled
 * `azure_blob_storage_sas_token` (string): Shared Access Signature (SAS) token
 * `azure_files_storage_account` (string): Azure File Storage Account name
 * `azure_files_storage_share_name` (string): Azure File Storage Share name
@@ -547,6 +553,7 @@ remote_server.update(
   one_drive_account_type: "personal",
   azure_blob_storage_account: "storage-account-name",
   azure_blob_storage_container: "container-name",
+  azure_blob_storage_hierarchical_namespace: true,
   azure_blob_storage_sas_token: "storage-sas-token",
   azure_files_storage_account: "storage-account-name",
   azure_files_storage_share_name: "share-name",
@@ -612,6 +619,7 @@ remote_server.update(
 * `one_drive_account_type` (string): Either personal or business_other account types
 * `azure_blob_storage_account` (string): Azure Blob Storage Account name
 * `azure_blob_storage_container` (string): Azure Blob Storage Container name
+* `azure_blob_storage_hierarchical_namespace` (boolean): Enable when storage account has hierarchical namespace feature enabled
 * `azure_blob_storage_sas_token` (string): Shared Access Signature (SAS) token
 * `azure_files_storage_account` (string): Azure File Storage Account name
 * `azure_files_storage_share_name` (string): Azure File Storage Share name

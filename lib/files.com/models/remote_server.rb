@@ -324,6 +324,15 @@ module Files
       @attributes[:azure_blob_storage_container] = value
     end
 
+    # boolean - Enable when storage account has hierarchical namespace feature enabled
+    def azure_blob_storage_hierarchical_namespace
+      @attributes[:azure_blob_storage_hierarchical_namespace]
+    end
+
+    def azure_blob_storage_hierarchical_namespace=(value)
+      @attributes[:azure_blob_storage_hierarchical_namespace] = value
+    end
+
     # string - Azure File Storage Account name
     def azure_files_storage_account
       @attributes[:azure_files_storage_account]
@@ -732,6 +741,7 @@ module Files
     #   one_drive_account_type - string - Either personal or business_other account types
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
+    #   azure_blob_storage_hierarchical_namespace - boolean - Enable when storage account has hierarchical namespace feature enabled
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   azure_files_storage_account - string - Azure File Storage Account name
     #   azure_files_storage_share_name - string - Azure File Storage Share name
@@ -932,6 +942,7 @@ module Files
     #   one_drive_account_type - string - Either personal or business_other account types
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
+    #   azure_blob_storage_hierarchical_namespace - boolean - Enable when storage account has hierarchical namespace feature enabled
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   azure_files_storage_account - string - Azure File Storage Account name
     #   azure_files_storage_share_name - string - Azure File Storage Share name
@@ -1096,6 +1107,7 @@ module Files
     #   one_drive_account_type - string - Either personal or business_other account types
     #   azure_blob_storage_account - string - Azure Blob Storage Account name
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
+    #   azure_blob_storage_hierarchical_namespace - boolean - Enable when storage account has hierarchical namespace feature enabled
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   azure_files_storage_account - string - Azure File Storage Account name
     #   azure_files_storage_share_name - string - Azure File Storage Share name
