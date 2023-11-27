@@ -137,7 +137,7 @@ module Files
     def self.upload_chunks(io, path, options, upload = nil, etags = [], params: {})
       etags ||= []
       bytes_written = 0
-      request_parts = options[:size] and options[:size] < 5.megabytes ? 1 : 5
+      request_parts = options[:size] && options[:size] < 5.megabytes ? 1 : 5
       loop do
         begin_upload = File.begin_upload(path, params.merge(ref: upload&.ref, parts: request_parts, part: (upload&.part_number || 0) + 1), options) if begin_upload.nil? || begin_upload.empty?
         upload = begin_upload.is_a?(Enumerable) ? begin_upload.shift : begin_upload
