@@ -432,6 +432,15 @@ module Files
       @attributes[:files_agent_api_token] = value
     end
 
+    # string - Files Agent version
+    def files_agent_version
+      @attributes[:files_agent_version]
+    end
+
+    def files_agent_version=(value)
+      @attributes[:files_agent_version] = value
+    end
+
     # string - Filebase Bucket name
     def filebase_bucket
       @attributes[:filebase_bucket]
@@ -754,6 +763,7 @@ module Files
     #   s3_compatible_secret_key - string - S3-compatible secret key
     #   files_agent_root - string - Agent local root path
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
+    #   files_agent_version - string - Files Agent version
     #   filebase_access_key - string - Filebase Access Key.
     #   filebase_secret_key - string - Filebase secret key
     #   filebase_bucket - string - Filebase Bucket name
@@ -819,6 +829,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
@@ -955,6 +966,7 @@ module Files
     #   s3_compatible_secret_key - string - S3-compatible secret key
     #   files_agent_root - string - Agent local root path
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
+    #   files_agent_version - string - Files Agent version
     #   filebase_access_key - string - Filebase Access Key.
     #   filebase_secret_key - string - Filebase secret key
     #   filebase_bucket - string - Filebase Bucket name
@@ -1016,6 +1028,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
@@ -1120,6 +1133,7 @@ module Files
     #   s3_compatible_secret_key - string - S3-compatible secret key
     #   files_agent_root - string - Agent local root path
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
+    #   files_agent_version - string - Files Agent version
     #   filebase_access_key - string - Filebase Access Key.
     #   filebase_secret_key - string - Filebase secret key
     #   filebase_bucket - string - Filebase Bucket name
@@ -1184,6 +1198,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)

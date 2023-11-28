@@ -111,6 +111,7 @@ module Files
   class CannotLoginWhileUsingKeyError < NotAuthorizedError; end
   class CantActForOtherUserError < NotAuthorizedError; end
   class ContactAdminForPasswordChangeHelpError < NotAuthorizedError; end
+  class FilesAgentFailedAuthorizationError < NotAuthorizedError; end
   class FolderAdminOrBillingPermissionRequiredError < NotAuthorizedError; end
   class FolderAdminPermissionRequiredError < NotAuthorizedError; end
   class FullPermissionRequiredError < NotAuthorizedError; end
@@ -199,6 +200,7 @@ module Files
   class TooManySharesError < RateLimitedError; end
 
   class ServiceUnavailableError < APIError; end
+  class AgentUnavailableError < ServiceUnavailableError; end
   class AutomationsUnavailableError < ServiceUnavailableError; end
   class UploadsUnavailableError < ServiceUnavailableError; end
 

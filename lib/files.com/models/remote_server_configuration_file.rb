@@ -19,14 +19,24 @@ module Files
       @attributes[:permission_set]
     end
 
-    # string - Files Agent API Token
-    def api_token
-      @attributes[:api_token]
+    # string - private key
+    def private_key
+      @attributes[:private_key]
+    end
+
+    # string
+    def subdomain
+      @attributes[:subdomain]
     end
 
     # string - Agent local root path
     def root
       @attributes[:root]
+    end
+
+    # string - Files Agent API Token
+    def api_token
+      @attributes[:api_token]
     end
 
     # int64 - Incoming port for files agent connections
@@ -44,19 +54,9 @@ module Files
       @attributes[:public_key]
     end
 
-    # string - private key
-    def private_key
-      @attributes[:private_key]
-    end
-
     # string - either running or shutdown
     def status
       @attributes[:status]
-    end
-
-    # string - agent config version
-    def config_version
-      @attributes[:config_version]
     end
 
     # string
@@ -64,9 +64,9 @@ module Files
       @attributes[:server_host_key]
     end
 
-    # string
-    def subdomain
-      @attributes[:subdomain]
+    # string - agent config version
+    def config_version
+      @attributes[:config_version]
     end
   end
 end
