@@ -762,15 +762,18 @@ module Files
 
     def destroy(params = {})
       delete(params)
+      nil
     end
 
     def save
       if @attributes[:id]
-        update(@attributes)
+        new_obj = update(@attributes)
       else
         new_obj = User.create(@attributes, @options)
-        @attributes = new_obj.attributes
       end
+
+      @attributes = new_obj.attributes
+      true
     end
 
     # Parameters:
@@ -909,8 +912,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, _options = Api.send_request("/users/#{params[:id]}/unlock", :post, params, options)
-      response.data
+      Api.send_request("/users/#{params[:id]}/unlock", :post, params, options)
+      nil
     end
 
     # Resend user welcome email
@@ -920,8 +923,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, _options = Api.send_request("/users/#{params[:id]}/resend_welcome_email", :post, params, options)
-      response.data
+      Api.send_request("/users/#{params[:id]}/resend_welcome_email", :post, params, options)
+      nil
     end
 
     # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
@@ -931,8 +934,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, _options = Api.send_request("/users/#{params[:id]}/2fa/reset", :post, params, options)
-      response.data
+      Api.send_request("/users/#{params[:id]}/2fa/reset", :post, params, options)
+      nil
     end
 
     # Parameters:
@@ -1023,12 +1026,13 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, _options = Api.send_request("/users/#{params[:id]}", :delete, params, options)
-      response.data
+      Api.send_request("/users/#{params[:id]}", :delete, params, options)
+      nil
     end
 
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
+      nil
     end
   end
 end

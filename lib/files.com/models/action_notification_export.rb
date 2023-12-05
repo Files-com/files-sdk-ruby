@@ -140,8 +140,10 @@ module Files
         raise NotImplementedError.new("The ActionNotificationExport object doesn't support updates.")
       else
         new_obj = ActionNotificationExport.create(@attributes, @options)
-        @attributes = new_obj.attributes
       end
+
+      @attributes = new_obj.attributes
+      true
     end
 
     # Parameters:

@@ -100,15 +100,18 @@ module Files
 
     def destroy(params = {})
       delete(params)
+      nil
     end
 
     def save
       if @attributes[:id]
-        update(@attributes)
+        new_obj = update(@attributes)
       else
         new_obj = GroupUser.create(@attributes, @options)
-        @attributes = new_obj.attributes
       end
+
+      @attributes = new_obj.attributes
+      true
     end
 
     # Parameters:
@@ -176,12 +179,13 @@ module Files
       raise MissingParameterError.new("Parameter missing: group_id") unless params[:group_id]
       raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
 
-      response, _options = Api.send_request("/group_users/#{params[:id]}", :delete, params, options)
-      response.data
+      Api.send_request("/group_users/#{params[:id]}", :delete, params, options)
+      nil
     end
 
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
+      nil
     end
   end
 end

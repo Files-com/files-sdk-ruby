@@ -79,10 +79,13 @@ module Files
 
     def destroy(params = {})
       delete(params)
+      nil
     end
 
     def save
-      update(@attributes)
+      new_obj = update(@attributes)
+      @attributes = new_obj.attributes
+      true
     end
 
     # Parameters:
@@ -120,12 +123,13 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, _options = Api.send_request("/styles/#{params[:path]}", :delete, params, options)
-      response.data
+      Api.send_request("/styles/#{params[:path]}", :delete, params, options)
+      nil
     end
 
     def self.destroy(path, params = {}, options = {})
       delete(path, params, options)
+      nil
     end
   end
 end

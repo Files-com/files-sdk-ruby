@@ -27,8 +27,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, _options = Api.send_request("/action_webhook_failures/#{params[:id]}/retry", :post, params, options)
-      response.data
+      Api.send_request("/action_webhook_failures/#{params[:id]}/retry", :post, params, options)
+      nil
     end
   end
 end

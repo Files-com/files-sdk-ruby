@@ -90,8 +90,10 @@ module Files
         raise NotImplementedError.new("The Session object doesn't support updates.")
       else
         new_obj = Session.create(@attributes, @options)
-        @attributes = new_obj.attributes
       end
+
+      @attributes = new_obj.attributes
+      true
     end
 
     # Parameters:
@@ -110,12 +112,13 @@ module Files
     end
 
     def self.delete(params = {}, options = {})
-      response, _options = Api.send_request("/sessions", :delete, params, options)
-      response.data
+      Api.send_request("/sessions", :delete, params, options)
+      nil
     end
 
     def self.destroy(params = {}, options = {})
       delete(params, options)
+      nil
     end
   end
 end

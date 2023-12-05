@@ -320,6 +320,7 @@ module Files
     def save
       new_obj = Folder.create(path, @attributes, @options)
       @attributes = new_obj.attributes
+      true
     end
 
     # Parameters:

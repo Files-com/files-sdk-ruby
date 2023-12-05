@@ -48,6 +48,7 @@ module Files
 
     def destroy(params = {})
       delete(params)
+      nil
     end
 
     def save
@@ -55,8 +56,10 @@ module Files
         raise NotImplementedError.new("The MessageCommentReaction object doesn't support updates.")
       else
         new_obj = MessageCommentReaction.create(@attributes, @options)
-        @attributes = new_obj.attributes
       end
+
+      @attributes = new_obj.attributes
+      true
     end
 
     # Parameters:
@@ -114,12 +117,13 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, _options = Api.send_request("/message_comment_reactions/#{params[:id]}", :delete, params, options)
-      response.data
+      Api.send_request("/message_comment_reactions/#{params[:id]}", :delete, params, options)
+      nil
     end
 
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
+      nil
     end
   end
 end

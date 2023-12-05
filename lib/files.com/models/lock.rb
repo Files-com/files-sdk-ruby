@@ -133,11 +133,13 @@ module Files
 
     def destroy(params = {})
       delete(params)
+      nil
     end
 
     def save
       new_obj = Lock.create(path, @attributes, @options)
       @attributes = new_obj.attributes
+      true
     end
 
     # Parameters:
@@ -186,12 +188,13 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: token") unless params[:token]
 
-      response, _options = Api.send_request("/locks/#{params[:path]}", :delete, params, options)
-      response.data
+      Api.send_request("/locks/#{params[:path]}", :delete, params, options)
+      nil
     end
 
     def self.destroy(path, params = {}, options = {})
       delete(path, params, options)
+      nil
     end
   end
 end

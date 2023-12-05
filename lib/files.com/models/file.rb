@@ -852,6 +852,7 @@ module Files
 
     def destroy(params = {})
       delete(params)
+      nil
     end
 
     # Copy file/folder
@@ -915,6 +916,7 @@ module Files
     def save
       new_obj = File.create(path, @attributes, @options)
       @attributes = new_obj.attributes
+      true
     end
 
     # Download file
@@ -993,12 +995,13 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, _options = Api.send_request("/files/#{params[:path]}", :delete, params, options)
-      response.data
+      Api.send_request("/files/#{params[:path]}", :delete, params, options)
+      nil
     end
 
     def self.destroy(path, params = {}, options = {})
       delete(path, params, options)
+      nil
     end
 
     # Parameters:

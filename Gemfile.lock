@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    files.com (1.0)
+    files.com (1.1.0)
       addressable (>= 2.8.0)
       concurrent-ruby (>= 1.1.3)
       faraday (>= 1.0.1)
@@ -91,4 +91,4 @@ DEPENDENCIES
   rubocop
 
 BUNDLED WITH
-   2.1.4
+   2.4.21

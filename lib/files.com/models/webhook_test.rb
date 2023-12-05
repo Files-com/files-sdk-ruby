@@ -149,8 +149,10 @@ module Files
         raise NotImplementedError.new("The WebhookTest object doesn't support updates.")
       else
         new_obj = WebhookTest.create(@attributes, @options)
-        @attributes = new_obj.attributes
       end
+
+      @attributes = new_obj.attributes
+      true
     end
 
     # Parameters:

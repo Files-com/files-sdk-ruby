@@ -109,8 +109,10 @@ module Files
         raise NotImplementedError.new("The ExternalEvent object doesn't support updates.")
       else
         new_obj = ExternalEvent.create(@attributes, @options)
-        @attributes = new_obj.attributes
       end
+
+      @attributes = new_obj.attributes
+      true
     end
 
     # Parameters:
