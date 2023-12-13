@@ -2,7 +2,7 @@
 
 # frozen_string_literal: true
 
-require "#{::File.dirname(__FILE__)}/../lib/files.com"
-require "#{::File.dirname(__FILE__)}/../lib/files.com/cli"
+require "#{File.dirname(__FILE__)}/../lib/files.com"
+require "#{File.dirname(__FILE__)}/../lib/files.com/cli"
 
 Files::Cli.new.run
