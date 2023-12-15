@@ -34,6 +34,11 @@ module Files
       @attributes[:id]
     end
 
+    # int64 - Count of users with this SSO Strategy
+    def user_count
+      @attributes[:user_count]
+    end
+
     # string - Identity provider sha256 cert fingerprint if saml_provider_metadata_url is not available.
     def saml_provider_cert_fingerprint
       @attributes[:saml_provider_cert_fingerprint]
