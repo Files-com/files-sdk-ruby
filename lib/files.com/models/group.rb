@@ -63,10 +63,50 @@ module Files
       @attributes[:usernames] = value
     end
 
+    # boolean - If true, users in this group can use FTP to login.  This will override a false value of `ftp_permission` on the user level.
+    def ftp_permission
+      @attributes[:ftp_permission]
+    end
+
+    def ftp_permission=(value)
+      @attributes[:ftp_permission] = value
+    end
+
+    # boolean - If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
+    def sftp_permission
+      @attributes[:sftp_permission]
+    end
+
+    def sftp_permission=(value)
+      @attributes[:sftp_permission] = value
+    end
+
+    # boolean - If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
+    def dav_permission
+      @attributes[:dav_permission]
+    end
+
+    def dav_permission=(value)
+      @attributes[:dav_permission] = value
+    end
+
+    # boolean - If true, users in this group can use the REST API to login.  This will override a false value of `restapi_permission` on the user level.
+    def restapi_permission
+      @attributes[:restapi_permission]
+    end
+
+    def restapi_permission=(value)
+      @attributes[:restapi_permission] = value
+    end
+
     # Parameters:
     #   notes - string - Group notes.
     #   user_ids - string - A list of user ids. If sent as a string, should be comma-delimited.
     #   admin_ids - string - A list of group admin user ids. If sent as a string, should be comma-delimited.
+    #   ftp_permission - boolean - If true, users in this group can use FTP to login.  This will override a false value of `ftp_permission` on the user level.
+    #   sftp_permission - boolean - If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
+    #   dav_permission - boolean - If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
+    #   restapi_permission - boolean - If true, users in this group can use the REST API to login.  This will override a false value of `restapi_permission` on the user level.
     #   name - string - Group name.
     def update(params = {})
       params ||= {}
@@ -152,6 +192,10 @@ module Files
     #   notes - string - Group notes.
     #   user_ids - string - A list of user ids. If sent as a string, should be comma-delimited.
     #   admin_ids - string - A list of group admin user ids. If sent as a string, should be comma-delimited.
+    #   ftp_permission - boolean - If true, users in this group can use FTP to login.  This will override a false value of `ftp_permission` on the user level.
+    #   sftp_permission - boolean - If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
+    #   dav_permission - boolean - If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
+    #   restapi_permission - boolean - If true, users in this group can use the REST API to login.  This will override a false value of `restapi_permission` on the user level.
     #   name (required) - string - Group name.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
@@ -168,6 +212,10 @@ module Files
     #   notes - string - Group notes.
     #   user_ids - string - A list of user ids. If sent as a string, should be comma-delimited.
     #   admin_ids - string - A list of group admin user ids. If sent as a string, should be comma-delimited.
+    #   ftp_permission - boolean - If true, users in this group can use FTP to login.  This will override a false value of `ftp_permission` on the user level.
+    #   sftp_permission - boolean - If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
+    #   dav_permission - boolean - If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
+    #   restapi_permission - boolean - If true, users in this group can use the REST API to login.  This will override a false value of `restapi_permission` on the user level.
     #   name - string - Group name.
     def self.update(id, params = {}, options = {})
       params ||= {}
