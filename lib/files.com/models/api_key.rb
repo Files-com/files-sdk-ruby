@@ -77,15 +77,6 @@ module Files
       @attributes[:name] = value
     end
 
-    # string - Folder path restriction for this api key. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
-    def path
-      @attributes[:path]
-    end
-
-    def path=(value)
-      @attributes[:path] = value
-    end
-
     # string - Permissions for this API Key.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
     def permission_set
       @attributes[:permission_set]
@@ -120,6 +111,15 @@ module Files
 
     def user_id=(value)
       @attributes[:user_id] = value
+    end
+
+    # string - Folder path restriction for this api key.
+    def path
+      @attributes[:path]
+    end
+
+    def path=(value)
+      @attributes[:path] = value
     end
 
     # Parameters:
