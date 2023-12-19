@@ -53,12 +53,24 @@ RSpec.describe Files::ApiClient do
         type: "bad-request/request-param-path-cannot-have-trailing-whitespace"
       }
     }
+    let(:bad_region_request_with_data) {
+      {
+        error: "You have connected to a URL that has different security settings than those required for your site.",
+        'http-code': 403,
+        title: "Lockout Region Mismatch",
+        type: "not-authenticated/lockout-region-mismatch",
+        data: {
+          host: "test.host"
+        }
+      }
+    }
     let(:bad_request_without_data) {
       {
         error: 'Bad Request'
       }
     }
     let(:mock_good_response) { { status: 400, headers: {}, body: bad_request_with_data.to_json } }
+    let(:mock_good_region_response) { { status: 403, headers: {}, body: bad_region_request_with_data.to_json } }
     let(:mock_response_without_type) { { status: 400, headers: {}, body: bad_request_without_data.to_json } }
     let(:mock_empty_response) { { status: 400, headers: {}, body: '' } }
 
@@ -66,7 +78,14 @@ RSpec.describe Files::ApiClient do
       allow(subject).to receive(:log_request).and_raise(Faraday::BadRequestError.new('', mock_good_response))
       expect {
         subject.execute_request_with_rescues(1, context) { 'empty block' }
-      }.to raise_error(Files::RequestParamPathCannotHaveTrailingWhitespaceError, bad_request_with_data[:error])
+      }.to raise_error do |error|
+        expect(error).to be_a(Files::RequestParamPathCannotHaveTrailingWhitespaceError)
+        expect(error.message).to eq bad_request_with_data[:error]
+        expect(error.title).to eq "Request Param Path Cannot Have Trailing Whitespace"
+        expect(error.type).to eq "bad-request/request-param-path-cannot-have-trailing-whitespace"
+        expect(error.http_code).to eq 400
+        expect(error.data).to be_nil
+      end
     end
 
     it "throws generic bad request error when no type" do
@@ -81,6 +100,21 @@ RSpec.describe Files::ApiClient do
       expect {
         subject.execute_request_with_rescues(1, context) { 'empty block' }
       }.to raise_error(Files::APIConnectionError)
+    end
+
+    it "handles region lockout error response" do
+      allow(subject).to receive(:log_request).and_raise(Faraday::BadRequestError.new('', mock_good_region_response))
+      expect {
+        subject.execute_request_with_rescues(1, context) { 'empty block' }
+      }.to raise_error do |error|
+        expect(error).to be_a(Files::LockoutRegionMismatchError)
+        expect(error.message).to eq bad_region_request_with_data[:error]
+        expect(error.title).to eq "Lockout Region Mismatch"
+        expect(error.type).to eq "not-authenticated/lockout-region-mismatch"
+        expect(error.http_code).to eq 403
+        expect(error.data).to have_key(:host)
+        expect(error.data[:host]).to eq "test.host"
+      end
     end
   end
 end

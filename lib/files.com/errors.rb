@@ -28,17 +28,18 @@ module Files
   class NotImplementedError < Error; end
 
   class APIError < Error
-    attr_reader :detail, :error, :errors, :http_code, :instance, :model_errors, :title, :type
+    attr_reader :detail, :error, :errors, :http_code, :instance, :model_errors, :title, :type, :data
 
     def initialize(message = nil, **kwargs)
-      @detail = kwargs.dig(:json_body, 'detail')
-      @error = kwargs.dig(:json_body, 'error')
-      @errors = kwargs.dig(:json_body, 'errors')
-      @http_code = kwargs.dig(:json_body, 'http-code')
-      @instance = kwargs.dig(:json_body, 'instance')
-      @model_errors = kwargs.dig(:json_body, 'model_errors')
-      @title = kwargs.dig(:json_body, 'title')
-      @type = kwargs.dig(:json_body, 'type')
+      @detail = kwargs.dig(:json_body, :detail)
+      @error = kwargs.dig(:json_body, :error)
+      @errors = kwargs.dig(:json_body, :errors)
+      @http_code = kwargs.dig(:json_body, :'http-code')
+      @instance = kwargs.dig(:json_body, :instance)
+      @model_errors = kwargs.dig(:json_body, :model_errors)
+      @title = kwargs.dig(:json_body, :title)
+      @type = kwargs.dig(:json_body, :type)
+      @data = kwargs.dig(:json_body, :data)
 
       super(message, **kwargs)
     end
