@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # boolean - Ordinarily, files with identical size in the source and destination will be skipped from copy operations to prevent wasted transfer.  If this flag is `true` we will overwrite the destination file always.  Note that this may cause large amounts of wasted transfer usage.
+    def always_overwrite_size_matching_files
+      @attributes[:always_overwrite_size_matching_files]
+    end
+
+    def always_overwrite_size_matching_files=(value)
+      @attributes[:always_overwrite_size_matching_files] = value
+    end
+
     # string - Automation type
     def automation
       @attributes[:automation]
@@ -36,6 +45,42 @@ module Files
       @attributes[:deleted] = value
     end
 
+    # string - Description for the this Automation.
+    def description
+      @attributes[:description]
+    end
+
+    def description=(value)
+      @attributes[:description] = value
+    end
+
+    # string - If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
+    def destination_replace_from
+      @attributes[:destination_replace_from]
+    end
+
+    def destination_replace_from=(value)
+      @attributes[:destination_replace_from] = value
+    end
+
+    # string - If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
+    def destination_replace_to
+      @attributes[:destination_replace_to]
+    end
+
+    def destination_replace_to=(value)
+      @attributes[:destination_replace_to] = value
+    end
+
+    # array - Destination Paths
+    def destinations
+      @attributes[:destinations]
+    end
+
+    def destinations=(value)
+      @attributes[:destinations] = value
+    end
+
     # boolean - If true, this automation will not run.
     def disabled
       @attributes[:disabled]
@@ -45,13 +90,13 @@ module Files
       @attributes[:disabled] = value
     end
 
-    # string - How this automation is triggered to run.
-    def trigger
-      @attributes[:trigger]
+    # array - IDs of Groups for the Automation (i.e. who to Request File from)
+    def group_ids
+      @attributes[:group_ids]
     end
 
-    def trigger=(value)
-      @attributes[:trigger] = value
+    def group_ids=(value)
+      @attributes[:group_ids] = value
     end
 
     # string - If trigger is `daily`, this specifies how often to run this automation.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
@@ -81,6 +126,24 @@ module Files
       @attributes[:name] = value
     end
 
+    # string - Path on which this Automation runs.  Supports globs, except on remote mounts. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    def path
+      @attributes[:path]
+    end
+
+    def path=(value)
+      @attributes[:path] = value
+    end
+
+    # int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    def recurring_day
+      @attributes[:recurring_day]
+    end
+
+    def recurring_day=(value)
+      @attributes[:recurring_day] = value
+    end
+
     # object - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run.
     def schedule
       @attributes[:schedule]
@@ -99,69 +162,6 @@ module Files
       @attributes[:source] = value
     end
 
-    # array - Destination Paths
-    def destinations
-      @attributes[:destinations]
-    end
-
-    def destinations=(value)
-      @attributes[:destinations] = value
-    end
-
-    # string - If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
-    def destination_replace_from
-      @attributes[:destination_replace_from]
-    end
-
-    def destination_replace_from=(value)
-      @attributes[:destination_replace_from] = value
-    end
-
-    # string - If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
-    def destination_replace_to
-      @attributes[:destination_replace_to]
-    end
-
-    def destination_replace_to=(value)
-      @attributes[:destination_replace_to] = value
-    end
-
-    # string - Description for the this Automation.
-    def description
-      @attributes[:description]
-    end
-
-    def description=(value)
-      @attributes[:description] = value
-    end
-
-    # int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
-    def recurring_day
-      @attributes[:recurring_day]
-    end
-
-    def recurring_day=(value)
-      @attributes[:recurring_day] = value
-    end
-
-    # string - Path on which this Automation runs.  Supports globs, except on remote mounts. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
-    def path
-      @attributes[:path]
-    end
-
-    def path=(value)
-      @attributes[:path] = value
-    end
-
-    # int64 - User ID of the Automation's creator.
-    def user_id
-      @attributes[:user_id]
-    end
-
-    def user_id=(value)
-      @attributes[:user_id] = value
-    end
-
     # array - IDs of remote sync folder behaviors to run by this Automation
     def sync_ids
       @attributes[:sync_ids]
@@ -169,33 +169,6 @@ module Files
 
     def sync_ids=(value)
       @attributes[:sync_ids] = value
-    end
-
-    # array - IDs of Users for the Automation (i.e. who to Request File from)
-    def user_ids
-      @attributes[:user_ids]
-    end
-
-    def user_ids=(value)
-      @attributes[:user_ids] = value
-    end
-
-    # array - IDs of Groups for the Automation (i.e. who to Request File from)
-    def group_ids
-      @attributes[:group_ids]
-    end
-
-    def group_ids=(value)
-      @attributes[:group_ids] = value
-    end
-
-    # string - If trigger is `webhook`, this is the URL of the webhook to trigger the Automation.
-    def webhook_url
-      @attributes[:webhook_url]
-    end
-
-    def webhook_url=(value)
-      @attributes[:webhook_url] = value
     end
 
     # array - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
@@ -207,6 +180,33 @@ module Files
       @attributes[:trigger_actions] = value
     end
 
+    # string - How this automation is triggered to run.
+    def trigger
+      @attributes[:trigger]
+    end
+
+    def trigger=(value)
+      @attributes[:trigger] = value
+    end
+
+    # int64 - User ID of the Automation's creator.
+    def user_id
+      @attributes[:user_id]
+    end
+
+    def user_id=(value)
+      @attributes[:user_id] = value
+    end
+
+    # array - IDs of Users for the Automation (i.e. who to Request File from)
+    def user_ids
+      @attributes[:user_ids]
+    end
+
+    def user_ids=(value)
+      @attributes[:user_ids] = value
+    end
+
     # object - A Hash of attributes specific to the automation type.
     def value
       @attributes[:value]
@@ -214,6 +214,15 @@ module Files
 
     def value=(value)
       @attributes[:value] = value
+    end
+
+    # string - If trigger is `webhook`, this is the URL of the webhook to trigger the Automation.
+    def webhook_url
+      @attributes[:webhook_url]
+    end
+
+    def webhook_url=(value)
+      @attributes[:webhook_url] = value
     end
 
     # string - DEPRECATED: Destination Path. Use `destinations` instead.
@@ -248,6 +257,7 @@ module Files
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   schedule - object - Custom schedule for running this automation.
+    #   always_overwrite_size_matching_files - boolean - Ordinarily, files with identical size in the source and destination will be skipped from copy operations to prevent wasted transfer.  If this flag is `true` we will overwrite the destination file always.  Note that this may cause large amounts of wasted transfer usage.
     #   description - string - Description for the this Automation.
     #   disabled - boolean - If true, this automation will not run.
     #   name - string - Name for this automation.
@@ -365,6 +375,7 @@ module Files
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   schedule - object - Custom schedule for running this automation.
+    #   always_overwrite_size_matching_files - boolean - Ordinarily, files with identical size in the source and destination will be skipped from copy operations to prevent wasted transfer.  If this flag is `true` we will overwrite the destination file always.  Note that this may cause large amounts of wasted transfer usage.
     #   description - string - Description for the this Automation.
     #   disabled - boolean - If true, this automation will not run.
     #   name - string - Name for this automation.
@@ -421,6 +432,7 @@ module Files
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   schedule - object - Custom schedule for running this automation.
+    #   always_overwrite_size_matching_files - boolean - Ordinarily, files with identical size in the source and destination will be skipped from copy operations to prevent wasted transfer.  If this flag is `true` we will overwrite the destination file always.  Note that this may cause large amounts of wasted transfer usage.
     #   description - string - Description for the this Automation.
     #   disabled - boolean - If true, this automation will not run.
     #   name - string - Name for this automation.
