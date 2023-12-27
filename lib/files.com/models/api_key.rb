@@ -114,19 +114,19 @@ module Files
     end
 
     # Parameters:
-    #   name - string - Internal name for the API Key.  For your use.
     #   description - string - User-supplied description of API key.
     #   expires_at - string - API Key expiration date
     #   permission_set - string - Permissions for this API Key. It must be full for site-wide API Keys.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    #   name - string - Internal name for the API Key.  For your use.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/api_keys/#{@attributes[:id]}", :patch, params, @options)
@@ -211,16 +211,17 @@ module Files
 
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   name - string - Internal name for the API Key.  For your use.
     #   description - string - User-supplied description of API key.
     #   expires_at - string - API Key expiration date
     #   permission_set - string - Permissions for this API Key. It must be full for site-wide API Keys.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    #   name (required) - string - Internal name for the API Key.  For your use.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
       response, options = Api.send_request("/api_keys", :post, params, options)
       ApiKey.new(response.data, options)
@@ -240,18 +241,18 @@ module Files
     end
 
     # Parameters:
-    #   name - string - Internal name for the API Key.  For your use.
     #   description - string - User-supplied description of API key.
     #   expires_at - string - API Key expiration date
     #   permission_set - string - Permissions for this API Key. It must be full for site-wide API Keys.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations).  Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
+    #   name - string - Internal name for the API Key.  For your use.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/api_keys/#{params[:id]}", :patch, params, options)
