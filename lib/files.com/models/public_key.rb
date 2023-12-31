@@ -32,13 +32,22 @@ module Files
       @attributes[:created_at]
     end
 
-    # string - Public key fingerprint
+    # string - Public key fingerprint (MD5)
     def fingerprint
       @attributes[:fingerprint]
     end
 
     def fingerprint=(value)
       @attributes[:fingerprint] = value
+    end
+
+    # string - Public key fingerprint (SHA256)
+    def fingerprint_sha256
+      @attributes[:fingerprint_sha256]
+    end
+
+    def fingerprint_sha256=(value)
+      @attributes[:fingerprint_sha256] = value
     end
 
     # string - Username of the user this public key is associated with
