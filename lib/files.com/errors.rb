@@ -191,6 +191,7 @@ module Files
   class TwoFactorAuthenticationCodeAlreadySentError < ProcessingFailureError; end
   class TwoFactorAuthenticationCountryBlacklistedError < ProcessingFailureError; end
   class TwoFactorAuthenticationGeneralErrorError < ProcessingFailureError; end
+  class TwoFactorAuthenticationUnsubscribedRecipientError < ProcessingFailureError; end
   class UpdatesNotAllowedForRemotesError < ProcessingFailureError; end
 
   class RateLimitedError < APIError; end
