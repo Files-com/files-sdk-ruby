@@ -660,7 +660,7 @@ module Files
       @attributes[:region] = value
     end
 
-    # string - A short string representing the current user's permissions.  Can be `r`,`w`,`d`, `l` or any combination
+    # string - A short string representing the current user's permissions.  Can be `r` (Read),`w` (Write),`d` (Delete), `l` (List) or any combination
     def permissions
       @attributes[:permissions]
     end
