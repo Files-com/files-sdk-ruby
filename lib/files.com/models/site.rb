@@ -817,6 +817,7 @@ module Files
     #   motd_text - string - A message to show users when they connect via FTP or SFTP.
     #   motd_use_for_ftp - boolean - Show message to users connecting via FTP
     #   motd_use_for_sftp - boolean - Show message to users connecting via SFTP
+    #   left_navigation_visibility - object - Visibility settings for account navigation
     #   session_expiry - double - Session expiry in hours
     #   ssl_required - boolean - Is SSL required?  Disabling this is insecure.
     #   tls_disabled - boolean - Are Insecure TLS and SFTP Ciphers allowed?  Enabling this is insecure.
@@ -950,6 +951,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: welcome_screen must be an String") if params[:welcome_screen] and !params[:welcome_screen].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: office_integration_type must be an String") if params[:office_integration_type] and !params[:office_integration_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: motd_text must be an String") if params[:motd_text] and !params[:motd_text].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: left_navigation_visibility must be an Hash") if params[:left_navigation_visibility] and !params[:left_navigation_visibility].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: session_expiry must be an Float") if params[:session_expiry] and !params[:session_expiry].is_a?(Float)
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params[:user_lockout_tries] and !params[:user_lockout_tries].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_within must be an Integer") if params[:user_lockout_within] and !params[:user_lockout_within].is_a?(Integer)
