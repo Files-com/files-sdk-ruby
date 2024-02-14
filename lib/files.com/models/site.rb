@@ -689,11 +689,6 @@ module Files
       @attributes[:trial_until]
     end
 
-    # date-time - Last time this Site was updated
-    def updated_at
-      @attributes[:updated_at]
-    end
-
     # boolean - Allow uploaders to set `provided_modified_at` for uploaded files?
     def use_provided_modified_at
       @attributes[:use_provided_modified_at]

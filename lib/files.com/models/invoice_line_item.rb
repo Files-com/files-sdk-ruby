@@ -39,11 +39,6 @@ module Files
       @attributes[:service_start_at]
     end
 
-    # date-time - Invoice line item updated date/time
-    def updated_at
-      @attributes[:updated_at]
-    end
-
     # string - Plan name
     def plan
       @attributes[:plan]

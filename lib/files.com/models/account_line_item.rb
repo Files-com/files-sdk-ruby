@@ -73,10 +73,5 @@ module Files
     def type
       @attributes[:type]
     end
-
-    # date-time - Line item updated at
-    def updated_at
-      @attributes[:updated_at]
-    end
   end
 end
