@@ -144,7 +144,25 @@ module Files
       @attributes[:recurring_day] = value
     end
 
-    # array - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run.
+    # object - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run in json format.
+    def schedule
+      @attributes[:schedule]
+    end
+
+    def schedule=(value)
+      @attributes[:schedule] = value
+    end
+
+    # string - If trigger is `custom_schedule`, Human readable Custom schedule description for when the automation should be run.
+    def human_readable_schedule
+      @attributes[:human_readable_schedule]
+    end
+
+    def human_readable_schedule=(value)
+      @attributes[:human_readable_schedule] = value
+    end
+
+    # array - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
     def schedule_days_of_week
       @attributes[:schedule_days_of_week]
     end
@@ -153,7 +171,7 @@ module Files
       @attributes[:schedule_days_of_week] = value
     end
 
-    # array - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run.
+    # array - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run. Times of day in HH:MM format.
     def schedule_times_of_day
       @attributes[:schedule_times_of_day]
     end
@@ -162,7 +180,7 @@ module Files
       @attributes[:schedule_times_of_day] = value
     end
 
-    # string - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run.
+    # string - If trigger is `custom_schedule`, Custom schedule Time Zone for when the automation should be run.
     def schedule_time_zone
       @attributes[:schedule_time_zone]
     end

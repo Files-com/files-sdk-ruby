@@ -29,9 +29,29 @@ module Files
       @attributes[:created_at]
     end
 
+    # date-time - Automation run runtime.
+    def runtime
+      @attributes[:runtime]
+    end
+
     # string - The success status of the AutomationRun. One of `running`, `success`, `partial_failure`, or `failure`.
     def status
       @attributes[:status]
+    end
+
+    # string - The stage currently being executed in the execution environment.  One of `queued_for_planning`, `planning`, `queued_for_execution`, `executing`, or `finished`.
+    def run_stage
+      @attributes[:run_stage]
+    end
+
+    # int64 - Count of successful operations.
+    def successful_operations
+      @attributes[:successful_operations]
+    end
+
+    # int64 - Count of failed operations.
+    def failed_operations
+      @attributes[:failed_operations]
     end
 
     # string - Link to status messages log file.

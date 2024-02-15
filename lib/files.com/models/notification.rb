@@ -27,7 +27,7 @@ module Files
       @attributes[:path] = value
     end
 
-    # int64 - Notification group id
+    # int64 - ID of Group to receive notifications
     def group_id
       @attributes[:group_id]
     end
@@ -36,7 +36,7 @@ module Files
       @attributes[:group_id] = value
     end
 
-    # string - Group name if applicable
+    # string - Group name, if a Group ID is set
     def group_name
       @attributes[:group_name]
     end
@@ -45,7 +45,7 @@ module Files
       @attributes[:group_name] = value
     end
 
-    # array - Only notify on actions made by a member of one of the specified groups
+    # array - If set, will only notify on actions made by a member of one of the specified groups
     def triggering_group_ids
       @attributes[:triggering_group_ids]
     end
@@ -54,7 +54,7 @@ module Files
       @attributes[:triggering_group_ids] = value
     end
 
-    # array - Only notify on actions made one of the specified users
+    # array - If set, will onlynotify on actions made one of the specified users
     def triggering_user_ids
       @attributes[:triggering_user_ids]
     end
@@ -72,7 +72,7 @@ module Files
       @attributes[:trigger_by_share_recipients] = value
     end
 
-    # boolean - Trigger notification on notification user actions?
+    # boolean - If true, will send notifications about a user's own activity to that user.  If false, only activity performed by other users (or anonymous users) will be sent in notifications.
     def notify_user_actions
       @attributes[:notify_user_actions]
     end
@@ -81,7 +81,7 @@ module Files
       @attributes[:notify_user_actions] = value
     end
 
-    # boolean - Triggers notification when copying files to this path
+    # boolean - Trigger on files copied to this path?
     def notify_on_copy
       @attributes[:notify_on_copy]
     end
@@ -90,7 +90,7 @@ module Files
       @attributes[:notify_on_copy] = value
     end
 
-    # boolean - Triggers notification when deleting files from this path
+    # boolean - Trigger on files deleted in this path?
     def notify_on_delete
       @attributes[:notify_on_delete]
     end
@@ -99,7 +99,7 @@ module Files
       @attributes[:notify_on_delete] = value
     end
 
-    # boolean - Triggers notification when downloading files from this path
+    # boolean - Trigger on files downloaded in this path?
     def notify_on_download
       @attributes[:notify_on_download]
     end
@@ -108,7 +108,7 @@ module Files
       @attributes[:notify_on_download] = value
     end
 
-    # boolean - Triggers notification when moving files to this path
+    # boolean - Trigger on files moved to this path?
     def notify_on_move
       @attributes[:notify_on_move]
     end
@@ -117,7 +117,7 @@ module Files
       @attributes[:notify_on_move] = value
     end
 
-    # boolean - Triggers notification when uploading new files to this path
+    # boolean - Trigger on files created/uploaded/updated/changed in this path?
     def notify_on_upload
       @attributes[:notify_on_upload]
     end
@@ -126,7 +126,7 @@ module Files
       @attributes[:notify_on_upload] = value
     end
 
-    # boolean - Enable notifications for each subfolder in this path
+    # boolean - Apply notification recursively?  This will enable notifications for each subfolder.
     def recursive
       @attributes[:recursive]
     end
@@ -144,7 +144,7 @@ module Files
       @attributes[:send_interval] = value
     end
 
-    # string - Custom message to include in notification emails.
+    # string - Custom message to include in notification emails
     def message
       @attributes[:message]
     end
@@ -153,7 +153,7 @@ module Files
       @attributes[:message] = value
     end
 
-    # array - Array of filenames (possibly with wildcards) to match for action path
+    # array - Array of filenames (possibly with wildcards) to scope trigger
     def triggering_filenames
       @attributes[:triggering_filenames]
     end
@@ -209,17 +209,17 @@ module Files
 
     # Parameters:
     #   notify_on_copy - boolean - If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
-    #   notify_on_delete - boolean - Triggers notification when deleting files from this path
-    #   notify_on_download - boolean - Triggers notification when downloading files from this path
-    #   notify_on_move - boolean - Triggers notification when moving files to this path
-    #   notify_on_upload - boolean - Triggers notification when uploading new files to this path
+    #   notify_on_delete - boolean - Trigger on files deleted in this path?
+    #   notify_on_download - boolean - Trigger on files downloaded in this path?
+    #   notify_on_move - boolean - Trigger on files moved to this path?
+    #   notify_on_upload - boolean - Trigger on files created/uploaded/updated/changed in this path?
     #   notify_user_actions - boolean - If `true` actions initiated by the user will still result in a notification
     #   recursive - boolean - If `true`, enable notifications for each subfolder in this path
     #   send_interval - string - The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
-    #   message - string - Custom message to include in notification emails.
-    #   triggering_filenames - array(string) - Array of filenames (possibly with wildcards) to match for action path
-    #   triggering_group_ids - array(int64) - Only notify on actions made by a member of one of the specified groups
-    #   triggering_user_ids - array(int64) - Only notify on actions made one of the specified users
+    #   message - string - Custom message to include in notification emails
+    #   triggering_filenames - array(string) - Array of filenames (possibly with wildcards) to scope trigger
+    #   triggering_group_ids - array(int64) - If set, will only notify on actions made by a member of one of the specified groups
+    #   triggering_user_ids - array(int64) - If set, will onlynotify on actions made one of the specified users
     #   trigger_by_share_recipients - boolean - Notify when actions are performed by a share recipient?
     def update(params = {})
       params ||= {}
@@ -310,17 +310,17 @@ module Files
     # Parameters:
     #   user_id - int64 - The id of the user to notify. Provide `user_id`, `username` or `group_id`.
     #   notify_on_copy - boolean - If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
-    #   notify_on_delete - boolean - Triggers notification when deleting files from this path
-    #   notify_on_download - boolean - Triggers notification when downloading files from this path
-    #   notify_on_move - boolean - Triggers notification when moving files to this path
-    #   notify_on_upload - boolean - Triggers notification when uploading new files to this path
+    #   notify_on_delete - boolean - Trigger on files deleted in this path?
+    #   notify_on_download - boolean - Trigger on files downloaded in this path?
+    #   notify_on_move - boolean - Trigger on files moved to this path?
+    #   notify_on_upload - boolean - Trigger on files created/uploaded/updated/changed in this path?
     #   notify_user_actions - boolean - If `true` actions initiated by the user will still result in a notification
     #   recursive - boolean - If `true`, enable notifications for each subfolder in this path
     #   send_interval - string - The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
-    #   message - string - Custom message to include in notification emails.
-    #   triggering_filenames - array(string) - Array of filenames (possibly with wildcards) to match for action path
-    #   triggering_group_ids - array(int64) - Only notify on actions made by a member of one of the specified groups
-    #   triggering_user_ids - array(int64) - Only notify on actions made one of the specified users
+    #   message - string - Custom message to include in notification emails
+    #   triggering_filenames - array(string) - Array of filenames (possibly with wildcards) to scope trigger
+    #   triggering_group_ids - array(int64) - If set, will only notify on actions made by a member of one of the specified groups
+    #   triggering_user_ids - array(int64) - If set, will onlynotify on actions made one of the specified users
     #   trigger_by_share_recipients - boolean - Notify when actions are performed by a share recipient?
     #   group_id - int64 - The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
     #   path - string - Path
@@ -342,17 +342,17 @@ module Files
 
     # Parameters:
     #   notify_on_copy - boolean - If `true`, copying or moving resources into this path will trigger a notification, in addition to just uploads.
-    #   notify_on_delete - boolean - Triggers notification when deleting files from this path
-    #   notify_on_download - boolean - Triggers notification when downloading files from this path
-    #   notify_on_move - boolean - Triggers notification when moving files to this path
-    #   notify_on_upload - boolean - Triggers notification when uploading new files to this path
+    #   notify_on_delete - boolean - Trigger on files deleted in this path?
+    #   notify_on_download - boolean - Trigger on files downloaded in this path?
+    #   notify_on_move - boolean - Trigger on files moved to this path?
+    #   notify_on_upload - boolean - Trigger on files created/uploaded/updated/changed in this path?
     #   notify_user_actions - boolean - If `true` actions initiated by the user will still result in a notification
     #   recursive - boolean - If `true`, enable notifications for each subfolder in this path
     #   send_interval - string - The time interval that notifications are aggregated by.  Can be `five_minutes`, `fifteen_minutes`, `hourly`, or `daily`.
-    #   message - string - Custom message to include in notification emails.
-    #   triggering_filenames - array(string) - Array of filenames (possibly with wildcards) to match for action path
-    #   triggering_group_ids - array(int64) - Only notify on actions made by a member of one of the specified groups
-    #   triggering_user_ids - array(int64) - Only notify on actions made one of the specified users
+    #   message - string - Custom message to include in notification emails
+    #   triggering_filenames - array(string) - Array of filenames (possibly with wildcards) to scope trigger
+    #   triggering_group_ids - array(int64) - If set, will only notify on actions made by a member of one of the specified groups
+    #   triggering_user_ids - array(int64) - If set, will onlynotify on actions made one of the specified users
     #   trigger_by_share_recipients - boolean - Notify when actions are performed by a share recipient?
     def self.update(id, params = {}, options = {})
       params ||= {}
