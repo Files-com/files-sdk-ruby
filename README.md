@@ -16,7 +16,9 @@ Or add this to your app's Gemfile:
 
 ### Requirements
 
-* Ruby 2.7+
+* Ruby 3+
+
+Ruby 2.x is now considered end-of-life by the Ruby project. As a policy, Files.com does not support integrations which are considered end-of-life by their vendor.
 
 
 ## Usage
@@ -24,6 +26,7 @@ Or add this to your app's Gemfile:
 ### Authentication
 
 There are multiple ways to authenticate to the API.
+
 
 #### Global API Key
 
@@ -121,4 +124,3 @@ The Files.com team is happy to help with any SDK Integration challenges you
 may face.
 
 Just email support@files.com and we'll get the process started.
-
