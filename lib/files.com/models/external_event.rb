@@ -95,6 +95,24 @@ module Files
       @attributes[:bytes_synced] = value
     end
 
+    # int64 - For sync events, the number of files considered for the sync.
+    def compared_files
+      @attributes[:compared_files]
+    end
+
+    def compared_files=(value)
+      @attributes[:compared_files] = value
+    end
+
+    # int64 - For sync events, the number of folders listed and considered for the sync.
+    def compared_folders
+      @attributes[:compared_folders]
+    end
+
+    def compared_folders=(value)
+      @attributes[:compared_folders] = value
+    end
+
     # string - Associated Remote Server type, if any
     def remote_server_type
       @attributes[:remote_server_type]
