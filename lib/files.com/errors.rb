@@ -130,6 +130,7 @@ module Files
   class ReauthenticationFailedError < NotAuthorizedError; end
   class ReauthenticationFailedFinalError < NotAuthorizedError; end
   class ReauthenticationNeededActionError < NotAuthorizedError; end
+  class RecaptchaFailedError < NotAuthorizedError; end
   class SelfManagedRequiredError < NotAuthorizedError; end
   class SiteAdminRequiredError < NotAuthorizedError; end
   class SiteFilesAreImmutableError < NotAuthorizedError; end
