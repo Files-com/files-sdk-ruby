@@ -27,15 +27,6 @@ module Files
       @attributes[:name] = value
     end
 
-    # string - A list of allowed IPs if applicable.  Newline delimited
-    def allowed_ips
-      @attributes[:allowed_ips]
-    end
-
-    def allowed_ips=(value)
-      @attributes[:allowed_ips] = value
-    end
-
     # string - Comma-delimited list of user IDs who are group administrators (separated by commas)
     def admin_ids
       @attributes[:admin_ids]
@@ -116,7 +107,6 @@ module Files
     #   sftp_permission - boolean - If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
     #   dav_permission - boolean - If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
     #   restapi_permission - boolean - If true, users in this group can use the REST API to login.  This will override a false value of `restapi_permission` on the user level.
-    #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
     #   name - string - Group name.
     def update(params = {})
       params ||= {}
@@ -126,7 +116,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if params[:admin_ids] and !params[:admin_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
@@ -207,13 +196,11 @@ module Files
     #   sftp_permission - boolean - If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
     #   dav_permission - boolean - If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
     #   restapi_permission - boolean - If true, users in this group can use the REST API to login.  This will override a false value of `restapi_permission` on the user level.
-    #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
     #   name (required) - string - Group name.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if params[:admin_ids] and !params[:admin_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
@@ -229,7 +216,6 @@ module Files
     #   sftp_permission - boolean - If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
     #   dav_permission - boolean - If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
     #   restapi_permission - boolean - If true, users in this group can use the REST API to login.  This will override a false value of `restapi_permission` on the user level.
-    #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
     #   name - string - Group name.
     def self.update(id, params = {}, options = {})
       params ||= {}
@@ -238,7 +224,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if params[:admin_ids] and !params[:admin_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
