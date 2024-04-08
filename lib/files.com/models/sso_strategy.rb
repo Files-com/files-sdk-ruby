@@ -184,6 +184,11 @@ module Files
       @attributes[:provision_company]
     end
 
+    # string - 2FA required setting for auto provisioned users.
+    def provision_require_2fa
+      @attributes[:provision_require_2fa]
+    end
+
     # string - Base DN for looking up users in LDAP server
     def ldap_base_dn
       @attributes[:ldap_base_dn]
