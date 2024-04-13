@@ -54,6 +54,15 @@ module Files
       @attributes[:server_certificate] = value
     end
 
+    # string - MDN Validation Level
+    def mdn_validation_level
+      @attributes[:mdn_validation_level]
+    end
+
+    def mdn_validation_level=(value)
+      @attributes[:mdn_validation_level] = value
+    end
+
     # boolean - `true` if remote server only accepts connections from dedicated IPs
     def enable_dedicated_ips
       @attributes[:enable_dedicated_ips]
@@ -139,6 +148,7 @@ module Files
     #   name - string - AS2 Name
     #   uri - string - URL base for AS2 responses
     #   server_certificate - string - Remote server certificate security setting
+    #   mdn_validation_level - string - MDN Validation Level
     #   public_certificate - string
     #   enable_dedicated_ips - boolean
     def update(params = {})
@@ -149,6 +159,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uri must be an String") if params[:uri] and !params[:uri].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if params[:mdn_validation_level] and !params[:mdn_validation_level].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
@@ -219,6 +230,7 @@ module Files
     #   public_certificate (required) - string
     #   as2_station_id (required) - int64 - Id of As2Station for this partner
     #   server_certificate - string - Remote server certificate security setting
+    #   mdn_validation_level - string - MDN Validation Level
     #   enable_dedicated_ips - boolean
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -226,6 +238,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: as2_station_id must be an Integer") if params[:as2_station_id] and !params[:as2_station_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if params[:mdn_validation_level] and !params[:mdn_validation_level].is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
       raise MissingParameterError.new("Parameter missing: uri") unless params[:uri]
       raise MissingParameterError.new("Parameter missing: public_certificate") unless params[:public_certificate]
@@ -239,6 +252,7 @@ module Files
     #   name - string - AS2 Name
     #   uri - string - URL base for AS2 responses
     #   server_certificate - string - Remote server certificate security setting
+    #   mdn_validation_level - string - MDN Validation Level
     #   public_certificate - string
     #   enable_dedicated_ips - boolean
     def self.update(id, params = {}, options = {})
@@ -248,6 +262,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uri must be an String") if params[:uri] and !params[:uri].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if params[:mdn_validation_level] and !params[:mdn_validation_level].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
