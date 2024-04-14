@@ -9,64 +9,99 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Agent ID
+    # int64 - The remote server ID of the agent
     def id
       @attributes[:id]
     end
 
-    # string -
+    # string - The permission set for the agent ['read_write', 'read_only', 'write_only']
     def permission_set
       @attributes[:permission_set]
     end
 
-    # string - private key
+    # string - The private key for the agent
     def private_key
       @attributes[:private_key]
     end
 
-    # string
+    # string - Files.com subdomain site name
     def subdomain
       @attributes[:subdomain]
     end
 
-    # string - Agent local root path
+    # string - The root directory for the agent
     def root
       @attributes[:root]
     end
 
-    # string - Files Agent API Token
-    def api_token
-      @attributes[:api_token]
+    # boolean - Follow symlinks when traversing directories
+    def follow_links
+      @attributes[:follow_links]
     end
 
-    # int64 - Incoming port for files agent connections
-    def port
-      @attributes[:port]
+    # string - Preferred network protocol ['udp', 'tcp']
+    def prefer_protocol
+      @attributes[:prefer_protocol]
     end
 
-    # string
-    def hostname
-      @attributes[:hostname]
+    # string - DNS lookup method ['auto','doh','system']
+    def dns
+      @attributes[:dns]
     end
 
-    # string - public key
-    def public_key
-      @attributes[:public_key]
+    # boolean - Proxy all outbound traffic through files.com proxy server
+    def proxy_all_outbound
+      @attributes[:proxy_all_outbound]
     end
 
-    # string - either running or shutdown
-    def status
-      @attributes[:status]
+    # string - Custom site endpoint URL
+    def endpoint_override
+      @attributes[:endpoint_override]
     end
 
-    # string
-    def server_host_key
-      @attributes[:server_host_key]
+    # string - Log file name and location
+    def log_file
+      @attributes[:log_file]
     end
 
-    # string - agent config version
-    def config_version
-      @attributes[:config_version]
+    # string - Log level for the agent logs ['debug', 'info', 'warn', 'error', 'fatal']
+    def log_level
+      @attributes[:log_level]
+    end
+
+    # int64 - Log route for agent logs. (default 5)
+    def log_rotate_num
+      @attributes[:log_rotate_num]
+    end
+
+    # int64 - Log route size in MB for agent logs. (default 20MB)
+    def log_rotate_size
+      @attributes[:log_rotate_size]
+    end
+
+    # int64 - Maximum number of concurrent jobs (default CPU Count * 4)
+    def max_concurrent_jobs
+      @attributes[:max_concurrent_jobs]
+    end
+
+    # int64 - Graceful shutdown timeout in seconds
+    def graceful_shutdown_timeout
+      @attributes[:graceful_shutdown_timeout]
+    end
+
+    # string - File transfer (upload/download) rate limit
+    #  <limit>-<period>, with the given periods:
+    # * 'S': second
+    # * 'M': minute
+    # * 'H': hour
+    # * 'D': day
+    # Examples:
+    # * 5 requests/second: '5-S'
+    # * 10 requests/minute: '10-M'
+    # * 1000 requests/hour: '1000-H'
+    # * 2000 requests/day: '2000-D'
+    def transfer_rate_limit
+      @attributes[:transfer_rate_limit]
     end
   end
 end

@@ -509,13 +509,22 @@ module Files
       @attributes[:time_zone] = value
     end
 
-    # string - Type(s) of 2FA methods in use.  Will be either `sms`, `totp`, `u2f`, `yubi`, or multiple values sorted alphabetically and joined by an underscore.
+    # string - Type(s) of 2FA methods in use, for programmatic use.  Will be either `sms`, `totp`, `u2f`, `yubi`, or multiple values sorted alphabetically and joined by an underscore.  Does not specify whether user has more than one of a given method.
     def type_of_2fa
       @attributes[:type_of_2fa]
     end
 
     def type_of_2fa=(value)
       @attributes[:type_of_2fa] = value
+    end
+
+    # string - Type(s) of 2FA methods in use, formatted for displaying in the UI.  Unlike `type_of_2fa`, this value will make clear when a user has more than 1 of the same type of method.
+    def type_of_2fa_for_display
+      @attributes[:type_of_2fa_for_display]
+    end
+
+    def type_of_2fa_for_display=(value)
+      @attributes[:type_of_2fa_for_display] = value
     end
 
     # string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
