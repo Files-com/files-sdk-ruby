@@ -72,6 +72,15 @@ module Files
       @attributes[:value] = value
     end
 
+    # boolean - If true, the parent folder's behavior will be disabled for this folder.
+    def disable_parent_folder_behavior
+      @attributes[:disable_parent_folder_behavior]
+    end
+
+    def disable_parent_folder_behavior=(value)
+      @attributes[:disable_parent_folder_behavior] = value
+    end
+
     # file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
     def attachment_file
       @attributes[:attachment_file]
