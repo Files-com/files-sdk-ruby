@@ -239,13 +239,22 @@ module Files
       @attributes[:note] = value
     end
 
-    # string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, and any custom form data.
+    # string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, `strftime` directives, and any custom form data.
     def path_template
       @attributes[:path_template]
     end
 
     def path_template=(value)
       @attributes[:path_template] = value
+    end
+
+    # string - Timezone to use when rendering timestamps in path templates.
+    def path_template_time_zone
+      @attributes[:path_template_time_zone]
+    end
+
+    def path_template_time_zone=(value)
+      @attributes[:path_template_time_zone] = value
     end
 
     # boolean - Send delivery receipt to the uploader. Note: For writable share only
@@ -425,7 +434,8 @@ module Files
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   note - string - Bundle internal note
-    #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, and any custom form data.
+    #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, `strftime` directives, and any custom form data.
+    #   path_template_time_zone - string - Timezone to use when rendering timestamps in path templates.
     #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   preview_only - boolean - DEPRECATED: Restrict users to previewing files only. Use `permissions` instead.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
@@ -453,6 +463,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params[:max_uses] and !params[:max_uses].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_template must be an String") if params[:path_template] and !params[:path_template].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path_template_time_zone must be an String") if params[:path_template_time_zone] and !params[:path_template_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if params[:start_access_on_date] and !params[:start_access_on_date].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
@@ -545,7 +556,8 @@ module Files
     #   description - string - Public description
     #   note - string - Bundle internal note
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
-    #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, and any custom form data.
+    #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, `strftime` directives, and any custom form data.
+    #   path_template_time_zone - string - Timezone to use when rendering timestamps in path templates.
     #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   preview_only - boolean - DEPRECATED: Restrict users to previewing files only. Use `permissions` instead.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
@@ -570,6 +582,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if params[:code] and !params[:code].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_template must be an String") if params[:path_template] and !params[:path_template].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path_template_time_zone must be an String") if params[:path_template_time_zone] and !params[:path_template_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if params[:clickwrap_id] and !params[:clickwrap_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
@@ -614,7 +627,8 @@ module Files
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   max_uses - int64 - Maximum number of times bundle can be accessed
     #   note - string - Bundle internal note
-    #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, and any custom form data.
+    #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, `strftime` directives, and any custom form data.
+    #   path_template_time_zone - string - Timezone to use when rendering timestamps in path templates.
     #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   preview_only - boolean - DEPRECATED: Restrict users to previewing files only. Use `permissions` instead.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
@@ -641,6 +655,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if params[:max_uses] and !params[:max_uses].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_template must be an String") if params[:path_template] and !params[:path_template].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path_template_time_zone must be an String") if params[:path_template_time_zone] and !params[:path_template_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if params[:start_access_on_date] and !params[:start_access_on_date].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
