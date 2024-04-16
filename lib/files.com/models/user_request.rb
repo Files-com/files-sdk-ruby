@@ -45,6 +45,15 @@ module Files
       @attributes[:details] = value
     end
 
+    # string - User's company name
+    def company
+      @attributes[:company]
+    end
+
+    def company=(value)
+      @attributes[:company] = value
+    end
+
     def delete(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -107,10 +116,12 @@ module Files
     #   name (required) - string - Name of user requested
     #   email (required) - string - Email of user requested
     #   details (required) - string - Details of the user request
+    #   company - string - Company of the user requested
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: email must be an String") if params[:email] and !params[:email].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: details must be an String") if params[:details] and !params[:details].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: company must be an String") if params[:company] and !params[:company].is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
       raise MissingParameterError.new("Parameter missing: email") unless params[:email]
       raise MissingParameterError.new("Parameter missing: details") unless params[:details]
