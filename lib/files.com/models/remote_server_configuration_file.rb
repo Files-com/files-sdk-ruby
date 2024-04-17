@@ -103,5 +103,40 @@ module Files
     def transfer_rate_limit
       @attributes[:transfer_rate_limit]
     end
+
+    # string - Files Agent API Token
+    def api_token
+      @attributes[:api_token]
+    end
+
+    # int64 - Incoming port for files agent connections
+    def port
+      @attributes[:port]
+    end
+
+    # string
+    def hostname
+      @attributes[:hostname]
+    end
+
+    # string - public key
+    def public_key
+      @attributes[:public_key]
+    end
+
+    # string - either running or shutdown
+    def status
+      @attributes[:status]
+    end
+
+    # string
+    def server_host_key
+      @attributes[:server_host_key]
+    end
+
+    # string - agent config version
+    def config_version
+      @attributes[:config_version]
+    end
   end
 end
