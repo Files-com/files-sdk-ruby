@@ -175,6 +175,7 @@ module Files
   class FileTooBigToDecryptError < ProcessingFailureError; end
   class FileTooBigToEncryptError < ProcessingFailureError; end
   class FileUploadedToWrongRegionError < ProcessingFailureError; end
+  class FilenameTooLongError < ProcessingFailureError; end
   class FolderLockedError < ProcessingFailureError; end
   class FolderNotEmptyError < ProcessingFailureError; end
   class HistoryUnavailableError < ProcessingFailureError; end
