@@ -347,6 +347,15 @@ module Files
       @attributes[:paths] = value
     end
 
+    # BundlePath - A list of bundlepaths in this bundle.  For performance reasons, this is not provided when listing bundles.
+    def bundlepaths
+      @attributes[:bundlepaths]
+    end
+
+    def bundlepaths=(value)
+      @attributes[:bundlepaths] = value
+    end
+
     # string - Password for this bundle.
     def password
       @attributes[:password]
