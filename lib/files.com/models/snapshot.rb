@@ -72,6 +72,17 @@ module Files
       @attributes[:paths] = value
     end
 
+    # Finalize Snapshot
+    def finalize(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/snapshots/#{@attributes[:id]}/finalize", :post, params, @options)
+    end
+
     # Parameters:
     #   expires_at - string - When the snapshot expires.
     #   name - string - A name for the snapshot.
@@ -158,6 +169,17 @@ module Files
 
       response, options = Api.send_request("/snapshots", :post, params, options)
       Snapshot.new(response.data, options)
+    end
+
+    # Finalize Snapshot
+    def self.finalize(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/snapshots/#{params[:id]}/finalize", :post, params, options)
+      nil
     end
 
     # Parameters:

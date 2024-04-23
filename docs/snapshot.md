@@ -71,6 +71,19 @@ Files::Snapshot.create(
 
 ---
 
+## Finalize Snapshot
+
+```
+Files::Snapshot.finalize(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Snapshot ID.
+
+
+---
+
 ## Update Snapshot
 
 ```
@@ -94,6 +107,21 @@ Files::Snapshot.update(id,
 
 ```
 Files::Snapshot.delete(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Snapshot ID.
+
+
+---
+
+## Finalize Snapshot
+
+```
+snapshot = Files::Snapshot.list.first
+
+snapshot.finalize
 ```
 
 ### Parameters
