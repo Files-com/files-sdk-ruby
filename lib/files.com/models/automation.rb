@@ -153,6 +153,15 @@ module Files
       @attributes[:path] = value
     end
 
+    # string - Timezone to use when rendering timestamps in paths.
+    def path_time_zone
+      @attributes[:path_time_zone]
+    end
+
+    def path_time_zone=(value)
+      @attributes[:path_time_zone] = value
+    end
+
     # int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     def recurring_day
       @attributes[:recurring_day]
@@ -319,6 +328,7 @@ module Files
     #   ignore_locked_folders - boolean - If true, the Lock Folders behavior will be disregarded for automated actions.
     #   name - string - Name for this automation.
     #   overwrite_files - boolean - If true, existing files will be overwritten with new files on Move/Copy automations.  Note: by default files will not be overwritten if they appear to be the same file size as the newly incoming file.  Use the `:always_overwrite_size_matching_files` option to override this.
+    #   path_time_zone - string - Timezone to use when rendering timestamps in paths.
     #   trigger - string - How this automation is triggered to run.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
@@ -344,6 +354,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path_time_zone must be an String") if params[:path_time_zone] and !params[:path_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params[:trigger_actions] and !params[:trigger_actions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
@@ -444,6 +455,7 @@ module Files
     #   ignore_locked_folders - boolean - If true, the Lock Folders behavior will be disregarded for automated actions.
     #   name - string - Name for this automation.
     #   overwrite_files - boolean - If true, existing files will be overwritten with new files on Move/Copy automations.  Note: by default files will not be overwritten if they appear to be the same file size as the newly incoming file.  Use the `:always_overwrite_size_matching_files` option to override this.
+    #   path_time_zone - string - Timezone to use when rendering timestamps in paths.
     #   trigger - string - How this automation is triggered to run.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
@@ -465,6 +477,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path_time_zone must be an String") if params[:path_time_zone] and !params[:path_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params[:trigger_actions] and !params[:trigger_actions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
@@ -507,6 +520,7 @@ module Files
     #   ignore_locked_folders - boolean - If true, the Lock Folders behavior will be disregarded for automated actions.
     #   name - string - Name for this automation.
     #   overwrite_files - boolean - If true, existing files will be overwritten with new files on Move/Copy automations.  Note: by default files will not be overwritten if they appear to be the same file size as the newly incoming file.  Use the `:always_overwrite_size_matching_files` option to override this.
+    #   path_time_zone - string - Timezone to use when rendering timestamps in paths.
     #   trigger - string - How this automation is triggered to run.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
@@ -531,6 +545,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path_time_zone must be an String") if params[:path_time_zone] and !params[:path_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params[:trigger_actions] and !params[:trigger_actions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
