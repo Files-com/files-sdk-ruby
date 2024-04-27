@@ -88,6 +88,7 @@ module Files
   class UserRequiredError < BadRequestError; end
 
   class NotAuthenticatedError < APIError; end
+  class AdditionalAuthenticationRequiredError < NotAuthenticatedError; end
   class AuthenticationRequiredError < NotAuthenticatedError; end
   class BundleRegistrationCodeFailedError < NotAuthenticatedError; end
   class FilesAgentTokenFailedError < NotAuthenticatedError; end
