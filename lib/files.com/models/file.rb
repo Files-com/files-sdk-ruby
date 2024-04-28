@@ -860,6 +860,7 @@ module Files
     # Parameters:
     #   destination (required) - string - Copy destination path.
     #   structure - boolean - Copy structure only?
+    #   overwrite - boolean - Overwrite existing file(s) in the destination?
     def copy(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
@@ -876,6 +877,7 @@ module Files
     #
     # Parameters:
     #   destination (required) - string - Move destination path.
+    #   overwrite - boolean - Overwrite existing file(s) in the destination?
     def move(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
@@ -1029,6 +1031,7 @@ module Files
     # Parameters:
     #   destination (required) - string - Copy destination path.
     #   structure - boolean - Copy structure only?
+    #   overwrite - boolean - Overwrite existing file(s) in the destination?
     def self.copy(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1045,6 +1048,7 @@ module Files
     #
     # Parameters:
     #   destination (required) - string - Move destination path.
+    #   overwrite - boolean - Overwrite existing file(s) in the destination?
     def self.move(path, params = {}, options = {})
       params ||= {}
       params[:path] = path

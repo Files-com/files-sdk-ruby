@@ -178,7 +178,8 @@ Files::File.find(path,
 ```
 Files::File.copy(path, 
   destination: "destination", 
-  structure: true
+  structure: true, 
+  overwrite: true
 )
 ```
 
@@ -187,6 +188,7 @@ Files::File.copy(path,
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Copy destination path.
 * `structure` (boolean): Copy structure only?
+* `overwrite` (boolean): Overwrite existing file(s) in the destination?
 
 
 ---
@@ -195,7 +197,8 @@ Files::File.copy(path,
 
 ```
 Files::File.move(path, 
-  destination: "destination"
+  destination: "destination", 
+  overwrite: true
 )
 ```
 
@@ -203,6 +206,7 @@ Files::File.move(path,
 
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Move destination path.
+* `overwrite` (boolean): Overwrite existing file(s) in the destination?
 
 
 ---
@@ -302,7 +306,8 @@ file = Files::File.new
 
 file.copy(
   destination: "destination",
-  structure: true
+  structure: true,
+  overwrite: true
 )
 ```
 
@@ -311,6 +316,7 @@ file.copy(
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Copy destination path.
 * `structure` (boolean): Copy structure only?
+* `overwrite` (boolean): Overwrite existing file(s) in the destination?
 
 
 ---
@@ -321,7 +327,8 @@ file.copy(
 file = Files::File.new
 
 file.move(
-  destination: "destination"
+  destination: "destination",
+  overwrite: true
 )
 ```
 
@@ -329,6 +336,7 @@ file.move(
 
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Move destination path.
+* `overwrite` (boolean): Overwrite existing file(s) in the destination?
 
 
 ---
