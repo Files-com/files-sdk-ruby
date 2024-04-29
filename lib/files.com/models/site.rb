@@ -14,6 +14,11 @@ module Files
       @attributes[:name]
     end
 
+    # array - Additional extensions that are considered text files
+    def additional_text_file_types
+      @attributes[:additional_text_file_types]
+    end
+
     # boolean - Is SMS two factor authentication allowed?
     def allowed_2fa_method_sms
       @attributes[:allowed_2fa_method_sms]
@@ -833,6 +838,7 @@ module Files
     #   motd_use_for_ftp - boolean - Show message to users connecting via FTP
     #   motd_use_for_sftp - boolean - Show message to users connecting via SFTP
     #   left_navigation_visibility - object - Visibility settings for account navigation
+    #   additional_text_file_types - array(string) - Additional extensions that are considered text files
     #   session_expiry - double - Session expiry in hours
     #   ssl_required - boolean - Is SSL required?  Disabling this is insecure.
     #   tls_disabled - boolean - DO NOT ENABLE. This setting allows TLSv1.0 and TLSv1.1 to be used on your site.  We intend to remove this capability entirely in early 2024.  If set, the `sftp_insecure_ciphers` flag will be automatically set to true.
@@ -970,6 +976,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: office_integration_type must be an String") if params[:office_integration_type] and !params[:office_integration_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: motd_text must be an String") if params[:motd_text] and !params[:motd_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: left_navigation_visibility must be an Hash") if params[:left_navigation_visibility] and !params[:left_navigation_visibility].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: additional_text_file_types must be an Array") if params[:additional_text_file_types] and !params[:additional_text_file_types].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: session_expiry must be an Float") if params[:session_expiry] and !params[:session_expiry].is_a?(Float)
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params[:user_lockout_tries] and !params[:user_lockout_tries].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_within must be an Integer") if params[:user_lockout_within] and !params[:user_lockout_within].is_a?(Integer)
