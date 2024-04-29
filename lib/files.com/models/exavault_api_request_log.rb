@@ -54,6 +54,11 @@ module Files
       @attributes[:response_code]
     end
 
+    # boolean - `false` if HTTP Response Code is 4xx or 5xx
+    def success
+      @attributes[:success]
+    end
+
     # int64 - Duration (in milliseconds)
     def duration_ms
       @attributes[:duration_ms]
