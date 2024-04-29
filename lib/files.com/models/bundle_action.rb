@@ -1,0 +1,64 @@
+# frozen_string_literal: true
+
+module Files
+  class BundleAction
+    attr_reader :options, :attributes
+
+    def initialize(attributes = {}, options = {})
+      @attributes = attributes || {}
+      @options = options || {}
+    end
+
+    # string - Type of action
+    def action
+      @attributes[:action]
+    end
+
+    # BundleRegistration - Object that contains bundle registration information
+    def bundle_registration
+      @attributes[:bundle_registration]
+    end
+
+    # date-time - Action occurrence date/time
+    def when
+      @attributes[:when]
+    end
+
+    # string - The destination path for this bundle action, if applicable
+    def destination
+      @attributes[:destination]
+    end
+
+    # string - Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    def path
+      @attributes[:path]
+    end
+
+    # string - The source path for this bundle action, if applicable
+    def source
+      @attributes[:source]
+    end
+
+    # Parameters:
+    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction (e.g. `sort_by[bundle_registration_id]=desc`). Valid fields are `bundle_registration_id` and `created_at`.
+    #   bundle_id - int64 - Bundle ID
+    #   bundle_registration_id - int64 - BundleRegistration ID
+    def self.list(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: bundle_registration_id must be an Integer") if params[:bundle_registration_id] and !params[:bundle_registration_id].is_a?(Integer)
+
+      List.new(BundleAction, params) do
+        Api.send_request("/bundle_actions", :get, params, options)
+      end
+    end
+
+    def self.all(params = {}, options = {})
+      list(params, options)
+    end
+  end
+end
