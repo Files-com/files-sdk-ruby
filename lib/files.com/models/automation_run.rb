@@ -29,7 +29,7 @@ module Files
       @attributes[:created_at]
     end
 
-    # date-time - Automation run runtime.
+    # double - Automation run runtime.
     def runtime
       @attributes[:runtime]
     end
