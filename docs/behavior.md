@@ -13,7 +13,8 @@
   "value": {
     "key": "example value"
   },
-  "disable_parent_folder_behavior": true
+  "disable_parent_folder_behavior": true,
+  "recursive": true
 }
 ```
 
@@ -25,6 +26,7 @@
 * `description` (string): Description for this behavior.
 * `value` (object): Settings for this behavior.  See the section above for an example value to provide here.  Formatting is different for each Behavior type.  May be sent as nested JSON or a single JSON-encoded string.  If using XML encoding for the API call, this data must be sent as a JSON-encoded string.
 * `disable_parent_folder_behavior` (boolean): If true, the parent folder's behavior will be disabled for this folder.
+* `recursive` (boolean): Is behavior recursive?
 * `attachment_file` (file): Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
 * `attachment_delete` (boolean): If true, will delete the file stored in attachment
 
@@ -80,7 +82,7 @@ Files::Behavior.list_for(path,
 * `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `behavior`.
 * `filter_prefix` (object): If set, return records where the specified field is prefixed by the supplied value. Valid fields are `behavior`.
 * `path` (string): Required - Path to operate on.
-* `recursive` (string): Show behaviors above this path?
+* `ancestor_behaviors` (string): Show behaviors above this path?
 * `behavior` (string): DEPRECATED: If set only shows folder behaviors matching this behavior type. Use `filter[behavior]` instead.
 
 
@@ -92,6 +94,7 @@ Files::Behavior.list_for(path,
 Files::Behavior.create(
   value: "{\"method\": \"GET\"}", 
   disable_parent_folder_behavior: true, 
+  recursive: true, 
   name: "example", 
   description: "example", 
   path: "path", 
@@ -104,6 +107,7 @@ Files::Behavior.create(
 * `value` (string): The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
 * `attachment_file` (file): Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
 * `disable_parent_folder_behavior` (boolean): If true, the parent folder's behavior will be disabled for this folder.
+* `recursive` (boolean): Is behavior recursive?
 * `name` (string): Name for this behavior.
 * `description` (string): Description for this behavior.
 * `path` (string): Required - Folder behaviors path.
@@ -143,6 +147,7 @@ Files::Behavior.webhook_test(
 Files::Behavior.update(id, 
   value: "{\"method\": \"GET\"}", 
   disable_parent_folder_behavior: true, 
+  recursive: true, 
   name: "example", 
   description: "example", 
   behavior: "webhook", 
@@ -157,6 +162,7 @@ Files::Behavior.update(id,
 * `value` (string): The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
 * `attachment_file` (file): Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
 * `disable_parent_folder_behavior` (boolean): If true, the parent folder's behavior will be disabled for this folder.
+* `recursive` (boolean): Is behavior recursive?
 * `name` (string): Name for this behavior.
 * `description` (string): Description for this behavior.
 * `behavior` (string): Behavior type.
@@ -187,6 +193,7 @@ behavior = Files::Behavior.list.first
 behavior.update(
   value: "{\"method\": \"GET\"}",
   disable_parent_folder_behavior: true,
+  recursive: true,
   name: "example",
   description: "example",
   behavior: "webhook",
@@ -201,6 +208,7 @@ behavior.update(
 * `value` (string): The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
 * `attachment_file` (file): Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
 * `disable_parent_folder_behavior` (boolean): If true, the parent folder's behavior will be disabled for this folder.
+* `recursive` (boolean): Is behavior recursive?
 * `name` (string): Name for this behavior.
 * `description` (string): Description for this behavior.
 * `behavior` (string): Behavior type.

@@ -81,6 +81,15 @@ module Files
       @attributes[:disable_parent_folder_behavior] = value
     end
 
+    # boolean - Is behavior recursive?
+    def recursive
+      @attributes[:recursive]
+    end
+
+    def recursive=(value)
+      @attributes[:recursive] = value
+    end
+
     # file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
     def attachment_file
       @attributes[:attachment_file]
@@ -103,6 +112,7 @@ module Files
     #   value - string - The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
     #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder.
+    #   recursive - boolean - Is behavior recursive?
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
     #   behavior - string - Behavior type.
@@ -194,7 +204,7 @@ module Files
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `behavior`.
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `behavior`.
     #   path (required) - string - Path to operate on.
-    #   recursive - string - Show behaviors above this path?
+    #   ancestor_behaviors - string - Show behaviors above this path?
     #   behavior - string - DEPRECATED: If set only shows folder behaviors matching this behavior type. Use `filter[behavior]` instead.
     def self.list_for(path, params = {}, options = {})
       params ||= {}
@@ -205,7 +215,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recursive must be an String") if params[:recursive] and !params[:recursive].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ancestor_behaviors must be an String") if params[:ancestor_behaviors] and !params[:ancestor_behaviors].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params[:behavior] and !params[:behavior].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
@@ -218,6 +228,7 @@ module Files
     #   value - string - The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
     #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder.
+    #   recursive - boolean - Is behavior recursive?
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
     #   path (required) - string - Folder behaviors path.
@@ -259,6 +270,7 @@ module Files
     #   value - string - The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
     #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder.
+    #   recursive - boolean - Is behavior recursive?
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
     #   behavior - string - Behavior type.
