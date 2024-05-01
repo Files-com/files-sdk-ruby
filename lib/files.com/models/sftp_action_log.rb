@@ -19,6 +19,11 @@ module Files
       @attributes[:remote_ip]
     end
 
+    # string - IP Address of SFTP Server
+    def server_ip
+      @attributes[:server_ip]
+    end
+
     # string - Username
     def username
       @attributes[:username]
