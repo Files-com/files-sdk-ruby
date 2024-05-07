@@ -74,8 +74,8 @@ module Files
   class NoValidInputParamsError < BadRequestError; end
   class OperationOnNonScimResourceError < BadRequestError; end
   class PartNumberTooLargeError < BadRequestError; end
+  class PathCannotHaveTrailingWhitespaceError < BadRequestError; end
   class ReauthenticationNeededFieldsError < BadRequestError; end
-  class RequestParamPathCannotHaveTrailingWhitespaceError < BadRequestError; end
   class RequestParamsContainInvalidCharacterError < BadRequestError; end
   class RequestParamsInvalidError < BadRequestError; end
   class RequestParamsRequiredError < BadRequestError; end
@@ -174,6 +174,7 @@ module Files
   class FileLockedError < ProcessingFailureError; end
   class FileNotUploadedError < ProcessingFailureError; end
   class FilePendingProcessingError < ProcessingFailureError; end
+  class FileProcessingErrorError < ProcessingFailureError; end
   class FileTooBigToDecryptError < ProcessingFailureError; end
   class FileTooBigToEncryptError < ProcessingFailureError; end
   class FileUploadedToWrongRegionError < ProcessingFailureError; end
@@ -184,6 +185,7 @@ module Files
   class InvalidBundleCodeError < ProcessingFailureError; end
   class InvalidFileTypeError < ProcessingFailureError; end
   class InvalidFilenameError < ProcessingFailureError; end
+  class InvalidPriorityColorError < ProcessingFailureError; end
   class InvalidRangeError < ProcessingFailureError; end
   class ModelSaveErrorError < ProcessingFailureError; end
   class MultipleProcessingErrorsError < ProcessingFailureError; end

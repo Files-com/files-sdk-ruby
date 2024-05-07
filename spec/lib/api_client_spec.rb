@@ -50,7 +50,7 @@ RSpec.describe Files::ApiClient do
         'http-code': 400,
         instance: "23825f04-7add-4911-b9d7-f4342a75a471",
         title: "Request Param Path Cannot Have Trailing Whitespace",
-        type: "bad-request/request-param-path-cannot-have-trailing-whitespace"
+        type: "bad-request/path-cannot-have-trailing-whitespace"
       }
     }
     let(:bad_region_request_with_data) {
@@ -69,20 +69,20 @@ RSpec.describe Files::ApiClient do
         error: 'Bad Request'
       }
     }
-    let(:mock_good_response) { { status: 400, headers: {}, body: bad_request_with_data.to_json } }
-    let(:mock_good_region_response) { { status: 403, headers: {}, body: bad_region_request_with_data.to_json } }
+    let(:mock_bad_response) { { status: 400, headers: {}, body: bad_request_with_data.to_json } }
+    let(:mock_bad_region_response) { { status: 403, headers: {}, body: bad_region_request_with_data.to_json } }
     let(:mock_response_without_type) { { status: 400, headers: {}, body: bad_request_without_data.to_json } }
     let(:mock_empty_response) { { status: 400, headers: {}, body: '' } }
 
     it "handles correctly when bad request with data and proper error type" do
-      allow(subject).to receive(:log_request).and_raise(Faraday::BadRequestError.new('', mock_good_response))
+      allow(subject).to receive(:log_request).and_raise(Faraday::BadRequestError.new('', mock_bad_response))
       expect {
         subject.execute_request_with_rescues(1, context) { 'empty block' }
       }.to raise_error do |error|
-        expect(error).to be_a(Files::RequestParamPathCannotHaveTrailingWhitespaceError)
+        expect(error).to be_a(Files::PathCannotHaveTrailingWhitespaceError)
         expect(error.message).to eq bad_request_with_data[:error]
         expect(error.title).to eq "Request Param Path Cannot Have Trailing Whitespace"
-        expect(error.type).to eq "bad-request/request-param-path-cannot-have-trailing-whitespace"
+        expect(error.type).to eq "bad-request/path-cannot-have-trailing-whitespace"
         expect(error.http_code).to eq 400
         expect(error.data).to be_nil
       end
@@ -103,7 +103,7 @@ RSpec.describe Files::ApiClient do
     end
 
     it "handles region lockout error response" do
-      allow(subject).to receive(:log_request).and_raise(Faraday::BadRequestError.new('', mock_good_region_response))
+      allow(subject).to receive(:log_request).and_raise(Faraday::BadRequestError.new('', mock_bad_region_response))
       expect {
         subject.execute_request_with_rescues(1, context) { 'empty block' }
       }.to raise_error do |error|
