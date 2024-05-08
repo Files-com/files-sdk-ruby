@@ -159,6 +159,7 @@ module Files
   class ProcessingFailureError < APIError; end
   class AlreadyCompletedError < ProcessingFailureError; end
   class AutomationCannotBeRunManuallyError < ProcessingFailureError; end
+  class BehaviorNotAllowedOnRemoteServerError < ProcessingFailureError; end
   class BundleOnlyAllowsPreviewsError < ProcessingFailureError; end
   class BundleOperationRequiresSubfolderError < ProcessingFailureError; end
   class CouldNotCreateParentError < ProcessingFailureError; end

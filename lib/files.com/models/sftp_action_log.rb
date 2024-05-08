@@ -30,8 +30,8 @@ module Files
     end
 
     # string - Unique ID of the Session
-    def session_uid
-      @attributes[:session_uid]
+    def session_uuid
+      @attributes[:session_uuid]
     end
 
     # int64 - SFTP Sequence ID
