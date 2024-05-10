@@ -19,7 +19,7 @@ module Files
       @attributes[:remote_ip]
     end
 
-    # string - IP Address of SFTP Server
+    # string - IP Address of FTP Server
     def server_ip
       @attributes[:server_ip]
     end
