@@ -54,7 +54,7 @@ module Files
       @attributes[:action_type]
     end
 
-    # string - Path as sent by the Client (may not match Files.com path due to user root folders for SFTP) This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # string - Path as sent by the Client (may not match Files.com path due to user root folders for SFTP). This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
     end
@@ -69,19 +69,14 @@ module Files
       @attributes[:name]
     end
 
-    # string - Log Message
-    def message
-      @attributes[:message]
+    # string - SFTP Response Code Returned to the Client.
+    def sftp_response_code
+      @attributes[:sftp_response_code]
     end
 
-    # string - Failure Reason Type
-    def failure_reason_type
-      @attributes[:failure_reason_type]
-    end
-
-    # string - Failure Reason Message
-    def failure_reason_message
-      @attributes[:failure_reason_message]
+    # string - SFTP Response Message Returned to the Client.
+    def sftp_response_message
+      @attributes[:sftp_response_message]
     end
 
     # string - MD5 Hash of the file. Not always available.
@@ -89,34 +84,9 @@ module Files
       @attributes[:md5]
     end
 
-    # string - SFTP Command Flags. Present for actions which involve flags.
-    def flags
-      @attributes[:flags]
-    end
-
-    # string - SFTP Command Handle. Present for actions which involve handles.
-    def handle
-      @attributes[:handle]
-    end
-
-    # string - SFTP Command Attrs. Present for action which involve attrs.
-    def attrs
-      @attributes[:attrs]
-    end
-
-    # string - Size. Present for action which involve size.
+    # string - Size of File That was Uploaded or Downloaded.
     def size
       @attributes[:size]
-    end
-
-    # string - Offset. Present for actions which involve offset.
-    def offset
-      @attributes[:offset]
-    end
-
-    # string - Length. Present for actions which involve length.
-    def length
-      @attributes[:length]
     end
 
     # string - Data Length in Bytes. Present for actions that transfer data.
