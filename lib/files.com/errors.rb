@@ -204,6 +204,7 @@ module Files
   class RateLimitedError < APIError; end
   class DuplicateShareRecipientError < RateLimitedError; end
   class ReauthenticationRateLimitedError < RateLimitedError; end
+  class TooManyConcurrentLoginsError < RateLimitedError; end
   class TooManyConcurrentRequestsError < RateLimitedError; end
   class TooManyLoginAttemptsError < RateLimitedError; end
   class TooManyRequestsError < RateLimitedError; end
