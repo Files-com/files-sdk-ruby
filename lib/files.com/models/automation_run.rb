@@ -39,11 +39,6 @@ module Files
       @attributes[:status]
     end
 
-    # string - The stage currently being executed in the execution environment.  One of `queued_for_planning`, `planning`, `queued_for_execution`, `executing`, or `finished`.
-    def run_stage
-      @attributes[:run_stage]
-    end
-
     # int64 - Count of successful operations.
     def successful_operations
       @attributes[:successful_operations]

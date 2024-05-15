@@ -72,7 +72,6 @@ module Files
   class InvalidUploadPartSizeError < BadRequestError; end
   class MethodNotAllowedError < BadRequestError; end
   class NoValidInputParamsError < BadRequestError; end
-  class OperationOnNonScimResourceError < BadRequestError; end
   class PartNumberTooLargeError < BadRequestError; end
   class PathCannotHaveTrailingWhitespaceError < BadRequestError; end
   class ReauthenticationNeededFieldsError < BadRequestError; end
