@@ -79,6 +79,11 @@ module Files
       @attributes[:error_type]
     end
 
+    # string - Error message, if applicable
+    def error_message
+      @attributes[:error_message]
+    end
+
     # int64 - HTTP Response Code
     def response_code
       @attributes[:response_code]
