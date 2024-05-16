@@ -39,6 +39,11 @@ module Files
       @attributes[:seq_id]
     end
 
+    # string - Authentication Ciphers
+    def auth_ciphers
+      @attributes[:auth_ciphers]
+    end
+
     # string - Action Type
     def action_type
       @attributes[:action_type]
