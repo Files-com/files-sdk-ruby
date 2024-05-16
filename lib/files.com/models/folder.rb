@@ -159,6 +159,87 @@ module Files
       @attributes[:path] = value
     end
 
+    # int64 - User ID of the User who created the file/folder
+    def created_by_id
+      @attributes[:created_by_id]
+    end
+
+    def created_by_id=(value)
+      @attributes[:created_by_id] = value
+    end
+
+    # int64 - ID of the API key that created the file/folder
+    def created_by_api_key_id
+      @attributes[:created_by_api_key_id]
+    end
+
+    def created_by_api_key_id=(value)
+      @attributes[:created_by_api_key_id] = value
+    end
+
+    # int64 - ID of the AS2 Incoming Message that created the file/folder
+    def created_by_as2_incoming_message_id
+      @attributes[:created_by_as2_incoming_message_id]
+    end
+
+    def created_by_as2_incoming_message_id=(value)
+      @attributes[:created_by_as2_incoming_message_id] = value
+    end
+
+    # int64 - ID of the Automation that created the file/folder
+    def created_by_automation_id
+      @attributes[:created_by_automation_id]
+    end
+
+    def created_by_automation_id=(value)
+      @attributes[:created_by_automation_id] = value
+    end
+
+    # int64 - ID of the Bundle Registration that created the file/folder
+    def created_by_bundle_registration_id
+      @attributes[:created_by_bundle_registration_id]
+    end
+
+    def created_by_bundle_registration_id=(value)
+      @attributes[:created_by_bundle_registration_id] = value
+    end
+
+    # int64 - ID of the Inbox that created the file/folder
+    def created_by_inbox_id
+      @attributes[:created_by_inbox_id]
+    end
+
+    def created_by_inbox_id=(value)
+      @attributes[:created_by_inbox_id] = value
+    end
+
+    # int64 - ID of the Remote Server that created the file/folder
+    def created_by_remote_server_id
+      @attributes[:created_by_remote_server_id]
+    end
+
+    def created_by_remote_server_id=(value)
+      @attributes[:created_by_remote_server_id] = value
+    end
+
+    # int64 - ID of the Remote Server Sync that created the file/folder
+    def created_by_remote_server_sync_id
+      @attributes[:created_by_remote_server_sync_id]
+    end
+
+    def created_by_remote_server_sync_id=(value)
+      @attributes[:created_by_remote_server_sync_id] = value
+    end
+
+    # object - Custom metadata map of keys and values. Limited to 32 keys, 256 characters per key and 1024 characters per value.
+    def custom_metadata
+      @attributes[:custom_metadata]
+    end
+
+    def custom_metadata=(value)
+      @attributes[:custom_metadata] = value
+    end
+
     # string - File/Folder display name
     def display_name
       @attributes[:display_name]
@@ -189,6 +270,60 @@ module Files
     # date-time - File created date/time
     def created_at
       @attributes[:created_at]
+    end
+
+    # int64 - User ID of the User who last modified the file/folder
+    def last_modified_by_id
+      @attributes[:last_modified_by_id]
+    end
+
+    def last_modified_by_id=(value)
+      @attributes[:last_modified_by_id] = value
+    end
+
+    # int64 - ID of the API key that last modified the file/folder
+    def last_modified_by_api_key_id
+      @attributes[:last_modified_by_api_key_id]
+    end
+
+    def last_modified_by_api_key_id=(value)
+      @attributes[:last_modified_by_api_key_id] = value
+    end
+
+    # int64 - ID of the Automation that last modified the file/folder
+    def last_modified_by_automation_id
+      @attributes[:last_modified_by_automation_id]
+    end
+
+    def last_modified_by_automation_id=(value)
+      @attributes[:last_modified_by_automation_id] = value
+    end
+
+    # int64 - ID of the Bundle Registration that last modified the file/folder
+    def last_modified_by_bundle_registration_id
+      @attributes[:last_modified_by_bundle_registration_id]
+    end
+
+    def last_modified_by_bundle_registration_id=(value)
+      @attributes[:last_modified_by_bundle_registration_id] = value
+    end
+
+    # int64 - ID of the Remote Server that last modified the file/folder
+    def last_modified_by_remote_server_id
+      @attributes[:last_modified_by_remote_server_id]
+    end
+
+    def last_modified_by_remote_server_id=(value)
+      @attributes[:last_modified_by_remote_server_id] = value
+    end
+
+    # int64 - ID of the Remote Server Sync that last modified the file/folder
+    def last_modified_by_remote_server_sync_id
+      @attributes[:last_modified_by_remote_server_sync_id]
+    end
+
+    def last_modified_by_remote_server_sync_id=(value)
+      @attributes[:last_modified_by_remote_server_sync_id] = value
     end
 
     # date-time - File last modified date/time, according to the server.  This is the timestamp of the last Files.com operation of the file, regardless of what modified timestamp was sent.
