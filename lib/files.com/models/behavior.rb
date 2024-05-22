@@ -72,7 +72,7 @@ module Files
       @attributes[:value] = value
     end
 
-    # boolean - If true, the parent folder's behavior will be disabled for this folder.
+    # boolean - If true, the parent folder's behavior will be disabled for this folder and its children.
     def disable_parent_folder_behavior
       @attributes[:disable_parent_folder_behavior]
     end
@@ -111,7 +111,7 @@ module Files
     # Parameters:
     #   value - string - The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder.
+    #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder and its children.
     #   recursive - boolean - Is behavior recursive?
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
@@ -227,7 +227,7 @@ module Files
     # Parameters:
     #   value - string - The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder.
+    #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder and its children.
     #   recursive - boolean - Is behavior recursive?
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
@@ -269,7 +269,7 @@ module Files
     # Parameters:
     #   value - string - The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
     #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder.
+    #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder and its children.
     #   recursive - boolean - Is behavior recursive?
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
