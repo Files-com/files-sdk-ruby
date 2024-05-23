@@ -14,7 +14,7 @@ module Files
       @attributes[:name]
     end
 
-    # array - Additional extensions that are considered text files
+    # array(string) - Additional extensions that are considered text files
     def additional_text_file_types
       @attributes[:additional_text_file_types]
     end
@@ -114,7 +114,7 @@ module Files
       @attributes[:bundle_password_required]
     end
 
-    # array - List of email domains to disallow when entering a Bundle/Inbox recipients
+    # array(string) - List of email domains to disallow when entering a Bundle/Inbox recipients
     def bundle_recipient_blacklist_domains
       @attributes[:bundle_recipient_blacklist_domains]
     end

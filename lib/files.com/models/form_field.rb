@@ -34,7 +34,7 @@ module Files
       @attributes[:field_type]
     end
 
-    # array - Options to display for radio and dropdown
+    # array(string) - Options to display for radio and dropdown
     def options_for_select
       @attributes[:options_for_select]
     end

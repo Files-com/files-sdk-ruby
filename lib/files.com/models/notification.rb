@@ -45,7 +45,7 @@ module Files
       @attributes[:group_name] = value
     end
 
-    # array - If set, will only notify on actions made by a member of one of the specified groups
+    # array(int64) - If set, will only notify on actions made by a member of one of the specified groups
     def triggering_group_ids
       @attributes[:triggering_group_ids]
     end
@@ -54,7 +54,7 @@ module Files
       @attributes[:triggering_group_ids] = value
     end
 
-    # array - If set, will onlynotify on actions made one of the specified users
+    # array(int64) - If set, will onlynotify on actions made one of the specified users
     def triggering_user_ids
       @attributes[:triggering_user_ids]
     end
@@ -153,7 +153,7 @@ module Files
       @attributes[:message] = value
     end
 
-    # array - Array of filenames (possibly with wildcards) to scope trigger
+    # array(string) - Array of filenames (possibly with wildcards) to scope trigger
     def triggering_filenames
       @attributes[:triggering_filenames]
     end

@@ -72,7 +72,7 @@ module Files
       @attributes[:destination_replace_to] = value
     end
 
-    # array - Destination Paths
+    # array(string) - Destination Paths
     def destinations
       @attributes[:destinations]
     end
@@ -99,7 +99,7 @@ module Files
       @attributes[:flatten_destination_structure] = value
     end
 
-    # array - IDs of Groups for the Automation (i.e. who to Request File from)
+    # array(int64) - IDs of Groups for the Automation (i.e. who to Request File from)
     def group_ids
       @attributes[:group_ids]
     end
@@ -198,7 +198,7 @@ module Files
       @attributes[:human_readable_schedule] = value
     end
 
-    # array - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
+    # array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
     def schedule_days_of_week
       @attributes[:schedule_days_of_week]
     end
@@ -207,7 +207,7 @@ module Files
       @attributes[:schedule_days_of_week] = value
     end
 
-    # array - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run. Times of day in HH:MM format.
+    # array(string) - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run. Times of day in HH:MM format.
     def schedule_times_of_day
       @attributes[:schedule_times_of_day]
     end
@@ -234,7 +234,7 @@ module Files
       @attributes[:source] = value
     end
 
-    # array - IDs of remote sync folder behaviors to run by this Automation
+    # array(int64) - IDs of remote sync folder behaviors to run by this Automation
     def sync_ids
       @attributes[:sync_ids]
     end
@@ -243,7 +243,7 @@ module Files
       @attributes[:sync_ids] = value
     end
 
-    # array - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
+    # array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     def trigger_actions
       @attributes[:trigger_actions]
     end
@@ -270,7 +270,7 @@ module Files
       @attributes[:user_id] = value
     end
 
-    # array - IDs of Users for the Automation (i.e. who to Request File from)
+    # array(int64) - IDs of Users for the Automation (i.e. who to Request File from)
     def user_ids
       @attributes[:user_ids]
     end

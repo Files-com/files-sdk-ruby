@@ -45,7 +45,7 @@ module Files
       @attributes[:user_id] = value
     end
 
-    # array - A list of share group members
+    # array(object) - A list of share group members
     def members
       @attributes[:members]
     end

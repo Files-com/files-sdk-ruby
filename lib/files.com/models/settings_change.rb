@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # array - Markdown-formatted change messages.
+    # array(string) - Markdown-formatted change messages.
     def changes
       @attributes[:changes]
     end

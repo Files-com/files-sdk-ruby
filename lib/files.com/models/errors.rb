@@ -9,12 +9,12 @@ module Files
       @options = options || {}
     end
 
-    # array - A list of fields where errors occur
+    # array(string) - A list of fields where errors occur
     def fields
       @attributes[:fields]
     end
 
-    # array - A list of error messages
+    # array(string) - A list of error messages
     def messages
       @attributes[:messages]
     end

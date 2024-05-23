@@ -45,7 +45,7 @@ module Files
       @attributes[:admin] = value
     end
 
-    # array - A list of usernames for users in this group
+    # array(string) - A list of usernames for users in this group
     def usernames
       @attributes[:usernames]
     end

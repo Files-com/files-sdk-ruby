@@ -84,7 +84,7 @@ module Files
       @attributes[:remote_server_type]
     end
 
-    # array - Screenshots of the App
+    # array(string) - Screenshots of the App
     def screenshot_list_urls
       @attributes[:screenshot_list_urls]
     end

@@ -27,7 +27,7 @@ module Files
       @attributes[:username] = value
     end
 
-    # array - List of group IDs of which this user is an administrator
+    # array(int64) - List of group IDs of which this user is an administrator
     def admin_group_ids
       @attributes[:admin_group_ids]
     end

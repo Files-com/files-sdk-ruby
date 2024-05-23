@@ -27,7 +27,7 @@ module Files
       @attributes[:title] = value
     end
 
-    # array - Layout of the form
+    # array(int64) - Layout of the form
     def form_layout
       @attributes[:form_layout]
     end
@@ -36,7 +36,7 @@ module Files
       @attributes[:form_layout] = value
     end
 
-    # array - Associated form fields
+    # array(object) - Associated form fields
     def form_fields
       @attributes[:form_fields]
     end

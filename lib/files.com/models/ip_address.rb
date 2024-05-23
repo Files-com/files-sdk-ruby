@@ -24,7 +24,7 @@ module Files
       @attributes[:group_id]
     end
 
-    # array - A list of IP addresses.
+    # array(string) - A list of IP addresses.
     def ip_addresses
       @attributes[:ip_addresses]
     end
