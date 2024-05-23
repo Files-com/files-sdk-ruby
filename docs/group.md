@@ -145,7 +145,7 @@ Files::Group.delete(id)
 ## Update Group
 
 ```
-group = Files::Group.list.first
+group = Files::Group.find(id)
 
 group.update(
   notes: "example",
@@ -179,7 +179,7 @@ group.update(
 ## Delete Group
 
 ```
-group = Files::Group.list.first
+group = Files::Group.find(id)
 
 group.delete
 ```

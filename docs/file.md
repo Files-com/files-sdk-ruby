@@ -276,7 +276,7 @@ Files::File.begin_upload(path,
 ## Download file
 
 ```
-file = Files::File.new
+file = Files::File.find(path)
 
 file.download(
   with_previews: true,
@@ -298,7 +298,7 @@ file.download(
 ## Update file/folder metadata
 
 ```
-file = Files::File.new
+file = Files::File.find(path)
 
 file.update(
   custom_metadata: {"key":"value"},
@@ -320,7 +320,7 @@ file.update(
 ## Delete file/folder
 
 ```
-file = Files::File.new
+file = Files::File.find(path)
 
 file.delete(
   recursive: true
@@ -338,7 +338,7 @@ file.delete(
 ## Copy file/folder
 
 ```
-file = Files::File.new
+file = Files::File.find(path)
 
 file.copy(
   destination: "destination",
@@ -360,7 +360,7 @@ file.copy(
 ## Move file/folder
 
 ```
-file = Files::File.new
+file = Files::File.find(path)
 
 file.move(
   destination: "destination",
@@ -380,7 +380,7 @@ file.move(
 ## Begin file upload
 
 ```
-file = Files::File.new
+file = Files::File.find(path)
 
 file.begin_upload(
   mkdir_parents: true,

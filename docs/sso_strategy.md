@@ -148,7 +148,7 @@ Files::SsoStrategy.sync(id)
 ## Synchronize provisioning data with the SSO remote server
 
 ```
-sso_strategy = Files::SsoStrategy.list.first
+sso_strategy = Files::SsoStrategy.find(id)
 
 sso_strategy.sync
 ```

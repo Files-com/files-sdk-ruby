@@ -124,7 +124,7 @@ Files::As2Station.delete(id)
 ## Update As2 Station
 
 ```
-as2_station = Files::As2Station.list.first
+as2_station = Files::As2Station.find(id)
 
 as2_station.update(
   name: "AS2 Station Name"
@@ -145,7 +145,7 @@ as2_station.update(
 ## Delete As2 Station
 
 ```
-as2_station = Files::As2Station.list.first
+as2_station = Files::As2Station.find(id)
 
 as2_station.delete
 ```

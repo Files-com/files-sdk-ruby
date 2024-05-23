@@ -293,7 +293,7 @@ Files::Automation.delete(id)
 ## Manually run automation
 
 ```
-automation = Files::Automation.list.first
+automation = Files::Automation.find(id)
 
 automation.manual_run
 ```
@@ -308,7 +308,7 @@ automation.manual_run
 ## Update Automation
 
 ```
-automation = Files::Automation.list.first
+automation = Files::Automation.find(id)
 
 automation.update(
   source: "source",
@@ -375,7 +375,7 @@ automation.update(
 ## Delete Automation
 
 ```
-automation = Files::Automation.list.first
+automation = Files::Automation.find(id)
 
 automation.delete
 ```

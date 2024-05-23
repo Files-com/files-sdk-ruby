@@ -115,7 +115,7 @@ Files::ShareGroup.delete(id)
 ## Update Share Group
 
 ```
-share_group = Files::ShareGroup.list.first
+share_group = Files::ShareGroup.find(id)
 
 share_group.update(
   notes: "This group is defined for testing purposes",
@@ -137,7 +137,7 @@ share_group.update(
 ## Delete Share Group
 
 ```
-share_group = Files::ShareGroup.list.first
+share_group = Files::ShareGroup.find(id)
 
 share_group.delete
 ```

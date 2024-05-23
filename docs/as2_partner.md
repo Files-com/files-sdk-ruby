@@ -137,7 +137,7 @@ Files::As2Partner.delete(id)
 ## Update As2 Partner
 
 ```
-as2_partner = Files::As2Partner.list.first
+as2_partner = Files::As2Partner.find(id)
 
 as2_partner.update(
   name: "AS2 Partner Name",
@@ -164,7 +164,7 @@ as2_partner.update(
 ## Delete As2 Partner
 
 ```
-as2_partner = Files::As2Partner.list.first
+as2_partner = Files::As2Partner.find(id)
 
 as2_partner.delete
 ```

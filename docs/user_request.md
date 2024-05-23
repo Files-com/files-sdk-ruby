@@ -87,7 +87,7 @@ Files::UserRequest.delete(id)
 ## Delete User Request
 
 ```
-user_request = Files::UserRequest.list.first
+user_request = Files::UserRequest.find(id)
 
 user_request.delete
 ```

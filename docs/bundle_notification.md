@@ -107,7 +107,7 @@ Files::BundleNotification.delete(id)
 ## Update Bundle Notification
 
 ```
-bundle_notification = Files::BundleNotification.list.first
+bundle_notification = Files::BundleNotification.find(id)
 
 bundle_notification.update(
   notify_on_registration: true,
@@ -127,7 +127,7 @@ bundle_notification.update(
 ## Delete Bundle Notification
 
 ```
-bundle_notification = Files::BundleNotification.list.first
+bundle_notification = Files::BundleNotification.find(id)
 
 bundle_notification.delete
 ```

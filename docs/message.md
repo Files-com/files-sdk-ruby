@@ -122,7 +122,7 @@ Files::Message.delete(id)
 ## Update Message
 
 ```
-message = Files::Message.list.first
+message = Files::Message.find(id)
 
 message.update(
   project_id: 1,
@@ -144,7 +144,7 @@ message.update(
 ## Delete Message
 
 ```
-message = Files::Message.list.first
+message = Files::Message.find(id)
 
 message.delete
 ```

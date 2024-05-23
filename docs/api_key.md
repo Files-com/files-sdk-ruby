@@ -170,7 +170,7 @@ Files::ApiKey.delete(id)
 ## Update Api Key
 
 ```
-api_key = Files::ApiKey.list.first
+api_key = Files::ApiKey.find(id)
 
 api_key.update(
   description: "example",
@@ -194,7 +194,7 @@ api_key.update(
 ## Delete Api Key
 
 ```
-api_key = Files::ApiKey.list.first
+api_key = Files::ApiKey.find(id)
 
 api_key.delete
 ```

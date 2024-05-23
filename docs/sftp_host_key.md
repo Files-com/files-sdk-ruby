@@ -98,7 +98,7 @@ Files::SftpHostKey.delete(id)
 ## Update Sftp Host Key
 
 ```
-sftp_host_key = Files::SftpHostKey.list.first
+sftp_host_key = Files::SftpHostKey.find(id)
 
 sftp_host_key.update(
   name: "example"
@@ -117,7 +117,7 @@ sftp_host_key.update(
 ## Delete Sftp Host Key
 
 ```
-sftp_host_key = Files::SftpHostKey.list.first
+sftp_host_key = Files::SftpHostKey.find(id)
 
 sftp_host_key.delete
 ```

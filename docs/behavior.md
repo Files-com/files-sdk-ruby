@@ -188,7 +188,7 @@ Files::Behavior.delete(id)
 ## Update Behavior
 
 ```
-behavior = Files::Behavior.list.first
+behavior = Files::Behavior.find(id)
 
 behavior.update(
   value: "{\"method\": \"GET\"}",
@@ -221,7 +221,7 @@ behavior.update(
 ## Delete Behavior
 
 ```
-behavior = Files::Behavior.list.first
+behavior = Files::Behavior.find(id)
 
 behavior.delete
 ```

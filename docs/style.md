@@ -65,7 +65,7 @@ Files::Style.delete(path)
 ## Update Style
 
 ```
-style = Files::Style.new
+style = Files::Style.find(path)
 
 style.update(
   file: "file"
@@ -83,7 +83,7 @@ style.update(
 ## Delete Style
 
 ```
-style = Files::Style.new
+style = Files::Style.find(path)
 
 style.delete
 ```

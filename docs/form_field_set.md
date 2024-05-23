@@ -142,7 +142,7 @@ Files::FormFieldSet.delete(id)
 ## Update Form Field Set
 
 ```
-form_field_set = Files::FormFieldSet.list.first
+form_field_set = Files::FormFieldSet.find(id)
 
 form_field_set.update(
   title: "Sample Form Title",
@@ -168,7 +168,7 @@ form_field_set.update(
 ## Delete Form Field Set
 
 ```
-form_field_set = Files::FormFieldSet.list.first
+form_field_set = Files::FormFieldSet.find(id)
 
 form_field_set.delete
 ```
