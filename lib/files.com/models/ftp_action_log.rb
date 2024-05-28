@@ -74,7 +74,7 @@ module Files
       @attributes[:param]
     end
 
-    # string - FTP Response Code
+    # int64 - FTP Response Code
     def response_code
       @attributes[:responseCode]
     end
