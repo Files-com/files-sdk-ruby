@@ -84,12 +84,12 @@ module Files
       @attributes[:md5]
     end
 
-    # string - Size of File That was Uploaded or Downloaded.
+    # int64 - Size of File That was Uploaded or Downloaded.
     def size
       @attributes[:size]
     end
 
-    # string - Data Length in Bytes. Present for actions that transfer data.
+    # int64 - Data Length in Bytes. Present for actions that transfer data.
     def data_length
       @attributes[:data_length]
     end
