@@ -162,15 +162,14 @@ module Files
 
     # Parameters:
     #   path (required) - string - Path
-    #   allow_access_by_any_user - boolean - Allow lock to be updated by any user?
+    #   allow_access_by_any_user - boolean - Can lock be modified by users other than its creator?
     #   exclusive - boolean - Is lock exclusive?
-    #   recursive - string - Does lock apply to subfolders?
-    #   timeout - int64 - Lock timeout length
+    #   recursive - boolean - Does lock apply to subfolders?
+    #   timeout - int64 - Lock timeout in seconds
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recursive must be an String") if params[:recursive] and !params[:recursive].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params[:timeout] and !params[:timeout].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
