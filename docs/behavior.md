@@ -150,8 +150,6 @@ Files::Behavior.update(id,
   recursive: true, 
   name: "example", 
   description: "example", 
-  behavior: "webhook", 
-  path: "example", 
   attachment_delete: true
 )
 ```
@@ -165,8 +163,6 @@ Files::Behavior.update(id,
 * `recursive` (boolean): Is behavior recursive?
 * `name` (string): Name for this behavior.
 * `description` (string): Description for this behavior.
-* `behavior` (string): Behavior type.
-* `path` (string): Folder behaviors path.
 * `attachment_delete` (boolean): If true, will delete the file stored in attachment
 
 
@@ -196,8 +192,6 @@ behavior.update(
   recursive: true,
   name: "example",
   description: "example",
-  behavior: "webhook",
-  path: "example",
   attachment_delete: true
 )
 ```
@@ -211,8 +205,6 @@ behavior.update(
 * `recursive` (boolean): Is behavior recursive?
 * `name` (string): Name for this behavior.
 * `description` (string): Description for this behavior.
-* `behavior` (string): Behavior type.
-* `path` (string): Folder behaviors path.
 * `attachment_delete` (boolean): If true, will delete the file stored in attachment
 
 

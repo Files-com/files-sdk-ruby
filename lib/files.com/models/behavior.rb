@@ -115,8 +115,6 @@ module Files
     #   recursive - boolean - Is behavior recursive?
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
-    #   behavior - string - Behavior type.
-    #   path - string - Folder behaviors path.
     #   attachment_delete - boolean - If true, will delete the file stored in attachment
     def update(params = {})
       params ||= {}
@@ -126,8 +124,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: value must be an String") if params[:value] and !params[:value].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params[:behavior] and !params[:behavior].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/behaviors/#{@attributes[:id]}", :patch, params, @options)
@@ -273,8 +269,6 @@ module Files
     #   recursive - boolean - Is behavior recursive?
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
-    #   behavior - string - Behavior type.
-    #   path - string - Folder behaviors path.
     #   attachment_delete - boolean - If true, will delete the file stored in attachment
     def self.update(id, params = {}, options = {})
       params ||= {}
@@ -283,8 +277,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: value must be an String") if params[:value] and !params[:value].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params[:behavior] and !params[:behavior].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: attachment_delete must be one of String, Integer, Hash") if params[:attachment_delete] and [ String, Integer, Hash ].none? { |klass| params[:attachment_delete].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
