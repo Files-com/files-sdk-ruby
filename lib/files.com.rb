@@ -123,6 +123,7 @@ require "files.com/models/usage_snapshot"
 require "files.com/models/user"
 require "files.com/models/user_cipher_use"
 require "files.com/models/user_request"
+require "files.com/models/web_dav_action_log"
 require "files.com/models/webhook_test"
 
 require "files.com/models/dir"
