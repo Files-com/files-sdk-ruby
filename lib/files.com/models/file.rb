@@ -229,17 +229,18 @@ module Files
       options[:client] || ApiClient.active_client
     end
 
-    def close
+    def close(**kwargs)
       flush
 
       if @upload
         end_options = {
-          action: "end",
+          action: 'end',
           etags: @etags,
           provided_mtime: Time.now.to_s,
           ref: @upload.ref,
-          size: @bytes_written
+          size: @bytes_written,
         }
+        end_options.merge(kwargs) if kwargs
 
         file = File.create(path, end_options, @options)
         @attributes = file.attributes
