@@ -240,7 +240,7 @@ module Files
           ref: @upload.ref,
           size: @bytes_written,
         }
-        end_options.merge(kwargs) if kwargs
+        end_options.merge!(kwargs) if kwargs
 
         file = File.create(path, end_options, @options)
         @attributes = file.attributes
