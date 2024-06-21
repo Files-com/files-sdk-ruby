@@ -714,6 +714,11 @@ module Files
       @attributes[:trial_until]
     end
 
+    # boolean - If using custom SMTP, should we use dedicated IPs to deliver emails?
+    def use_dedicated_ips_for_smtp
+      @attributes[:use_dedicated_ips_for_smtp]
+    end
+
     # boolean - Allow uploaders to set `provided_modified_at` for uploaded files?
     def use_provided_modified_at
       @attributes[:use_provided_modified_at]
@@ -928,6 +933,7 @@ module Files
     #   site_header - string - Custom site header text
     #   site_footer - string - Custom site footer text
     #   login_help_text - string - Login help text
+    #   use_dedicated_ips_for_smtp - boolean - If using custom SMTP, should we use dedicated IPs to deliver emails?
     #   smtp_address - string - SMTP server hostname or IP
     #   smtp_authentication - string - SMTP server authentication type
     #   smtp_from - string - From address to use when mailing through custom SMTP
