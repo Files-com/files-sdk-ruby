@@ -108,7 +108,7 @@ module Files
       @attributes[:permissions] = value
     end
 
-    # boolean - DEPRECATED: Restrict users to previewing files only. Use `permissions` instead.
+    # boolean
     def preview_only
       @attributes[:preview_only]
     end
@@ -446,7 +446,6 @@ module Files
     #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, `strftime` directives, and any custom form data.
     #   path_template_time_zone - string - Timezone to use when rendering timestamps in path templates.
     #   permissions - string - Permissions that apply to Folders in this Share Link.
-    #   preview_only - boolean - DEPRECATED: Restrict users to previewing files only. Use `permissions` instead.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
     #   send_email_receipt_to_uploader - boolean - Send delivery receipt to the uploader. Note: For writable share only
@@ -510,6 +509,8 @@ module Files
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   action - string
+    #   page - int64
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction (e.g. `sort_by[created_at]=desc`). Valid fields are `created_at` and `code`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at`.
     #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `created_at`.
@@ -520,6 +521,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params[:page] and !params[:page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
@@ -568,7 +571,6 @@ module Files
     #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, `strftime` directives, and any custom form data.
     #   path_template_time_zone - string - Timezone to use when rendering timestamps in path templates.
     #   permissions - string - Permissions that apply to Folders in this Share Link.
-    #   preview_only - boolean - DEPRECATED: Restrict users to previewing files only. Use `permissions` instead.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   inbox_id - int64 - ID of the associated inbox, if available.
@@ -639,7 +641,6 @@ module Files
     #   path_template - string - Template for creating submission subfolders. Can use the uploader's name, email address, ip, company, `strftime` directives, and any custom form data.
     #   path_template_time_zone - string - Timezone to use when rendering timestamps in path templates.
     #   permissions - string - Permissions that apply to Folders in this Share Link.
-    #   preview_only - boolean - DEPRECATED: Restrict users to previewing files only. Use `permissions` instead.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
     #   send_email_receipt_to_uploader - boolean - Send delivery receipt to the uploader. Note: For writable share only

@@ -90,7 +90,7 @@ module Files
       @attributes[:recursive] = value
     end
 
-    # file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
+    # file - Certain behaviors may require a file, for instance, the `watermark` behavior requires a watermark image. Attach that file here.
     def attachment_file
       @attributes[:attachment_file]
     end
@@ -99,7 +99,7 @@ module Files
       @attributes[:attachment_file] = value
     end
 
-    # boolean - If true, will delete the file stored in attachment
+    # boolean - If `true`, delete the file stored in `attachment`.
     def attachment_delete
       @attributes[:attachment_delete]
     end
@@ -109,13 +109,13 @@ module Files
     end
 
     # Parameters:
-    #   value - string - The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
-    #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder and its children.
-    #   recursive - boolean - Is behavior recursive?
+    #   value - string - This field stores a hash of data specific to the type of behavior. See The Behavior Types section for example values for each type of behavior.
+    #   attachment_file - file - Certain behaviors may require a file, for instance, the `watermark` behavior requires a watermark image. Attach that file here.
+    #   disable_parent_folder_behavior - boolean - If `true`, the parent folder's behavior will be disabled for this folder and its children. This is the main mechanism for canceling out a `recursive` behavior higher in the folder tree.
+    #   recursive - boolean - If `true`, behavior is treated as recursive, meaning that it impacts child folders as well.
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
-    #   attachment_delete - boolean - If true, will delete the file stored in attachment
+    #   attachment_delete - boolean - If `true`, delete the file stored in `attachment`.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -158,12 +158,16 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   action - string
+    #   page - int64
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction (e.g. `sort_by[behavior]=desc`). Valid fields are `behavior` and `impacts_ui`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `impacts_ui` and `behavior`.
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `behavior`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params[:page] and !params[:page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
@@ -196,22 +200,25 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   action - string
+    #   page - int64
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction (e.g. `sort_by[behavior]=desc`). Valid fields are `behavior` and `impacts_ui`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `impacts_ui` and `behavior`.
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `behavior`.
     #   path (required) - string - Path to operate on.
-    #   ancestor_behaviors - string - Show behaviors above this path?
-    #   behavior - string - DEPRECATED: If set only shows folder behaviors matching this behavior type. Use `filter[behavior]` instead.
+    #   ancestor_behaviors - boolean - If `true`, behaviors above this path are shown.
+    #   behavior - string
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params[:page] and !params[:page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ancestor_behaviors must be an String") if params[:ancestor_behaviors] and !params[:ancestor_behaviors].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params[:behavior] and !params[:behavior].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
@@ -221,13 +228,13 @@ module Files
     end
 
     # Parameters:
-    #   value - string - The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
-    #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder and its children.
-    #   recursive - boolean - Is behavior recursive?
+    #   value - string - This field stores a hash of data specific to the type of behavior. See The Behavior Types section for example values for each type of behavior.
+    #   attachment_file - file - Certain behaviors may require a file, for instance, the `watermark` behavior requires a watermark image. Attach that file here.
+    #   disable_parent_folder_behavior - boolean - If `true`, the parent folder's behavior will be disabled for this folder and its children. This is the main mechanism for canceling out a `recursive` behavior higher in the folder tree.
+    #   recursive - boolean - If `true`, behavior is treated as recursive, meaning that it impacts child folders as well.
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
-    #   path (required) - string - Folder behaviors path.
+    #   path (required) - string - Path where this behavior should apply.
     #   behavior (required) - string - Behavior type.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: value must be an String") if params[:value] and !params[:value].is_a?(String)
@@ -244,11 +251,11 @@ module Files
 
     # Parameters:
     #   url (required) - string - URL for testing the webhook.
-    #   method - string - HTTP method(GET or POST).
-    #   encoding - string - HTTP encoding method.  Can be JSON, XML, or RAW (form data).
-    #   headers - object - Additional request headers.
-    #   body - object - Additional body parameters.
-    #   action - string - action for test body
+    #   method - string - HTTP request method (GET or POST).
+    #   encoding - string - Encoding type for the webhook payload. Can be JSON, XML, or RAW (form data).
+    #   headers - object - Additional request headers to send via HTTP.
+    #   body - object - Additional body parameters to include in the webhook payload.
+    #   action - string - Action for test body.
     def self.webhook_test(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: url must be an String") if params[:url] and !params[:url].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: method must be an String") if params[:method] and !params[:method].is_a?(String)
@@ -263,13 +270,13 @@ module Files
     end
 
     # Parameters:
-    #   value - string - The value of the folder behavior.  Can be an integer, array, or hash depending on the type of folder behavior. See The Behavior Types section for example values for each type of behavior.
-    #   attachment_file - file - Certain behaviors may require a file, for instance, the "watermark" behavior requires a watermark image
-    #   disable_parent_folder_behavior - boolean - If true, the parent folder's behavior will be disabled for this folder and its children.
-    #   recursive - boolean - Is behavior recursive?
+    #   value - string - This field stores a hash of data specific to the type of behavior. See The Behavior Types section for example values for each type of behavior.
+    #   attachment_file - file - Certain behaviors may require a file, for instance, the `watermark` behavior requires a watermark image. Attach that file here.
+    #   disable_parent_folder_behavior - boolean - If `true`, the parent folder's behavior will be disabled for this folder and its children. This is the main mechanism for canceling out a `recursive` behavior higher in the folder tree.
+    #   recursive - boolean - If `true`, behavior is treated as recursive, meaning that it impacts child folders as well.
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
-    #   attachment_delete - boolean - If true, will delete the file stored in attachment
+    #   attachment_delete - boolean - If `true`, delete the file stored in `attachment`.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

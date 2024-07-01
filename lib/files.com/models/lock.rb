@@ -27,7 +27,7 @@ module Files
       @attributes[:timeout] = value
     end
 
-    # string - DEPRECATED: Lock depth
+    # string
     def depth
       @attributes[:depth]
     end
@@ -54,7 +54,7 @@ module Files
       @attributes[:owner] = value
     end
 
-    # string - DEPRECATED: Lock scope
+    # string
     def scope
       @attributes[:scope]
     end
@@ -81,7 +81,7 @@ module Files
       @attributes[:token] = value
     end
 
-    # string - DEPRECATED: Lock type
+    # string
     def type
       @attributes[:type]
     end
@@ -145,6 +145,8 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   action - string
+    #   page - int64
     #   path (required) - string - Path to operate on.
     #   include_children - boolean - Include locks from children objects?
     def self.list_for(path, params = {}, options = {})
@@ -152,6 +154,8 @@ module Files
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params[:page] and !params[:page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
