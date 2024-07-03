@@ -71,8 +71,8 @@ You can set the following global options directly on the `Files` module:
  * `Files.initial_network_retry_delay` - initial retry delay in seconds (default: 0.5)
  * `Files.max_network_retries` - max retries (default: 3)
  * `Files.max_network_retry_delay` - max retry delay in seconds (default: 2)
- * `Files.base_url` - to point this client at an on-premise
-   installation of Files.com, set its URL here.
+ * `Files.base_url` - Set client to use your site subdomain if your site is configured to disable global acceleration.
+    Otherwise, don't change this setting for production. For dev/CI, you can point this to the mock server.
  * `Files.proxy` - proxy configuration (uses Faraday format)
 
 
