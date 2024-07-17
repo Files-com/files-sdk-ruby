@@ -103,7 +103,7 @@
 
 ---
 
-## List Sso Strategies
+## List SSO Strategies
 
 ```
 Files::SsoStrategy.list(
@@ -122,7 +122,7 @@ Files::SsoStrategy.list(
 
 ---
 
-## Show Sso Strategy
+## Show SSO Strategy
 
 ```
 Files::SsoStrategy.find(id)

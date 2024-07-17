@@ -40,7 +40,7 @@
 
 ---
 
-## List As2 Stations
+## List AS2 Stations
 
 ```
 Files::As2Station.list(
@@ -59,7 +59,7 @@ Files::As2Station.list(
 
 ---
 
-## Show As2 Station
+## Show AS2 Station
 
 ```
 Files::As2Station.find(id)
@@ -72,7 +72,7 @@ Files::As2Station.find(id)
 
 ---
 
-## Create As2 Station
+## Create AS2 Station
 
 ```
 Files::As2Station.create(
@@ -92,7 +92,7 @@ Files::As2Station.create(
 
 ---
 
-## Update As2 Station
+## Update AS2 Station
 
 ```
 Files::As2Station.update(id, 
@@ -111,7 +111,7 @@ Files::As2Station.update(id,
 
 ---
 
-## Delete As2 Station
+## Delete AS2 Station
 
 ```
 Files::As2Station.delete(id)
@@ -124,7 +124,7 @@ Files::As2Station.delete(id)
 
 ---
 
-## Update As2 Station
+## Update AS2 Station
 
 ```
 as2_station = Files::As2Station.find(id)
@@ -145,7 +145,7 @@ as2_station.update(
 
 ---
 
-## Delete As2 Station
+## Delete AS2 Station
 
 ```
 as2_station = Files::As2Station.find(id)

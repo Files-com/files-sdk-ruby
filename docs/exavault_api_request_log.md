@@ -33,7 +33,7 @@
 
 ---
 
-## List Exavault Api Request Logs
+## List Exavault API Request Logs
 
 ```
 Files::ExavaultApiRequestLog.list(

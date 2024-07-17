@@ -47,7 +47,7 @@
 
 ---
 
-## List Api Request Logs
+## List API Request Logs
 
 ```
 Files::ApiRequestLog.list(

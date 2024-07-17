@@ -24,7 +24,7 @@ module Files
       @attributes[:user_id]
     end
 
-    # int64 - The api key id responsible for this change
+    # int64 - The API key id responsible for this change
     def api_key_id
       @attributes[:api_key_id]
     end

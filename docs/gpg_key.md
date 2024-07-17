@@ -25,7 +25,7 @@
 
 ---
 
-## List Gpg Keys
+## List GPG Keys
 
 ```
 Files::GpgKey.list(
@@ -47,7 +47,7 @@ Files::GpgKey.list(
 
 ---
 
-## Show Gpg Key
+## Show GPG Key
 
 ```
 Files::GpgKey.find(id)
@@ -60,7 +60,7 @@ Files::GpgKey.find(id)
 
 ---
 
-## Create Gpg Key
+## Create GPG Key
 
 ```
 Files::GpgKey.create(
@@ -83,7 +83,7 @@ Files::GpgKey.create(
 
 ---
 
-## Update Gpg Key
+## Update GPG Key
 
 ```
 Files::GpgKey.update(id, 
@@ -105,7 +105,7 @@ Files::GpgKey.update(id,
 
 ---
 
-## Delete Gpg Key
+## Delete GPG Key
 
 ```
 Files::GpgKey.delete(id)
@@ -118,7 +118,7 @@ Files::GpgKey.delete(id)
 
 ---
 
-## Update Gpg Key
+## Update GPG Key
 
 ```
 gpg_key = Files::GpgKey.find(id)
@@ -142,7 +142,7 @@ gpg_key.update(
 
 ---
 
-## Delete Gpg Key
+## Delete GPG Key
 
 ```
 gpg_key = Files::GpgKey.find(id)

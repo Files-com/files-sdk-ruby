@@ -47,7 +47,7 @@
 
 ---
 
-## List Ftp Action Logs
+## List FTP Action Logs
 
 ```
 Files::FtpActionLog.list(

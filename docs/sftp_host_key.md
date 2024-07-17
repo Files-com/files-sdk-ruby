@@ -20,7 +20,7 @@
 
 ---
 
-## List Sftp Host Keys
+## List SFTP Host Keys
 
 ```
 Files::SftpHostKey.list(
@@ -39,7 +39,7 @@ Files::SftpHostKey.list(
 
 ---
 
-## Show Sftp Host Key
+## Show SFTP Host Key
 
 ```
 Files::SftpHostKey.find(id)
@@ -52,7 +52,7 @@ Files::SftpHostKey.find(id)
 
 ---
 
-## Create Sftp Host Key
+## Create SFTP Host Key
 
 ```
 Files::SftpHostKey.create(
@@ -68,7 +68,7 @@ Files::SftpHostKey.create(
 
 ---
 
-## Update Sftp Host Key
+## Update SFTP Host Key
 
 ```
 Files::SftpHostKey.update(id, 
@@ -85,7 +85,7 @@ Files::SftpHostKey.update(id,
 
 ---
 
-## Delete Sftp Host Key
+## Delete SFTP Host Key
 
 ```
 Files::SftpHostKey.delete(id)
@@ -98,7 +98,7 @@ Files::SftpHostKey.delete(id)
 
 ---
 
-## Update Sftp Host Key
+## Update SFTP Host Key
 
 ```
 sftp_host_key = Files::SftpHostKey.find(id)
@@ -117,7 +117,7 @@ sftp_host_key.update(
 
 ---
 
-## Delete Sftp Host Key
+## Delete SFTP Host Key
 
 ```
 sftp_host_key = Files::SftpHostKey.find(id)

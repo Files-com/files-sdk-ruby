@@ -54,7 +54,7 @@ module Files
       @attributes[:attachments_permission] = value
     end
 
-    # int64 - Number of api keys associated with this user
+    # int64 - Number of API keys associated with this user
     def api_keys_count
       @attributes[:api_keys_count]
     end
