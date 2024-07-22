@@ -504,6 +504,15 @@ module Files
       @attributes[:linode_region] = value
     end
 
+    # boolean - If true, this remote server supports file versioning. This value is determined automatically by Files.com.
+    def supports_versioning
+      @attributes[:supports_versioning]
+    end
+
+    def supports_versioning=(value)
+      @attributes[:supports_versioning] = value
+    end
+
     # string - AWS secret key.
     def aws_secret_key
       @attributes[:aws_secret_key]
