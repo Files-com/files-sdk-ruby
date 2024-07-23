@@ -8,6 +8,7 @@ module Files
       @current_response = current_response
       @current_options = current_options
       @request_page = request_page
+      params[:per_page] ||= 1_000
     end
 
     # Iterates through each resource in all pages, making additional fetches to
