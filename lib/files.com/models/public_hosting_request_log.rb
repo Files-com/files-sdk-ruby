@@ -29,7 +29,7 @@ module Files
       @attributes[:hostname]
     end
 
-    # string - HTTP Request Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # string - HTTP Request Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
     end

@@ -14,7 +14,7 @@ module Files
       @attributes[:timestamp]
     end
 
-    # string - Remote Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # string - Remote Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
     end

@@ -29,7 +29,7 @@ module Files
       @attributes[:destination]
     end
 
-    # string - Path This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # string - Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
     end

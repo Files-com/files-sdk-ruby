@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # string - The path corresponding to the priority color This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # string - The path corresponding to the priority color. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
     end
