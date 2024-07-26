@@ -22,10 +22,7 @@
 ## Show site DNS configuration
 
 ```
-Files::DnsRecord.list(
-  per_page: 1, 
-  page: 1
-)
+Files::DnsRecord.list
 ```
 
 ### Parameters

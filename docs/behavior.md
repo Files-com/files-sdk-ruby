@@ -37,8 +37,9 @@
 
 ```
 Files::Behavior.list(
-  per_page: 1, 
-  page: 1
+  sort_by: "", 
+  filter: "", 
+  filter_prefix: ""
 )
 ```
 
@@ -72,8 +73,6 @@ Files::Behavior.find(id)
 
 ```
 Files::Behavior.list_for(path, 
-  per_page: 1, 
-  page: 1, 
   ancestor_behaviors: true, 
   behavior: "webhook"
 )
@@ -131,8 +130,7 @@ Files::Behavior.webhook_test(
   method: "GET", 
   encoding: "RAW", 
   headers: {"x-test-header":"testvalue"}, 
-  body: {"test-param":"testvalue"}, 
-  action: "test"
+  body: {"test-param":"testvalue"}
 )
 ```
 

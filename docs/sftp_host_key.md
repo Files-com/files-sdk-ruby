@@ -23,10 +23,7 @@
 ## List SFTP Host Keys
 
 ```
-Files::SftpHostKey.list(
-  per_page: 1, 
-  page: 1
-)
+Files::SftpHostKey.list
 ```
 
 ### Parameters

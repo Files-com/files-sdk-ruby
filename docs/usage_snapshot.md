@@ -46,10 +46,7 @@
 ## List Usage Snapshots
 
 ```
-Files::UsageSnapshot.list(
-  per_page: 1, 
-  page: 1
-)
+Files::UsageSnapshot.list
 ```
 
 ### Parameters

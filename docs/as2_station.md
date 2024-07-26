@@ -43,10 +43,7 @@
 ## List AS2 Stations
 
 ```
-Files::As2Station.list(
-  per_page: 1, 
-  page: 1
-)
+Files::As2Station.list
 ```
 
 ### Parameters

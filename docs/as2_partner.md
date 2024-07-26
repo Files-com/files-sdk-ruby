@@ -46,10 +46,7 @@
 ## List AS2 Partners
 
 ```
-Files::As2Partner.list(
-  per_page: 1, 
-  page: 1
-)
+Files::As2Partner.list
 ```
 
 ### Parameters

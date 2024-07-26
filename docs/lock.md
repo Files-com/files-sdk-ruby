@@ -39,8 +39,6 @@
 
 ```
 Files::Lock.list_for(path, 
-  per_page: 1, 
-  page: 1, 
   include_children: true
 )
 ```

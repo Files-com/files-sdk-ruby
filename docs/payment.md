@@ -58,10 +58,7 @@
 ## List Payments
 
 ```
-Files::Payment.list(
-  per_page: 1, 
-  page: 1
-)
+Files::Payment.list
 ```
 
 ### Parameters

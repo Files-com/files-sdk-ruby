@@ -18,10 +18,7 @@
 ## List Projects
 
 ```
-Files::Project.list(
-  per_page: 1, 
-  page: 1
-)
+Files::Project.list
 ```
 
 ### Parameters

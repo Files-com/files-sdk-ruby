@@ -24,10 +24,7 @@
 ## List User Requests
 
 ```
-Files::UserRequest.list(
-  per_page: 1, 
-  page: 1
-)
+Files::UserRequest.list
 ```
 
 ### Parameters

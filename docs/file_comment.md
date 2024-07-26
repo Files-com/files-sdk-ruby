@@ -26,10 +26,7 @@
 ## List File Comments by path
 
 ```
-Files::FileComment.list_for(path, 
-  per_page: 1, 
-  page: 1
-)
+Files::FileComment.list_for(path)
 ```
 
 ### Parameters

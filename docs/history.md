@@ -43,10 +43,7 @@
 
 ```
 Files::History.list_for_file(path, 
-  display: "Actual text of the action here.", 
-  per_page: 1, 
-  action: "create", 
-  page: 1
+  display: "Actual text of the action here."
 )
 ```
 
@@ -69,10 +66,7 @@ Files::History.list_for_file(path,
 
 ```
 Files::History.list_for_folder(path, 
-  display: "Actual text of the action here.", 
-  per_page: 1, 
-  action: "create", 
-  page: 1
+  display: "Actual text of the action here."
 )
 ```
 
@@ -95,10 +89,7 @@ Files::History.list_for_folder(path,
 
 ```
 Files::History.list_for_user(user_id, 
-  display: "Actual text of the action here.", 
-  per_page: 1, 
-  action: "create", 
-  page: 1
+  display: "Actual text of the action here."
 )
 ```
 
@@ -121,10 +112,7 @@ Files::History.list_for_user(user_id,
 
 ```
 Files::History.list_logins(
-  display: "Actual text of the action here.", 
-  per_page: 1, 
-  action: "create", 
-  page: 1
+  display: "Actual text of the action here."
 )
 ```
 
@@ -146,10 +134,7 @@ Files::History.list_logins(
 
 ```
 Files::History.list(
-  display: "Actual text of the action here.", 
-  per_page: 1, 
-  action: "create", 
-  page: 1
+  display: "Actual text of the action here."
 )
 ```
 

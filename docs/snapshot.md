@@ -27,10 +27,7 @@
 ## List Snapshots
 
 ```
-Files::Snapshot.list(
-  per_page: 1, 
-  page: 1
-)
+Files::Snapshot.list
 ```
 
 ### Parameters

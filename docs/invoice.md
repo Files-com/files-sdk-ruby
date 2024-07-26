@@ -58,10 +58,7 @@
 ## List Invoices
 
 ```
-Files::Invoice.list(
-  per_page: 1, 
-  page: 1
-)
+Files::Invoice.list
 ```
 
 ### Parameters

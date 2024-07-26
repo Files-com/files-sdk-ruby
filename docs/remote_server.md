@@ -145,10 +145,7 @@
 ## List Remote Servers
 
 ```
-Files::RemoteServer.list(
-  per_page: 1, 
-  page: 1
-)
+Files::RemoteServer.list
 ```
 
 ### Parameters

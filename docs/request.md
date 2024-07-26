@@ -29,8 +29,6 @@
 
 ```
 Files::Request.list(
-  per_page: 1, 
-  page: 1, 
   mine: true, 
   path: "example"
 )
@@ -53,8 +51,6 @@ Files::Request.list(
 
 ```
 Files::Request.get_folder(path, 
-  per_page: 1, 
-  page: 1, 
   mine: true
 )
 ```

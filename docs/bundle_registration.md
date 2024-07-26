@@ -43,8 +43,6 @@
 
 ```
 Files::BundleRegistration.list(
-  per_page: 1, 
-  page: 1, 
   bundle_id: 1
 )
 ```

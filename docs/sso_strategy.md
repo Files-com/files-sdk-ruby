@@ -106,10 +106,7 @@
 ## List SSO Strategies
 
 ```
-Files::SsoStrategy.list(
-  per_page: 1, 
-  page: 1
-)
+Files::SsoStrategy.list
 ```
 
 ### Parameters

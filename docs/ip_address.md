@@ -24,10 +24,7 @@
 ## List IP Addresses associated with the current site
 
 ```
-Files::IpAddress.list(
-  per_page: 1, 
-  page: 1
-)
+Files::IpAddress.list
 ```
 
 ### Parameters
@@ -43,10 +40,7 @@ Files::IpAddress.list(
 ## List all possible public SmartFile IP addresses
 
 ```
-Files::IpAddress.get_smartfile_reserved(
-  per_page: 1, 
-  page: 1
-)
+Files::IpAddress.get_smartfile_reserved
 ```
 
 ### Parameters
@@ -62,10 +56,7 @@ Files::IpAddress.get_smartfile_reserved(
 ## List all possible public ExaVault IP addresses
 
 ```
-Files::IpAddress.get_exavault_reserved(
-  per_page: 1, 
-  page: 1
-)
+Files::IpAddress.get_exavault_reserved
 ```
 
 ### Parameters
@@ -81,10 +72,7 @@ Files::IpAddress.get_exavault_reserved(
 ## List all possible public IP addresses
 
 ```
-Files::IpAddress.get_reserved(
-  per_page: 1, 
-  page: 1
-)
+Files::IpAddress.get_reserved
 ```
 
 ### Parameters

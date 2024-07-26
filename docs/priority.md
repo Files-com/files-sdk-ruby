@@ -18,10 +18,7 @@
 ## List Priorities
 
 ```
-Files::Priority.list(path, 
-  per_page: 1, 
-  page: 1
-)
+Files::Priority.list(path)
 ```
 
 ### Parameters

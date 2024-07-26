@@ -26,10 +26,7 @@
 ## List Clickwraps
 
 ```
-Files::Clickwrap.list(
-  per_page: 1, 
-  page: 1
-)
+Files::Clickwrap.list
 ```
 
 ### Parameters
