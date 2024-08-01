@@ -24,10 +24,7 @@
 ## List Bundle Notifications
 
 ```
-Files::BundleNotification.list(
-  sort_by: "", 
-  filter: ""
-)
+Files::BundleNotification.list
 ```
 
 ### Parameters

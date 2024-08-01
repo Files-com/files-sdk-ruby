@@ -32,14 +32,7 @@
 ## List Bandwidth Snapshots
 
 ```
-Files::BandwidthSnapshot.list(
-  sort_by: "", 
-  filter: "", 
-  filter_gt: "", 
-  filter_gteq: "", 
-  filter_lt: "", 
-  filter_lteq: ""
-)
+Files::BandwidthSnapshot.list
 ```
 
 ### Parameters

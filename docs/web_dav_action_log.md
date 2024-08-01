@@ -46,10 +46,7 @@
 ## List WebDAV Action Logs
 
 ```
-Files::WebDavActionLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::WebDavActionLog.list
 ```
 
 ### Parameters

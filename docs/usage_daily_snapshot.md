@@ -38,14 +38,7 @@
 ## List Usage Daily Snapshots
 
 ```
-Files::UsageDailySnapshot.list(
-  sort_by: "", 
-  filter: "", 
-  filter_gt: "", 
-  filter_gteq: "", 
-  filter_lt: "", 
-  filter_lteq: ""
-)
+Files::UsageDailySnapshot.list
 ```
 
 ### Parameters

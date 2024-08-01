@@ -28,10 +28,7 @@
 ## List Settings Changes
 
 ```
-Files::SettingsChange.list(
-  sort_by: "", 
-  filter: ""
-)
+Files::SettingsChange.list
 ```
 
 ### Parameters

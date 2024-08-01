@@ -54,10 +54,7 @@
 ## List SFTP Action Logs
 
 ```
-Files::SftpActionLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::SftpActionLog.list
 ```
 
 ### Parameters

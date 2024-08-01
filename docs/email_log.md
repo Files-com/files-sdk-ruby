@@ -32,10 +32,7 @@
 ## List Email Logs
 
 ```
-Files::EmailLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::EmailLog.list
 ```
 
 ### Parameters

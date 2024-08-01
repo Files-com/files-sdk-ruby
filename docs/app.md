@@ -58,11 +58,7 @@
 ## List Apps
 
 ```
-Files::App.list(
-  sort_by: "", 
-  filter: "", 
-  filter_prefix: ""
-)
+Files::App.list
 ```
 
 ### Parameters

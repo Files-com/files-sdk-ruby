@@ -30,10 +30,7 @@
 ## List Public Hosting Request Logs
 
 ```
-Files::PublicHostingRequestLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::PublicHostingRequestLog.list
 ```
 
 ### Parameters

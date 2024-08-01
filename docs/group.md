@@ -36,12 +36,7 @@
 ## List Groups
 
 ```
-Files::Group.list(
-  sort_by: "", 
-  filter: "", 
-  filter_prefix: "", 
-  ids: ""
-)
+Files::Group.list
 ```
 
 ### Parameters

@@ -34,10 +34,7 @@
 ## List Sync Logs
 
 ```
-Files::SyncLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::SyncLog.list
 ```
 
 ### Parameters

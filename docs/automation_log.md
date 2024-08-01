@@ -32,10 +32,7 @@
 ## List Automation Logs
 
 ```
-Files::AutomationLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::AutomationLog.list
 ```
 
 ### Parameters

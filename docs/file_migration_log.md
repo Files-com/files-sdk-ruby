@@ -30,10 +30,7 @@
 ## List File Migration Logs
 
 ```
-Files::FileMigrationLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::FileMigrationLog.list
 ```
 
 ### Parameters

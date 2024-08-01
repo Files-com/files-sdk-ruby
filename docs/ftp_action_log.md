@@ -50,10 +50,7 @@
 ## List FTP Action Logs
 
 ```
-Files::FtpActionLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::FtpActionLog.list
 ```
 
 ### Parameters

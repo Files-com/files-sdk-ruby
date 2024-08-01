@@ -36,11 +36,7 @@
 ## List Behaviors
 
 ```
-Files::Behavior.list(
-  sort_by: "", 
-  filter: "", 
-  filter_prefix: ""
-)
+Files::Behavior.list
 ```
 
 ### Parameters

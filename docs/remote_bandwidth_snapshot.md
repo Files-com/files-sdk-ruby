@@ -24,14 +24,7 @@
 ## List Remote Bandwidth Snapshots
 
 ```
-Files::RemoteBandwidthSnapshot.list(
-  sort_by: "", 
-  filter: "", 
-  filter_gt: "", 
-  filter_gteq: "", 
-  filter_lt: "", 
-  filter_lteq: ""
-)
+Files::RemoteBandwidthSnapshot.list
 ```
 
 ### Parameters

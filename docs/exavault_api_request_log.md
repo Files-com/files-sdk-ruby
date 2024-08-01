@@ -36,10 +36,7 @@
 ## List Exavault API Request Logs
 
 ```
-Files::ExavaultApiRequestLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::ExavaultApiRequestLog.list
 ```
 
 ### Parameters

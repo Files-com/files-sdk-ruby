@@ -42,10 +42,7 @@
 ## List Outbound Connection Logs
 
 ```
-Files::OutboundConnectionLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::OutboundConnectionLog.list
 ```
 
 ### Parameters

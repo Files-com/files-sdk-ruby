@@ -50,10 +50,7 @@
 ## List API Request Logs
 
 ```
-Files::ApiRequestLog.list(
-  filter: "", 
-  filter_prefix: ""
-)
+Files::ApiRequestLog.list
 ```
 
 ### Parameters
