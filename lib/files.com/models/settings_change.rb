@@ -34,11 +34,6 @@ module Files
       @attributes[:user_is_files_support]
     end
 
-    # boolean - true if this change was performed by a user on a parent site.
-    def user_is_from_parent_site
-      @attributes[:user_is_from_parent_site]
-    end
-
     # string - The username of the user responsible for this change
     def username
       @attributes[:username]

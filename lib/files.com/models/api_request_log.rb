@@ -34,11 +34,6 @@ module Files
       @attributes[:username]
     end
 
-    # boolean - true if this change was performed by a user on a parent site.
-    def user_is_from_parent_site
-      @attributes[:user_is_from_parent_site]
-    end
-
     # string - API Interface
     def interface
       @attributes[:interface]
