@@ -306,15 +306,6 @@ module Files
       @attributes[:webhook_url] = value
     end
 
-    # string
-    def destination
-      @attributes[:destination]
-    end
-
-    def destination=(value)
-      @attributes[:destination] = value
-    end
-
     # Manually run automation
     def manual_run(params = {})
       params ||= {}
@@ -328,7 +319,6 @@ module Files
 
     # Parameters:
     #   source - string - Source Path
-    #   destination - string
     #   destinations - array(string) - A list of String destination paths or Hash of folder_path and optional file_path.
     #   destination_replace_from - string - If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
     #   destination_replace_to - string - If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
@@ -337,7 +327,6 @@ module Files
     #   sync_ids - string - A list of sync IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    #   schedule - object
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`. A list of days of the week to run this automation. 0 is Sunday, 1 is Monday, etc.
     #   schedule_times_of_day - array(string) - If trigger is `custom_schedule`. A list of times of day to run this automation. 24-hour time format.
     #   schedule_time_zone - string - If trigger is `custom_schedule`. Time zone for the schedule.
@@ -361,7 +350,6 @@ module Files
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params[:source] and !params[:source].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destinations must be an Array") if params[:destinations] and !params[:destinations].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: destination_replace_from must be an String") if params[:destination_replace_from] and !params[:destination_replace_from].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination_replace_to must be an String") if params[:destination_replace_to] and !params[:destination_replace_to].is_a?(String)
@@ -414,9 +402,7 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   action - string
-    #   page - int64
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction (e.g. `sort_by[automation]=desc`). Valid fields are `automation`, `disabled`, `last_modified_at` or `name`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `automation`, `disabled`, `last_modified_at` or `name`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `disabled`, `last_modified_at` or `automation`. Valid field combinations are `[ automation, disabled ]` and `[ disabled, automation ]`.
     #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `last_modified_at`.
     #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `last_modified_at`.
@@ -426,8 +412,6 @@ module Files
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: page must be an Integer") if params[:page] and !params[:page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
@@ -462,7 +446,6 @@ module Files
 
     # Parameters:
     #   source - string - Source Path
-    #   destination - string
     #   destinations - array(string) - A list of String destination paths or Hash of folder_path and optional file_path.
     #   destination_replace_from - string - If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
     #   destination_replace_to - string - If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
@@ -471,7 +454,6 @@ module Files
     #   sync_ids - string - A list of sync IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    #   schedule - object
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`. A list of days of the week to run this automation. 0 is Sunday, 1 is Monday, etc.
     #   schedule_times_of_day - array(string) - If trigger is `custom_schedule`. A list of times of day to run this automation. 24-hour time format.
     #   schedule_time_zone - string - If trigger is `custom_schedule`. Time zone for the schedule.
@@ -491,7 +473,6 @@ module Files
     #   automation (required) - string - Automation type
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params[:source] and !params[:source].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destinations must be an Array") if params[:destinations] and !params[:destinations].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: destination_replace_from must be an String") if params[:destination_replace_from] and !params[:destination_replace_from].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination_replace_to must be an String") if params[:destination_replace_to] and !params[:destination_replace_to].is_a?(String)
@@ -500,7 +481,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sync_ids must be an String") if params[:sync_ids] and !params[:sync_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params[:group_ids] and !params[:group_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: schedule must be an Hash") if params[:schedule] and !params[:schedule].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
@@ -531,7 +511,6 @@ module Files
 
     # Parameters:
     #   source - string - Source Path
-    #   destination - string
     #   destinations - array(string) - A list of String destination paths or Hash of folder_path and optional file_path.
     #   destination_replace_from - string - If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
     #   destination_replace_to - string - If set, this string will replace the value `destination_replace_from` in the destination filename. You can use special patterns here.
@@ -540,7 +519,6 @@ module Files
     #   sync_ids - string - A list of sync IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   user_ids - string - A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
-    #   schedule - object
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`. A list of days of the week to run this automation. 0 is Sunday, 1 is Monday, etc.
     #   schedule_times_of_day - array(string) - If trigger is `custom_schedule`. A list of times of day to run this automation. 24-hour time format.
     #   schedule_time_zone - string - If trigger is `custom_schedule`. Time zone for the schedule.
@@ -563,7 +541,6 @@ module Files
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params[:source] and !params[:source].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destinations must be an Array") if params[:destinations] and !params[:destinations].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: destination_replace_from must be an String") if params[:destination_replace_from] and !params[:destination_replace_from].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination_replace_to must be an String") if params[:destination_replace_to] and !params[:destination_replace_to].is_a?(String)
@@ -572,7 +549,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sync_ids must be an String") if params[:sync_ids] and !params[:sync_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params[:group_ids] and !params[:group_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: schedule must be an Hash") if params[:schedule] and !params[:schedule].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
