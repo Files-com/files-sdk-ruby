@@ -95,6 +95,7 @@ module Files
   class InvalidCredentialsError < NotAuthenticatedError; end
   class InvalidOauthError < NotAuthenticatedError; end
   class InvalidOrExpiredCodeError < NotAuthenticatedError; end
+  class InvalidSessionError < NotAuthenticatedError; end
   class InvalidUsernameOrPasswordError < NotAuthenticatedError; end
   class LockedOutError < NotAuthenticatedError; end
   class LockoutRegionMismatchError < NotAuthenticatedError; end
@@ -119,6 +120,7 @@ module Files
   class FullPermissionRequiredError < NotAuthorizedError; end
   class HistoryPermissionRequiredError < NotAuthorizedError; end
   class InsufficientPermissionForParamsError < NotAuthorizedError; end
+  class InsufficientPermissionForSiteError < NotAuthorizedError; end
   class MustAuthenticateWithApiKeyError < NotAuthorizedError; end
   class NeedAdminPermissionForInboxError < NotAuthorizedError; end
   class NonAdminsMustQueryByFolderOrPathError < NotAuthorizedError; end
