@@ -246,7 +246,7 @@ Files::File.move(path,
 
 ---
 
-## Begin file upload
+## Begin File Upload
 
 ```
 Files::File.begin_upload(path, 
@@ -379,7 +379,7 @@ file.move(
 
 ---
 
-## Begin file upload
+## Begin File Upload
 
 ```
 file = Files::File.find(path)

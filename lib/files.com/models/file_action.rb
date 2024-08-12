@@ -14,7 +14,7 @@ module Files
       @attributes[:status]
     end
 
-    # int64 - If status is pending, this is the id of the FileMigration to check for status updates.
+    # int64 - If status is pending, this is the id of the File Migration to check for status updates.
     def file_migration_id
       @attributes[:file_migration_id]
     end

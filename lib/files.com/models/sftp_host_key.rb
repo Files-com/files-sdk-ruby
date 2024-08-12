@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Sftp Host Key ID
+    # int64 - SFTP Host Key ID
     def id
       @attributes[:id]
     end

@@ -1029,7 +1029,7 @@ module Files
       Api.send_request("/file_actions/move/#{@attributes[:path]}", :post, params, @options)
     end
 
-    # Begin file upload
+    # Begin File Upload
     #
     # Parameters:
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
@@ -1204,7 +1204,7 @@ module Files
       FileAction.new(response.data, options)
     end
 
-    # Begin file upload
+    # Begin File Upload
     #
     # Parameters:
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
