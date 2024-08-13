@@ -339,6 +339,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`ApiKeyOnlyForDesktopAppError`|  `NotAuthorizedError` |
 |`ApiKeyOnlyForMobileAppError`|  `NotAuthorizedError` |
 |`ApiKeyOnlyForOfficeIntegrationError`|  `NotAuthorizedError` |
+|`BillingOrSiteAdminPermissionRequiredError`|  `NotAuthorizedError` |
 |`BillingPermissionRequiredError`|  `NotAuthorizedError` |
 |`BundleMaximumUsesReachedError`|  `NotAuthorizedError` |
 |`CannotLoginWhileUsingKeyError`|  `NotAuthorizedError` |

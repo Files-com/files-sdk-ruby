@@ -109,6 +109,7 @@ module Files
   class ApiKeyOnlyForDesktopAppError < NotAuthorizedError; end
   class ApiKeyOnlyForMobileAppError < NotAuthorizedError; end
   class ApiKeyOnlyForOfficeIntegrationError < NotAuthorizedError; end
+  class BillingOrSiteAdminPermissionRequiredError < NotAuthorizedError; end
   class BillingPermissionRequiredError < NotAuthorizedError; end
   class BundleMaximumUsesReachedError < NotAuthorizedError; end
   class CannotLoginWhileUsingKeyError < NotAuthorizedError; end
