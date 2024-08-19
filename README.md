@@ -243,9 +243,9 @@ rescue for general `Files::Error` as a catch-all.
 begin
   session = Files::Session.create(username: "USERNAME", password: "BADPASSWORD")
 rescue Files::NotAuthenticatedError => e
-  puts "An Authentication Error has occured (#{e.class.to_s}): " + e.message
+  puts "An Authentication Error has occurred (#{e.class.to_s}): " + e.message
 rescue Files::Error => e
-  puts "An Unknown Error has occured (#{e.class.to_s}): " + e.message
+  puts "An Unknown Error has occurred (#{e.class.to_s}): " + e.message
 end
 ```
 
@@ -253,7 +253,7 @@ end
 
 #### SDK Errors
 
-SDK errors are general errors that occure within the SDK code.  Each exception class inherits from a standard `Error` base class.
+SDK errors are general errors that occur within the SDK code.  Each exception class inherits from a standard `Error` base class.
 
 ```ruby title="Example SDK Exception Class Inheritance Structure"
 Files::APIConnectionError -> Files::Error -> StandardError
