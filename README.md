@@ -26,9 +26,7 @@ gem 'files.com', '~> 1.0'
 
 Ruby 2.x is now considered end-of-life by the Ruby project. As a policy, Files.com does not support integrations which are considered end-of-life by their vendor.
 
-<Note title="Repository">
 Explore the [files-sdk-ruby](https://github.com/Files-com/files-sdk-ruby) code on GitHub.
-</Note>
 
 ### Getting Support
 
@@ -59,9 +57,7 @@ Files.api_key = 'YOUR_API_KEY'
 Files::User.new(params, api_key: 'YOUR_API_KEY')
 ```
 
-<Note>
 Don't forget to replace the placeholder, `YOUR_API_KEY`, with your actual API key.
-</Note>
 
 ### Authenticate with a Session
 
