@@ -104,6 +104,11 @@ module Files
       @attributes[:sso_strategy_type]
     end
 
+    # string - Associated SIEM type, if any
+    def siem_type
+      @attributes[:siem_type]
+    end
+
     # string - Tutorial video page
     def tutorial_youtube_url
       @attributes[:tutorial_youtube_url]
