@@ -113,7 +113,7 @@ module Files
       @attributes[:user_id] = value
     end
 
-    # string - Folder path restriction for this API key.
+    # string - Folder path restriction for `office_integration` permission set API keys.
     def path
       @attributes[:path]
     end
@@ -224,7 +224,7 @@ module Files
     #   expires_at - string - API Key expiration date
     #   permission_set - string - Permissions for this API Key. It must be full for site-wide API Keys.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations). Keys with the `office_integration` permission set are auto generated, and automatically expire, to allow users to interact with office integration platforms. Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
     #   name (required) - string - Internal name for the API Key.  For your use.
-    #   path - string - Folder path restriction for this API key.
+    #   path - string - Folder path restriction for `office_integration` permission set API keys.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
