@@ -947,7 +947,6 @@ module Files
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
-    #   point_in_time - string - Point in time to view the folder. Available only on remote server mounts for S3 with versioned buckets.
     def download(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
@@ -955,7 +954,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: point_in_time must be an String") if params[:point_in_time] and !params[:point_in_time].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       Api.send_request("/files/#{@attributes[:path]}", :get, params, @options)
@@ -1067,14 +1065,12 @@ module Files
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
-    #   point_in_time - string - Point in time to view the folder. Available only on remote server mounts for S3 with versioned buckets.
     def self.download(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: point_in_time must be an String") if params[:point_in_time] and !params[:point_in_time].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/files/#{params[:path]}", :get, params, options)
