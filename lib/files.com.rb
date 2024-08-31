@@ -138,6 +138,7 @@ module Files
   @logger = nil
   @proxy = nil
   @session_id = nil
+  @default_headers = nil
 
   @max_network_retries = 3
   @max_network_retry_delay = 2
@@ -147,7 +148,7 @@ module Files
   @read_timeout = 80
 
   class << self
-    attr_accessor :api_key, :base_url, :initial_network_retry_delay, :max_network_retry_delay, :open_timeout, :read_timeout, :proxy, :session_id
+    attr_accessor :api_key, :base_url, :default_headers, :initial_network_retry_delay, :max_network_retry_delay, :open_timeout, :read_timeout, :proxy, :session_id
   end
 
   # map to the same values as the standard library's logger

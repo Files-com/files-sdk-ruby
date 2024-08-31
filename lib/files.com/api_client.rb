@@ -322,6 +322,8 @@ module Files
         "User-Agent" => user_agent,
         "Content-Type" => "application/x-www-form-urlencoded",
       }
+
+      headers.merge!(Files.default_headers) if Files.default_headers
       headers["X-FilesAPI-Key"] = api_key if api_key
       headers["X-FilesAPI-Auth"] = session_id if session_id
 
