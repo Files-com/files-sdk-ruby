@@ -5,16 +5,25 @@ The content included here should be enough to get started, but please visit our
 
 ## Introduction
 
-The Files.com Ruby client library provides convenient access to the Files.com API from applications written in the Ruby language.
+The Files.com Ruby gem provides convenient access to all aspects of Files.com from applications written in the Ruby language.
+
+Files.com customers use our Ruby gem for directly working with files and folders as well as performing management tasks such as adding/removing users, onboarding counterparties, retrieving information about automations and more.
+
+### Files.com is a Ruby Shop
+
+At Files.com, we use Ruby as a primary language all over the company.  Our main server-side API is developed in Ruby, as are many of our microservices.
+
+This Ruby gem is used directly in many internal projects at Files.com, including several of the integrations we maintain.  You can expect the official Files.com Ruby gem to be highly performant and kept up to date at all times.
 
 ### Installation
 
-To install the package:
+To install the gem, simply use Rubygems:
 
 ```bash
 gem install files.com
 ````
-Or add this to your app's Gemfile:
+
+You can also use Bundler, by adding `files.com` to your app's `Gemfile`:
 
 ```ruby
 gem 'files.com', '~> 1.0'
@@ -22,7 +31,7 @@ gem 'files.com', '~> 1.0'
 
 ### Requirements
 
-* Ruby 3+
+The Files.com gem requires Ruby 3+.
 
 Ruby 2.x is now considered end-of-life by the Ruby project. As a policy, Files.com does not support integrations which are considered end-of-life by their vendor.
 
@@ -30,10 +39,9 @@ Explore the [files-sdk-ruby](https://github.com/Files-com/files-sdk-ruby) code o
 
 ### Getting Support
 
-The Files.com team is happy to help with any SDK Integration challenges you
-may face.
+The Files.com Support team provides official support for all of our official Files.com integration tools.
 
-Just email support@files.com and we'll get the process started.
+To initiate a support conversation, you can send an [Authenticated Support Request](https://www.files.com/docs/overview/requesting-support) or simply send an E-Mail to support@files.com.
 
 ## Authentication
 
