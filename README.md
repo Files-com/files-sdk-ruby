@@ -9,6 +9,8 @@ The Files.com Ruby gem provides convenient access to all aspects of Files.com fr
 
 Files.com customers use our Ruby gem for directly working with files and folders as well as performing management tasks such as adding/removing users, onboarding counterparties, retrieving information about automations and more.
 
+The Ruby gem uses the Files.com RESTful APIs via the HTTPS protocol (port 443) to securely communicate and transfer files so no firewall changes should be required in order to allow connectivity to Files.com.
+
 ### Files.com is a Ruby Shop
 
 At Files.com, we use Ruby as a primary language all over the company.  Our main server-side API is developed in Ruby, as are many of our microservices.
