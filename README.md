@@ -81,7 +81,7 @@ session times out, simply create a new session and resume where you left off. Th
 automatically handled by SDKs because we do not want to store password information in memory without
 your explicit consent.
 
-#### Logging in
+#### Logging In
 
 To create a session, the `create` method is called on the `Files::Session` object with the user's username and
 password.
@@ -92,7 +92,7 @@ This returns a session object that can be used to authenticate SDK method calls.
 session = Files::Session.create(username: "username", password: "password")
 ```
 
-#### Using a session
+#### Using a Session
 
 Once a session has been created, you can store the session globally, use the session per object, or use the session per request to authenticate SDK operations.
 
@@ -108,7 +108,7 @@ Files::Group.list({}, session_id: session.id)
 
 ````
 
-#### Logging out
+#### Logging Out
 
 User sessions can be ended calling the `destroy` method on the `session` object.
 
@@ -118,7 +118,7 @@ session.destroy()
 
 ## Configuration
 
-### Configuration options
+### Configuration Options
 
 #### Base URL
 
@@ -129,7 +129,7 @@ This can also be set to use a mock server in development or CI.
 Files.base_url = "https://SUBDOMAIN.files.com"
 ```
 
-#### Log level
+#### Log Level
 
 Supported values:
 * `nil`
@@ -152,7 +152,7 @@ Files.proxy = {
 }
 ```
 
-#### Open timeout
+#### Open Timeout
 
 Open timeout in seconds. The default value is 30.
 
@@ -160,7 +160,7 @@ Open timeout in seconds. The default value is 30.
 Files.open_timeout = 60
 ```
 
-#### Read timeout
+#### Read Timeout
 
 Read timeout in seconds. The default value is 80.
 
@@ -168,7 +168,7 @@ Read timeout in seconds. The default value is 80.
 Files.read_timeout = 90
 ```
 
-#### Initial network retry delay
+#### Initial Network Retry Delay
 
 Initial retry delay in seconds. The default value is 0.5.
 
@@ -176,7 +176,7 @@ Initial retry delay in seconds. The default value is 0.5.
 Files.initial_network_retry_delay = 1
 ```
 
-#### Maximum retry delay
+#### Maximum Retry Delay
 
 Maximum network retry delay in seconds. The default value is 2.
 
@@ -184,7 +184,7 @@ Maximum network retry delay in seconds. The default value is 2.
 Files.max_network_retry_delay = 5
 ```
 
-#### Maximum network retries
+#### Maximum Network Retries
 
 Maximum number of retries. The default value is 3.
 
@@ -427,7 +427,7 @@ for File and Dir, respectively.  (Note that the Files.com SDK uses the
 word Folder, not Dir, and Files::Dir is simply an alias for
 Files::Folder).
 
-#### List root folder
+#### List Root Folder
 
 ```ruby
 Files::Folder.list_for("/").each do |file|
@@ -435,7 +435,7 @@ Files::Folder.list_for("/").each do |file|
 end
 ```
 
-#### Writing a file
+#### Writing a File
 
 ```ruby
 Files::upload_file("local.txt", "/remote.txt")
@@ -447,7 +447,7 @@ File.open("local.txt") do |local_file|
 end
 ```
 
-#### Reading a file
+#### Reading a File
 
 ```ruby
 Files::File.find("foo.txt").read
