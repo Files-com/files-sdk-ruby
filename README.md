@@ -192,6 +192,93 @@ Maximum number of retries. The default value is 3.
 Files.max_network_retries = 5
 ```
 
+## Sort and Filter
+
+Several of the Files.com API resources have list operations that return multiple instances of the resource.  The List operations
+can be sorted and filtered.
+
+### Sorting
+
+The returned data can be sorted by passing in the ```sort_by``` method argument.
+
+The argument value is a Ruby hash that has a key of the resource field name to sort on and a value of either ```"asc"``` or ```"desc"``` to specify the sort order.
+
+Each resource has a set of valid fields for sorting and can be sorted by one field at a time.
+
+### Filters
+
+Filters apply selection criteria to the underlying query that returns the results. Filters can be applied individually to select resource fields
+and/or in a combination with each other.  The results of applying filters and filter combinations can be sorted by a single field.
+
+The passed in argument value is a Ruby hash that has a key of the resource field name to filter on and a passed in value to use in the filter comparison.
+
+Each resource has their own set of valid filters and fields, valid combinations of filters, and sortable fields.
+
+#### Types of Filters
+
+##### Exact Filter
+
+`filter` - find resources that have an exact field value match to a passed in value. (i.e., FIELD_VALUE = PASS_IN_VALUE).
+
+#### Range Filters
+
+`filter_gt` - find resources that have a field value that is greater than the passed in value.  (i.e., FIELD_VALUE > PASS_IN_VALUE).
+
+`filter_gte` - find resources that have a field value that is greater than or equal to the passed in value.  (i.e., FIELD_VALUE >=  PASS_IN_VALUE).
+
+`filter_lt` - find resources that have a field value that is less than the passed in value.  (i.e., FIELD_VALUE < PASS_IN_VALUE).
+
+`filter_lte` - find resources that have a field value that is less than or equal to the passed in value.  (i.e., FIELD_VALUE \<= PASS_IN_VALUE).
+
+##### Pattern Filter
+
+`filter_prefix` - find resources where the specified field is prefixed by the supplied value. This is applicable to values that are strings.
+
+```ruby title="Sort Example"
+## users sorted by username
+Files.api_key = 'YOUR_API_KEY'
+Files::User.list(
+  sort_by: { "username": "asc"}
+)
+```
+
+```ruby title="Exact Filter Example"
+## non admin users
+Files.api_key = 'YOUR_API_KEY'
+Files::User.list(
+  filter: { not_site_admin: true },
+  sort_by: { "username": "asc"}
+)
+```
+
+```ruby title="Range Filter Example"
+#users who haven't logged in since 2024-01-01
+Files.api_key = 'YOUR_API_KEY'
+Files::User.list(
+filter_gte: { "last_login_at": "2024-01-01" },
+  sort_by: { "last_login_at": "asc"}
+)
+```
+
+```ruby title="Pattern Filter Example"
+## users who usernames start with 'test'
+Files.api_key = 'YOUR_API_KEY'
+Files::User.list(
+  filter_pre: { username: "test" },
+  sort_by: { "username": "asc"}
+)
+```
+
+```ruby title="Combined Filter Example"
+## users who usernames start with 'test' and are not admins
+Files.api_key = 'YOUR_API_KEY'
+Files::User.list(
+  filter_prefix: { username: "test" },
+  filter: { not_site_admin: true },
+  sort_by: { "username": "asc"}
+)
+```
+
 ## Errors
 
 The Files.com Ruby SDK will return errors by raising exceptions. There are many exception classes defined in the Files SDK that correspond
