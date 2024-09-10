@@ -9,6 +9,11 @@ module Files
       @options = options || {}
     end
 
+    # int64 - Site Id
+    def id
+      @attributes[:id]
+    end
+
     # string - Site name
     def name
       @attributes[:name]
