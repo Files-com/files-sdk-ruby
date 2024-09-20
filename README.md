@@ -483,6 +483,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`TwoFactorAuthenticationCodeAlreadySentError`|  `ProcessingFailureError` |
 |`TwoFactorAuthenticationCountryBlacklistedError`|  `ProcessingFailureError` |
 |`TwoFactorAuthenticationGeneralErrorError`|  `ProcessingFailureError` |
+|`TwoFactorAuthenticationMethodUnsupportedErrorError`|  `ProcessingFailureError` |
 |`TwoFactorAuthenticationUnsubscribedRecipientError`|  `ProcessingFailureError` |
 |`UpdatesNotAllowedForRemotesError`|  `ProcessingFailureError` |
 |`DuplicateShareRecipientError`|  `RateLimitedError` |
