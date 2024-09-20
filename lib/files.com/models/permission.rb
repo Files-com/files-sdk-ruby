@@ -18,7 +18,7 @@ module Files
       @attributes[:id] = value
     end
 
-    # string - Folder path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # string - Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
     end
@@ -36,7 +36,7 @@ module Files
       @attributes[:user_id] = value
     end
 
-    # string - User's username
+    # string - Username (if applicable)
     def username
       @attributes[:username]
     end
@@ -54,7 +54,7 @@ module Files
       @attributes[:group_id] = value
     end
 
-    # string - Group name if applicable
+    # string - Group name (if applicable)
     def group_name
       @attributes[:group_name]
     end
@@ -63,7 +63,7 @@ module Files
       @attributes[:group_name] = value
     end
 
-    # string - Permission type
+    # string - Permission type.  See the table referenced in the documentation for an explanation of each permission.
     def permission
       @attributes[:permission]
     end
@@ -72,7 +72,7 @@ module Files
       @attributes[:permission] = value
     end
 
-    # boolean - Does this permission apply to subfolders?
+    # boolean - Recursive: does this permission apply to subfolders?
     def recursive
       @attributes[:recursive]
     end
