@@ -39,12 +39,12 @@ module Files
       @attributes[:follow_links]
     end
 
-    # string - Preferred network protocol ['udp', 'tcp']
+    # string - Preferred network protocol ['udp', 'tcp'] (default udp)
     def prefer_protocol
       @attributes[:prefer_protocol]
     end
 
-    # string - DNS lookup method ['auto','doh','system']
+    # string - DNS lookup method ['auto','doh','system'] (default auto)
     def dns
       @attributes[:dns]
     end
@@ -64,7 +64,7 @@ module Files
       @attributes[:log_file]
     end
 
-    # string - Log level for the agent logs ['debug', 'info', 'warn', 'error', 'fatal']
+    # string - Log level for the agent logs ['debug', 'info', 'warn', 'error', 'fatal'] (default info)
     def log_level
       @attributes[:log_level]
     end
@@ -74,17 +74,17 @@ module Files
       @attributes[:log_rotate_num]
     end
 
-    # int64 - Log route size in MB for agent logs. (default 20MB)
+    # int64 - Log route size in MB for agent logs. (default 20)
     def log_rotate_size
       @attributes[:log_rotate_size]
     end
 
-    # int64 - Maximum number of concurrent jobs (default CPU Count * 4)
-    def max_concurrent_jobs
-      @attributes[:max_concurrent_jobs]
+    # int64 - Maximum number of concurrent jobs (default 1024)
+    def override_max_concurrent_jobs
+      @attributes[:override_max_concurrent_jobs]
     end
 
-    # int64 - Graceful shutdown timeout in seconds
+    # int64 - Graceful shutdown timeout in seconds (default 15)
     def graceful_shutdown_timeout
       @attributes[:graceful_shutdown_timeout]
     end
