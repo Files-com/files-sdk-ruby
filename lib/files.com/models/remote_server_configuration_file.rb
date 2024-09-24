@@ -79,7 +79,7 @@ module Files
       @attributes[:log_rotate_size]
     end
 
-    # int64 - Maximum number of concurrent jobs (default 1024)
+    # int64 - Maximum number of concurrent jobs (default 500)
     def override_max_concurrent_jobs
       @attributes[:override_max_concurrent_jobs]
     end
