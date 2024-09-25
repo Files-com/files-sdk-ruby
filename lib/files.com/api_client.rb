@@ -324,10 +324,11 @@ module Files
       }
 
       if Files.default_headers.is_a?(Proc)
-        headers.merge!(Files.default_headers.call)
-      else
-        headers.merge!(Files.default_headers)
+        proc_headers = Files.default_headers.call
+        headers.merge!(proc_headers) if proc_headers.is_a?(Hash)
       end
+
+      headers.merge!(Files.default_headers) if Files.default_headers.is_a?(Hash)
 
       headers["X-FilesAPI-Key"] = api_key if api_key
       headers["X-FilesAPI-Auth"] = session_id if session_id
