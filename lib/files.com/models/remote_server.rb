@@ -90,7 +90,7 @@ module Files
       @attributes[:pin_to_site_region] = value
     end
 
-    # string - If set, all communciations with this remote server are made through the provided region.
+    # string - If set, all communications with this remote server are made through the provided region.
     def pinned_region
       @attributes[:pinned_region]
     end
