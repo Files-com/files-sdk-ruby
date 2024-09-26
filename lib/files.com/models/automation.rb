@@ -90,6 +90,15 @@ module Files
       @attributes[:disabled] = value
     end
 
+    # string - If set, this glob pattern will exclude files from the automation. Supports globs, except on remote mounts.
+    def exclude_pattern
+      @attributes[:exclude_pattern]
+    end
+
+    def exclude_pattern=(value)
+      @attributes[:exclude_pattern] = value
+    end
+
     # boolean - Normally copy and move automations that use globs will implicitly preserve the source folder structure in the destination.  If this flag is `true`, the source folder structure will be flattened in the destination.  This is useful for copying or moving files from multiple folders into a single destination folder.
     def flatten_destination_structure
       @attributes[:flatten_destination_structure]
@@ -234,7 +243,7 @@ module Files
       @attributes[:schedule_time_zone] = value
     end
 
-    # string - Source Path
+    # string - Source path. Supports globs, except on remote mounts.
     def source
       @attributes[:source]
     end
