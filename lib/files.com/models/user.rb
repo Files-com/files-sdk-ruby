@@ -545,13 +545,22 @@ module Files
       @attributes[:type_of_2fa_for_display] = value
     end
 
-    # string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    # string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set).  Note that this is not used for API, Desktop, or Web interface.
     def user_root
       @attributes[:user_root]
     end
 
     def user_root=(value)
       @attributes[:user_root] = value
+    end
+
+    # string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
+    def user_home
+      @attributes[:user_home]
+    end
+
+    def user_home=(value)
+      @attributes[:user_home] = value
     end
 
     # int64 - Number of days remaining until password expires
@@ -740,7 +749,8 @@ module Files
     #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
     #   require_2fa - string - 2FA required setting
     #   time_zone - string - User time zone
-    #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set).  Note that this is not used for API, Desktop, or Web interface.
+    #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
     #   username - string - User's username
     def update(params = {})
       params ||= {}
@@ -772,6 +782,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params[:require_2fa] and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params[:time_zone] and !params[:time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_home must be an String") if params[:user_home] and !params[:user_home].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
@@ -899,7 +910,8 @@ module Files
     #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
     #   require_2fa - string - 2FA required setting
     #   time_zone - string - User time zone
-    #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set).  Note that this is not used for API, Desktop, or Web interface.
+    #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
     #   username (required) - string - User's username
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: change_password must be an String") if params[:change_password] and !params[:change_password].is_a?(String)
@@ -927,6 +939,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params[:require_2fa] and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params[:time_zone] and !params[:time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_home must be an String") if params[:user_home] and !params[:user_home].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise MissingParameterError.new("Parameter missing: username") unless params[:username]
 
@@ -1012,7 +1025,8 @@ module Files
     #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
     #   require_2fa - string - 2FA required setting
     #   time_zone - string - User time zone
-    #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set.)  Note that this is not used for API, Desktop, or Web interface.
+    #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set).  Note that this is not used for API, Desktop, or Web interface.
+    #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
     #   username - string - User's username
     def self.update(id, params = {}, options = {})
       params ||= {}
@@ -1043,6 +1057,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params[:require_2fa] and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params[:time_zone] and !params[:time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_home must be an String") if params[:user_home] and !params[:user_home].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
