@@ -113,7 +113,7 @@
 
 ---
 
-## List Siem Http Destinations
+## List SIEM HTTP Destinations
 
 ```
 Files::SiemHttpDestination.list
@@ -127,7 +127,7 @@ Files::SiemHttpDestination.list
 
 ---
 
-## Show Siem Http Destination
+## Show SIEM HTTP Destination
 
 ```
 Files::SiemHttpDestination.find(id)
@@ -140,7 +140,7 @@ Files::SiemHttpDestination.find(id)
 
 ---
 
-## Create Siem Http Destination
+## Create SIEM HTTP Destination
 
 ```
 Files::SiemHttpDestination.create(
@@ -201,7 +201,7 @@ Files::SiemHttpDestination.create(
 
 ---
 
-## send_test_entry Siem Http Destination
+## send_test_entry SIEM HTTP Destination
 
 ```
 Files::SiemHttpDestination.send_test_entry(
@@ -264,7 +264,7 @@ Files::SiemHttpDestination.send_test_entry(
 
 ---
 
-## Update Siem Http Destination
+## Update SIEM HTTP Destination
 
 ```
 Files::SiemHttpDestination.update(id, 
@@ -326,7 +326,7 @@ Files::SiemHttpDestination.update(id,
 
 ---
 
-## Delete Siem Http Destination
+## Delete SIEM HTTP Destination
 
 ```
 Files::SiemHttpDestination.delete(id)
@@ -339,7 +339,7 @@ Files::SiemHttpDestination.delete(id)
 
 ---
 
-## Update Siem Http Destination
+## Update SIEM HTTP Destination
 
 ```
 siem_http_destination = Files::SiemHttpDestination.find(id)
@@ -403,7 +403,7 @@ siem_http_destination.update(
 
 ---
 
-## Delete Siem Http Destination
+## Delete SIEM HTTP Destination
 
 ```
 siem_http_destination = Files::SiemHttpDestination.find(id)
