@@ -29,6 +29,11 @@ module Files
       @attributes[:username]
     end
 
+    # string - Name of the SFTP Client provided at initial connection
+    def ssh_client_identification
+      @attributes[:ssh_client_identification]
+    end
+
     # string - Unique ID of the Session
     def session_uuid
       @attributes[:session_uuid]
