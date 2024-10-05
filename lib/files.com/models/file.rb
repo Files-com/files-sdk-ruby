@@ -976,7 +976,7 @@ module Files
     end
 
     # Parameters:
-    #   recursive - boolean - If true, will recursively delete folers.  Otherwise, will error on non-empty folders.
+    #   recursive - boolean - If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
     def delete(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
@@ -1129,7 +1129,7 @@ module Files
     end
 
     # Parameters:
-    #   recursive - boolean - If true, will recursively delete folers.  Otherwise, will error on non-empty folders.
+    #   recursive - boolean - If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path

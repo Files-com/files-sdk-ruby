@@ -39,7 +39,7 @@ module Files
       @attributes[:cc]
     end
 
-    # string - How was email deliered?  `customer_smtp` or `files.com`
+    # string - How was the email delivered?  `customer_smtp` or `files.com`
     def delivery_method
       @attributes[:delivery_method]
     end

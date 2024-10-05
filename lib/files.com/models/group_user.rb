@@ -45,7 +45,7 @@ module Files
       @attributes[:admin] = value
     end
 
-    # array(string) - A list of usernames for users in this group
+    # string - Comma-delimited list of usernames who belong to this group (separated by commas).
     def usernames
       @attributes[:usernames]
     end

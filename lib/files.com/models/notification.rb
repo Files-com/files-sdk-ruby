@@ -54,7 +54,7 @@ module Files
       @attributes[:triggering_group_ids] = value
     end
 
-    # array(int64) - If set, will onlynotify on actions made one of the specified users
+    # array(int64) - If set, will only notify on actions made one of the specified users
     def triggering_user_ids
       @attributes[:triggering_user_ids]
     end
@@ -219,7 +219,7 @@ module Files
     #   message - string - Custom message to include in notification emails
     #   triggering_filenames - array(string) - Array of filenames (possibly with wildcards) to scope trigger
     #   triggering_group_ids - array(int64) - If set, will only notify on actions made by a member of one of the specified groups
-    #   triggering_user_ids - array(int64) - If set, will onlynotify on actions made one of the specified users
+    #   triggering_user_ids - array(int64) - If set, will only notify on actions made one of the specified users
     #   trigger_by_share_recipients - boolean - Notify when actions are performed by a share recipient?
     def update(params = {})
       params ||= {}
@@ -318,7 +318,7 @@ module Files
     #   message - string - Custom message to include in notification emails
     #   triggering_filenames - array(string) - Array of filenames (possibly with wildcards) to scope trigger
     #   triggering_group_ids - array(int64) - If set, will only notify on actions made by a member of one of the specified groups
-    #   triggering_user_ids - array(int64) - If set, will onlynotify on actions made one of the specified users
+    #   triggering_user_ids - array(int64) - If set, will only notify on actions made one of the specified users
     #   trigger_by_share_recipients - boolean - Notify when actions are performed by a share recipient?
     #   group_id - int64 - The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
     #   path - string - Path
@@ -350,7 +350,7 @@ module Files
     #   message - string - Custom message to include in notification emails
     #   triggering_filenames - array(string) - Array of filenames (possibly with wildcards) to scope trigger
     #   triggering_group_ids - array(int64) - If set, will only notify on actions made by a member of one of the specified groups
-    #   triggering_user_ids - array(int64) - If set, will onlynotify on actions made one of the specified users
+    #   triggering_user_ids - array(int64) - If set, will only notify on actions made one of the specified users
     #   trigger_by_share_recipients - boolean - Notify when actions are performed by a share recipient?
     def self.update(id, params = {}, options = {})
       params ||= {}

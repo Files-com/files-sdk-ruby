@@ -27,7 +27,7 @@ module Files
       @attributes[:name] = value
     end
 
-    # string - MD5 Fingerpint of the public key
+    # string - MD5 Fingerprint of the public key
     def fingerprint_md5
       @attributes[:fingerprint_md5]
     end
@@ -36,7 +36,7 @@ module Files
       @attributes[:fingerprint_md5] = value
     end
 
-    # string - SHA256 Fingerpint of the public key
+    # string - SHA256 Fingerprint of the public key
     def fingerprint_sha256
       @attributes[:fingerprint_sha256]
     end
