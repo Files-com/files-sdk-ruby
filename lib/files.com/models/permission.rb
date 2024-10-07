@@ -137,18 +137,19 @@ module Files
     end
 
     # Parameters:
+    #   path (required) - string - Folder path
     #   group_id - int64 - Group ID
-    #   path - string - Folder path
-    #   permission - string -  Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
+    #   permission - string - Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
     #   recursive - boolean - Apply to subfolders recursively?
     #   user_id - int64 - User ID.  Provide `username` or `user_id`
     #   username - string - User username.  Provide `username` or `user_id`
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: permission must be an String") if params[:permission] and !params[:permission].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/permissions", :post, params, options)
       Permission.new(response.data, options)
