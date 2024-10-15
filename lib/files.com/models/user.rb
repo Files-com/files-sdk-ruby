@@ -90,6 +90,15 @@ module Files
       @attributes[:avatar_url] = value
     end
 
+    # boolean - Is this a billable user record?
+    def billable
+      @attributes[:billable]
+    end
+
+    def billable=(value)
+      @attributes[:billable] = value
+    end
+
     # boolean - Allow this user to perform operations on the account, payments, and invoices?
     def billing_permission
       @attributes[:billing_permission]
