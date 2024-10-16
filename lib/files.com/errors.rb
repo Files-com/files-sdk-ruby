@@ -58,7 +58,6 @@ module Files
   class InvalidCursorTypeForSortError < BadRequestError; end
   class InvalidEtagsError < BadRequestError; end
   class InvalidFilterAliasCombinationError < BadRequestError; end
-  class InvalidFilterCombinationError < BadRequestError; end
   class InvalidFilterFieldError < BadRequestError; end
   class InvalidFilterParamError < BadRequestError; end
   class InvalidFilterParamValueError < BadRequestError; end
@@ -67,6 +66,7 @@ module Files
   class InvalidOauthProviderError < BadRequestError; end
   class InvalidPathError < BadRequestError; end
   class InvalidReturnToUrlError < BadRequestError; end
+  class InvalidSortFilterCombinationError < BadRequestError; end
   class InvalidUploadOffsetError < BadRequestError; end
   class InvalidUploadPartGapError < BadRequestError; end
   class InvalidUploadPartSizeError < BadRequestError; end

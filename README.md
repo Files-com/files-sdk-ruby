@@ -342,7 +342,6 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`InvalidCursorTypeForSortError`|  `BadRequestError` |
 |`InvalidEtagsError`|  `BadRequestError` |
 |`InvalidFilterAliasCombinationError`|  `BadRequestError` |
-|`InvalidFilterCombinationError`|  `BadRequestError` |
 |`InvalidFilterFieldError`|  `BadRequestError` |
 |`InvalidFilterParamError`|  `BadRequestError` |
 |`InvalidFilterParamValueError`|  `BadRequestError` |
@@ -351,6 +350,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`InvalidOauthProviderError`|  `BadRequestError` |
 |`InvalidPathError`|  `BadRequestError` |
 |`InvalidReturnToUrlError`|  `BadRequestError` |
+|`InvalidSortFilterCombinationError`|  `BadRequestError` |
 |`InvalidUploadOffsetError`|  `BadRequestError` |
 |`InvalidUploadPartGapError`|  `BadRequestError` |
 |`InvalidUploadPartSizeError`|  `BadRequestError` |
