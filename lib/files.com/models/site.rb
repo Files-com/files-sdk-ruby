@@ -144,6 +144,11 @@ module Files
       @attributes[:bundle_require_note]
     end
 
+    # boolean - Do Bundle creators receive receipts of invitations?
+    def bundle_send_shared_receipts
+      @attributes[:bundle_send_shared_receipts]
+    end
+
     # string - Do Bundle uploaders receive upload confirmation notifications?
     def bundle_upload_receipt_notifications
       @attributes[:bundle_upload_receipt_notifications]
@@ -871,6 +876,7 @@ module Files
     #   left_navigation_visibility - object - Visibility settings for account navigation
     #   additional_text_file_types - array(string) - Additional extensions that are considered text files
     #   bundle_require_note - boolean - Do Bundles require internal notes?
+    #   bundle_send_shared_receipts - boolean - Do Bundle creators receive receipts of invitations?
     #   session_expiry - double - Session expiry in hours
     #   ssl_required - boolean - Is SSL required?  Disabling this is insecure.
     #   tls_disabled - boolean - DO NOT ENABLE. This setting allows TLSv1.0 and TLSv1.1 to be used on your site.  We intend to remove this capability entirely in early 2024.  If set, the `sftp_insecure_ciphers` flag will be automatically set to true.
