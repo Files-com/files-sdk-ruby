@@ -147,7 +147,7 @@ module Files
   @initial_network_retry_delay = 0.5
 
   @open_timeout = 30
-  @read_timeout = 80
+  @read_timeout = 60
 
   class << self
     attr_accessor :api_key, :base_url, :default_headers, :initial_network_retry_delay, :max_network_retry_delay, :open_timeout, :read_timeout, :proxy, :session_id
