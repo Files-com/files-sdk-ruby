@@ -338,6 +338,15 @@ module Files
       @attributes[:has_inbox] = value
     end
 
+    # boolean - Should folder uploads be prevented?
+    def dont_allow_folders_in_uploads
+      @attributes[:dont_allow_folders_in_uploads]
+    end
+
+    def dont_allow_folders_in_uploads=(value)
+      @attributes[:dont_allow_folders_in_uploads] = value
+    end
+
     # array(string) - A list of paths in this bundle.  For performance reasons, this is not provided when listing bundles.
     def paths
       @attributes[:paths]
