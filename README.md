@@ -337,6 +337,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`DatetimeParseError`|  `BadRequestError` |
 |`DestinationSameError`|  `BadRequestError` |
 |`FolderMustNotBeAFileError`|  `BadRequestError` |
+|`FoldersNotAllowedError`|  `BadRequestError` |
 |`InvalidBodyError`|  `BadRequestError` |
 |`InvalidCursorError`|  `BadRequestError` |
 |`InvalidCursorTypeForSortError`|  `BadRequestError` |

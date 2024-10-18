@@ -53,6 +53,7 @@ module Files
   class DatetimeParseError < BadRequestError; end
   class DestinationSameError < BadRequestError; end
   class FolderMustNotBeAFileError < BadRequestError; end
+  class FoldersNotAllowedError < BadRequestError; end
   class InvalidBodyError < BadRequestError; end
   class InvalidCursorError < BadRequestError; end
   class InvalidCursorTypeForSortError < BadRequestError; end
