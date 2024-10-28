@@ -23,13 +23,13 @@ To install the gem, simply use Rubygems:
 
 ```bash
 gem install files.com
-````
+```
 
 You can also use Bundler, by adding `files.com` to your app's `Gemfile`:
 
 ```ruby
 gem 'files.com', '~> 1.0'
-````
+```
 
 ### Requirements
 
@@ -106,7 +106,7 @@ user = Files::User.new(params, session_id: session.id)
 ## You may also specify the session ID on a per-request basis in the final parameter to static methods.
 Files::Group.list({}, session_id: session.id)
 
-````
+```
 
 #### Logging Out
 
