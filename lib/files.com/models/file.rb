@@ -778,6 +778,24 @@ module Files
       @attributes[:md5] = value
     end
 
+    # string - File SHA1 checksum. This is sometimes delayed, so if you get a blank response, wait and try again.
+    def sha1
+      @attributes[:sha1]
+    end
+
+    def sha1=(value)
+      @attributes[:sha1] = value
+    end
+
+    # string - File SHA256 checksum. This is sometimes delayed, so if you get a blank response, wait and try again.
+    def sha256
+      @attributes[:sha256]
+    end
+
+    def sha256=(value)
+      @attributes[:sha256] = value
+    end
+
     # string - MIME Type.  This is determined by the filename extension and is not stored separately internally.
     def mime_type
       @attributes[:mime_type]
