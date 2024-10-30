@@ -85,7 +85,7 @@ module Files
     #   display - string - Display format. Leave blank or set to `full` or `parent`.
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `path` or `created_at`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `path` and `created_at`.
     #   path (required) - string - Path to operate on.
     def self.list_for_file(path, params = {}, options = {})
       params ||= {}
@@ -110,7 +110,7 @@ module Files
     #   display - string - Display format. Leave blank or set to `full` or `parent`.
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `folder` or `created_at`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
     #   path (required) - string - Path to operate on.
     def self.list_for_folder(path, params = {}, options = {})
       params ||= {}
@@ -160,7 +160,7 @@ module Files
     #   display - string - Display format. Leave blank or set to `full` or `parent`.
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `action_login` or `created_at`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
     def self.list_logins(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params[:end_at] and !params[:end_at].is_a?(String)
@@ -180,8 +180,8 @@ module Files
     #   display - string - Display format. Leave blank or set to `full` or `parent`.
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `path`, `folder`, `user_id` or `created_at`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `user_id`, `folder` or `path`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `path`, `created_at` or `user_id`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `user_id`, `folder` or `path`. Valid field combinations are `[ user_id, folder ]`, `[ user_id, path ]`, `[ folder, path ]` or `[ user_id, folder, path ]`.
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `path`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
