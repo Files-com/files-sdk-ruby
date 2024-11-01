@@ -20,6 +20,11 @@ module Files
     end
 
     # date-time - Action occurrence date/time
+    def created_at
+      @attributes[:created_at]
+    end
+
+    # date-time - Action occurrence date/time
     def when
       @attributes[:when]
     end
