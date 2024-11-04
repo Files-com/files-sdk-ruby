@@ -480,10 +480,9 @@ module Files
     #   cursor - string - Send cursor to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor-Next header or the X-Files-Cursor-Prev header.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   path (required) - string - Path to operate on.
-    #   filter - string - If specified, will filter folders/files list by name. Ignores text before last `/`. This is the same API used by the search bar in the web UI when running 'Search This Folder'.  Search results are a best effort, not real time, and not guaranteed to perfectly match the latest folder listing.  This field should only be used for ad-hoc (human) searching, and not as part of an automated process.
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   sort_by - object - Search by field and direction. Valid fields are `path`, `size`, `modified_at_datetime`, `provided_modified_at`.  Valid directions are `asc` and `desc`.  Defaults to `{"path":"asc"}`.
-    #   search - string - If `search_all` is `true`, provide the search string here.  Otherwise, this parameter acts like an alias of `filter`.
+    #   search - string - If specified, will filter folders/files list by name. Ignores text before last `/`. This is the same API used by the search bar in the web UI when running 'Search This Folder'.  Search results are a best effort, not real time, and not guaranteed to perfectly match the latest folder listing.  This field should only be used for ad-hoc (human) searching, and not as part of an automated process.
     #   search_all - boolean - Search entire site?  If set, we will ignore the folder path provided and search the entire site.  This is the same API used by the search bar in the web UI when running 'Search All Files'.  Search results are a best effort, not real time, and not guaranteed to match every file.  This field should only be used for ad-hoc (human) searching, and not as part of an automated process.
     #   with_previews - boolean - Include file previews?
     #   with_priority_color - boolean - Include file priority color information?
@@ -493,7 +492,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filter must be an String") if params[:filter] and !params[:filter].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params[:search] and !params[:search].is_a?(String)
