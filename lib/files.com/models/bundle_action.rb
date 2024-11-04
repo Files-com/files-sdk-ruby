@@ -24,11 +24,6 @@ module Files
       @attributes[:created_at]
     end
 
-    # date-time - Action occurrence date/time
-    def when
-      @attributes[:when]
-    end
-
     # string - The destination path for this bundle action, if applicable
     def destination
       @attributes[:destination]
