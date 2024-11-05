@@ -249,7 +249,7 @@ module Files
       @attributes[:days_to_retain_backups]
     end
 
-    # string - If true, allow public viewers of Bundles with full permissions to use document editing integrations.
+    # boolean - If true, allow public viewers of Bundles with full permissions to use document editing integrations.
     def document_edits_in_bundle_allowed
       @attributes[:document_edits_in_bundle_allowed]
     end
@@ -943,7 +943,7 @@ module Files
     #   bundle_registration_notifications - string - Do Bundle owners receive registration notification?
     #   bundle_activity_notifications - string - Do Bundle owners receive activity notifications?
     #   bundle_upload_receipt_notifications - string - Do Bundle uploaders receive upload confirmation notifications?
-    #   document_edits_in_bundle_allowed - string - If true, allow public viewers of Bundles with full permissions to use document editing integrations.
+    #   document_edits_in_bundle_allowed - boolean - If true, allow public viewers of Bundles with full permissions to use document editing integrations.
     #   password_requirements_apply_to_bundles - boolean - Require bundles' passwords, and passwords for other items (inboxes, public shares, etc.) to conform to the same requirements as users' passwords?
     #   prevent_root_permissions_for_non_site_admins - boolean - If true, we will prevent non-administrators from receiving any permissions directly on the root folder.  This is commonly used to prevent the accidental application of permissions.
     #   opt_out_global - boolean - Use servers in the USA only?
@@ -1063,7 +1063,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: bundle_registration_notifications must be an String") if params[:bundle_registration_notifications] and !params[:bundle_registration_notifications].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: bundle_activity_notifications must be an String") if params[:bundle_activity_notifications] and !params[:bundle_activity_notifications].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: bundle_upload_receipt_notifications must be an String") if params[:bundle_upload_receipt_notifications] and !params[:bundle_upload_receipt_notifications].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: document_edits_in_bundle_allowed must be an String") if params[:document_edits_in_bundle_allowed] and !params[:document_edits_in_bundle_allowed].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: disable_users_from_inactivity_period_days must be an Integer") if params[:disable_users_from_inactivity_period_days] and !params[:disable_users_from_inactivity_period_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sftp_host_key_type must be an String") if params[:sftp_host_key_type] and !params[:sftp_host_key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: active_sftp_host_key_id must be an Integer") if params[:active_sftp_host_key_id] and !params[:active_sftp_host_key_id].is_a?(Integer)
