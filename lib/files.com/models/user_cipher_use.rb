@@ -24,6 +24,11 @@ module Files
       @attributes[:created_at]
     end
 
+    # boolean - Is this cipher considered insecure?
+    def insecure
+      @attributes[:insecure]
+    end
+
     # string - The interface accessed
     def interface
       @attributes[:interface]
