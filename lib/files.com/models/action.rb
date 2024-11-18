@@ -44,7 +44,7 @@ module Files
       @attributes[:source]
     end
 
-    # array(object) - Targets
+    # object - Targets
     def targets
       @attributes[:targets]
     end
