@@ -422,7 +422,6 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`UserIdWithoutSiteAdminError`|  `NotAuthorizedError` |
 |`WriteAndBundlePermissionRequiredError`|  `NotAuthorizedError` |
 |`WritePermissionRequiredError`|  `NotAuthorizedError` |
-|`ZipDownloadIpMismatchError`|  `NotAuthorizedError` |
 |`ApiKeyNotFoundError`|  `NotFoundError` |
 |`BundlePathNotFoundError`|  `NotFoundError` |
 |`BundleRegistrationNotFoundError`|  `NotFoundError` |

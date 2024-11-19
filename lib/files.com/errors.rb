@@ -142,7 +142,6 @@ module Files
   class UserIdWithoutSiteAdminError < NotAuthorizedError; end
   class WriteAndBundlePermissionRequiredError < NotAuthorizedError; end
   class WritePermissionRequiredError < NotAuthorizedError; end
-  class ZipDownloadIpMismatchError < NotAuthorizedError; end
 
   class NotFoundError < APIError; end
   class ApiKeyNotFoundError < NotFoundError; end

@@ -634,11 +634,6 @@ module Files
       @attributes[:session]
     end
 
-    # boolean - Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
-    def session_pinned_by_ip
-      @attributes[:session_pinned_by_ip]
-    end
-
     # boolean - Is SFTP enabled?
     def sftp_enabled
       @attributes[:sftp_enabled]
@@ -935,7 +930,6 @@ module Files
     #   sftp_user_root_enabled - boolean - Use user FTP roots also for SFTP?
     #   disable_password_reset - boolean - Is password reset disabled?
     #   immutable_files - boolean - Are files protected from modification?
-    #   session_pinned_by_ip - boolean - Are sessions locked to the same IP? (i.e. do users need to log in again if they change IPs?)
     #   bundle_not_found_message - string - Custom error message to show when bundle is not found.
     #   bundle_password_required - boolean - Do Bundles require password protection?
     #   bundle_require_registration - boolean - Do Bundles require registration?
