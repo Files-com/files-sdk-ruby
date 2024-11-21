@@ -69,6 +69,15 @@ Files::UserRequest.create(
 
 ---
 
+## Create Export User Request
+
+```
+Files::UserRequest.create_export
+```
+
+
+---
+
 ## Delete User Request
 
 ```

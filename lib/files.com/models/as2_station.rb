@@ -248,6 +248,13 @@ module Files
       As2Station.new(response.data, options)
     end
 
+    def self.create_export(params = {}, options = {})
+      response, options = Api.send_request("/as2_stations/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
     # Parameters:
     #   name - string - AS2 Name
     #   public_certificate - string

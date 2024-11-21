@@ -172,6 +172,19 @@ module Files
     end
 
     # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name` and `expires_at`.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+
+      response, options = Api.send_request("/gpg_keys/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
+    # Parameters:
     #   public_key - string - Your GPG public key
     #   private_key - string - Your GPG private key.
     #   private_key_password - string - Your GPG private key password. Only required for password protected keys.

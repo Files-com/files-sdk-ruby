@@ -63,6 +63,15 @@ Files::SftpHostKey.create(
 
 ---
 
+## Create Export SFTP Host Key
+
+```
+Files::SftpHostKey.create_export
+```
+
+
+---
+
 ## Update SFTP Host Key
 
 ```

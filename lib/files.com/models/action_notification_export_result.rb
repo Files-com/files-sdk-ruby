@@ -79,5 +79,19 @@ module Files
     def self.all(params = {}, options = {})
       list(params, options)
     end
+
+    # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   action_notification_export_id (required) - int64 - ID of the associated action notification export.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action_notification_export_id must be an Integer") if params[:action_notification_export_id] and !params[:action_notification_export_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: action_notification_export_id") unless params[:action_notification_export_id]
+
+      response, options = Api.send_request("/action_notification_export_results/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
   end
 end

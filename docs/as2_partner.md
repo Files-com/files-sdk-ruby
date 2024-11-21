@@ -110,6 +110,15 @@ Files::As2Partner.create(
 
 ---
 
+## Create Export AS2 Partner
+
+```
+Files::As2Partner.create_export
+```
+
+
+---
+
 ## Update AS2 Partner
 
 ```

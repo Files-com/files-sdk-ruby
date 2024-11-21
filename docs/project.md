@@ -57,6 +57,15 @@ Files::Project.create(
 
 ---
 
+## Create Export Project
+
+```
+Files::Project.create_export
+```
+
+
+---
+
 ## Update Project
 
 ```

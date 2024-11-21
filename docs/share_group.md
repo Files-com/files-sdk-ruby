@@ -78,6 +78,21 @@ Files::ShareGroup.create(
 
 ---
 
+## Create Export Share Group
+
+```
+Files::ShareGroup.create_export(
+  user_id: 1
+)
+```
+
+### Parameters
+
+* `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
+
+
+---
+
 ## Update Share Group
 
 ```

@@ -87,6 +87,15 @@ Files::As2Station.create(
 
 ---
 
+## Create Export AS2 Station
+
+```
+Files::As2Station.create_export
+```
+
+
+---
+
 ## Update AS2 Station
 
 ```

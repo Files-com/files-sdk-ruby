@@ -105,5 +105,12 @@ module Files
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
+
+    def self.create_export(params = {}, options = {})
+      response, options = Api.send_request("/payments/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
   end
 end

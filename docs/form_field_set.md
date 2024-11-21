@@ -101,6 +101,21 @@ Files::FormFieldSet.create(
 
 ---
 
+## Create Export Form Field Set
+
+```
+Files::FormFieldSet.create_export(
+  user_id: 1
+)
+```
+
+### Parameters
+
+* `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
+
+
+---
+
 ## Update Form Field Set
 
 ```

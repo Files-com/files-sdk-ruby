@@ -65,6 +65,23 @@ Files::MessageCommentReaction.create(
 
 ---
 
+## Create Export Message Comment Reaction
+
+```
+Files::MessageCommentReaction.create_export(
+  user_id: 1, 
+  message_comment_id: 1
+)
+```
+
+### Parameters
+
+* `user_id` (int64): User ID.  Provide a value of `0` to operate the current session's user.
+* `message_comment_id` (int64): Required - Message comment to return reactions for.
+
+
+---
+
 ## Delete Message Comment Reaction
 
 ```

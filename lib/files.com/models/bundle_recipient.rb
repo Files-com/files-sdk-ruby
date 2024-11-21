@@ -125,5 +125,21 @@ module Files
       response, options = Api.send_request("/bundle_recipients", :post, params, options)
       BundleRecipient.new(response.data, options)
     end
+
+    # Parameters:
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `has_registrations`.
+    #   bundle_id (required) - int64 - List recipients for the bundle with this ID.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: bundle_id") unless params[:bundle_id]
+
+      response, options = Api.send_request("/bundle_recipients/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
   end
 end

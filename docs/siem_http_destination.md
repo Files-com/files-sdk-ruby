@@ -201,6 +201,15 @@ Files::SiemHttpDestination.create(
 
 ---
 
+## Create Export SIEM HTTP Destination
+
+```
+Files::SiemHttpDestination.create_export
+```
+
+
+---
+
 ## send_test_entry SIEM HTTP Destination
 
 ```

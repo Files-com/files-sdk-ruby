@@ -149,6 +149,17 @@ module Files
     end
 
     # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+
+      response, options = Api.send_request("/share_groups/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
+    # Parameters:
     #   notes - string - Additional notes of the share group
     #   name - string - Name of the share group
     #   members - array(object) - A list of share group members.

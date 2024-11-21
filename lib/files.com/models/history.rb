@@ -201,5 +201,109 @@ module Files
     def self.all(params = {}, options = {})
       list(params, options)
     end
+
+    # Parameters:
+    #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
+    #   end_at - string - Leave blank or set to a date/time to filter later entries.
+    #   display - string - Display format. Leave blank or set to `full` or `parent`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `path` and `created_at`.
+    #   path (required) - int64
+    def self.list_for_file_create_export(path, params = {}, options = {})
+      params ||= {}
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params[:end_at] and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: display must be an String") if params[:display] and !params[:display].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: path must be an Integer") if params[:path] and !params[:path].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+
+      response, options = Api.send_request("/history/files/#{params[:path]}/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
+    # Parameters:
+    #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
+    #   end_at - string - Leave blank or set to a date/time to filter later entries.
+    #   display - string - Display format. Leave blank or set to `full` or `parent`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    #   path (required) - int64
+    def self.list_for_folder_create_export(path, params = {}, options = {})
+      params ||= {}
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params[:end_at] and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: display must be an String") if params[:display] and !params[:display].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: path must be an Integer") if params[:path] and !params[:path].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+
+      response, options = Api.send_request("/history/folders/#{params[:path]}/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
+    # Parameters:
+    #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
+    #   end_at - string - Leave blank or set to a date/time to filter later entries.
+    #   display - string - Display format. Leave blank or set to `full` or `parent`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `user_id` and `created_at`.
+    #   user_id (required) - int64 - User ID.
+    def self.list_for_user_create_export(user_id, params = {}, options = {})
+      params ||= {}
+      params[:user_id] = user_id
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params[:end_at] and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: display must be an String") if params[:display] and !params[:display].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
+
+      response, options = Api.send_request("/history/users/#{params[:user_id]}/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
+    # Parameters:
+    #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
+    #   end_at - string - Leave blank or set to a date/time to filter later entries.
+    #   display - string - Display format. Leave blank or set to `full` or `parent`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    def self.list_logins_create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params[:end_at] and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: display must be an String") if params[:display] and !params[:display].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+
+      response, options = Api.send_request("/history/login/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
+    # Parameters:
+    #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
+    #   end_at - string - Leave blank or set to a date/time to filter later entries.
+    #   display - string - Display format. Leave blank or set to `full` or `parent`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `path`, `created_at` or `user_id`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `user_id`, `folder` or `path`. Valid field combinations are `[ user_id, folder ]`, `[ user_id, path ]`, `[ folder, path ]` or `[ user_id, folder, path ]`.
+    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `path`.
+    def self.list_create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params[:end_at] and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: display must be an String") if params[:display] and !params[:display].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
+
+      response, options = Api.send_request("/history/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
   end
 end

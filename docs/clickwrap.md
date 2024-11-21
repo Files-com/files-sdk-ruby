@@ -73,6 +73,15 @@ Files::Clickwrap.create(
 
 ---
 
+## Create Export Clickwrap
+
+```
+Files::Clickwrap.create_export
+```
+
+
+---
+
 ## Update Clickwrap
 
 ```

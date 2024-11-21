@@ -39,5 +39,19 @@ module Files
     def self.all(path, params = {}, options = {})
       list(path, params, options)
     end
+
+    # Parameters:
+    #   path (required) - string - The path to query for priorities
+    def self.create_export(path, params = {}, options = {})
+      params ||= {}
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+
+      response, options = Api.send_request("/priorities/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
   end
 end

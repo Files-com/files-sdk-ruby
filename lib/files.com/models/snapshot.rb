@@ -182,6 +182,13 @@ module Files
       nil
     end
 
+    def self.create_export(params = {}, options = {})
+      response, options = Api.send_request("/snapshots/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
     # Parameters:
     #   expires_at - string - When the snapshot expires.
     #   name - string - A name for the snapshot.

@@ -91,5 +91,16 @@ module Files
     def self.all(params = {}, options = {})
       list(params, options)
     end
+
+    # Parameters:
+    #   bundle_id - int64 - ID of the associated Bundle
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
+
+      response, options = Api.send_request("/bundle_registrations/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
   end
 end

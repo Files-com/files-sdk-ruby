@@ -176,6 +176,17 @@ module Files
     end
 
     # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+
+      response, options = Api.send_request("/form_field_sets/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
+    # Parameters:
     #   title - string - Title to be displayed
     #   skip_email - boolean - Skip validating form email
     #   skip_name - boolean - Skip validating form name

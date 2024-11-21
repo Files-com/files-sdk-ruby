@@ -14,7 +14,8 @@
   "ftp_permission": true,
   "sftp_permission": true,
   "dav_permission": true,
-  "restapi_permission": true
+  "restapi_permission": true,
+  "site_id": 1
 }
 ```
 
@@ -29,6 +30,7 @@
 * `sftp_permission` (boolean): If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
 * `dav_permission` (boolean): If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
 * `restapi_permission` (boolean): If true, users in this group can use the REST API to login.  This will override a false value of `restapi_permission` on the user level.
+* `site_id` (int64): Site ID
 
 
 ---
@@ -36,17 +38,20 @@
 ## List Groups
 
 ```
-Files::Group.list
+Files::Group.list(
+  include_parent_site_groups: true
+)
 ```
 
 ### Parameters
 
 * `cursor` (string): Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
 * `per_page` (int64): Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`.
+* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id` and `name`.
 * `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `name`.
 * `filter_prefix` (object): If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
 * `ids` (string): Comma-separated list of group ids to include in results.
+* `include_parent_site_groups` (boolean): Include groups from the parent site.
 
 
 ---
@@ -91,6 +96,25 @@ Files::Group.create(
 * `restapi_permission` (boolean): If true, users in this group can use the REST API to login.  This will override a false value of `restapi_permission` on the user level.
 * `allowed_ips` (string): A list of allowed IPs if applicable.  Newline delimited
 * `name` (string): Required - Group name.
+
+
+---
+
+## Create Export Group
+
+```
+Files::Group.create_export(
+  include_parent_site_groups: true
+)
+```
+
+### Parameters
+
+* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id` and `name`.
+* `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `name`.
+* `filter_prefix` (object): If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
+* `ids` (string): Comma-separated list of group ids to include in results.
+* `include_parent_site_groups` (boolean): Include groups from the parent site.
 
 
 ---

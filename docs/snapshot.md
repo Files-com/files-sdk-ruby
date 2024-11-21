@@ -82,6 +82,15 @@ Files::Snapshot.finalize(id)
 
 ---
 
+## Create Export Snapshot
+
+```
+Files::Snapshot.create_export
+```
+
+
+---
+
 ## Update Snapshot
 
 ```

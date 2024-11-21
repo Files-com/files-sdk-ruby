@@ -111,6 +111,20 @@ module Files
       MessageReaction.new(response.data, options)
     end
 
+    # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   message_id (required) - int64 - Message to return reactions for.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: message_id must be an Integer") if params[:message_id] and !params[:message_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: message_id") unless params[:message_id]
+
+      response, options = Api.send_request("/message_reactions/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

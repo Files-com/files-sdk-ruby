@@ -44,5 +44,12 @@ module Files
     def self.all(params = {}, options = {})
       list(params, options)
     end
+
+    def self.create_export(params = {}, options = {})
+      response, options = Api.send_request("/dns_records/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
   end
 end

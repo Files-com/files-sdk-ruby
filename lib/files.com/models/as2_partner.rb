@@ -299,6 +299,13 @@ module Files
       As2Partner.new(response.data, options)
     end
 
+    def self.create_export(params = {}, options = {})
+      response, options = Api.send_request("/as2_partners/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
+    end
+
     # Parameters:
     #   enable_dedicated_ips - boolean - If `true`, we will use your site's dedicated IPs for all outbound connections to this AS2 Partner.
     #   http_auth_username - string - Username to send to server for HTTP Authentication.

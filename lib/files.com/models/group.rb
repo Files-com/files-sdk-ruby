@@ -108,6 +108,15 @@ module Files
       @attributes[:restapi_permission] = value
     end
 
+    # int64 - Site ID
+    def site_id
+      @attributes[:site_id]
+    end
+
+    def site_id=(value)
+      @attributes[:site_id] = value
+    end
+
     # Parameters:
     #   notes - string - Group notes.
     #   user_ids - string - A list of user ids. If sent as a string, should be comma-delimited.
@@ -162,10 +171,11 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id` and `name`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `name`.
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
     #   ids - string - Comma-separated list of group ids to include in results.
+    #   include_parent_site_groups - boolean - Include groups from the parent site.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -219,6 +229,24 @@ module Files
 
       response, options = Api.send_request("/groups", :post, params, options)
       Group.new(response.data, options)
+    end
+
+    # Parameters:
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id` and `name`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `name`.
+    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
+    #   ids - string - Comma-separated list of group ids to include in results.
+    #   include_parent_site_groups - boolean - Include groups from the parent site.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: ids must be an String") if params[:ids] and !params[:ids].is_a?(String)
+
+      response, options = Api.send_request("/groups/create_export", :post, params, options)
+      response.data.map do |entity_data|
+        Export.new(entity_data, options)
+      end
     end
 
     # Parameters:

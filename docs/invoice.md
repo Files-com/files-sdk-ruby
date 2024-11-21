@@ -78,3 +78,12 @@ Files::Invoice.find(id)
 ### Parameters
 
 * `id` (int64): Required - Invoice ID.
+
+
+---
+
+## Create Export Invoice
+
+```
+Files::Invoice.create_export
+```
