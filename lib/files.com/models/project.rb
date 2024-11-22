@@ -109,11 +109,6 @@ module Files
       Project.new(response.data, options)
     end
 
-    def self.create_export(params = {}, options = {})
-      response, options = Api.send_request("/projects/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
     # Parameters:
     #   global_access (required) - string - Global permissions.  Can be: `none`, `anyone_with_read`, `anyone_with_full`.
     def self.update(id, params = {}, options = {})

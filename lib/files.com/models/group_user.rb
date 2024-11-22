@@ -149,17 +149,6 @@ module Files
     end
 
     # Parameters:
-    #   user_id - int64 - User ID.  If provided, will return group_users of this user.
-    #   group_id - int64 - Group ID.  If provided, will return group_users of this group.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
-
-      response, options = Api.send_request("/group_users/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
-    # Parameters:
     #   group_id (required) - int64 - Group ID to add user to.
     #   user_id (required) - int64 - User ID to add to group.
     #   admin - boolean - Is the user a group administrator?

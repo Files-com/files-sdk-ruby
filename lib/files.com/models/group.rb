@@ -232,22 +232,6 @@ module Files
     end
 
     # Parameters:
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id` and `name`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `name`.
-    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
-    #   ids - string - Comma-separated list of group ids to include in results.
-    #   include_parent_site_groups - boolean - Include groups from the parent site.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: ids must be an String") if params[:ids] and !params[:ids].is_a?(String)
-
-      response, options = Api.send_request("/groups/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
-    # Parameters:
     #   notes - string - Group notes.
     #   user_ids - string - A list of user ids. If sent as a string, should be comma-delimited.
     #   admin_ids - string - A list of group admin user ids. If sent as a string, should be comma-delimited.

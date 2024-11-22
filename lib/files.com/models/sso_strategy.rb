@@ -292,10 +292,5 @@ module Files
       Api.send_request("/sso_strategies/#{params[:id]}/sync", :post, params, options)
       nil
     end
-
-    def self.create_export(params = {}, options = {})
-      response, options = Api.send_request("/sso_strategies/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
   end
 end

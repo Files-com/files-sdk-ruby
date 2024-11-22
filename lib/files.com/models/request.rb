@@ -165,18 +165,6 @@ module Files
       Request.new(response.data, options)
     end
 
-    # Parameters:
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
-    #   mine - boolean - Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
-    #   path - string - Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-
-      response, options = Api.send_request("/requests/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

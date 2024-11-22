@@ -167,15 +167,6 @@ module Files
     end
 
     # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-
-      response, options = Api.send_request("/public_keys/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
-    # Parameters:
     #   title (required) - string - Internal reference for key.
     def self.update(id, params = {}, options = {})
       params ||= {}

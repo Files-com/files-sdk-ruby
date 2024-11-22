@@ -143,15 +143,6 @@ Files::SsoStrategy.sync(id)
 
 ---
 
-## Create an export CSV of SSO Strategy resources
-
-```
-Files::SsoStrategy.create_export
-```
-
-
----
-
 ## Synchronize provisioning data with the SSO remote server
 
 ```

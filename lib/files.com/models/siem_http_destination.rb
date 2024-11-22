@@ -649,11 +649,6 @@ module Files
       SiemHttpDestination.new(response.data, options)
     end
 
-    def self.create_export(params = {}, options = {})
-      response, options = Api.send_request("/siem_http_destinations/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
     # Parameters:
     #   siem_http_destination_id - int64 - SIEM HTTP Destination ID
     #   destination_type - string - Destination Type

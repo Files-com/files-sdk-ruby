@@ -157,26 +157,6 @@ module Files
       Permission.new(response.data, options)
     end
 
-    # Parameters:
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `group_id`, `path` or `user_id`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `path`, `group_id` or `user_id`. Valid field combinations are `[ path, group_id ]`, `[ path, user_id ]` or `[ group_id, user_id ]`.
-    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `path`.
-    #   path - string - Permission path.  If provided, will scope all permissions(including upward) to this path.
-    #   include_groups - boolean - If searching by user or group, also include user's permissions that are inherited from its groups?
-    #   group_id - string
-    #   user_id - string
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an String") if params[:group_id] and !params[:group_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an String") if params[:user_id] and !params[:user_id].is_a?(String)
-
-      response, options = Api.send_request("/permissions/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

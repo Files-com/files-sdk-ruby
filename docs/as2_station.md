@@ -87,15 +87,6 @@ Files::As2Station.create(
 
 ---
 
-## Create an export CSV of AS2 Station resources
-
-```
-Files::As2Station.create_export
-```
-
-
----
-
 ## Update AS2 Station
 
 ```

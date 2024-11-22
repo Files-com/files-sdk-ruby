@@ -159,11 +159,6 @@ module Files
       Clickwrap.new(response.data, options)
     end
 
-    def self.create_export(params = {}, options = {})
-      response, options = Api.send_request("/clickwraps/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
     # Parameters:
     #   name - string - Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
     #   body - string - Body text of Clickwrap (supports Markdown formatting).

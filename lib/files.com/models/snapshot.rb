@@ -182,11 +182,6 @@ module Files
       nil
     end
 
-    def self.create_export(params = {}, options = {})
-      response, options = Api.send_request("/snapshots/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
     # Parameters:
     #   expires_at - string - When the snapshot expires.
     #   name - string - A name for the snapshot.

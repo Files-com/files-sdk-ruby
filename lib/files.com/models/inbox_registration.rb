@@ -86,14 +86,5 @@ module Files
     def self.all(params = {}, options = {})
       list(params, options)
     end
-
-    # Parameters:
-    #   folder_behavior_id - int64 - ID of the associated Inbox.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: folder_behavior_id must be an Integer") if params[:folder_behavior_id] and !params[:folder_behavior_id].is_a?(Integer)
-
-      response, options = Api.send_request("/inbox_registrations/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
   end
 end

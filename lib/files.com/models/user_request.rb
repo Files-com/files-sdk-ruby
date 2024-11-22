@@ -130,11 +130,6 @@ module Files
       UserRequest.new(response.data, options)
     end
 
-    def self.create_export(params = {}, options = {})
-      response, options = Api.send_request("/user_requests/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

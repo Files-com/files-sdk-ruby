@@ -105,10 +105,5 @@ module Files
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
-
-    def self.create_export(params = {}, options = {})
-      response, options = Api.send_request("/invoices/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
   end
 end
