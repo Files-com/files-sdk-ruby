@@ -47,7 +47,7 @@ Files::SyncLog.list
 
 ---
 
-## Create Export Sync Log
+## Create an export CSV of Sync Log resources
 
 ```
 Files::SyncLog.create_export

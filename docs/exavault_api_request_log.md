@@ -49,7 +49,7 @@ Files::ExavaultApiRequestLog.list
 
 ---
 
-## Create Export Exavault API Request Log
+## Create an export CSV of Exavault API Request Log resources
 
 ```
 Files::ExavaultApiRequestLog.create_export

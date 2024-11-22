@@ -100,7 +100,7 @@ Files::Group.create(
 
 ---
 
-## Create Export Group
+## Create an export CSV of Group resources
 
 ```
 Files::Group.create_export(

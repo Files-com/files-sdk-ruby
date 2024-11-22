@@ -49,7 +49,7 @@ Files::BandwidthSnapshot.list
 
 ---
 
-## Create Export Bandwidth Snapshot
+## Create an export CSV of Bandwidth Snapshot resources
 
 ```
 Files::BandwidthSnapshot.create_export

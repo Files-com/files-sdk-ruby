@@ -67,7 +67,7 @@ Files::InboxRecipient.create(
 
 ---
 
-## Create Export Inbox Recipient
+## Create an export CSV of Inbox Recipient resources
 
 ```
 Files::InboxRecipient.create_export(

@@ -81,9 +81,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: bundle_registration_id must be an Integer") if params[:bundle_registration_id] and !params[:bundle_registration_id].is_a?(Integer)
 
       response, options = Api.send_request("/bundle_downloads/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
   end
 end

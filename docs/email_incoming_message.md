@@ -50,7 +50,7 @@ Files::EmailIncomingMessage.list
 
 ---
 
-## Create Export Email Incoming Message
+## Create an export CSV of Email Incoming Message resources
 
 ```
 Files::EmailIncomingMessage.create_export

@@ -137,9 +137,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: inbox_id") unless params[:inbox_id]
 
       response, options = Api.send_request("/inbox_recipients/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
   end
 end

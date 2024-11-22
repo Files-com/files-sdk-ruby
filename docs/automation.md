@@ -214,7 +214,7 @@ Files::Automation.manual_run(id)
 
 ---
 
-## Create Export Automation
+## Create an export CSV of Automation resources
 
 ```
 Files::Automation.create_export

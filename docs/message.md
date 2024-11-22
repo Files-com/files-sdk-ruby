@@ -85,7 +85,7 @@ Files::Message.create(
 
 ---
 
-## Create Export Message
+## Create an export CSV of Message resources
 
 ```
 Files::Message.create_export(

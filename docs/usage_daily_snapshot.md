@@ -55,7 +55,7 @@ Files::UsageDailySnapshot.list
 
 ---
 
-## Create Export Usage Daily Snapshot
+## Create an export CSV of Usage Daily Snapshot resources
 
 ```
 Files::UsageDailySnapshot.create_export

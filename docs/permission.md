@@ -80,7 +80,7 @@ Files::Permission.create(
 
 ---
 
-## Create Export Permission
+## Create an export CSV of Permission resources
 
 ```
 Files::Permission.create_export(

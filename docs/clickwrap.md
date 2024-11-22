@@ -73,7 +73,7 @@ Files::Clickwrap.create(
 
 ---
 
-## Create Export Clickwrap
+## Create an export CSV of Clickwrap resources
 
 ```
 Files::Clickwrap.create_export

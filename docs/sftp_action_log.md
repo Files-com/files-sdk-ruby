@@ -69,7 +69,7 @@ Files::SftpActionLog.list
 
 ---
 
-## Create Export SFTP Action Log
+## Create an export CSV of SFTP Action Log resources
 
 ```
 Files::SftpActionLog.create_export

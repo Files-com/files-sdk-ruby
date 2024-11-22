@@ -144,7 +144,7 @@ Files::Notification.create(
 
 ---
 
-## Create Export Notification
+## Create an export CSV of Notification resources
 
 ```
 Files::Notification.create_export(

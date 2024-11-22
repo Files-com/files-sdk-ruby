@@ -60,7 +60,7 @@ Files::GroupUser.create(
 
 ---
 
-## Create Export Group User
+## Create an export CSV of Group User resources
 
 ```
 Files::GroupUser.create_export(

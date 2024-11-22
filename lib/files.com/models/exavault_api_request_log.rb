@@ -92,9 +92,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
 
       response, options = Api.send_request("/exavault_api_request_logs/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
   end
 end

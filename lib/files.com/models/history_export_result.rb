@@ -169,9 +169,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: history_export_id") unless params[:history_export_id]
 
       response, options = Api.send_request("/history_export_results/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
   end
 end

@@ -72,9 +72,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
       response, options = Api.send_request("/settings_changes/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
   end
 end

@@ -232,9 +232,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: as2_partner_id must be an Integer") if params[:as2_partner_id] and !params[:as2_partner_id].is_a?(Integer)
 
       response, options = Api.send_request("/as2_incoming_messages/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
   end
 end

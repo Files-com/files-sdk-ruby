@@ -83,30 +83,22 @@ module Files
 
     def self.smartfile_reserved_create_export(params = {}, options = {})
       response, options = Api.send_request("/ip_addresses/smartfile-reserved/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
 
     def self.exavault_reserved_create_export(params = {}, options = {})
       response, options = Api.send_request("/ip_addresses/exavault-reserved/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
 
     def self.reserved_create_export(params = {}, options = {})
       response, options = Api.send_request("/ip_addresses/reserved/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
 
     def self.create_export(params = {}, options = {})
       response, options = Api.send_request("/ip_addresses/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
   end
 end

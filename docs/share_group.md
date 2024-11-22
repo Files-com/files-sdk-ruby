@@ -78,7 +78,7 @@ Files::ShareGroup.create(
 
 ---
 
-## Create Export Share Group
+## Create an export CSV of Share Group resources
 
 ```
 Files::ShareGroup.create_export(

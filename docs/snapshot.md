@@ -82,7 +82,7 @@ Files::Snapshot.finalize(id)
 
 ---
 
-## Create Export Snapshot
+## Create an export CSV of Snapshot resources
 
 ```
 Files::Snapshot.create_export

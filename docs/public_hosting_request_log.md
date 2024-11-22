@@ -43,7 +43,7 @@ Files::PublicHostingRequestLog.list
 
 ---
 
-## Create Export Public Hosting Request Log
+## Create an export CSV of Public Hosting Request Log resources
 
 ```
 Files::PublicHostingRequestLog.create_export

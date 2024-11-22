@@ -69,7 +69,7 @@ Files::UserRequest.create(
 
 ---
 
-## Create Export User Request
+## Create an export CSV of User Request resources
 
 ```
 Files::UserRequest.create_export

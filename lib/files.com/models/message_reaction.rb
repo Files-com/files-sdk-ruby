@@ -120,9 +120,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: message_id") unless params[:message_id]
 
       response, options = Api.send_request("/message_reactions/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
 
     def self.delete(id, params = {}, options = {})

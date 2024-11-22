@@ -65,7 +65,7 @@ Files::ApiRequestLog.list
 
 ---
 
-## Create Export API Request Log
+## Create an export CSV of API Request Log resources
 
 ```
 Files::ApiRequestLog.create_export

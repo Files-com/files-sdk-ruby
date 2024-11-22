@@ -143,7 +143,7 @@ Files::SsoStrategy.sync(id)
 
 ---
 
-## Create Export SSO Strategy
+## Create an export CSV of SSO Strategy resources
 
 ```
 Files::SsoStrategy.create_export

@@ -67,7 +67,7 @@ Files::BundleRecipient.create(
 
 ---
 
-## Create Export Bundle Recipient
+## Create an export CSV of Bundle Recipient resources
 
 ```
 Files::BundleRecipient.create_export(

@@ -37,7 +37,7 @@ Files::InboxUpload.list
 
 ---
 
-## Create Export Inbox Upload
+## Create an export CSV of Inbox Upload resources
 
 ```
 Files::InboxUpload.create_export

@@ -55,7 +55,7 @@ Files::OutboundConnectionLog.list
 
 ---
 
-## Create Export Outbound Connection Log
+## Create an export CSV of Outbound Connection Log resources
 
 ```
 Files::OutboundConnectionLog.create_export

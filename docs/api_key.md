@@ -106,7 +106,7 @@ Files::ApiKey.create(
 
 ---
 
-## Create Export API Key
+## Create an export CSV of API Key resources
 
 ```
 Files::ApiKey.create_export(

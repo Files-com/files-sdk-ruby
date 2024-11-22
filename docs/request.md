@@ -83,7 +83,7 @@ Files::Request.create(
 
 ---
 
-## Create Export Request
+## Create an export CSV of Request resources
 
 ```
 Files::Request.create_export(

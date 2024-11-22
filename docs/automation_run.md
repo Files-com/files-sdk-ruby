@@ -61,7 +61,7 @@ Files::AutomationRun.find(id)
 
 ---
 
-## Create Export Automation Run
+## Create an export CSV of Automation Run resources
 
 ```
 Files::AutomationRun.create_export(

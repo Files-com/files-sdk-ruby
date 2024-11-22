@@ -201,7 +201,7 @@ Files::SiemHttpDestination.create(
 
 ---
 
-## Create Export SIEM HTTP Destination
+## Create an export CSV of SIEM HTTP Destination resources
 
 ```
 Files::SiemHttpDestination.create_export

@@ -74,7 +74,7 @@ Files::App.list
 
 ---
 
-## Create Export App
+## Create an export CSV of App resources
 
 ```
 Files::App.create_export

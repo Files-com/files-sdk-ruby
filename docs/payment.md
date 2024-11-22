@@ -82,7 +82,7 @@ Files::Payment.find(id)
 
 ---
 
-## Create Export Payment
+## Create an export CSV of Payment resources
 
 ```
 Files::Payment.create_export

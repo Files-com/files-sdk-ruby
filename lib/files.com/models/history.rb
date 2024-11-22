@@ -219,9 +219,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/history/files/#{params[:path]}/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
 
     # Parameters:
@@ -241,9 +239,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/history/folders/#{params[:path]}/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
 
     # Parameters:
@@ -263,9 +259,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
 
       response, options = Api.send_request("/history/users/#{params[:user_id]}/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
 
     # Parameters:
@@ -280,9 +274,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
 
       response, options = Api.send_request("/history/login/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
 
     # Parameters:
@@ -301,9 +293,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
 
       response, options = Api.send_request("/history/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
   end
 end

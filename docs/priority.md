@@ -30,7 +30,7 @@ Files::Priority.list(path)
 
 ---
 
-## Create Export Priority
+## Create an export CSV of Priority resources
 
 ```
 Files::Priority.create_export(path)

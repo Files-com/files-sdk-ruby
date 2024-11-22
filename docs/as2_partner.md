@@ -110,7 +110,7 @@ Files::As2Partner.create(
 
 ---
 
-## Create Export AS2 Partner
+## Create an export CSV of AS2 Partner resources
 
 ```
 Files::As2Partner.create_export

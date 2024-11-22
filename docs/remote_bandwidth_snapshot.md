@@ -41,7 +41,7 @@ Files::RemoteBandwidthSnapshot.list
 
 ---
 
-## Create Export Remote Bandwidth Snapshot
+## Create an export CSV of Remote Bandwidth Snapshot resources
 
 ```
 Files::RemoteBandwidthSnapshot.create_export

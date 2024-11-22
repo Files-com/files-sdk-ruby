@@ -238,7 +238,7 @@ Files::Bundle.create(
 
 ---
 
-## Create Export Bundle
+## Create an export CSV of Bundle resources
 
 ```
 Files::Bundle.create_export(

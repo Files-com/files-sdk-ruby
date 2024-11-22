@@ -82,7 +82,7 @@ Files::Invoice.find(id)
 
 ---
 
-## Create Export Invoice
+## Create an export CSV of Invoice resources
 
 ```
 Files::Invoice.create_export

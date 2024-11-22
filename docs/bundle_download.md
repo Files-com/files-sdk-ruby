@@ -60,7 +60,7 @@ Files::BundleDownload.list(
 
 ---
 
-## Create Export Bundle Download
+## Create an export CSV of Bundle Download resources
 
 ```
 Files::BundleDownload.create_export(

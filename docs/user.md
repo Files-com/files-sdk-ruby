@@ -333,7 +333,7 @@ Files::User.user_2fa_reset(id)
 
 ---
 
-## Create Export User
+## Create an export CSV of User resources
 
 ```
 Files::User.create_export(

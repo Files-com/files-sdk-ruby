@@ -89,9 +89,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: action_notification_export_id") unless params[:action_notification_export_id]
 
       response, options = Api.send_request("/action_notification_export_results/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
   end
 end

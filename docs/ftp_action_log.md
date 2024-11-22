@@ -63,7 +63,7 @@ Files::FtpActionLog.list
 
 ---
 
-## Create Export FTP Action Log
+## Create an export CSV of FTP Action Log resources
 
 ```
 Files::FtpActionLog.create_export

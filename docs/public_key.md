@@ -75,7 +75,7 @@ Files::PublicKey.create(
 
 ---
 
-## Create Export Public Key
+## Create an export CSV of Public Key resources
 
 ```
 Files::PublicKey.create_export(

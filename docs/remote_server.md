@@ -346,7 +346,7 @@ Files::RemoteServer.configuration_file(id,
 
 ---
 
-## Create Export Remote Server
+## Create an export CSV of Remote Server resources
 
 ```
 Files::RemoteServer.create_export

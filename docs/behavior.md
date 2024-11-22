@@ -136,7 +136,7 @@ Files::Behavior.webhook_test(
 
 ---
 
-## Create Export Behavior
+## Create an export CSV of Behavior resources
 
 ```
 Files::Behavior.create_export

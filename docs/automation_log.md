@@ -45,7 +45,7 @@ Files::AutomationLog.list
 
 ---
 
-## Create Export Automation Log
+## Create an export CSV of Automation Log resources
 
 ```
 Files::AutomationLog.create_export

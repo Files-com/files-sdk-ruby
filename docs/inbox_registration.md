@@ -54,7 +54,7 @@ Files::InboxRegistration.list(
 
 ---
 
-## Create Export Inbox Registration
+## Create an export CSV of Inbox Registration resources
 
 ```
 Files::InboxRegistration.create_export(

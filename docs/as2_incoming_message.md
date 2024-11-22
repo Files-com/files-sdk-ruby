@@ -108,7 +108,7 @@ Files::As2IncomingMessage.list(
 
 ---
 
-## Create Export AS2 Incoming Message
+## Create an export CSV of AS2 Incoming Message resources
 
 ```
 Files::As2IncomingMessage.create_export(

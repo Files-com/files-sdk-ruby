@@ -56,7 +56,7 @@ Files::BundleRegistration.list(
 
 ---
 
-## Create Export Bundle Registration
+## Create an export CSV of Bundle Registration resources
 
 ```
 Files::BundleRegistration.create_export(

@@ -71,7 +71,7 @@ Files::BundleNotification.create(
 
 ---
 
-## Create Export Bundle Notification
+## Create an export CSV of Bundle Notification resources
 
 ```
 Files::BundleNotification.create_export

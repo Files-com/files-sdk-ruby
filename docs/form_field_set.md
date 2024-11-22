@@ -101,7 +101,7 @@ Files::FormFieldSet.create(
 
 ---
 
-## Create Export Form Field Set
+## Create an export CSV of Form Field Set resources
 
 ```
 Files::FormFieldSet.create_export(

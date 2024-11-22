@@ -651,9 +651,7 @@ module Files
 
     def self.create_export(params = {}, options = {})
       response, options = Api.send_request("/siem_http_destinations/create_export", :post, params, options)
-      response.data.map do |entity_data|
-        Export.new(entity_data, options)
-      end
+      Export.new(response.data, options)
     end
 
     # Parameters:

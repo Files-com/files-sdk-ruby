@@ -60,7 +60,7 @@ Files::Export.find(id)
 
 ---
 
-## Create Export Export
+## Create an export CSV of Export resources
 
 ```
 Files::Export.create(

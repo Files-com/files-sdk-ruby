@@ -63,7 +63,7 @@ Files::SftpHostKey.create(
 
 ---
 
-## Create Export SFTP Host Key
+## Create an export CSV of SFTP Host Key resources
 
 ```
 Files::SftpHostKey.create_export

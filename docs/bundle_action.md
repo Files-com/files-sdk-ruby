@@ -59,7 +59,7 @@ Files::BundleAction.list
 
 ---
 
-## Create Export Bundle Action
+## Create an export CSV of Bundle Action resources
 
 ```
 Files::BundleAction.create_export
