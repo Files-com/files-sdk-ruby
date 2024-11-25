@@ -121,7 +121,7 @@ Files::Folder.list_for(path,
 
 ---
 
-## Create folder
+## Create Folder
 
 ```
 Files::Folder.create(path, 

@@ -315,7 +315,7 @@ module Files
       @attributes[:webhook_url] = value
     end
 
-    # Manually run automation
+    # Manually Run Automation
     def manual_run(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -510,7 +510,7 @@ module Files
       Automation.new(response.data, options)
     end
 
-    # Manually run automation
+    # Manually Run Automation
     def self.manual_run(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

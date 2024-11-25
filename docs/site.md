@@ -472,7 +472,7 @@
 
 ---
 
-## Show site settings
+## Show Site Settings
 
 ```
 Files::Site.get
@@ -490,7 +490,7 @@ Files::Site.get_usage
 
 ---
 
-## Update site settings
+## Update Site Settings
 
 ```
 Files::Site.update(

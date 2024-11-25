@@ -101,7 +101,7 @@ may places where a Ruby File object can be used.
 
 ---
 
-## Download file
+## Download File
 
 ```
 Files::File.download(path, 
@@ -121,7 +121,7 @@ Files::File.download(path,
 
 ---
 
-## Upload file
+## Upload File
 
 ```
 Files::File.create(path, 
@@ -156,7 +156,7 @@ Files::File.create(path,
 
 ---
 
-## Update file/folder metadata
+## Update File/Folder Metadata
 
 ```
 Files::File.update(path, 
@@ -176,7 +176,7 @@ Files::File.update(path,
 
 ---
 
-## Delete file/folder
+## Delete File/Folder
 
 ```
 Files::File.delete(path, 
@@ -192,7 +192,7 @@ Files::File.delete(path,
 
 ---
 
-## Find file/folder by path
+## Find File/Folder by Path
 
 ```
 Files::File.find(path, 
@@ -211,7 +211,7 @@ Files::File.find(path,
 
 ---
 
-## Copy file/folder
+## Copy File/Folder
 
 ```
 Files::File.copy(path, 
@@ -231,7 +231,7 @@ Files::File.copy(path,
 
 ---
 
-## Move file/folder
+## Move File/Folder
 
 ```
 Files::File.move(path, 
@@ -277,7 +277,7 @@ Files::File.begin_upload(path,
 
 ---
 
-## Download file
+## Download File
 
 ```
 file = Files::File.find(path)
@@ -299,7 +299,7 @@ file.download(
 
 ---
 
-## Update file/folder metadata
+## Update File/Folder Metadata
 
 ```
 file = Files::File.find(path)
@@ -321,7 +321,7 @@ file.update(
 
 ---
 
-## Delete file/folder
+## Delete File/Folder
 
 ```
 file = Files::File.find(path)
@@ -339,7 +339,7 @@ file.delete(
 
 ---
 
-## Copy file/folder
+## Copy File/Folder
 
 ```
 file = Files::File.find(path)
@@ -361,7 +361,7 @@ file.copy(
 
 ---
 
-## Move file/folder
+## Move File/Folder
 
 ```
 file = Files::File.find(path)

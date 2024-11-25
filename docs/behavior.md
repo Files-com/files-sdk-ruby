@@ -112,7 +112,7 @@ Files::Behavior.create(
 
 ---
 
-## Test webhook
+## Test Webhook
 
 ```
 Files::Behavior.webhook_test(

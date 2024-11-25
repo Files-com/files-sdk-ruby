@@ -201,7 +201,7 @@ Files::Automation.create(
 
 ---
 
-## Manually run automation
+## Manually Run Automation
 
 ```
 Files::Automation.manual_run(id)
@@ -295,7 +295,7 @@ Files::Automation.delete(id)
 
 ---
 
-## Manually run automation
+## Manually Run Automation
 
 ```
 automation = Files::Automation.find(id)

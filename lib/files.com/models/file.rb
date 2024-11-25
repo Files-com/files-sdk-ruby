@@ -958,7 +958,7 @@ module Files
       @attributes[:with_rename] = value
     end
 
-    # Download file
+    # Download File
     #
     # Parameters:
     #   action - string - Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
@@ -1010,7 +1010,7 @@ module Files
       nil
     end
 
-    # Copy file/folder
+    # Copy File/Folder
     #
     # Parameters:
     #   destination (required) - string - Copy destination path.
@@ -1028,7 +1028,7 @@ module Files
       Api.send_request("/file_actions/copy/#{@attributes[:path]}", :post, params, @options)
     end
 
-    # Move file/folder
+    # Move File/Folder
     #
     # Parameters:
     #   destination (required) - string - Move destination path.
@@ -1076,7 +1076,7 @@ module Files
       true
     end
 
-    # Download file
+    # Download File
     #
     # Parameters:
     #   action - string - Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
@@ -1183,7 +1183,7 @@ module Files
       find(path, params, options)
     end
 
-    # Copy file/folder
+    # Copy File/Folder
     #
     # Parameters:
     #   destination (required) - string - Copy destination path.
@@ -1201,7 +1201,7 @@ module Files
       FileAction.new(response.data, options)
     end
 
-    # Move file/folder
+    # Move File/Folder
     #
     # Parameters:
     #   destination (required) - string - Move destination path.
