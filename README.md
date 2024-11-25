@@ -519,26 +519,18 @@ A README is available on the GitHub link.
 
 ## File/Folder Operations
 
-### File Operations
-
 The Files::File and Files::Dir models implement the standard Ruby API
 for File and Dir, respectively.  (Note that the Files.com SDK uses the
 word Folder, not Dir, and Files::Dir is simply an alias for
 Files::Folder).
 
-#### List Root Folder
+### Upload
 
 ```ruby
-Files::Folder.list_for("/").each do |file|
-  puts file.path
-end
-```
-
-#### Writing a File
-
-```ruby
+## Upload a file on disk.
 Files::upload_file("local.txt", "/remote.txt")
 
+## Upload raw file data.
 File.open("local.txt") do |local_file|
   Files::File.open("remote.txt", "w") do |remote_file|
     remote_file.write(local_file.read)
@@ -546,8 +538,16 @@ File.open("local.txt") do |local_file|
 end
 ```
 
-#### Reading a File
+### Download
 
 ```ruby
 Files::File.find("foo.txt").read
+```
+
+### List
+
+```ruby
+Files::Folder.list_for("/").each do |file|
+  puts file.path
+end
 ```
