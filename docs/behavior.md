@@ -63,7 +63,7 @@ Files::Behavior.find(id)
 
 ---
 
-## List Behaviors by path
+## List Behaviors by Path
 
 ```
 Files::Behavior.list_for(path, 

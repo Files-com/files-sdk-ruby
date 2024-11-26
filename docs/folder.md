@@ -95,7 +95,7 @@ Files::Dir is an alias of Files::Folder
 
 ---
 
-## List Folders by path
+## List Folders by Path
 
 ```
 Files::Folder.list_for(path, 
