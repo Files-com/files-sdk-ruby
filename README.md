@@ -499,6 +499,89 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`TrialLockedError`|  `SiteConfigurationError` |
 |`UserRequestsEnabledRequiredError`|  `SiteConfigurationError` |
 
+## Examples
+
+The Files::File and Files::Dir models implement the standard Ruby API
+for File and Dir, respectively.  (Note that the Files.com SDK uses the
+word Folder, not Dir, and Files::Dir is simply an alias for
+Files::Folder).
+
+### Upload
+
+#### Upload a File
+
+```ruby
+Files::File.upload_file("local.txt", "remote.txt")
+```
+
+#### Upload Raw File Data
+
+```ruby
+File.open("local.txt") do |local_file|
+  Files::File.open("remote.txt", "w") do |remote_file|
+    remote_file.write(local_file.read)
+  end
+end
+```
+
+#### Create a Folder
+
+```ruby
+Files::Folder.create("path/to/folder/to/be/created",
+  mkdir_parents: true
+)
+```
+
+### Download
+
+#### Download a File
+
+```ruby
+Files::File.download_file("remote.txt", "local.txt")
+```
+
+### List
+
+#### List Folder Contents
+
+```ruby
+Files::Folder.list_for("remote/path/to/folder/").each do |file|
+  puts file.path
+end
+```
+
+### Copy
+
+The copy method works for both files and folders.
+
+```ruby
+file = Files::File.new("source/path")
+file.copy(destination: "destination/path")
+```
+
+### Move
+
+The move method works for both files and folders.
+
+```ruby
+file = Files::File.new("source/path")
+file.move(destination: "destination/path")
+```
+
+### Delete
+
+The delete method works for both files and folders.
+
+```ruby
+Files::File.delete("path/to/file/or/folder")
+```
+
+In case the folder is not empty, you can use the `recursive` argument:
+
+```ruby
+Files::File.delete("path/to/folder", recursive: true)
+```
+
 ## Mock Server
 
 Files.com publishes a Files.com API server, which is useful for testing your use of the Files.com
@@ -516,38 +599,3 @@ Download the server as a Docker image via [Docker Hub](https://hub.docker.com/r/
 The Source Code is also available on [GitHub](https://github.com/Files-com/files-mock-server).
 
 A README is available on the GitHub link.
-
-## File/Folder Operations
-
-The Files::File and Files::Dir models implement the standard Ruby API
-for File and Dir, respectively.  (Note that the Files.com SDK uses the
-word Folder, not Dir, and Files::Dir is simply an alias for
-Files::Folder).
-
-### Upload
-
-```ruby
-## Upload a file on disk.
-Files::upload_file("local.txt", "/remote.txt")
-
-## Upload raw file data.
-File.open("local.txt") do |local_file|
-  Files::File.open("remote.txt", "w") do |remote_file|
-    remote_file.write(local_file.read)
-  end
-end
-```
-
-### Download
-
-```ruby
-Files::File.find("foo.txt").read
-```
-
-### List
-
-```ruby
-Files::Folder.list_for("/").each do |file|
-  puts file.path
-end
-```
