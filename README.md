@@ -345,6 +345,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`InvalidFilterAliasCombinationError`|  `BadRequestError` |
 |`InvalidFilterFieldError`|  `BadRequestError` |
 |`InvalidFilterParamError`|  `BadRequestError` |
+|`InvalidFilterParamFormatError`|  `BadRequestError` |
 |`InvalidFilterParamValueError`|  `BadRequestError` |
 |`InvalidInputEncodingError`|  `BadRequestError` |
 |`InvalidInterfaceError`|  `BadRequestError` |

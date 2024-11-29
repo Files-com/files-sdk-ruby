@@ -61,6 +61,7 @@ module Files
   class InvalidFilterAliasCombinationError < BadRequestError; end
   class InvalidFilterFieldError < BadRequestError; end
   class InvalidFilterParamError < BadRequestError; end
+  class InvalidFilterParamFormatError < BadRequestError; end
   class InvalidFilterParamValueError < BadRequestError; end
   class InvalidInputEncodingError < BadRequestError; end
   class InvalidInterfaceError < BadRequestError; end
