@@ -38,6 +38,10 @@ The Files.com gem requires Ruby 3+.
 Ruby 2.x is now considered end-of-life by the Ruby project. As a policy, Files.com does not support integrations which are considered end-of-life by their vendor.
 
 Explore the [files-sdk-ruby](https://github.com/Files-com/files-sdk-ruby) code on GitHub.
+The Files::File and Files::Dir models implement the standard Ruby API
+for File and Dir, respectively.  (Note that the Files.com SDK uses the
+word Folder, not Dir, and Files::Dir is simply an alias for
+Files::Folder).
 
 ### Getting Support
 
@@ -504,89 +508,6 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 
 The Files.com API compares files and paths in a case-insensitive manner.
  For related documentation see [Case Sensitivity Documentation](https://www.files.com/docs/files-and-folders/file-system-semantics/case-sensitivity).
-
-## Examples
-
-The Files::File and Files::Dir models implement the standard Ruby API
-for File and Dir, respectively.  (Note that the Files.com SDK uses the
-word Folder, not Dir, and Files::Dir is simply an alias for
-Files::Folder).
-
-### Upload
-
-#### Upload a File
-
-```ruby
-Files::File.upload_file("local.txt", "remote.txt")
-```
-
-#### Upload Raw File Data
-
-```ruby
-File.open("local.txt") do |local_file|
-  Files::File.open("remote.txt", "w") do |remote_file|
-    remote_file.write(local_file.read)
-  end
-end
-```
-
-#### Create a Folder
-
-```ruby
-Files::Folder.create("path/to/folder/to/be/created",
-  mkdir_parents: true
-)
-```
-
-### Download
-
-#### Download a File
-
-```ruby
-Files::File.download_file("remote.txt", "local.txt")
-```
-
-### List
-
-#### List Folder Contents
-
-```ruby
-Files::Folder.list_for("remote/path/to/folder/").each do |file|
-  puts file.path
-end
-```
-
-### Copy
-
-The copy method works for both files and folders.
-
-```ruby
-file = Files::File.new("source/path")
-file.copy(destination: "destination/path")
-```
-
-### Move
-
-The move method works for both files and folders.
-
-```ruby
-file = Files::File.new("source/path")
-file.move(destination: "destination/path")
-```
-
-### Delete
-
-The delete method works for both files and folders.
-
-```ruby
-Files::File.delete("path/to/file/or/folder")
-```
-
-In case the folder is not empty, you can use the `recursive` argument:
-
-```ruby
-Files::File.delete("path/to/folder", recursive: true)
-```
 
 ## Mock Server
 
