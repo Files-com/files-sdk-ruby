@@ -500,6 +500,11 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`TrialLockedError`|  `SiteConfigurationError` |
 |`UserRequestsEnabledRequiredError`|  `SiteConfigurationError` |
 
+## Case Sensitivity
+
+The Files.com API compares files and paths in a case-insensitive manner.
+ For related documentation see [Case Sensitivity Documentation](https://www.files.com/docs/files-and-folders/file-system-semantics/case-sensitivity).
+
 ## Examples
 
 The Files::File and Files::Dir models implement the standard Ruby API
