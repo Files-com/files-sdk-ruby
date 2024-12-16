@@ -244,6 +244,11 @@ module Files
       @attributes[:dav_user_root_enabled]
     end
 
+    # int64 - Number of days to keep disabled users before deleting them. If set to 0, disabled users will not be deleted.
+    def days_before_deleting_disabled_users
+      @attributes[:days_before_deleting_disabled_users]
+    end
+
     # int64 - Number of days to keep deleted files
     def days_to_retain_backups
       @attributes[:days_to_retain_backups]
@@ -916,6 +921,7 @@ module Files
     #   allowed_countries - string - Comma separated list of allowed Country codes
     #   allowed_ips - string - List of allowed IP addresses
     #   disallowed_countries - string - Comma separated list of disallowed Country codes
+    #   days_before_deleting_disabled_users - int64 - Number of days to keep disabled users before deleting them. If set to 0, disabled users will not be deleted.
     #   days_to_retain_backups - int64 - Number of days to keep deleted files
     #   max_prior_passwords - int64 - Number of prior passwords to disallow
     #   password_validity_days - int64 - Number of days password is valid
@@ -1049,6 +1055,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: allowed_countries must be an String") if params[:allowed_countries] and !params[:allowed_countries].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: disallowed_countries must be an String") if params[:disallowed_countries] and !params[:disallowed_countries].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: days_before_deleting_disabled_users must be an Integer") if params[:days_before_deleting_disabled_users] and !params[:days_before_deleting_disabled_users].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: days_to_retain_backups must be an Integer") if params[:days_to_retain_backups] and !params[:days_to_retain_backups].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_prior_passwords must be an Integer") if params[:max_prior_passwords] and !params[:max_prior_passwords].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
