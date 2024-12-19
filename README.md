@@ -166,7 +166,7 @@ Files.open_timeout = 60
 
 #### Read Timeout
 
-Read timeout in seconds. The default value is 80.
+Read timeout in seconds. The default value is 60.
 
 ```ruby title="Example setting"
 Files.read_timeout = 90
