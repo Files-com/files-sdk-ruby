@@ -67,7 +67,7 @@ Files::Behavior.find(id)
 
 ```
 Files::Behavior.list_for(path, 
-  ancestor_behaviors: true
+  ancestor_behaviors: false
 )
 ```
 
@@ -89,8 +89,8 @@ Files::Behavior.list_for(path,
 ```
 Files::Behavior.create(
   value: "{\"method\": \"GET\"}", 
-  disable_parent_folder_behavior: true, 
-  recursive: true, 
+  disable_parent_folder_behavior: false, 
+  recursive: false, 
   name: "example", 
   description: "example", 
   path: "path", 
@@ -141,11 +141,11 @@ Files::Behavior.webhook_test(
 ```
 Files::Behavior.update(id, 
   value: "{\"method\": \"GET\"}", 
-  disable_parent_folder_behavior: true, 
-  recursive: true, 
+  disable_parent_folder_behavior: false, 
+  recursive: false, 
   name: "example", 
   description: "example", 
-  attachment_delete: true
+  attachment_delete: false
 )
 ```
 
@@ -183,11 +183,11 @@ behavior = Files::Behavior.find(id)
 
 behavior.update(
   value: "{\"method\": \"GET\"}",
-  disable_parent_folder_behavior: true,
-  recursive: true,
+  disable_parent_folder_behavior: false,
+  recursive: false,
   name: "example",
   description: "example",
-  attachment_delete: true
+  attachment_delete: false
 )
 ```
 

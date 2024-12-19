@@ -39,7 +39,7 @@
 
 ```
 Files::Lock.list_for(path, 
-  include_children: true
+  include_children: false
 )
 ```
 
@@ -57,8 +57,8 @@ Files::Lock.list_for(path,
 
 ```
 Files::Lock.create(path, 
-  allow_access_by_any_user: true, 
-  exclusive: true, 
+  allow_access_by_any_user: false, 
+  exclusive: false, 
   recursive: true, 
   timeout: 1
 )

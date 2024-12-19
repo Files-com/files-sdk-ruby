@@ -39,7 +39,7 @@
 
 ```
 Files::Group.list(
-  include_parent_site_groups: true
+  include_parent_site_groups: false
 )
 ```
 

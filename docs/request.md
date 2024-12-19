@@ -29,7 +29,7 @@
 
 ```
 Files::Request.list(
-  mine: true, 
+  mine: false, 
   path: "example"
 )
 ```
@@ -49,7 +49,7 @@ Files::Request.list(
 
 ```
 Files::Request.get_folder(path, 
-  mine: true
+  mine: false
 )
 ```
 

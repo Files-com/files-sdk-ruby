@@ -47,7 +47,7 @@ Files::GroupUser.list(
 Files::GroupUser.create(
   group_id: 1, 
   user_id: 1, 
-  admin: true
+  admin: false
 )
 ```
 
@@ -66,7 +66,7 @@ Files::GroupUser.create(
 Files::GroupUser.update(id, 
   group_id: 1, 
   user_id: 1, 
-  admin: true
+  admin: false
 )
 ```
 
@@ -106,7 +106,7 @@ group_user = Files::GroupUser.list.first
 group_user.update(
   group_id: 1,
   user_id: 1,
-  admin: true
+  admin: false
 )
 ```
 

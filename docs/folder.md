@@ -100,9 +100,9 @@ Files::Dir is an alias of Files::Folder
 ```
 Files::Folder.list_for(path, 
   search: "some-partial-filename", 
-  search_all: true, 
-  with_previews: true, 
-  with_priority_color: true
+  search_all: false, 
+  with_previews: false, 
+  with_priority_color: false
 )
 ```
 
@@ -125,7 +125,7 @@ Files::Folder.list_for(path,
 
 ```
 Files::Folder.create(path, 
-  mkdir_parents: true, 
+  mkdir_parents: false, 
   provided_mtime: "2000-01-01T01:00:00Z"
 )
 ```

@@ -66,7 +66,7 @@
 
 ```
 Files::Notification.list(
-  include_ancestors: true, 
+  include_ancestors: false, 
   group_id: 1
 )
 ```
@@ -103,13 +103,13 @@ Files::Notification.find(id)
 ```
 Files::Notification.create(
   user_id: 1, 
-  notify_on_copy: true, 
+  notify_on_copy: false, 
   notify_on_delete: true, 
   notify_on_download: true, 
   notify_on_move: true, 
   notify_on_upload: true, 
-  notify_user_actions: true, 
-  recursive: true, 
+  notify_user_actions: false, 
+  recursive: false, 
   send_interval: "daily", 
   message: "custom notification email message", 
   triggering_filenames: ["*.jpg","notify_file.txt"], 
@@ -148,13 +148,13 @@ Files::Notification.create(
 
 ```
 Files::Notification.update(id, 
-  notify_on_copy: true, 
+  notify_on_copy: false, 
   notify_on_delete: true, 
   notify_on_download: true, 
   notify_on_move: true, 
   notify_on_upload: true, 
-  notify_user_actions: true, 
-  recursive: true, 
+  notify_user_actions: false, 
+  recursive: false, 
   send_interval: "daily", 
   message: "custom notification email message", 
   triggering_filenames: ["*.jpg","notify_file.txt"], 
@@ -203,13 +203,13 @@ Files::Notification.delete(id)
 notification = Files::Notification.find(id)
 
 notification.update(
-  notify_on_copy: true,
+  notify_on_copy: false,
   notify_on_delete: true,
   notify_on_download: true,
   notify_on_move: true,
   notify_on_upload: true,
-  notify_user_actions: true,
-  recursive: true,
+  notify_user_actions: false,
+  recursive: false,
   send_interval: "daily",
   message: "custom notification email message",
   triggering_filenames: ["*.jpg","notify_file.txt"],
