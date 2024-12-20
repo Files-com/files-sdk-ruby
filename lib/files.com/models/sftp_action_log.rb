@@ -99,6 +99,11 @@ module Files
       @attributes[:data_length]
     end
 
+    # int64 - The number of bytes transferred for uploads and downloads.
+    def bytes_transferred
+      @attributes[:bytes_transferred]
+    end
+
     # int64 - Number of entries returned when listing files and folders
     def entries_returned
       @attributes[:entries_returned]
