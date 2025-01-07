@@ -170,6 +170,7 @@ module Files
   class DestinationFolderLimitedError < ProcessingFailureError; end
   class DestinationParentConflictError < ProcessingFailureError; end
   class DestinationParentDoesNotExistError < ProcessingFailureError; end
+  class ExceededRuntimeLimitError < ProcessingFailureError; end
   class ExpiredPrivateKeyError < ProcessingFailureError; end
   class ExpiredPublicKeyError < ProcessingFailureError; end
   class ExportFailureError < ProcessingFailureError; end

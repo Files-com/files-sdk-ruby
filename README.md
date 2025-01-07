@@ -454,6 +454,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`DestinationFolderLimitedError`|  `ProcessingFailureError` |
 |`DestinationParentConflictError`|  `ProcessingFailureError` |
 |`DestinationParentDoesNotExistError`|  `ProcessingFailureError` |
+|`ExceededRuntimeLimitError`|  `ProcessingFailureError` |
 |`ExpiredPrivateKeyError`|  `ProcessingFailureError` |
 |`ExpiredPublicKeyError`|  `ProcessingFailureError` |
 |`ExportFailureError`|  `ProcessingFailureError` |
