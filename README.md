@@ -217,7 +217,6 @@ of either ```"asc"``` or ```"desc"``` to specify the sort order.
 
 ```ruby title="Sort Example"
 ## users sorted by username
-Files.api_key = 'YOUR_API_KEY'
 Files::User.list(
   sort_by: { "username": "asc"}
 )
@@ -248,7 +247,6 @@ and a passed in value to use in the filter comparison.
 
 ```ruby title="Exact Filter Example"
 ## non admin users
-Files.api_key = 'YOUR_API_KEY'
 Files::User.list(
   filter: { not_site_admin: true }
 )
@@ -256,7 +254,6 @@ Files::User.list(
 
 ```ruby title="Range Filter Example"
 ## users who haven't logged in since 2024-01-01
-Files.api_key = 'YOUR_API_KEY'
 Files::User.list(
   filter_gteq: { "last_login_at": "2024-01-01" }
 )
@@ -264,7 +261,6 @@ Files::User.list(
 
 ```ruby title="Pattern Filter Example"
 ## users whose usernames start with 'test'
-Files.api_key = 'YOUR_API_KEY'
 Files::User.list(
   filter_pre: { username: "test" }
 )
@@ -272,7 +268,6 @@ Files::User.list(
 
 ```ruby title="Combination Filter with Sort Example"
 ## users whose usernames start with 'test' and are not admins
-Files.api_key = 'YOUR_API_KEY'
 Files::User.list(
   filter_prefix: { username: "test" },
   filter: { not_site_admin: true },
