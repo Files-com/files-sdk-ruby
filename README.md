@@ -69,8 +69,14 @@ that user can access, and no access will be granted to site administration funct
 ```ruby title="Example Request"
 Files.api_key = 'YOUR_API_KEY'
 
-## Alternatively, you can specify the API key on a per-request basis in the final parameter to any method or initializer.
-Files::User.new(params, api_key: 'YOUR_API_KEY')
+begin
+  # Alternatively, you can specify the API key on a per-request basis in the final parameter to any method or initializer.
+  Files::User.new(params, api_key: 'YOUR_API_KEY')
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
 ```
 
 Don't forget to replace the placeholder, `YOUR_API_KEY`, with your actual API key.
@@ -95,7 +101,13 @@ password.
 This returns a session object that can be used to authenticate SDK method calls.
 
 ```ruby title="Example Request"
-session = Files::Session.create(username: "username", password: "password")
+begin
+  session = Files::Session.create(username: "username", password: "password")
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
 ```
 
 #### Using a Session
@@ -104,14 +116,19 @@ Once a session has been created, you can store the session globally, use the ses
 
 ```ruby title="Example Requests"
 ## You may set the returned session to be used by default for subsequent requests.
-Files.session = Files::Session.create(username: "username", password: "password")
+Files.session = session
 
-## Alternatively, you can specify the session ID on a per-object basis in the second parameter to a model constructor.
-user = Files::User.new(params, session_id: session.id)
+begin
+  # Alternatively, you can specify the session ID on a per-object basis in the second parameter to a model constructor.
+  user = Files::User.new(params, session_id: session.id)
 
-## You may also specify the session ID on a per-request basis in the final parameter to static methods.
-Files::Group.list({}, session_id: session.id)
-
+  # You may also specify the session ID on a per-request basis in the final parameter to static methods.
+  Files::Group.list({}, session_id: session.id)
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
 ```
 
 #### Logging Out
@@ -119,7 +136,13 @@ Files::Group.list({}, session_id: session.id)
 User sessions can be ended calling the `destroy` method on the `session` object.
 
 ```ruby title="Example Request"
-session.destroy()
+begin
+  session.destroy()
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
 ```
 
 ## Configuration
@@ -216,10 +239,16 @@ The argument value is a Ruby hash that has a key of the resource field name to s
 of either ```"asc"``` or ```"desc"``` to specify the sort order.
 
 ```ruby title="Sort Example"
-## users sorted by username
-Files::User.list(
-  sort_by: { "username": "asc"}
-)
+begin
+  # users sorted by username
+  Files::User.list(
+    sort_by: { "username": "asc" }
+  )
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
 ```
 
 ### Filtering
@@ -246,33 +275,57 @@ and a passed in value to use in the filter comparison.
 | `filter_lteq` | Range | Find resources that have a field value that is less than or equal to the passed in value.  (i.e., FIELD_VALUE \<= PASS_IN_VALUE). |
 
 ```ruby title="Exact Filter Example"
-## non admin users
-Files::User.list(
-  filter: { not_site_admin: true }
-)
+begin
+  # non admin users
+  Files::User.list(
+    filter: { not_site_admin: true }
+  )
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
 ```
 
 ```ruby title="Range Filter Example"
-## users who haven't logged in since 2024-01-01
-Files::User.list(
-  filter_gteq: { "last_login_at": "2024-01-01" }
-)
+begin
+  # users who haven't logged in since 2024-01-01
+  Files::User.list(
+    filter_gteq: { "last_login_at": "2024-01-01" }
+  )
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
 ```
 
 ```ruby title="Pattern Filter Example"
-## users whose usernames start with 'test'
-Files::User.list(
-  filter_pre: { username: "test" }
-)
+begin
+  # users whose usernames start with 'test'
+  Files::User.list(
+    filter_pre: { username: "test" }
+  )
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
 ```
 
 ```ruby title="Combination Filter with Sort Example"
-## users whose usernames start with 'test' and are not admins
-Files::User.list(
-  filter_prefix: { username: "test" },
-  filter: { not_site_admin: true },
-  sort_by: { "username": "asc"}
-)
+begin
+  # users whose usernames start with 'test' and are not admins
+  Files::User.list(
+    filter_prefix: { username: "test" },
+    filter: { not_site_admin: true },
+    sort_by: { "username": "asc" }
+  )
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
 ```
 
 ## Errors
@@ -296,9 +349,9 @@ rescue for general `Files::Error` as a catch-all.
 begin
   session = Files::Session.create(username: "USERNAME", password: "BADPASSWORD")
 rescue Files::NotAuthenticatedError => e
-  puts "An Authentication Error has occurred (#{e.class.to_s}): " + e.message
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
 rescue Files::Error => e
-  puts "An Unknown Error has occurred (#{e.class.to_s}): " + e.message
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
 end
 ```
 
