@@ -342,6 +342,15 @@ module Files
       @attributes[:azure_files_storage_share_name] = value
     end
 
+    # string - Custom DNS suffix
+    def azure_files_storage_dns_suffix
+      @attributes[:azure_files_storage_dns_suffix]
+    end
+
+    def azure_files_storage_dns_suffix=(value)
+      @attributes[:azure_files_storage_dns_suffix] = value
+    end
+
     # string - S3-compatible Bucket name
     def s3_compatible_bucket
       @attributes[:s3_compatible_bucket]
@@ -763,6 +772,7 @@ module Files
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   azure_files_storage_account - string - Azure File Storage Account name
     #   azure_files_storage_share_name - string - Azure File Storage Share name
+    #   azure_files_storage_dns_suffix - string - Custom DNS suffix
     #   azure_files_storage_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
@@ -830,6 +840,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params[:azure_files_storage_sas_token] and !params[:azure_files_storage_sas_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
@@ -975,6 +986,7 @@ module Files
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   azure_files_storage_account - string - Azure File Storage Account name
     #   azure_files_storage_share_name - string - Azure File Storage Share name
+    #   azure_files_storage_dns_suffix - string - Custom DNS suffix
     #   azure_files_storage_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
@@ -1038,6 +1050,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params[:azure_files_storage_sas_token] and !params[:azure_files_storage_sas_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
@@ -1142,6 +1155,7 @@ module Files
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
     #   azure_files_storage_account - string - Azure File Storage Account name
     #   azure_files_storage_share_name - string - Azure File Storage Share name
+    #   azure_files_storage_dns_suffix - string - Custom DNS suffix
     #   azure_files_storage_sas_token - string - Shared Access Signature (SAS) token
     #   s3_compatible_bucket - string - S3-compatible Bucket name
     #   s3_compatible_endpoint - string - S3-compatible endpoint
@@ -1208,6 +1222,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params[:azure_files_storage_sas_token] and !params[:azure_files_storage_sas_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
