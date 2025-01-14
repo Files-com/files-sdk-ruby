@@ -207,6 +207,24 @@ module Files
       @attributes[:recurring_day] = value
     end
 
+    # int64 - If the Automation fails, retry at this interval (in minutes).
+    def retry_on_failure_interval_in_minutes
+      @attributes[:retry_on_failure_interval_in_minutes]
+    end
+
+    def retry_on_failure_interval_in_minutes=(value)
+      @attributes[:retry_on_failure_interval_in_minutes] = value
+    end
+
+    # int64 - If the Automation fails, retry at most this many times.
+    def retry_on_failure_number_of_attempts
+      @attributes[:retry_on_failure_number_of_attempts]
+    end
+
+    def retry_on_failure_number_of_attempts=(value)
+      @attributes[:retry_on_failure_number_of_attempts] = value
+    end
+
     # object - If trigger is `custom_schedule`, Custom schedule description for when the automation should be run in json format.
     def schedule
       @attributes[:schedule]
@@ -359,6 +377,8 @@ module Files
     #   name - string - Name for this automation.
     #   overwrite_files - boolean - If true, existing files will be overwritten with new files on Move/Copy automations.  Note: by default files will not be overwritten if they appear to be the same file size as the newly incoming file.  Use the `:always_overwrite_size_matching_files` option to override this.
     #   path_time_zone - string - Timezone to use when rendering timestamps in paths.
+    #   retry_on_failure_interval_in_minutes - int64 - If the Automation fails, retry at this interval (in minutes).
+    #   retry_on_failure_number_of_attempts - int64 - If the Automation fails, retry at most this many times.
     #   trigger - string - How this automation is triggered to run.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
@@ -386,6 +406,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: import_urls must be an Array") if params[:import_urls] and !params[:import_urls].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_time_zone must be an String") if params[:path_time_zone] and !params[:path_time_zone].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: retry_on_failure_interval_in_minutes must be an Integer") if params[:retry_on_failure_interval_in_minutes] and !params[:retry_on_failure_interval_in_minutes].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: retry_on_failure_number_of_attempts must be an Integer") if params[:retry_on_failure_number_of_attempts] and !params[:retry_on_failure_number_of_attempts].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params[:trigger_actions] and !params[:trigger_actions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
@@ -489,6 +511,8 @@ module Files
     #   name - string - Name for this automation.
     #   overwrite_files - boolean - If true, existing files will be overwritten with new files on Move/Copy automations.  Note: by default files will not be overwritten if they appear to be the same file size as the newly incoming file.  Use the `:always_overwrite_size_matching_files` option to override this.
     #   path_time_zone - string - Timezone to use when rendering timestamps in paths.
+    #   retry_on_failure_interval_in_minutes - int64 - If the Automation fails, retry at this interval (in minutes).
+    #   retry_on_failure_number_of_attempts - int64 - If the Automation fails, retry at most this many times.
     #   trigger - string - How this automation is triggered to run.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
@@ -512,6 +536,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: import_urls must be an Array") if params[:import_urls] and !params[:import_urls].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_time_zone must be an String") if params[:path_time_zone] and !params[:path_time_zone].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: retry_on_failure_interval_in_minutes must be an Integer") if params[:retry_on_failure_interval_in_minutes] and !params[:retry_on_failure_interval_in_minutes].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: retry_on_failure_number_of_attempts must be an Integer") if params[:retry_on_failure_number_of_attempts] and !params[:retry_on_failure_number_of_attempts].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params[:trigger_actions] and !params[:trigger_actions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
@@ -558,6 +584,8 @@ module Files
     #   name - string - Name for this automation.
     #   overwrite_files - boolean - If true, existing files will be overwritten with new files on Move/Copy automations.  Note: by default files will not be overwritten if they appear to be the same file size as the newly incoming file.  Use the `:always_overwrite_size_matching_files` option to override this.
     #   path_time_zone - string - Timezone to use when rendering timestamps in paths.
+    #   retry_on_failure_interval_in_minutes - int64 - If the Automation fails, retry at this interval (in minutes).
+    #   retry_on_failure_number_of_attempts - int64 - If the Automation fails, retry at most this many times.
     #   trigger - string - How this automation is triggered to run.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
@@ -584,6 +612,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: import_urls must be an Array") if params[:import_urls] and !params[:import_urls].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_time_zone must be an String") if params[:path_time_zone] and !params[:path_time_zone].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: retry_on_failure_interval_in_minutes must be an Integer") if params[:retry_on_failure_interval_in_minutes] and !params[:retry_on_failure_interval_in_minutes].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: retry_on_failure_number_of_attempts must be an Integer") if params[:retry_on_failure_number_of_attempts] and !params[:retry_on_failure_number_of_attempts].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params[:trigger_actions] and !params[:trigger_actions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
