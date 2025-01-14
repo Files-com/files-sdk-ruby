@@ -29,19 +29,24 @@ module Files
       @attributes[:created_at]
     end
 
+    # string - If set, this automation will be retried at this date/time due to `failure` or `partial_failure`.
+    def retry_at
+      @attributes[:retry_at]
+    end
+
     # date-time - If set, this Automation run was retried due to `failure` or `partial_failure`.
     def retried_at
       @attributes[:retried_at]
     end
 
-    # int64 - ID of the original run that this run is retrying.
-    def retry_of_run_id
-      @attributes[:retry_of_run_id]
-    end
-
     # int64 - ID of the run that is or will be retrying this run.
     def retried_in_run_id
       @attributes[:retried_in_run_id]
+    end
+
+    # int64 - ID of the original run that this run is retrying.
+    def retry_of_run_id
+      @attributes[:retry_of_run_id]
     end
 
     # double - Automation run runtime.
