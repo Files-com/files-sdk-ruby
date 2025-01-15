@@ -557,6 +557,28 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`TrialLockedError`|  `SiteConfigurationError` |
 |`UserRequestsEnabledRequiredError`|  `SiteConfigurationError` |
 
+## {frontmatter.title}
+
+Certain API operations return lists of objects. When the number of objects in the list is large,
+the API will paginate the results.
+
+The Files.com Ruby SDK automatically paginates through lists of objects by default.
+
+```ruby title="Example Request" hasDataFormatSelector
+begin
+  files = Files::Folder.list_for(path,
+    search: "some-partial-filename"
+  )
+  files.auto_paging_each do |file|
+    # Operate on file
+  end
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
+```
+
 ## Case Sensitivity
 
 The Files.com API compares files and paths in a case-insensitive manner.
