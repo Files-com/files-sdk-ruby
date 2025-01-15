@@ -207,7 +207,7 @@ module Files
       @attributes[:recurring_day] = value
     end
 
-    # int64 - If the Automation fails, retry at this interval (in minutes).
+    # int64 - If the Automation fails, retry at this interval (in minutes).  Acceptable values are 5 through 1440 (one day).  Set to null to disable.
     def retry_on_failure_interval_in_minutes
       @attributes[:retry_on_failure_interval_in_minutes]
     end
@@ -216,7 +216,7 @@ module Files
       @attributes[:retry_on_failure_interval_in_minutes] = value
     end
 
-    # int64 - If the Automation fails, retry at most this many times.
+    # int64 - If the Automation fails, retry at most this many times.  Maximum allowed value: 10.  Set to null to disable.
     def retry_on_failure_number_of_attempts
       @attributes[:retry_on_failure_number_of_attempts]
     end
@@ -377,8 +377,8 @@ module Files
     #   name - string - Name for this automation.
     #   overwrite_files - boolean - If true, existing files will be overwritten with new files on Move/Copy automations.  Note: by default files will not be overwritten if they appear to be the same file size as the newly incoming file.  Use the `:always_overwrite_size_matching_files` option to override this.
     #   path_time_zone - string - Timezone to use when rendering timestamps in paths.
-    #   retry_on_failure_interval_in_minutes - int64 - If the Automation fails, retry at this interval (in minutes).
-    #   retry_on_failure_number_of_attempts - int64 - If the Automation fails, retry at most this many times.
+    #   retry_on_failure_interval_in_minutes - int64 - If the Automation fails, retry at this interval (in minutes).  Acceptable values are 5 through 1440 (one day).  Set to null to disable.
+    #   retry_on_failure_number_of_attempts - int64 - If the Automation fails, retry at most this many times.  Maximum allowed value: 10.  Set to null to disable.
     #   trigger - string - How this automation is triggered to run.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
@@ -511,8 +511,8 @@ module Files
     #   name - string - Name for this automation.
     #   overwrite_files - boolean - If true, existing files will be overwritten with new files on Move/Copy automations.  Note: by default files will not be overwritten if they appear to be the same file size as the newly incoming file.  Use the `:always_overwrite_size_matching_files` option to override this.
     #   path_time_zone - string - Timezone to use when rendering timestamps in paths.
-    #   retry_on_failure_interval_in_minutes - int64 - If the Automation fails, retry at this interval (in minutes).
-    #   retry_on_failure_number_of_attempts - int64 - If the Automation fails, retry at most this many times.
+    #   retry_on_failure_interval_in_minutes - int64 - If the Automation fails, retry at this interval (in minutes).  Acceptable values are 5 through 1440 (one day).  Set to null to disable.
+    #   retry_on_failure_number_of_attempts - int64 - If the Automation fails, retry at most this many times.  Maximum allowed value: 10.  Set to null to disable.
     #   trigger - string - How this automation is triggered to run.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
@@ -584,8 +584,8 @@ module Files
     #   name - string - Name for this automation.
     #   overwrite_files - boolean - If true, existing files will be overwritten with new files on Move/Copy automations.  Note: by default files will not be overwritten if they appear to be the same file size as the newly incoming file.  Use the `:always_overwrite_size_matching_files` option to override this.
     #   path_time_zone - string - Timezone to use when rendering timestamps in paths.
-    #   retry_on_failure_interval_in_minutes - int64 - If the Automation fails, retry at this interval (in minutes).
-    #   retry_on_failure_number_of_attempts - int64 - If the Automation fails, retry at most this many times.
+    #   retry_on_failure_interval_in_minutes - int64 - If the Automation fails, retry at this interval (in minutes).  Acceptable values are 5 through 1440 (one day).  Set to null to disable.
+    #   retry_on_failure_number_of_attempts - int64 - If the Automation fails, retry at most this many times.  Maximum allowed value: 10.  Set to null to disable.
     #   trigger - string - How this automation is triggered to run.
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, read, update, destroy, move, copy
     #   value - object - A Hash of attributes specific to the automation type.
