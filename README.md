@@ -392,6 +392,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`CantMoveWithMultipleLocationsError`|  `BadRequestError` |
 |`DatetimeParseError`|  `BadRequestError` |
 |`DestinationSameError`|  `BadRequestError` |
+|`DoesNotSupportSortingError`|  `BadRequestError` |
 |`FolderMustNotBeAFileError`|  `BadRequestError` |
 |`FoldersNotAllowedError`|  `BadRequestError` |
 |`InvalidBodyError`|  `BadRequestError` |
@@ -408,11 +409,13 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`InvalidOauthProviderError`|  `BadRequestError` |
 |`InvalidPathError`|  `BadRequestError` |
 |`InvalidReturnToUrlError`|  `BadRequestError` |
+|`InvalidSortFieldError`|  `BadRequestError` |
 |`InvalidSortFilterCombinationError`|  `BadRequestError` |
 |`InvalidUploadOffsetError`|  `BadRequestError` |
 |`InvalidUploadPartGapError`|  `BadRequestError` |
 |`InvalidUploadPartSizeError`|  `BadRequestError` |
 |`MethodNotAllowedError`|  `BadRequestError` |
+|`MultipleSortParamsNotAllowedError`|  `BadRequestError` |
 |`NoValidInputParamsError`|  `BadRequestError` |
 |`PartNumberTooLargeError`|  `BadRequestError` |
 |`PathCannotHaveTrailingWhitespaceError`|  `BadRequestError` |
@@ -421,6 +424,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`RequestParamsInvalidError`|  `BadRequestError` |
 |`RequestParamsRequiredError`|  `BadRequestError` |
 |`SearchAllOnChildPathError`|  `BadRequestError` |
+|`UnrecognizedSortIndexError`|  `BadRequestError` |
 |`UnsupportedCurrencyError`|  `BadRequestError` |
 |`UnsupportedHttpResponseFormatError`|  `BadRequestError` |
 |`UnsupportedMediaTypeError`|  `BadRequestError` |

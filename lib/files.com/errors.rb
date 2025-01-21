@@ -52,6 +52,7 @@ module Files
   class CantMoveWithMultipleLocationsError < BadRequestError; end
   class DatetimeParseError < BadRequestError; end
   class DestinationSameError < BadRequestError; end
+  class DoesNotSupportSortingError < BadRequestError; end
   class FolderMustNotBeAFileError < BadRequestError; end
   class FoldersNotAllowedError < BadRequestError; end
   class InvalidBodyError < BadRequestError; end
@@ -68,11 +69,13 @@ module Files
   class InvalidOauthProviderError < BadRequestError; end
   class InvalidPathError < BadRequestError; end
   class InvalidReturnToUrlError < BadRequestError; end
+  class InvalidSortFieldError < BadRequestError; end
   class InvalidSortFilterCombinationError < BadRequestError; end
   class InvalidUploadOffsetError < BadRequestError; end
   class InvalidUploadPartGapError < BadRequestError; end
   class InvalidUploadPartSizeError < BadRequestError; end
   class MethodNotAllowedError < BadRequestError; end
+  class MultipleSortParamsNotAllowedError < BadRequestError; end
   class NoValidInputParamsError < BadRequestError; end
   class PartNumberTooLargeError < BadRequestError; end
   class PathCannotHaveTrailingWhitespaceError < BadRequestError; end
@@ -81,6 +84,7 @@ module Files
   class RequestParamsInvalidError < BadRequestError; end
   class RequestParamsRequiredError < BadRequestError; end
   class SearchAllOnChildPathError < BadRequestError; end
+  class UnrecognizedSortIndexError < BadRequestError; end
   class UnsupportedCurrencyError < BadRequestError; end
   class UnsupportedHttpResponseFormatError < BadRequestError; end
   class UnsupportedMediaTypeError < BadRequestError; end
