@@ -261,15 +261,6 @@ module Files
       @attributes[:rackspace_container] = value
     end
 
-    # string - Returns link to login with an Oauth provider
-    def auth_setup_link
-      @attributes[:auth_setup_link]
-    end
-
-    def auth_setup_link=(value)
-      @attributes[:auth_setup_link] = value
-    end
-
     # string - Either `in_setup` or `complete`
     def auth_status
       @attributes[:auth_status]
