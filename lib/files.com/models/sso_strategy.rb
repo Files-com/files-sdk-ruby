@@ -189,6 +189,11 @@ module Files
       @attributes[:provision_require_2fa]
     end
 
+    # string - URL-friendly, unique identifier for Azure SAML configuration
+    def identifier
+      @attributes[:identifier]
+    end
+
     # string - Base DN for looking up users in LDAP server
     def ldap_base_dn
       @attributes[:ldap_base_dn]
