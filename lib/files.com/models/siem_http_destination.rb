@@ -181,12 +181,12 @@ module Files
     end
 
     # int64 - Number of log entries sent for the lifetime of this destination.
-    def sftp_action_records_sent_entries_sent
-      @attributes[:sftp_action_records_sent_entries_sent]
+    def sftp_action_entries_sent
+      @attributes[:sftp_action_entries_sent]
     end
 
-    def sftp_action_records_sent_entries_sent=(value)
-      @attributes[:sftp_action_records_sent_entries_sent] = value
+    def sftp_action_entries_sent=(value)
+      @attributes[:sftp_action_entries_sent] = value
     end
 
     # boolean - Whether or not sending is enabled for ftp_action logs.
@@ -199,12 +199,12 @@ module Files
     end
 
     # int64 - Number of log entries sent for the lifetime of this destination.
-    def ftp_action_records_sent_entries_sent
-      @attributes[:ftp_action_records_sent_entries_sent]
+    def ftp_action_entries_sent
+      @attributes[:ftp_action_entries_sent]
     end
 
-    def ftp_action_records_sent_entries_sent=(value)
-      @attributes[:ftp_action_records_sent_entries_sent] = value
+    def ftp_action_entries_sent=(value)
+      @attributes[:ftp_action_entries_sent] = value
     end
 
     # boolean - Whether or not sending is enabled for web_dav_action logs.
@@ -217,12 +217,12 @@ module Files
     end
 
     # int64 - Number of log entries sent for the lifetime of this destination.
-    def web_dav_action_records_sent_entries_sent
-      @attributes[:web_dav_action_records_sent_entries_sent]
+    def web_dav_action_entries_sent
+      @attributes[:web_dav_action_entries_sent]
     end
 
-    def web_dav_action_records_sent_entries_sent=(value)
-      @attributes[:web_dav_action_records_sent_entries_sent] = value
+    def web_dav_action_entries_sent=(value)
+      @attributes[:web_dav_action_entries_sent] = value
     end
 
     # boolean - Whether or not sending is enabled for sync logs.
@@ -235,12 +235,12 @@ module Files
     end
 
     # int64 - Number of log entries sent for the lifetime of this destination.
-    def sync_records_sent_entries_sent
-      @attributes[:sync_records_sent_entries_sent]
+    def sync_entries_sent
+      @attributes[:sync_entries_sent]
     end
 
-    def sync_records_sent_entries_sent=(value)
-      @attributes[:sync_records_sent_entries_sent] = value
+    def sync_entries_sent=(value)
+      @attributes[:sync_entries_sent] = value
     end
 
     # boolean - Whether or not sending is enabled for outbound_connection logs.
@@ -253,12 +253,12 @@ module Files
     end
 
     # int64 - Number of log entries sent for the lifetime of this destination.
-    def outbound_connection_records_sent_entries_sent
-      @attributes[:outbound_connection_records_sent_entries_sent]
+    def outbound_connection_entries_sent
+      @attributes[:outbound_connection_entries_sent]
     end
 
-    def outbound_connection_records_sent_entries_sent=(value)
-      @attributes[:outbound_connection_records_sent_entries_sent] = value
+    def outbound_connection_entries_sent=(value)
+      @attributes[:outbound_connection_entries_sent] = value
     end
 
     # boolean - Whether or not sending is enabled for automation logs.
@@ -271,12 +271,12 @@ module Files
     end
 
     # int64 - Number of log entries sent for the lifetime of this destination.
-    def automation_records_sent_entries_sent
-      @attributes[:automation_records_sent_entries_sent]
+    def automation_entries_sent
+      @attributes[:automation_entries_sent]
     end
 
-    def automation_records_sent_entries_sent=(value)
-      @attributes[:automation_records_sent_entries_sent] = value
+    def automation_entries_sent=(value)
+      @attributes[:automation_entries_sent] = value
     end
 
     # boolean - Whether or not sending is enabled for api_request logs.
@@ -289,12 +289,12 @@ module Files
     end
 
     # int64 - Number of log entries sent for the lifetime of this destination.
-    def api_request_records_sent_entries_sent
-      @attributes[:api_request_records_sent_entries_sent]
+    def api_request_entries_sent
+      @attributes[:api_request_entries_sent]
     end
 
-    def api_request_records_sent_entries_sent=(value)
-      @attributes[:api_request_records_sent_entries_sent] = value
+    def api_request_entries_sent=(value)
+      @attributes[:api_request_entries_sent] = value
     end
 
     # boolean - Whether or not sending is enabled for public_hosting_request logs.
@@ -307,12 +307,12 @@ module Files
     end
 
     # int64 - Number of log entries sent for the lifetime of this destination.
-    def public_hosting_request_records_sent_entries_sent
-      @attributes[:public_hosting_request_records_sent_entries_sent]
+    def public_hosting_request_entries_sent
+      @attributes[:public_hosting_request_entries_sent]
     end
 
-    def public_hosting_request_records_sent_entries_sent=(value)
-      @attributes[:public_hosting_request_records_sent_entries_sent] = value
+    def public_hosting_request_entries_sent=(value)
+      @attributes[:public_hosting_request_entries_sent] = value
     end
 
     # boolean - Whether or not sending is enabled for email logs.
@@ -325,12 +325,12 @@ module Files
     end
 
     # int64 - Number of log entries sent for the lifetime of this destination.
-    def email_records_sent_entries_sent
-      @attributes[:email_records_sent_entries_sent]
+    def email_entries_sent
+      @attributes[:email_entries_sent]
     end
 
-    def email_records_sent_entries_sent=(value)
-      @attributes[:email_records_sent_entries_sent] = value
+    def email_entries_sent=(value)
+      @attributes[:email_entries_sent] = value
     end
 
     # boolean - Whether or not sending is enabled for exavault_api_request logs.
@@ -343,12 +343,12 @@ module Files
     end
 
     # int64 - Number of log entries sent for the lifetime of this destination.
-    def exavault_api_request_records_sent_entries_sent
-      @attributes[:exavault_api_request_records_sent_entries_sent]
+    def exavault_api_request_entries_sent
+      @attributes[:exavault_api_request_entries_sent]
     end
 
-    def exavault_api_request_records_sent_entries_sent=(value)
-      @attributes[:exavault_api_request_records_sent_entries_sent] = value
+    def exavault_api_request_entries_sent=(value)
+      @attributes[:exavault_api_request_entries_sent] = value
     end
 
     # string - Type of URL that was last called. Can be `destination_url` or `azure_oauth_client_credentials_url`
