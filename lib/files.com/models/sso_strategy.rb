@@ -190,8 +190,8 @@ module Files
     end
 
     # string - URL-friendly, unique identifier for Azure SAML configuration
-    def identifier
-      @attributes[:identifier]
+    def provider_identifier
+      @attributes[:provider_identifier]
     end
 
     # string - Base DN for looking up users in LDAP server
