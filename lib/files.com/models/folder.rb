@@ -483,6 +483,7 @@ module Files
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   sort_by - object - Search by field and direction. Valid fields are `path`, `size`, `modified_at_datetime`, `provided_modified_at`.  Valid directions are `asc` and `desc`.  Defaults to `{"path":"asc"}`.
     #   search - string - If specified, will search the folders/files list by name. Ignores text before last `/`. This is the same API used by the search bar in the web UI when running 'Search This Folder'.  Search results are a best effort, not real time, and not guaranteed to perfectly match the latest folder listing.  Results may be truncated if more than 1,000 possible matches exist.  This field should only be used for ad-hoc (human) searching, and not as part of an automated process.
+    #   search_custom_metadata_key - string - If provided, the search string in `search` will search for files where this custom metadata key matches the value sent in `search`.  Set this to `*` to allow any metadata key to match the value sent in `search`.
     #   search_all - boolean - Search entire site?  If set, we will ignore the folder path provided and search the entire site.  This is the same API used by the search bar in the web UI when running 'Search All Files'.  Search results are a best effort, not real time, and not guaranteed to match every file.  This field should only be used for ad-hoc (human) searching, and not as part of an automated process.
     #   with_previews - boolean - Include file previews?
     #   with_priority_color - boolean - Include file priority color information?
@@ -495,6 +496,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params[:search] and !params[:search].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: search_custom_metadata_key must be an String") if params[:search_custom_metadata_key] and !params[:search_custom_metadata_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       List.new(File, params) do
