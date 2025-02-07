@@ -432,6 +432,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`UserIdOnUserEndpointError`|  `BadRequestError` |
 |`UserRequiredError`|  `BadRequestError` |
 |`AdditionalAuthenticationRequiredError`|  `NotAuthenticatedError` |
+|`ApiKeySessionsNotSupportedError`|  `NotAuthenticatedError` |
 |`AuthenticationRequiredError`|  `NotAuthenticatedError` |
 |`BundleRegistrationCodeFailedError`|  `NotAuthenticatedError` |
 |`FilesAgentTokenFailedError`|  `NotAuthenticatedError` |

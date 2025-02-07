@@ -94,6 +94,7 @@ module Files
 
   class NotAuthenticatedError < APIError; end
   class AdditionalAuthenticationRequiredError < NotAuthenticatedError; end
+  class ApiKeySessionsNotSupportedError < NotAuthenticatedError; end
   class AuthenticationRequiredError < NotAuthenticatedError; end
   class BundleRegistrationCodeFailedError < NotAuthenticatedError; end
   class FilesAgentTokenFailedError < NotAuthenticatedError; end
