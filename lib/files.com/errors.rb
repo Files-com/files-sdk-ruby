@@ -197,11 +197,13 @@ module Files
   class InvalidFilenameError < ProcessingFailureError; end
   class InvalidPriorityColorError < ProcessingFailureError; end
   class InvalidRangeError < ProcessingFailureError; end
+  class InvalidSiteError < ProcessingFailureError; end
   class ModelSaveErrorError < ProcessingFailureError; end
   class MultipleProcessingErrorsError < ProcessingFailureError; end
   class PathTooLongError < ProcessingFailureError; end
   class RecipientAlreadySharedError < ProcessingFailureError; end
   class RemoteServerErrorError < ProcessingFailureError; end
+  class ResourceBelongsToParentSiteError < ProcessingFailureError; end
   class ResourceLockedError < ProcessingFailureError; end
   class SubfolderLockedError < ProcessingFailureError; end
   class TwoFactorAuthenticationCodeAlreadySentError < ProcessingFailureError; end
