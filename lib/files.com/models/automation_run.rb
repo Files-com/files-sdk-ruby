@@ -29,7 +29,7 @@ module Files
       @attributes[:created_at]
     end
 
-    # string - If set, this automation will be retried at this date/time due to `failure` or `partial_failure`.
+    # date-time - If set, this automation will be retried at this date/time due to `failure` or `partial_failure`.
     def retry_at
       @attributes[:retry_at]
     end

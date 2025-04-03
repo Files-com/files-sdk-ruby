@@ -24,7 +24,7 @@ module Files
       @attributes[:end_at]
     end
 
-    # double - Highest user count number in time period
+    # int64 - Highest user count number in time period
     def high_water_user_count
       @attributes[:high_water_user_count]
     end
@@ -37,11 +37,6 @@ module Files
     # double - Highest Storage Usage GB recorded in time period (used for billing)
     def high_water_storage
       @attributes[:high_water_storage]
-    end
-
-    # object - Storage Usage - map of root folders to their usage as of end date (not necessarily high water mark, which is used for billing)
-    def usage_by_top_level_dir
-      @attributes[:usage_by_top_level_dir]
     end
 
     # double - Storage Usage for root folder as of end date (not necessarily high water mark, which is used for billing)
@@ -82,6 +77,11 @@ module Files
     # double - Transfer Usage for period - Outbound GB from Remote Servers (Sync/Mount)
     def sync_bytes_sent
       @attributes[:sync_bytes_sent]
+    end
+
+    # array(object) - Storage Usage - map of root folders to their usage as of end date (not necessarily high water mark, which is used for billing)
+    def usage_by_top_level_dir
+      @attributes[:usage_by_top_level_dir]
     end
 
     # Parameters:

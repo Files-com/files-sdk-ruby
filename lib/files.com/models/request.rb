@@ -45,7 +45,7 @@ module Files
       @attributes[:destination] = value
     end
 
-    # string - ID of automation that created request
+    # int64 - ID of automation that created request
     def automation_id
       @attributes[:automation_id]
     end
