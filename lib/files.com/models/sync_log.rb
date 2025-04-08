@@ -44,7 +44,7 @@ module Files
       @attributes[:path]
     end
 
-    # string - File size
+    # int64 - File size
     def size
       @attributes[:size]
     end
