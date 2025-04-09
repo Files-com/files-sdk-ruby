@@ -119,6 +119,7 @@ module Files
   class BillingOrSiteAdminPermissionRequiredError < NotAuthorizedError; end
   class BillingPermissionRequiredError < NotAuthorizedError; end
   class BundleMaximumUsesReachedError < NotAuthorizedError; end
+  class BundlePermissionRequiredError < NotAuthorizedError; end
   class CannotLoginWhileUsingKeyError < NotAuthorizedError; end
   class CantActForOtherUserError < NotAuthorizedError; end
   class ContactAdminForPasswordChangeHelpError < NotAuthorizedError; end

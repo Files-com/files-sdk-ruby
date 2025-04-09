@@ -455,6 +455,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`BillingOrSiteAdminPermissionRequiredError`|  `NotAuthorizedError` |
 |`BillingPermissionRequiredError`|  `NotAuthorizedError` |
 |`BundleMaximumUsesReachedError`|  `NotAuthorizedError` |
+|`BundlePermissionRequiredError`|  `NotAuthorizedError` |
 |`CannotLoginWhileUsingKeyError`|  `NotAuthorizedError` |
 |`CantActForOtherUserError`|  `NotAuthorizedError` |
 |`ContactAdminForPasswordChangeHelpError`|  `NotAuthorizedError` |
