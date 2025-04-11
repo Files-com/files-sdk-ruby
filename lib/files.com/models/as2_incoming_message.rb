@@ -39,11 +39,6 @@ module Files
       @attributes[:http_headers]
     end
 
-    # string - JSON Structure of the activity log.
-    def activity_log
-      @attributes[:activity_log]
-    end
-
     # string - Result of processing.
     def processing_result
       @attributes[:processing_result]
