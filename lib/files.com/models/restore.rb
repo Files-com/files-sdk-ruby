@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # date-time - Restore all files deleted after this date/time. Don't set this earlier than you need. Can not be greater than 365
+    # date-time - Restore all files deleted after this date/time. Don't set this earlier than you need. Can not be greater than 365 days prior to the restore request.
     def earliest_date
       @attributes[:earliest_date]
     end
@@ -81,7 +81,7 @@ module Files
       @attributes[:files_total] = value
     end
 
-    # string - Prefix of the files/folders to restore. To restore a folder, add a trailing slash to the folder name. Do not use a leading slash.
+    # string - Prefix of the files/folders to restore. To restore a folder, add a trailing slash to the folder name. Do not use a leading slash. To restore all deleted items, specify an empty string (`''`) in the prefix field or omit the field from the request.
     def prefix
       @attributes[:prefix]
     end
@@ -117,7 +117,7 @@ module Files
       @attributes[:status] = value
     end
 
-    # boolean - If trie, we will update the last modified timestamp of restored files to today's date. If false, we might trigger File Expiration to delete the file again.
+    # boolean - If true, we will update the last modified timestamp of restored files to today's date. If false, we might trigger File Expiration to delete the file again.
     def update_timestamps
       @attributes[:update_timestamps]
     end
@@ -163,10 +163,11 @@ module Files
     end
 
     # Parameters:
-    #   earliest_date (required) - string - Restore all files deleted after this date/time. Don't set this earlier than you need. Can not be greater than 365
+    #   earliest_date (required) - string - Restore all files deleted after this date/time. Don't set this earlier than you need. Can not be greater than 365 days prior to the restore request.
+    #   prefix - string - Prefix of the files/folders to restore. To restore a folder, add a trailing slash to the folder name. Do not use a leading slash. To restore all deleted items, specify an empty string (`''`) in the prefix field or omit the field from the request.
     #   restore_deleted_permissions - boolean - If true, we will also restore any Permissions that match the same path prefix from the same dates.
     #   restore_in_place - boolean - If true, we will restore the files in place (into their original paths). If false, we will create a new restoration folder in the root and restore files there.
-    #   prefix - string - Prefix of the files/folders to restore. To restore a folder, add a trailing slash to the folder name. Do not use a leading slash.
+    #   update_timestamps - boolean - If true, we will update the last modified timestamp of restored files to today's date. If false, we might trigger File Expiration to delete the file again.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: earliest_date must be an String") if params[:earliest_date] and !params[:earliest_date].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prefix must be an String") if params[:prefix] and !params[:prefix].is_a?(String)
