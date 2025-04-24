@@ -565,7 +565,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`TrialLockedError`|  `SiteConfigurationError` |
 |`UserRequestsEnabledRequiredError`|  `SiteConfigurationError` |
 
-## {frontmatter.title}
+## Pagination
 
 Certain API operations return lists of objects. When the number of objects in the list is large,
 the API will paginate the results.
