@@ -315,6 +315,15 @@ module Files
       @attributes[:azure_blob_storage_hierarchical_namespace] = value
     end
 
+    # string - Custom DNS suffix
+    def azure_blob_storage_dns_suffix
+      @attributes[:azure_blob_storage_dns_suffix]
+    end
+
+    def azure_blob_storage_dns_suffix=(value)
+      @attributes[:azure_blob_storage_dns_suffix] = value
+    end
+
     # string - Azure File Storage Account name
     def azure_files_storage_account
       @attributes[:azure_files_storage_account]
@@ -761,6 +770,7 @@ module Files
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   azure_blob_storage_hierarchical_namespace - boolean - Enable when storage account has hierarchical namespace feature enabled
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
+    #   azure_blob_storage_dns_suffix - string - Custom DNS suffix
     #   azure_files_storage_account - string - Azure File Storage Account name
     #   azure_files_storage_share_name - string - Azure File Storage Share name
     #   azure_files_storage_dns_suffix - string - Custom DNS suffix
@@ -829,6 +839,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params[:azure_blob_storage_container] and !params[:azure_blob_storage_container].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if params[:azure_blob_storage_dns_suffix] and !params[:azure_blob_storage_dns_suffix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
@@ -975,6 +986,7 @@ module Files
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   azure_blob_storage_hierarchical_namespace - boolean - Enable when storage account has hierarchical namespace feature enabled
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
+    #   azure_blob_storage_dns_suffix - string - Custom DNS suffix
     #   azure_files_storage_account - string - Azure File Storage Account name
     #   azure_files_storage_share_name - string - Azure File Storage Share name
     #   azure_files_storage_dns_suffix - string - Custom DNS suffix
@@ -1039,6 +1051,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params[:azure_blob_storage_container] and !params[:azure_blob_storage_container].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if params[:azure_blob_storage_dns_suffix] and !params[:azure_blob_storage_dns_suffix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
@@ -1144,6 +1157,7 @@ module Files
     #   azure_blob_storage_container - string - Azure Blob Storage Container name
     #   azure_blob_storage_hierarchical_namespace - boolean - Enable when storage account has hierarchical namespace feature enabled
     #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
+    #   azure_blob_storage_dns_suffix - string - Custom DNS suffix
     #   azure_files_storage_account - string - Azure File Storage Account name
     #   azure_files_storage_share_name - string - Azure File Storage Share name
     #   azure_files_storage_dns_suffix - string - Custom DNS suffix
@@ -1211,6 +1225,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params[:azure_blob_storage_container] and !params[:azure_blob_storage_container].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if params[:azure_blob_storage_dns_suffix] and !params[:azure_blob_storage_dns_suffix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)

@@ -729,6 +729,11 @@ module Files
       @attributes[:session_expiry_minutes]
     end
 
+    # boolean - Allow snapshot share links creation
+    def snapshot_sharing_enabled
+      @attributes[:snapshot_sharing_enabled]
+    end
+
     # boolean - Is SSL required?  Disabling this is insecure.
     def ssl_required
       @attributes[:ssl_required]
@@ -953,6 +958,7 @@ module Files
     #   non_sso_groups_allowed - boolean - If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
     #   non_sso_users_allowed - boolean - If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
     #   sharing_enabled - boolean - Allow bundle creation
+    #   snapshot_sharing_enabled - boolean - Allow snapshot share links creation
     #   user_requests_enabled - boolean - Enable User Requests feature
     #   user_requests_notify_admins - boolean - Send email to site admins when a user request is received?
     #   dav_enabled - boolean - Is WebDAV enabled?
