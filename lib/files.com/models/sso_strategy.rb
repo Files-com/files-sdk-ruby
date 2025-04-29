@@ -144,6 +144,11 @@ module Files
       @attributes[:provision_email_signup_groups]
     end
 
+    # string - Comma-separated list of group names whose members will be created as Read-Only Site Admins.
+    def provision_readonly_site_admin_groups
+      @attributes[:provision_readonly_site_admin_groups]
+    end
+
     # string - Comma-separated list of group names whose members will be created as Site Admins.
     def provision_site_admin_groups
       @attributes[:provision_site_admin_groups]
