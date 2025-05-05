@@ -9,24 +9,24 @@ module Files
       @options = options || {}
     end
 
+    # int64 - The API key id responsible for this change.
+    def api_key_id
+      @attributes[:api_key_id]
+    end
+
     # array(string) - Markdown-formatted change messages.
     def changes
       @attributes[:changes]
     end
 
-    # date-time - The time this change was made
+    # date-time - The time this change was made.
     def created_at
       @attributes[:created_at]
     end
 
-    # int64 - The user id responsible for this change
+    # int64 - The user id responsible for this change.
     def user_id
       @attributes[:user_id]
-    end
-
-    # int64 - The API key id responsible for this change
-    def api_key_id
-      @attributes[:api_key_id]
     end
 
     # boolean - true if this change was performed by Files.com support.
@@ -39,7 +39,7 @@ module Files
       @attributes[:user_is_from_parent_site]
     end
 
-    # string - The username of the user responsible for this change
+    # string - The username of the user responsible for this change.
     def username
       @attributes[:username]
     end

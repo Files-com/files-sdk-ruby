@@ -351,6 +351,24 @@ module Files
       @attributes[:exavault_api_request_entries_sent] = value
     end
 
+    # boolean - Whether or not sending is enabled for settings_change logs.
+    def settings_change_send_enabled
+      @attributes[:settings_change_send_enabled]
+    end
+
+    def settings_change_send_enabled=(value)
+      @attributes[:settings_change_send_enabled] = value
+    end
+
+    # int64 - Number of log entries sent for the lifetime of this destination.
+    def settings_change_entries_sent
+      @attributes[:settings_change_entries_sent]
+    end
+
+    def settings_change_entries_sent=(value)
+      @attributes[:settings_change_entries_sent] = value
+    end
+
     # string - Type of URL that was last called. Can be `destination_url` or `azure_oauth_client_credentials_url`
     def last_http_call_target_type
       @attributes[:last_http_call_target_type]
@@ -512,6 +530,7 @@ module Files
     #   public_hosting_request_send_enabled - boolean - Whether or not sending is enabled for public_hosting_request logs.
     #   email_send_enabled - boolean - Whether or not sending is enabled for email logs.
     #   exavault_api_request_send_enabled - boolean - Whether or not sending is enabled for exavault_api_request logs.
+    #   settings_change_send_enabled - boolean - Whether or not sending is enabled for settings_change logs.
     #   destination_type - string - Destination Type
     #   destination_url - string - Destination Url
     def update(params = {})
@@ -623,6 +642,7 @@ module Files
     #   public_hosting_request_send_enabled - boolean - Whether or not sending is enabled for public_hosting_request logs.
     #   email_send_enabled - boolean - Whether or not sending is enabled for email logs.
     #   exavault_api_request_send_enabled - boolean - Whether or not sending is enabled for exavault_api_request logs.
+    #   settings_change_send_enabled - boolean - Whether or not sending is enabled for settings_change logs.
     #   destination_type (required) - string - Destination Type
     #   destination_url (required) - string - Destination Url
     def self.create(params = {}, options = {})
@@ -678,6 +698,7 @@ module Files
     #   public_hosting_request_send_enabled - boolean - Whether or not sending is enabled for public_hosting_request logs.
     #   email_send_enabled - boolean - Whether or not sending is enabled for email logs.
     #   exavault_api_request_send_enabled - boolean - Whether or not sending is enabled for exavault_api_request logs.
+    #   settings_change_send_enabled - boolean - Whether or not sending is enabled for settings_change logs.
     def self.send_test_entry(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: siem_http_destination_id must be an Integer") if params[:siem_http_destination_id] and !params[:siem_http_destination_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if params[:destination_type] and !params[:destination_type].is_a?(String)
@@ -727,6 +748,7 @@ module Files
     #   public_hosting_request_send_enabled - boolean - Whether or not sending is enabled for public_hosting_request logs.
     #   email_send_enabled - boolean - Whether or not sending is enabled for email logs.
     #   exavault_api_request_send_enabled - boolean - Whether or not sending is enabled for exavault_api_request logs.
+    #   settings_change_send_enabled - boolean - Whether or not sending is enabled for settings_change logs.
     #   destination_type - string - Destination Type
     #   destination_url - string - Destination Url
     def self.update(id, params = {}, options = {})

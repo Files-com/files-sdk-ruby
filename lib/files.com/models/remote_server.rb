@@ -171,7 +171,7 @@ module Files
       @attributes[:username] = value
     end
 
-    # string - Google Cloud Storage bucket name
+    # string - Google Cloud Storage: Bucket Name
     def google_cloud_storage_bucket
       @attributes[:google_cloud_storage_bucket]
     end
@@ -180,7 +180,7 @@ module Files
       @attributes[:google_cloud_storage_bucket] = value
     end
 
-    # string - Google Cloud Project ID
+    # string - Google Cloud Storage: Project ID
     def google_cloud_storage_project_id
       @attributes[:google_cloud_storage_project_id]
     end
@@ -189,7 +189,25 @@ module Files
       @attributes[:google_cloud_storage_project_id] = value
     end
 
-    # string - Backblaze B2 Cloud Storage S3 Endpoint
+    # string - Google Cloud Storage: Region
+    def google_cloud_storage_region
+      @attributes[:google_cloud_storage_region]
+    end
+
+    def google_cloud_storage_region=(value)
+      @attributes[:google_cloud_storage_region] = value
+    end
+
+    # string - Google Cloud Storage: S3-compatible Access Key.
+    def google_cloud_storage_s3_compatible_access_key
+      @attributes[:google_cloud_storage_s3_compatible_access_key]
+    end
+
+    def google_cloud_storage_s3_compatible_access_key=(value)
+      @attributes[:google_cloud_storage_s3_compatible_access_key] = value
+    end
+
+    # string - Backblaze B2 Cloud Storage: S3 Endpoint
     def backblaze_b2_s3_endpoint
       @attributes[:backblaze_b2_s3_endpoint]
     end
@@ -198,7 +216,7 @@ module Files
       @attributes[:backblaze_b2_s3_endpoint] = value
     end
 
-    # string - Backblaze B2 Cloud Storage Bucket name
+    # string - Backblaze B2 Cloud Storage: Bucket name
     def backblaze_b2_bucket
       @attributes[:backblaze_b2_bucket]
     end
@@ -207,7 +225,7 @@ module Files
       @attributes[:backblaze_b2_bucket] = value
     end
 
-    # string - Wasabi Bucket name
+    # string - Wasabi: Bucket name
     def wasabi_bucket
       @attributes[:wasabi_bucket]
     end
@@ -216,7 +234,7 @@ module Files
       @attributes[:wasabi_bucket] = value
     end
 
-    # string - Wasabi region
+    # string - Wasabi: Region
     def wasabi_region
       @attributes[:wasabi_region]
     end
@@ -225,7 +243,7 @@ module Files
       @attributes[:wasabi_region] = value
     end
 
-    # string - Wasabi access key.
+    # string - Wasabi: Access Key.
     def wasabi_access_key
       @attributes[:wasabi_access_key]
     end
@@ -234,7 +252,7 @@ module Files
       @attributes[:wasabi_access_key] = value
     end
 
-    # string - Rackspace username used to login to the Rackspace Cloud Control Panel.
+    # string - Rackspace: username used to login to the Rackspace Cloud Control Panel.
     def rackspace_username
       @attributes[:rackspace_username]
     end
@@ -243,7 +261,7 @@ module Files
       @attributes[:rackspace_username] = value
     end
 
-    # string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    # string - Rackspace: Three letter code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
     def rackspace_region
       @attributes[:rackspace_region]
     end
@@ -252,7 +270,7 @@ module Files
       @attributes[:rackspace_region] = value
     end
 
-    # string - The name of the container (top level directory) where files will sync.
+    # string - Rackspace: The name of the container (top level directory) where files will sync.
     def rackspace_container
       @attributes[:rackspace_container]
     end
@@ -279,7 +297,7 @@ module Files
       @attributes[:auth_account_name] = value
     end
 
-    # string - Either personal or business_other account types
+    # string - OneDrive: Either personal or business_other account types
     def one_drive_account_type
       @attributes[:one_drive_account_type]
     end
@@ -288,7 +306,7 @@ module Files
       @attributes[:one_drive_account_type] = value
     end
 
-    # string - Azure Blob Storage Account name
+    # string - Azure Blob Storage: Account name
     def azure_blob_storage_account
       @attributes[:azure_blob_storage_account]
     end
@@ -297,7 +315,7 @@ module Files
       @attributes[:azure_blob_storage_account] = value
     end
 
-    # string - Azure Blob Storage Container name
+    # string - Azure Blob Storage: Container name
     def azure_blob_storage_container
       @attributes[:azure_blob_storage_container]
     end
@@ -306,7 +324,7 @@ module Files
       @attributes[:azure_blob_storage_container] = value
     end
 
-    # boolean - Enable when storage account has hierarchical namespace feature enabled
+    # boolean - Azure Blob Storage: Does the storage account has hierarchical namespace feature enabled?
     def azure_blob_storage_hierarchical_namespace
       @attributes[:azure_blob_storage_hierarchical_namespace]
     end
@@ -315,7 +333,7 @@ module Files
       @attributes[:azure_blob_storage_hierarchical_namespace] = value
     end
 
-    # string - Custom DNS suffix
+    # string - Azure Blob Storage: Custom DNS suffix
     def azure_blob_storage_dns_suffix
       @attributes[:azure_blob_storage_dns_suffix]
     end
@@ -324,7 +342,7 @@ module Files
       @attributes[:azure_blob_storage_dns_suffix] = value
     end
 
-    # string - Azure File Storage Account name
+    # string - Azure Files: Storage Account name
     def azure_files_storage_account
       @attributes[:azure_files_storage_account]
     end
@@ -333,7 +351,7 @@ module Files
       @attributes[:azure_files_storage_account] = value
     end
 
-    # string - Azure File Storage Share name
+    # string - Azure Files:  Storage Share name
     def azure_files_storage_share_name
       @attributes[:azure_files_storage_share_name]
     end
@@ -342,7 +360,7 @@ module Files
       @attributes[:azure_files_storage_share_name] = value
     end
 
-    # string - Custom DNS suffix
+    # string - Azure Files: Custom DNS suffix
     def azure_files_storage_dns_suffix
       @attributes[:azure_files_storage_dns_suffix]
     end
@@ -351,7 +369,7 @@ module Files
       @attributes[:azure_files_storage_dns_suffix] = value
     end
 
-    # string - S3-compatible Bucket name
+    # string - S3-compatible: Bucket name
     def s3_compatible_bucket
       @attributes[:s3_compatible_bucket]
     end
@@ -360,7 +378,7 @@ module Files
       @attributes[:s3_compatible_bucket] = value
     end
 
-    # string - S3-compatible endpoint
+    # string - S3-compatible: endpoint
     def s3_compatible_endpoint
       @attributes[:s3_compatible_endpoint]
     end
@@ -369,7 +387,7 @@ module Files
       @attributes[:s3_compatible_endpoint] = value
     end
 
-    # string - S3-compatible endpoint
+    # string - S3-compatible: region
     def s3_compatible_region
       @attributes[:s3_compatible_region]
     end
@@ -378,7 +396,7 @@ module Files
       @attributes[:s3_compatible_region] = value
     end
 
-    # string - S3-compatible Access Key.
+    # string - S3-compatible: Access Key
     def s3_compatible_access_key
       @attributes[:s3_compatible_access_key]
     end
@@ -432,7 +450,7 @@ module Files
       @attributes[:files_agent_version] = value
     end
 
-    # string - Filebase Bucket name
+    # string - Filebase: Bucket name
     def filebase_bucket
       @attributes[:filebase_bucket]
     end
@@ -441,7 +459,7 @@ module Files
       @attributes[:filebase_bucket] = value
     end
 
-    # string - Filebase Access Key.
+    # string - Filebase: Access Key.
     def filebase_access_key
       @attributes[:filebase_access_key]
     end
@@ -450,7 +468,7 @@ module Files
       @attributes[:filebase_access_key] = value
     end
 
-    # string - Cloudflare Bucket name
+    # string - Cloudflare: Bucket name
     def cloudflare_bucket
       @attributes[:cloudflare_bucket]
     end
@@ -459,7 +477,7 @@ module Files
       @attributes[:cloudflare_bucket] = value
     end
 
-    # string - Cloudflare Access Key.
+    # string - Cloudflare: Access Key.
     def cloudflare_access_key
       @attributes[:cloudflare_access_key]
     end
@@ -468,7 +486,7 @@ module Files
       @attributes[:cloudflare_access_key] = value
     end
 
-    # string - Cloudflare endpoint
+    # string - Cloudflare: endpoint
     def cloudflare_endpoint
       @attributes[:cloudflare_endpoint]
     end
@@ -477,7 +495,7 @@ module Files
       @attributes[:cloudflare_endpoint] = value
     end
 
-    # boolean - List Team folders in root
+    # boolean - Dropbox: If true, list Team folders in root?
     def dropbox_teams
       @attributes[:dropbox_teams]
     end
@@ -486,7 +504,7 @@ module Files
       @attributes[:dropbox_teams] = value
     end
 
-    # string - Linode Bucket name
+    # string - Linode: Bucket name
     def linode_bucket
       @attributes[:linode_bucket]
     end
@@ -495,7 +513,7 @@ module Files
       @attributes[:linode_bucket] = value
     end
 
-    # string - Linode Access Key.
+    # string - Linode: Access Key
     def linode_access_key
       @attributes[:linode_access_key]
     end
@@ -504,7 +522,7 @@ module Files
       @attributes[:linode_access_key] = value
     end
 
-    # string - Linode region
+    # string - Linode: region
     def linode_region
       @attributes[:linode_region]
     end
@@ -522,16 +540,7 @@ module Files
       @attributes[:supports_versioning] = value
     end
 
-    # string - AWS secret key.
-    def aws_secret_key
-      @attributes[:aws_secret_key]
-    end
-
-    def aws_secret_key=(value)
-      @attributes[:aws_secret_key] = value
-    end
-
-    # string - Password if needed.
+    # string - Password, if needed.
     def password
       @attributes[:password]
     end
@@ -540,7 +549,7 @@ module Files
       @attributes[:password] = value
     end
 
-    # string - Private key if needed.
+    # string - Private key, if needed.
     def private_key
       @attributes[:private_key]
     end
@@ -558,6 +567,15 @@ module Files
       @attributes[:private_key_passphrase] = value
     end
 
+    # boolean - Reset authenticated account?
+    def reset_authentication
+      @attributes[:reset_authentication]
+    end
+
+    def reset_authentication=(value)
+      @attributes[:reset_authentication] = value
+    end
+
     # string - SSL client certificate.
     def ssl_certificate
       @attributes[:ssl_certificate]
@@ -567,61 +585,16 @@ module Files
       @attributes[:ssl_certificate] = value
     end
 
-    # string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    def google_cloud_storage_credentials_json
-      @attributes[:google_cloud_storage_credentials_json]
+    # string - AWS: secret key.
+    def aws_secret_key
+      @attributes[:aws_secret_key]
     end
 
-    def google_cloud_storage_credentials_json=(value)
-      @attributes[:google_cloud_storage_credentials_json] = value
+    def aws_secret_key=(value)
+      @attributes[:aws_secret_key] = value
     end
 
-    # string - Wasabi secret key.
-    def wasabi_secret_key
-      @attributes[:wasabi_secret_key]
-    end
-
-    def wasabi_secret_key=(value)
-      @attributes[:wasabi_secret_key] = value
-    end
-
-    # string - Backblaze B2 Cloud Storage keyID.
-    def backblaze_b2_key_id
-      @attributes[:backblaze_b2_key_id]
-    end
-
-    def backblaze_b2_key_id=(value)
-      @attributes[:backblaze_b2_key_id] = value
-    end
-
-    # string - Backblaze B2 Cloud Storage applicationKey.
-    def backblaze_b2_application_key
-      @attributes[:backblaze_b2_application_key]
-    end
-
-    def backblaze_b2_application_key=(value)
-      @attributes[:backblaze_b2_application_key] = value
-    end
-
-    # string - Rackspace API key from the Rackspace Cloud Control Panel.
-    def rackspace_api_key
-      @attributes[:rackspace_api_key]
-    end
-
-    def rackspace_api_key=(value)
-      @attributes[:rackspace_api_key] = value
-    end
-
-    # boolean - Reset authenticated account
-    def reset_authentication
-      @attributes[:reset_authentication]
-    end
-
-    def reset_authentication=(value)
-      @attributes[:reset_authentication] = value
-    end
-
-    # string - Azure Blob Storage secret key.
+    # string - Azure Blob Storage: Access Key
     def azure_blob_storage_access_key
       @attributes[:azure_blob_storage_access_key]
     end
@@ -630,16 +603,7 @@ module Files
       @attributes[:azure_blob_storage_access_key] = value
     end
 
-    # string - Azure File Storage access key.
-    def azure_files_storage_access_key
-      @attributes[:azure_files_storage_access_key]
-    end
-
-    def azure_files_storage_access_key=(value)
-      @attributes[:azure_files_storage_access_key] = value
-    end
-
-    # string - Shared Access Signature (SAS) token
+    # string - Azure Blob Storage: Shared Access Signature (SAS) token
     def azure_blob_storage_sas_token
       @attributes[:azure_blob_storage_sas_token]
     end
@@ -648,7 +612,16 @@ module Files
       @attributes[:azure_blob_storage_sas_token] = value
     end
 
-    # string - Shared Access Signature (SAS) token
+    # string - Azure File Storage: Access Key
+    def azure_files_storage_access_key
+      @attributes[:azure_files_storage_access_key]
+    end
+
+    def azure_files_storage_access_key=(value)
+      @attributes[:azure_files_storage_access_key] = value
+    end
+
+    # string - Azure File Storage: Shared Access Signature (SAS) token
     def azure_files_storage_sas_token
       @attributes[:azure_files_storage_sas_token]
     end
@@ -657,25 +630,25 @@ module Files
       @attributes[:azure_files_storage_sas_token] = value
     end
 
-    # string - S3-compatible secret key
-    def s3_compatible_secret_key
-      @attributes[:s3_compatible_secret_key]
+    # string - Backblaze B2 Cloud Storage: applicationKey
+    def backblaze_b2_application_key
+      @attributes[:backblaze_b2_application_key]
     end
 
-    def s3_compatible_secret_key=(value)
-      @attributes[:s3_compatible_secret_key] = value
+    def backblaze_b2_application_key=(value)
+      @attributes[:backblaze_b2_application_key] = value
     end
 
-    # string - Filebase secret key
-    def filebase_secret_key
-      @attributes[:filebase_secret_key]
+    # string - Backblaze B2 Cloud Storage: keyID
+    def backblaze_b2_key_id
+      @attributes[:backblaze_b2_key_id]
     end
 
-    def filebase_secret_key=(value)
-      @attributes[:filebase_secret_key] = value
+    def backblaze_b2_key_id=(value)
+      @attributes[:backblaze_b2_key_id] = value
     end
 
-    # string - Cloudflare secret key
+    # string - Cloudflare: Secret Key
     def cloudflare_secret_key
       @attributes[:cloudflare_secret_key]
     end
@@ -684,13 +657,67 @@ module Files
       @attributes[:cloudflare_secret_key] = value
     end
 
-    # string - Linode secret key
+    # string - Filebase: Secret Key
+    def filebase_secret_key
+      @attributes[:filebase_secret_key]
+    end
+
+    def filebase_secret_key=(value)
+      @attributes[:filebase_secret_key] = value
+    end
+
+    # string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    def google_cloud_storage_credentials_json
+      @attributes[:google_cloud_storage_credentials_json]
+    end
+
+    def google_cloud_storage_credentials_json=(value)
+      @attributes[:google_cloud_storage_credentials_json] = value
+    end
+
+    # string - Google Cloud Storage: S3-compatible secret key
+    def google_cloud_storage_s3_compatible_secret_key
+      @attributes[:google_cloud_storage_s3_compatible_secret_key]
+    end
+
+    def google_cloud_storage_s3_compatible_secret_key=(value)
+      @attributes[:google_cloud_storage_s3_compatible_secret_key] = value
+    end
+
+    # string - Linode: Secret Key
     def linode_secret_key
       @attributes[:linode_secret_key]
     end
 
     def linode_secret_key=(value)
       @attributes[:linode_secret_key] = value
+    end
+
+    # string - Rackspace: API key from the Rackspace Cloud Control Panel
+    def rackspace_api_key
+      @attributes[:rackspace_api_key]
+    end
+
+    def rackspace_api_key=(value)
+      @attributes[:rackspace_api_key] = value
+    end
+
+    # string - S3-compatible: Secret Key
+    def s3_compatible_secret_key
+      @attributes[:s3_compatible_secret_key]
+    end
+
+    def s3_compatible_secret_key=(value)
+      @attributes[:s3_compatible_secret_key] = value
+    end
+
+    # string - Wasabi: Secret Key
+    def wasabi_secret_key
+      @attributes[:wasabi_secret_key]
+    end
+
+    def wasabi_secret_key=(value)
+      @attributes[:wasabi_secret_key] = value
     end
 
     # Post local changes, check in, and download configuration file (used by some Remote Server integrations, such as the Files.com Agent)
@@ -729,140 +756,146 @@ module Files
     end
 
     # Parameters:
-    #   aws_access_key - string - AWS Access Key.
-    #   aws_secret_key - string - AWS secret key.
-    #   password - string - Password if needed.
-    #   private_key - string - Private key if needed.
+    #   password - string - Password, if needed.
+    #   private_key - string - Private key, if needed.
     #   private_key_passphrase - string - Passphrase for private key if needed.
+    #   reset_authentication - boolean - Reset authenticated account?
     #   ssl_certificate - string - SSL client certificate.
-    #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    #   wasabi_access_key - string - Wasabi access key.
-    #   wasabi_secret_key - string - Wasabi secret key.
-    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
-    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
-    #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
-    #   reset_authentication - boolean - Reset authenticated account
-    #   azure_blob_storage_access_key - string - Azure Blob Storage secret key.
-    #   azure_files_storage_access_key - string - Azure File Storage access key.
+    #   aws_secret_key - string - AWS: secret key.
+    #   azure_blob_storage_access_key - string - Azure Blob Storage: Access Key
+    #   azure_blob_storage_sas_token - string - Azure Blob Storage: Shared Access Signature (SAS) token
+    #   azure_files_storage_access_key - string - Azure File Storage: Access Key
+    #   azure_files_storage_sas_token - string - Azure File Storage: Shared Access Signature (SAS) token
+    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage: applicationKey
+    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage: keyID
+    #   cloudflare_secret_key - string - Cloudflare: Secret Key
+    #   filebase_secret_key - string - Filebase: Secret Key
+    #   google_cloud_storage_credentials_json - string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
+    #   linode_secret_key - string - Linode: Secret Key
+    #   rackspace_api_key - string - Rackspace: API key from the Rackspace Cloud Control Panel
+    #   s3_compatible_secret_key - string - S3-compatible: Secret Key
+    #   wasabi_secret_key - string - Wasabi: Secret Key
+    #   aws_access_key - string - AWS Access Key.
+    #   azure_blob_storage_account - string - Azure Blob Storage: Account name
+    #   azure_blob_storage_container - string - Azure Blob Storage: Container name
+    #   azure_blob_storage_dns_suffix - string - Azure Blob Storage: Custom DNS suffix
+    #   azure_blob_storage_hierarchical_namespace - boolean - Azure Blob Storage: Does the storage account has hierarchical namespace feature enabled?
+    #   azure_files_storage_account - string - Azure Files: Storage Account name
+    #   azure_files_storage_dns_suffix - string - Azure Files: Custom DNS suffix
+    #   azure_files_storage_share_name - string - Azure Files:  Storage Share name
+    #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage: Bucket name
+    #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage: S3 Endpoint
+    #   cloudflare_access_key - string - Cloudflare: Access Key.
+    #   cloudflare_bucket - string - Cloudflare: Bucket name
+    #   cloudflare_endpoint - string - Cloudflare: endpoint
+    #   dropbox_teams - boolean - Dropbox: If true, list Team folders in root?
+    #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
+    #   filebase_access_key - string - Filebase: Access Key.
+    #   filebase_bucket - string - Filebase: Bucket name
+    #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
+    #   files_agent_root - string - Agent local root path
+    #   files_agent_version - string - Files Agent version
+    #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
+    #   google_cloud_storage_project_id - string - Google Cloud Storage: Project ID
+    #   google_cloud_storage_region - string - Google Cloud Storage: Region
+    #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
     #   hostname - string - Hostname or IP address
-    #   name - string - Internal name for your reference
+    #   linode_access_key - string - Linode: Access Key
+    #   linode_bucket - string - Linode: Bucket name
+    #   linode_region - string - Linode: region
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   name - string - Internal name for your reference
+    #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
     #   port - int64 - Port for remote server.  Not needed for S3.
+    #   rackspace_container - string - Rackspace: The name of the container (top level directory) where files will sync.
+    #   rackspace_region - string - Rackspace: Three letter code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    #   rackspace_username - string - Rackspace: username used to login to the Rackspace Cloud Control Panel.
     #   s3_bucket - string - S3 bucket name
+    #   s3_compatible_access_key - string - S3-compatible: Access Key
+    #   s3_compatible_bucket - string - S3-compatible: Bucket name
+    #   s3_compatible_endpoint - string - S3-compatible: endpoint
+    #   s3_compatible_region - string - S3-compatible: region
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
     #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.  Not needed for S3 buckets.
-    #   google_cloud_storage_bucket - string - Google Cloud Storage bucket name
-    #   google_cloud_storage_project_id - string - Google Cloud Project ID
-    #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage Bucket name
-    #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
-    #   wasabi_bucket - string - Wasabi Bucket name
-    #   wasabi_region - string - Wasabi region
-    #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
-    #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    #   rackspace_container - string - The name of the container (top level directory) where files will sync.
-    #   one_drive_account_type - string - Either personal or business_other account types
-    #   azure_blob_storage_account - string - Azure Blob Storage Account name
-    #   azure_blob_storage_container - string - Azure Blob Storage Container name
-    #   azure_blob_storage_hierarchical_namespace - boolean - Enable when storage account has hierarchical namespace feature enabled
-    #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
-    #   azure_blob_storage_dns_suffix - string - Custom DNS suffix
-    #   azure_files_storage_account - string - Azure File Storage Account name
-    #   azure_files_storage_share_name - string - Azure File Storage Share name
-    #   azure_files_storage_dns_suffix - string - Custom DNS suffix
-    #   azure_files_storage_sas_token - string - Shared Access Signature (SAS) token
-    #   s3_compatible_bucket - string - S3-compatible Bucket name
-    #   s3_compatible_endpoint - string - S3-compatible endpoint
-    #   s3_compatible_region - string - S3-compatible endpoint
-    #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
-    #   s3_compatible_access_key - string - S3-compatible Access Key.
-    #   s3_compatible_secret_key - string - S3-compatible secret key
-    #   files_agent_root - string - Agent local root path
-    #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
-    #   files_agent_version - string - Files Agent version
-    #   filebase_access_key - string - Filebase Access Key.
-    #   filebase_secret_key - string - Filebase secret key
-    #   filebase_bucket - string - Filebase Bucket name
-    #   cloudflare_access_key - string - Cloudflare Access Key.
-    #   cloudflare_secret_key - string - Cloudflare secret key
-    #   cloudflare_bucket - string - Cloudflare Bucket name
-    #   cloudflare_endpoint - string - Cloudflare endpoint
-    #   dropbox_teams - boolean - List Team folders in root
-    #   linode_access_key - string - Linode Access Key.
-    #   linode_secret_key - string - Linode secret key
-    #   linode_bucket - string - Linode Bucket name
-    #   linode_region - string - Linode region
+    #   wasabi_access_key - string - Wasabi: Access Key.
+    #   wasabi_bucket - string - Wasabi: Bucket name
+    #   wasabi_region - string - Wasabi: Region
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if params[:private_key_passphrase] and !params[:private_key_passphrase].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if params[:ssl_certificate] and !params[:ssl_certificate].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params[:google_cloud_storage_credentials_json] and !params[:google_cloud_storage_credentials_json].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params[:backblaze_b2_key_id] and !params[:backblaze_b2_key_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params[:backblaze_b2_application_key] and !params[:backblaze_b2_application_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params[:rackspace_api_key] and !params[:rackspace_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params[:azure_blob_storage_access_key] and !params[:azure_blob_storage_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_access_key must be an String") if params[:azure_files_storage_access_key] and !params[:azure_files_storage_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params[:azure_files_storage_sas_token] and !params[:azure_files_storage_sas_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params[:backblaze_b2_application_key] and !params[:backblaze_b2_application_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params[:backblaze_b2_key_id] and !params[:backblaze_b2_key_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params[:google_cloud_storage_credentials_json] and !params[:google_cloud_storage_credentials_json].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_secret_key must be an String") if params[:google_cloud_storage_s3_compatible_secret_key] and !params[:google_cloud_storage_s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params[:rackspace_api_key] and !params[:rackspace_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params[:azure_blob_storage_container] and !params[:azure_blob_storage_container].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if params[:azure_blob_storage_dns_suffix] and !params[:azure_blob_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params[:backblaze_b2_bucket] and !params[:backblaze_b2_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params[:backblaze_b2_s3_endpoint] and !params[:backblaze_b2_s3_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_region must be an String") if params[:google_cloud_storage_region] and !params[:google_cloud_storage_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params[:hostname] and !params[:hostname].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_bucket must be an String") if params[:linode_bucket] and !params[:linode_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_region must be an String") if params[:linode_region] and !params[:linode_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params[:max_connections] and !params[:max_connections].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params[:rackspace_container] and !params[:rackspace_container].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params[:rackspace_region] and !params[:rackspace_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params[:rackspace_username] and !params[:rackspace_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params[:s3_compatible_region] and !params[:s3_compatible_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params[:s3_region] and !params[:s3_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params[:ssl] and !params[:ssl].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params[:backblaze_b2_bucket] and !params[:backblaze_b2_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params[:backblaze_b2_s3_endpoint] and !params[:backblaze_b2_s3_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_bucket must be an String") if params[:wasabi_bucket] and !params[:wasabi_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_region must be an String") if params[:wasabi_region] and !params[:wasabi_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params[:rackspace_username] and !params[:rackspace_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params[:rackspace_region] and !params[:rackspace_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params[:rackspace_container] and !params[:rackspace_container].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params[:azure_blob_storage_container] and !params[:azure_blob_storage_container].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if params[:azure_blob_storage_dns_suffix] and !params[:azure_blob_storage_dns_suffix].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params[:azure_files_storage_sas_token] and !params[:azure_files_storage_sas_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params[:s3_compatible_region] and !params[:s3_compatible_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_bucket must be an String") if params[:linode_bucket] and !params[:linode_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_region must be an String") if params[:linode_region] and !params[:linode_region].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/remote_servers/#{@attributes[:id]}", :patch, params, @options)
@@ -945,136 +978,142 @@ module Files
     end
 
     # Parameters:
-    #   aws_access_key - string - AWS Access Key.
-    #   aws_secret_key - string - AWS secret key.
-    #   password - string - Password if needed.
-    #   private_key - string - Private key if needed.
+    #   password - string - Password, if needed.
+    #   private_key - string - Private key, if needed.
     #   private_key_passphrase - string - Passphrase for private key if needed.
+    #   reset_authentication - boolean - Reset authenticated account?
     #   ssl_certificate - string - SSL client certificate.
-    #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    #   wasabi_access_key - string - Wasabi access key.
-    #   wasabi_secret_key - string - Wasabi secret key.
-    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
-    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
-    #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
-    #   reset_authentication - boolean - Reset authenticated account
-    #   azure_blob_storage_access_key - string - Azure Blob Storage secret key.
-    #   azure_files_storage_access_key - string - Azure File Storage access key.
+    #   aws_secret_key - string - AWS: secret key.
+    #   azure_blob_storage_access_key - string - Azure Blob Storage: Access Key
+    #   azure_blob_storage_sas_token - string - Azure Blob Storage: Shared Access Signature (SAS) token
+    #   azure_files_storage_access_key - string - Azure File Storage: Access Key
+    #   azure_files_storage_sas_token - string - Azure File Storage: Shared Access Signature (SAS) token
+    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage: applicationKey
+    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage: keyID
+    #   cloudflare_secret_key - string - Cloudflare: Secret Key
+    #   filebase_secret_key - string - Filebase: Secret Key
+    #   google_cloud_storage_credentials_json - string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
+    #   linode_secret_key - string - Linode: Secret Key
+    #   rackspace_api_key - string - Rackspace: API key from the Rackspace Cloud Control Panel
+    #   s3_compatible_secret_key - string - S3-compatible: Secret Key
+    #   wasabi_secret_key - string - Wasabi: Secret Key
+    #   aws_access_key - string - AWS Access Key.
+    #   azure_blob_storage_account - string - Azure Blob Storage: Account name
+    #   azure_blob_storage_container - string - Azure Blob Storage: Container name
+    #   azure_blob_storage_dns_suffix - string - Azure Blob Storage: Custom DNS suffix
+    #   azure_blob_storage_hierarchical_namespace - boolean - Azure Blob Storage: Does the storage account has hierarchical namespace feature enabled?
+    #   azure_files_storage_account - string - Azure Files: Storage Account name
+    #   azure_files_storage_dns_suffix - string - Azure Files: Custom DNS suffix
+    #   azure_files_storage_share_name - string - Azure Files:  Storage Share name
+    #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage: Bucket name
+    #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage: S3 Endpoint
+    #   cloudflare_access_key - string - Cloudflare: Access Key.
+    #   cloudflare_bucket - string - Cloudflare: Bucket name
+    #   cloudflare_endpoint - string - Cloudflare: endpoint
+    #   dropbox_teams - boolean - Dropbox: If true, list Team folders in root?
+    #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
+    #   filebase_access_key - string - Filebase: Access Key.
+    #   filebase_bucket - string - Filebase: Bucket name
+    #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
+    #   files_agent_root - string - Agent local root path
+    #   files_agent_version - string - Files Agent version
+    #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
+    #   google_cloud_storage_project_id - string - Google Cloud Storage: Project ID
+    #   google_cloud_storage_region - string - Google Cloud Storage: Region
+    #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
     #   hostname - string - Hostname or IP address
-    #   name - string - Internal name for your reference
+    #   linode_access_key - string - Linode: Access Key
+    #   linode_bucket - string - Linode: Bucket name
+    #   linode_region - string - Linode: region
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   name - string - Internal name for your reference
+    #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
     #   port - int64 - Port for remote server.  Not needed for S3.
+    #   rackspace_container - string - Rackspace: The name of the container (top level directory) where files will sync.
+    #   rackspace_region - string - Rackspace: Three letter code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    #   rackspace_username - string - Rackspace: username used to login to the Rackspace Cloud Control Panel.
     #   s3_bucket - string - S3 bucket name
+    #   s3_compatible_access_key - string - S3-compatible: Access Key
+    #   s3_compatible_bucket - string - S3-compatible: Bucket name
+    #   s3_compatible_endpoint - string - S3-compatible: endpoint
+    #   s3_compatible_region - string - S3-compatible: region
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
     #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.  Not needed for S3 buckets.
-    #   google_cloud_storage_bucket - string - Google Cloud Storage bucket name
-    #   google_cloud_storage_project_id - string - Google Cloud Project ID
-    #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage Bucket name
-    #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
-    #   wasabi_bucket - string - Wasabi Bucket name
-    #   wasabi_region - string - Wasabi region
-    #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
-    #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    #   rackspace_container - string - The name of the container (top level directory) where files will sync.
-    #   one_drive_account_type - string - Either personal or business_other account types
-    #   azure_blob_storage_account - string - Azure Blob Storage Account name
-    #   azure_blob_storage_container - string - Azure Blob Storage Container name
-    #   azure_blob_storage_hierarchical_namespace - boolean - Enable when storage account has hierarchical namespace feature enabled
-    #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
-    #   azure_blob_storage_dns_suffix - string - Custom DNS suffix
-    #   azure_files_storage_account - string - Azure File Storage Account name
-    #   azure_files_storage_share_name - string - Azure File Storage Share name
-    #   azure_files_storage_dns_suffix - string - Custom DNS suffix
-    #   azure_files_storage_sas_token - string - Shared Access Signature (SAS) token
-    #   s3_compatible_bucket - string - S3-compatible Bucket name
-    #   s3_compatible_endpoint - string - S3-compatible endpoint
-    #   s3_compatible_region - string - S3-compatible endpoint
-    #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
-    #   s3_compatible_access_key - string - S3-compatible Access Key.
-    #   s3_compatible_secret_key - string - S3-compatible secret key
-    #   files_agent_root - string - Agent local root path
-    #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
-    #   files_agent_version - string - Files Agent version
-    #   filebase_access_key - string - Filebase Access Key.
-    #   filebase_secret_key - string - Filebase secret key
-    #   filebase_bucket - string - Filebase Bucket name
-    #   cloudflare_access_key - string - Cloudflare Access Key.
-    #   cloudflare_secret_key - string - Cloudflare secret key
-    #   cloudflare_bucket - string - Cloudflare Bucket name
-    #   cloudflare_endpoint - string - Cloudflare endpoint
-    #   dropbox_teams - boolean - List Team folders in root
-    #   linode_access_key - string - Linode Access Key.
-    #   linode_secret_key - string - Linode secret key
-    #   linode_bucket - string - Linode Bucket name
-    #   linode_region - string - Linode region
+    #   wasabi_access_key - string - Wasabi: Access Key.
+    #   wasabi_bucket - string - Wasabi: Bucket name
+    #   wasabi_region - string - Wasabi: Region
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if params[:private_key_passphrase] and !params[:private_key_passphrase].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if params[:ssl_certificate] and !params[:ssl_certificate].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params[:google_cloud_storage_credentials_json] and !params[:google_cloud_storage_credentials_json].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params[:backblaze_b2_key_id] and !params[:backblaze_b2_key_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params[:backblaze_b2_application_key] and !params[:backblaze_b2_application_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params[:rackspace_api_key] and !params[:rackspace_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params[:azure_blob_storage_access_key] and !params[:azure_blob_storage_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_access_key must be an String") if params[:azure_files_storage_access_key] and !params[:azure_files_storage_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params[:azure_files_storage_sas_token] and !params[:azure_files_storage_sas_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params[:backblaze_b2_application_key] and !params[:backblaze_b2_application_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params[:backblaze_b2_key_id] and !params[:backblaze_b2_key_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params[:google_cloud_storage_credentials_json] and !params[:google_cloud_storage_credentials_json].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_secret_key must be an String") if params[:google_cloud_storage_s3_compatible_secret_key] and !params[:google_cloud_storage_s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params[:rackspace_api_key] and !params[:rackspace_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params[:azure_blob_storage_container] and !params[:azure_blob_storage_container].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if params[:azure_blob_storage_dns_suffix] and !params[:azure_blob_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params[:backblaze_b2_bucket] and !params[:backblaze_b2_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params[:backblaze_b2_s3_endpoint] and !params[:backblaze_b2_s3_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_region must be an String") if params[:google_cloud_storage_region] and !params[:google_cloud_storage_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params[:hostname] and !params[:hostname].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_bucket must be an String") if params[:linode_bucket] and !params[:linode_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_region must be an String") if params[:linode_region] and !params[:linode_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params[:max_connections] and !params[:max_connections].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params[:rackspace_container] and !params[:rackspace_container].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params[:rackspace_region] and !params[:rackspace_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params[:rackspace_username] and !params[:rackspace_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params[:s3_compatible_region] and !params[:s3_compatible_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params[:s3_region] and !params[:s3_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params[:ssl] and !params[:ssl].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params[:backblaze_b2_bucket] and !params[:backblaze_b2_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params[:backblaze_b2_s3_endpoint] and !params[:backblaze_b2_s3_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_bucket must be an String") if params[:wasabi_bucket] and !params[:wasabi_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_region must be an String") if params[:wasabi_region] and !params[:wasabi_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params[:rackspace_username] and !params[:rackspace_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params[:rackspace_region] and !params[:rackspace_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params[:rackspace_container] and !params[:rackspace_container].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params[:azure_blob_storage_container] and !params[:azure_blob_storage_container].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if params[:azure_blob_storage_dns_suffix] and !params[:azure_blob_storage_dns_suffix].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params[:azure_files_storage_sas_token] and !params[:azure_files_storage_sas_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params[:s3_compatible_region] and !params[:s3_compatible_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_bucket must be an String") if params[:linode_bucket] and !params[:linode_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_region must be an String") if params[:linode_region] and !params[:linode_region].is_a?(String)
 
       response, options = Api.send_request("/remote_servers", :post, params, options)
       RemoteServer.new(response.data, options)
@@ -1116,139 +1155,145 @@ module Files
     end
 
     # Parameters:
-    #   aws_access_key - string - AWS Access Key.
-    #   aws_secret_key - string - AWS secret key.
-    #   password - string - Password if needed.
-    #   private_key - string - Private key if needed.
+    #   password - string - Password, if needed.
+    #   private_key - string - Private key, if needed.
     #   private_key_passphrase - string - Passphrase for private key if needed.
+    #   reset_authentication - boolean - Reset authenticated account?
     #   ssl_certificate - string - SSL client certificate.
-    #   google_cloud_storage_credentials_json - string - A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    #   wasabi_access_key - string - Wasabi access key.
-    #   wasabi_secret_key - string - Wasabi secret key.
-    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage keyID.
-    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage applicationKey.
-    #   rackspace_api_key - string - Rackspace API key from the Rackspace Cloud Control Panel.
-    #   reset_authentication - boolean - Reset authenticated account
-    #   azure_blob_storage_access_key - string - Azure Blob Storage secret key.
-    #   azure_files_storage_access_key - string - Azure File Storage access key.
+    #   aws_secret_key - string - AWS: secret key.
+    #   azure_blob_storage_access_key - string - Azure Blob Storage: Access Key
+    #   azure_blob_storage_sas_token - string - Azure Blob Storage: Shared Access Signature (SAS) token
+    #   azure_files_storage_access_key - string - Azure File Storage: Access Key
+    #   azure_files_storage_sas_token - string - Azure File Storage: Shared Access Signature (SAS) token
+    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage: applicationKey
+    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage: keyID
+    #   cloudflare_secret_key - string - Cloudflare: Secret Key
+    #   filebase_secret_key - string - Filebase: Secret Key
+    #   google_cloud_storage_credentials_json - string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
+    #   linode_secret_key - string - Linode: Secret Key
+    #   rackspace_api_key - string - Rackspace: API key from the Rackspace Cloud Control Panel
+    #   s3_compatible_secret_key - string - S3-compatible: Secret Key
+    #   wasabi_secret_key - string - Wasabi: Secret Key
+    #   aws_access_key - string - AWS Access Key.
+    #   azure_blob_storage_account - string - Azure Blob Storage: Account name
+    #   azure_blob_storage_container - string - Azure Blob Storage: Container name
+    #   azure_blob_storage_dns_suffix - string - Azure Blob Storage: Custom DNS suffix
+    #   azure_blob_storage_hierarchical_namespace - boolean - Azure Blob Storage: Does the storage account has hierarchical namespace feature enabled?
+    #   azure_files_storage_account - string - Azure Files: Storage Account name
+    #   azure_files_storage_dns_suffix - string - Azure Files: Custom DNS suffix
+    #   azure_files_storage_share_name - string - Azure Files:  Storage Share name
+    #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage: Bucket name
+    #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage: S3 Endpoint
+    #   cloudflare_access_key - string - Cloudflare: Access Key.
+    #   cloudflare_bucket - string - Cloudflare: Bucket name
+    #   cloudflare_endpoint - string - Cloudflare: endpoint
+    #   dropbox_teams - boolean - Dropbox: If true, list Team folders in root?
+    #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
+    #   filebase_access_key - string - Filebase: Access Key.
+    #   filebase_bucket - string - Filebase: Bucket name
+    #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
+    #   files_agent_root - string - Agent local root path
+    #   files_agent_version - string - Files Agent version
+    #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
+    #   google_cloud_storage_project_id - string - Google Cloud Storage: Project ID
+    #   google_cloud_storage_region - string - Google Cloud Storage: Region
+    #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
     #   hostname - string - Hostname or IP address
-    #   name - string - Internal name for your reference
+    #   linode_access_key - string - Linode: Access Key
+    #   linode_bucket - string - Linode: Bucket name
+    #   linode_region - string - Linode: region
     #   max_connections - int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
+    #   name - string - Internal name for your reference
+    #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
     #   port - int64 - Port for remote server.  Not needed for S3.
+    #   rackspace_container - string - Rackspace: The name of the container (top level directory) where files will sync.
+    #   rackspace_region - string - Rackspace: Three letter code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
+    #   rackspace_username - string - Rackspace: username used to login to the Rackspace Cloud Control Panel.
     #   s3_bucket - string - S3 bucket name
+    #   s3_compatible_access_key - string - S3-compatible: Access Key
+    #   s3_compatible_bucket - string - S3-compatible: Bucket name
+    #   s3_compatible_endpoint - string - S3-compatible: endpoint
+    #   s3_compatible_region - string - S3-compatible: region
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
     #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.  Not needed for S3 buckets.
-    #   google_cloud_storage_bucket - string - Google Cloud Storage bucket name
-    #   google_cloud_storage_project_id - string - Google Cloud Project ID
-    #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage Bucket name
-    #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage S3 Endpoint
-    #   wasabi_bucket - string - Wasabi Bucket name
-    #   wasabi_region - string - Wasabi region
-    #   rackspace_username - string - Rackspace username used to login to the Rackspace Cloud Control Panel.
-    #   rackspace_region - string - Three letter airport code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    #   rackspace_container - string - The name of the container (top level directory) where files will sync.
-    #   one_drive_account_type - string - Either personal or business_other account types
-    #   azure_blob_storage_account - string - Azure Blob Storage Account name
-    #   azure_blob_storage_container - string - Azure Blob Storage Container name
-    #   azure_blob_storage_hierarchical_namespace - boolean - Enable when storage account has hierarchical namespace feature enabled
-    #   azure_blob_storage_sas_token - string - Shared Access Signature (SAS) token
-    #   azure_blob_storage_dns_suffix - string - Custom DNS suffix
-    #   azure_files_storage_account - string - Azure File Storage Account name
-    #   azure_files_storage_share_name - string - Azure File Storage Share name
-    #   azure_files_storage_dns_suffix - string - Custom DNS suffix
-    #   azure_files_storage_sas_token - string - Shared Access Signature (SAS) token
-    #   s3_compatible_bucket - string - S3-compatible Bucket name
-    #   s3_compatible_endpoint - string - S3-compatible endpoint
-    #   s3_compatible_region - string - S3-compatible endpoint
-    #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
-    #   s3_compatible_access_key - string - S3-compatible Access Key.
-    #   s3_compatible_secret_key - string - S3-compatible secret key
-    #   files_agent_root - string - Agent local root path
-    #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
-    #   files_agent_version - string - Files Agent version
-    #   filebase_access_key - string - Filebase Access Key.
-    #   filebase_secret_key - string - Filebase secret key
-    #   filebase_bucket - string - Filebase Bucket name
-    #   cloudflare_access_key - string - Cloudflare Access Key.
-    #   cloudflare_secret_key - string - Cloudflare secret key
-    #   cloudflare_bucket - string - Cloudflare Bucket name
-    #   cloudflare_endpoint - string - Cloudflare endpoint
-    #   dropbox_teams - boolean - List Team folders in root
-    #   linode_access_key - string - Linode Access Key.
-    #   linode_secret_key - string - Linode secret key
-    #   linode_bucket - string - Linode Bucket name
-    #   linode_region - string - Linode region
+    #   wasabi_access_key - string - Wasabi: Access Key.
+    #   wasabi_bucket - string - Wasabi: Bucket name
+    #   wasabi_region - string - Wasabi: Region
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if params[:private_key_passphrase] and !params[:private_key_passphrase].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if params[:ssl_certificate] and !params[:ssl_certificate].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params[:google_cloud_storage_credentials_json] and !params[:google_cloud_storage_credentials_json].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params[:backblaze_b2_key_id] and !params[:backblaze_b2_key_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params[:backblaze_b2_application_key] and !params[:backblaze_b2_application_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params[:rackspace_api_key] and !params[:rackspace_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params[:azure_blob_storage_access_key] and !params[:azure_blob_storage_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_access_key must be an String") if params[:azure_files_storage_access_key] and !params[:azure_files_storage_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params[:azure_files_storage_sas_token] and !params[:azure_files_storage_sas_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params[:backblaze_b2_application_key] and !params[:backblaze_b2_application_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params[:backblaze_b2_key_id] and !params[:backblaze_b2_key_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params[:google_cloud_storage_credentials_json] and !params[:google_cloud_storage_credentials_json].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_secret_key must be an String") if params[:google_cloud_storage_s3_compatible_secret_key] and !params[:google_cloud_storage_s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params[:rackspace_api_key] and !params[:rackspace_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params[:azure_blob_storage_container] and !params[:azure_blob_storage_container].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if params[:azure_blob_storage_dns_suffix] and !params[:azure_blob_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params[:backblaze_b2_bucket] and !params[:backblaze_b2_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params[:backblaze_b2_s3_endpoint] and !params[:backblaze_b2_s3_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_region must be an String") if params[:google_cloud_storage_region] and !params[:google_cloud_storage_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params[:hostname] and !params[:hostname].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_bucket must be an String") if params[:linode_bucket] and !params[:linode_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_region must be an String") if params[:linode_region] and !params[:linode_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params[:max_connections] and !params[:max_connections].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params[:rackspace_container] and !params[:rackspace_container].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params[:rackspace_region] and !params[:rackspace_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params[:rackspace_username] and !params[:rackspace_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params[:s3_compatible_region] and !params[:s3_compatible_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params[:s3_region] and !params[:s3_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params[:ssl] and !params[:ssl].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params[:backblaze_b2_bucket] and !params[:backblaze_b2_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params[:backblaze_b2_s3_endpoint] and !params[:backblaze_b2_s3_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_bucket must be an String") if params[:wasabi_bucket] and !params[:wasabi_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_region must be an String") if params[:wasabi_region] and !params[:wasabi_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params[:rackspace_username] and !params[:rackspace_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params[:rackspace_region] and !params[:rackspace_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params[:rackspace_container] and !params[:rackspace_container].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params[:azure_blob_storage_container] and !params[:azure_blob_storage_container].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if params[:azure_blob_storage_dns_suffix] and !params[:azure_blob_storage_dns_suffix].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params[:azure_files_storage_sas_token] and !params[:azure_files_storage_sas_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params[:s3_compatible_region] and !params[:s3_compatible_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_bucket must be an String") if params[:linode_bucket] and !params[:linode_bucket].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: linode_region must be an String") if params[:linode_region] and !params[:linode_region].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}", :patch, params, options)
