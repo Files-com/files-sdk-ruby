@@ -138,6 +138,7 @@ module Files
   @api_key = nil
   @app_info = nil
   @base_url = "https://app.files.com"
+  @language = nil
   @log_level = nil
   @logger = nil
   @proxy = nil
@@ -152,7 +153,7 @@ module Files
   @read_timeout = 60
 
   class << self
-    attr_accessor :api_key, :base_url, :default_headers, :initial_network_retry_delay, :max_network_retry_delay, :open_timeout, :read_timeout, :proxy, :session_id
+    attr_accessor :api_key, :base_url, :default_headers, :initial_network_retry_delay, :language, :max_network_retry_delay, :open_timeout, :read_timeout, :proxy, :session_id
   end
 
   # map to the same values as the standard library's logger

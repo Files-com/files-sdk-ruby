@@ -61,8 +61,8 @@ module Files
       new(name).each(*args, &block)
     end
 
-    def self.from_path(path)
-      File.find(path)
+    def self.from_path(path, options = {})
+      find(path, {}, options)
     end
 
     def self.identical?(path1, path2)

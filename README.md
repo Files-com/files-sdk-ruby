@@ -338,6 +338,12 @@ and error descriptions.
 
 If the specified language is not supported or the value is omitted, the API defaults to English.
 
+```shell title="Example Request"
+require 'files.com'
+
+Files.language = 'es'
+```
+
 ## Errors
 
 The Files.com Ruby SDK will return errors by raising exceptions. There are many exception classes defined in the Files SDK that correspond

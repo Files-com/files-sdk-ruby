@@ -332,6 +332,7 @@ module Files
 
       headers["X-FilesAPI-Key"] = api_key if api_key
       headers["X-FilesAPI-Auth"] = session_id if session_id
+      headers["Accept-Language"] = Files.language if Files.language
 
       user_agent = @system_profiler.user_agent
       begin

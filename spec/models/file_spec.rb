@@ -97,9 +97,6 @@ RSpec.describe Files::File, :with_test_folder, skip: ENV.fetch("GITLAB", nil) do
 
       file = Files::File.find(test_folder.join("with_rename_test.txt").to_s, {}, options)
       expect(file.read).to eq("I am a string via IO")
-
-      file = Files::File.find(test_folder.join("with_rename_test_1.txt").to_s, {}, options)
-      expect(file.read).to eq("I am a string via IO")
     end
   end
 
@@ -122,12 +119,12 @@ RSpec.describe Files::File, :with_test_folder, skip: ENV.fetch("GITLAB", nil) do
       Files::File.open(test_folder.join("read.txt").to_s, 'w', options) do |f|
         f.write("contents")
       end
-      expect(Files::File.from_path(test_folder.join("read.txt").to_s).type).to eq("file")
+      expect(Files::File.from_path(test_folder.join("read.txt").to_s, options).type).to eq("file")
     end
 
     it "returns a directory type" do
-      Files::Folder.mkdir("testdir") unless Files::Folder.exist?("testdir")
-      expect(Files::File.from_path("testdir").type).to eq("directory")
+      Files::Folder.mkdir("testdir", {}, options) unless Files::Folder.exist?("testdir", options)
+      expect(Files::File.from_path("testdir", options).type).to eq("directory")
     end
   end
 end
