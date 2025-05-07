@@ -330,8 +330,8 @@ end
 
 ## Foreign Language Support
 
-The Files.com Ruby SDK will soon be updated to support localized responses by using a configuration
-method. When available, it can be used to guide the API in selecting a preferred language for applicable response content.
+The Files.com Ruby SDK supports localized responses by using the `Files.language` configuration attribute.
+When configured, this guides the API in selecting a preferred language for applicable response content.
 
 Language support currently applies to select human-facing fields only, such as notification messages
 and error descriptions.
