@@ -72,6 +72,28 @@ module Files
       @attributes[:site_id] = value
     end
 
+    # Parameters:
+    #   action (required) - string - Action to take on inactive users (disable or delete)
+    #   authentication_method (required) - string - User authentication method for the rule
+    #   inactivity_days (required) - int64 - Number of days of inactivity before the rule applies
+    #   include_site_admins - boolean - Include site admins in the rule
+    #   include_folder_admins - boolean - Include folder admins in the rule
+    def update(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise MissingParameterError.new("Parameter missing: action") unless params[:action]
+      raise MissingParameterError.new("Parameter missing: authentication_method") unless params[:authentication_method]
+      raise MissingParameterError.new("Parameter missing: inactivity_days") unless params[:inactivity_days]
+
+      Api.send_request("/user_lifecycle_rules/#{@attributes[:id]}", :patch, params, @options)
+    end
+
     def delete(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -89,7 +111,7 @@ module Files
 
     def save
       if @attributes[:id]
-        raise NotImplementedError.new("The UserLifecycleRule object doesn't support updates.")
+        new_obj = update(@attributes)
       else
         new_obj = UserLifecycleRule.create(@attributes, @options)
       end
@@ -145,6 +167,28 @@ module Files
       raise MissingParameterError.new("Parameter missing: inactivity_days") unless params[:inactivity_days]
 
       response, options = Api.send_request("/user_lifecycle_rules", :post, params, options)
+      UserLifecycleRule.new(response.data, options)
+    end
+
+    # Parameters:
+    #   action (required) - string - Action to take on inactive users (disable or delete)
+    #   authentication_method (required) - string - User authentication method for the rule
+    #   inactivity_days (required) - int64 - Number of days of inactivity before the rule applies
+    #   include_site_admins - boolean - Include site admins in the rule
+    #   include_folder_admins - boolean - Include folder admins in the rule
+    def self.update(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise MissingParameterError.new("Parameter missing: action") unless params[:action]
+      raise MissingParameterError.new("Parameter missing: authentication_method") unless params[:authentication_method]
+      raise MissingParameterError.new("Parameter missing: inactivity_days") unless params[:inactivity_days]
+
+      response, options = Api.send_request("/user_lifecycle_rules/#{params[:id]}", :patch, params, options)
       UserLifecycleRule.new(response.data, options)
     end
 

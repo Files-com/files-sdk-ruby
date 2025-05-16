@@ -74,6 +74,29 @@ Files::UserLifecycleRule.create(
 
 ---
 
+## Update User Lifecycle Rule
+
+```
+Files::UserLifecycleRule.update(id, 
+  authentication_method: "password", 
+  inactivity_days: 12, 
+  include_site_admins: true, 
+  include_folder_admins: true
+)
+```
+
+### Parameters
+
+* `id` (int64): Required - User Lifecycle Rule ID.
+* `action` (string): Required - Action to take on inactive users (disable or delete)
+* `authentication_method` (string): Required - User authentication method for the rule
+* `inactivity_days` (int64): Required - Number of days of inactivity before the rule applies
+* `include_site_admins` (boolean): Include site admins in the rule
+* `include_folder_admins` (boolean): Include folder admins in the rule
+
+
+---
+
 ## Delete User Lifecycle Rule
 
 ```
@@ -83,6 +106,31 @@ Files::UserLifecycleRule.delete(id)
 ### Parameters
 
 * `id` (int64): Required - User Lifecycle Rule ID.
+
+
+---
+
+## Update User Lifecycle Rule
+
+```
+user_lifecycle_rule = Files::UserLifecycleRule.find(id)
+
+user_lifecycle_rule.update(
+  authentication_method: "password",
+  inactivity_days: 12,
+  include_site_admins: true,
+  include_folder_admins: true
+)
+```
+
+### Parameters
+
+* `id` (int64): Required - User Lifecycle Rule ID.
+* `action` (string): Required - Action to take on inactive users (disable or delete)
+* `authentication_method` (string): Required - User authentication method for the rule
+* `inactivity_days` (int64): Required - Number of days of inactivity before the rule applies
+* `include_site_admins` (boolean): Include site admins in the rule
+* `include_folder_admins` (boolean): Include folder admins in the rule
 
 
 ---
