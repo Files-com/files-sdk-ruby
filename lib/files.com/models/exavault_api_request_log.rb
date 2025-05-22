@@ -19,7 +19,7 @@ module Files
       @attributes[:endpoint]
     end
 
-    # string - Exavault API Version
+    # int64 - Exavault API Version
     def version
       @attributes[:version]
     end
