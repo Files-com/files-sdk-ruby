@@ -72,6 +72,15 @@ module Files
       @attributes[:skip_company] = value
     end
 
+    # boolean - Form Field Set is in use by an active Inbox / Bundle / Inbox Registration / Bundle Registration
+    def in_use
+      @attributes[:in_use]
+    end
+
+    def in_use=(value)
+      @attributes[:in_use] = value
+    end
+
     # int64 - User ID.  Provide a value of `0` to operate the current session's user.
     def user_id
       @attributes[:user_id]
