@@ -807,11 +807,14 @@ module Files
       Api.send_request("/users/#{@attributes[:id]}", :patch, params, @options)
     end
 
+    # Parameters:
+    #   new_owner_id - int64 - Provide a User ID here to transfer ownership of certain resources such as Automations and Share Links (Bundles) to that new user.
     def delete(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: new_owner_id must be an Integer") if params[:new_owner_id] and !params[:new_owner_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/users/#{@attributes[:id]}", :delete, params, @options)
@@ -1084,10 +1087,13 @@ module Files
       User.new(response.data, options)
     end
 
+    # Parameters:
+    #   new_owner_id - int64 - Provide a User ID here to transfer ownership of certain resources such as Automations and Share Links (Bundles) to that new user.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: new_owner_id must be an Integer") if params[:new_owner_id] and !params[:new_owner_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/users/#{params[:id]}", :delete, params, options)

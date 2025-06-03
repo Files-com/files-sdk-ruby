@@ -437,12 +437,15 @@ Files::User.update(id,
 ## Delete User
 
 ```
-Files::User.delete(id)
+Files::User.delete(id, 
+  new_owner_id: 1
+)
 ```
 
 ### Parameters
 
 * `id` (int64): Required - User ID.
+* `new_owner_id` (int64): Provide a User ID here to transfer ownership of certain resources such as Automations and Share Links (Bundles) to that new user.
 
 
 ---
@@ -600,9 +603,12 @@ user.update(
 ```
 user = Files::User.find(id)
 
-user.delete
+user.delete(
+  new_owner_id: 1
+)
 ```
 
 ### Parameters
 
 * `id` (int64): Required - User ID.
+* `new_owner_id` (int64): Provide a User ID here to transfer ownership of certain resources such as Automations and Share Links (Bundles) to that new user.
