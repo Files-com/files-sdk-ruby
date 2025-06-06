@@ -854,11 +854,6 @@ module Files
       @attributes[:windows_mode_ftp]
     end
 
-    # int64 - If greater than zero, users will unable to login if they do not show activity within this number of days.
-    def disable_users_from_inactivity_period_days
-      @attributes[:disable_users_from_inactivity_period_days]
-    end
-
     # boolean - Allow group admins set password authentication method
     def group_admins_can_set_user_password
       @attributes[:group_admins_can_set_user_password]
@@ -959,7 +954,6 @@ module Files
     #   opt_out_global - boolean - Use servers in the USA only?
     #   use_provided_modified_at - boolean - Allow uploaders to set `provided_modified_at` for uploaded files?
     #   custom_namespace - boolean - Is this site using a custom namespace for users?
-    #   disable_users_from_inactivity_period_days - int64 - If greater than zero, users will unable to login if they do not show activity within this number of days.
     #   non_sso_groups_allowed - boolean - If true, groups can be manually created / modified / deleted by Site Admins. Otherwise, groups can only be managed via your SSO provider.
     #   non_sso_users_allowed - boolean - If true, users can be manually created / modified / deleted by Site Admins. Otherwise, users can only be managed via your SSO provider.
     #   sharing_enabled - boolean - Allow bundle creation
@@ -1076,7 +1070,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: bundle_registration_notifications must be an String") if params[:bundle_registration_notifications] and !params[:bundle_registration_notifications].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: bundle_activity_notifications must be an String") if params[:bundle_activity_notifications] and !params[:bundle_activity_notifications].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: bundle_upload_receipt_notifications must be an String") if params[:bundle_upload_receipt_notifications] and !params[:bundle_upload_receipt_notifications].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: disable_users_from_inactivity_period_days must be an Integer") if params[:disable_users_from_inactivity_period_days] and !params[:disable_users_from_inactivity_period_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sftp_host_key_type must be an String") if params[:sftp_host_key_type] and !params[:sftp_host_key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: active_sftp_host_key_id must be an Integer") if params[:active_sftp_host_key_id] and !params[:active_sftp_host_key_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: bundle_watermark_value must be an Hash") if params[:bundle_watermark_value] and !params[:bundle_watermark_value].is_a?(Hash)

@@ -117,13 +117,13 @@ module Files
       @attributes[:bypass_site_allowed_ips] = value
     end
 
-    # boolean - Exempt this user from being disabled based on inactivity?
-    def bypass_inactive_disable
-      @attributes[:bypass_inactive_disable]
+    # boolean - Exempt this user from user lifecycle rules?
+    def bypass_user_lifecycle_rules
+      @attributes[:bypass_user_lifecycle_rules]
     end
 
-    def bypass_inactive_disable=(value)
-      @attributes[:bypass_inactive_disable] = value
+    def bypass_user_lifecycle_rules=(value)
+      @attributes[:bypass_user_lifecycle_rules] = value
     end
 
     # date-time - When this user was created
@@ -740,7 +740,7 @@ module Files
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
     #   authentication_method - string - How is this user authenticated?
     #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
-    #   bypass_inactive_disable - boolean - Exempt this user from being disabled based on inactivity?
+    #   bypass_user_lifecycle_rules - boolean - Exempt this user from user lifecycle rules?
     #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
     #   dav_permission - boolean - Can the user connect with WebDAV?
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
@@ -905,7 +905,7 @@ module Files
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
     #   authentication_method - string - How is this user authenticated?
     #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
-    #   bypass_inactive_disable - boolean - Exempt this user from being disabled based on inactivity?
+    #   bypass_user_lifecycle_rules - boolean - Exempt this user from user lifecycle rules?
     #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
     #   dav_permission - boolean - Can the user connect with WebDAV?
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
@@ -1020,7 +1020,7 @@ module Files
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
     #   authentication_method - string - How is this user authenticated?
     #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
-    #   bypass_inactive_disable - boolean - Exempt this user from being disabled based on inactivity?
+    #   bypass_user_lifecycle_rules - boolean - Exempt this user from user lifecycle rules?
     #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
     #   dav_permission - boolean - Can the user connect with WebDAV?
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
