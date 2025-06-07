@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Files
-  VERSION = "1.1.264"
+  VERSION = "1.1.265"
 end

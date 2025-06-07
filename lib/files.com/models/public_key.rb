@@ -50,6 +50,15 @@ module Files
       @attributes[:fingerprint_sha256] = value
     end
 
+    # date-time - Key's most recent login time via SFTP
+    def last_login_at
+      @attributes[:last_login_at]
+    end
+
+    def last_login_at=(value)
+      @attributes[:last_login_at] = value
+    end
+
     # string - Username of the user this public key is associated with
     def username
       @attributes[:username]
