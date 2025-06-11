@@ -39,7 +39,7 @@ module Files
       @attributes[:body]
     end
 
-    # array(array) - Array of errors encountered during the run
+    # array(string) - Array of errors encountered during the run
     def event_errors
       @attributes[:event_errors]
     end

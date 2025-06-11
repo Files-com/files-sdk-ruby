@@ -63,6 +63,15 @@ module Files
       @attributes[:public_certificate_md5] = value
     end
 
+    # string - Public certificate used for message security.
+    def public_certificate
+      @attributes[:public_certificate]
+    end
+
+    def public_certificate=(value)
+      @attributes[:public_certificate] = value
+    end
+
     # string - MD5 hash of private key used for message security.
     def private_key_md5
       @attributes[:private_key_md5]
@@ -124,15 +133,6 @@ module Files
 
     def private_key_password_md5=(value)
       @attributes[:private_key_password_md5] = value
-    end
-
-    # string
-    def public_certificate
-      @attributes[:public_certificate]
-    end
-
-    def public_certificate=(value)
-      @attributes[:public_certificate] = value
     end
 
     # string

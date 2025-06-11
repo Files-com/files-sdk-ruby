@@ -108,6 +108,15 @@ module Files
       @attributes[:hex_public_certificate_serial] = value
     end
 
+    # string - Public certificate used for message security.
+    def public_certificate
+      @attributes[:public_certificate]
+    end
+
+    def public_certificate=(value)
+      @attributes[:public_certificate] = value
+    end
+
     # string - MD5 hash of public certificate used for message security.
     def public_certificate_md5
       @attributes[:public_certificate_md5]
@@ -169,15 +178,6 @@ module Files
 
     def http_auth_password=(value)
       @attributes[:http_auth_password] = value
-    end
-
-    # string - Public certificate for AS2 Partner.  Note: This is the certificate for AS2 message security, not a certificate used for HTTPS authentication.
-    def public_certificate
-      @attributes[:public_certificate]
-    end
-
-    def public_certificate=(value)
-      @attributes[:public_certificate] = value
     end
 
     # Parameters:

@@ -153,7 +153,7 @@ module Files
       @attributes[:trigger_file] = value
     end
 
-    # array(array) - Array of glob patterns to include
+    # array(string) - Array of glob patterns to include
     def include_patterns
       @attributes[:include_patterns]
     end
@@ -162,7 +162,7 @@ module Files
       @attributes[:include_patterns] = value
     end
 
-    # array(array) - Array of glob patterns to exclude
+    # array(string) - Array of glob patterns to exclude
     def exclude_patterns
       @attributes[:exclude_patterns]
     end
