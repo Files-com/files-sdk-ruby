@@ -69,7 +69,7 @@ module Files
       @attributes[:successful_files]
     end
 
-    # float - Total runtime in seconds
+    # double - Total runtime in seconds
     def runtime
       @attributes[:runtime]
     end
