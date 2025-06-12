@@ -14,17 +14,17 @@ module Files
       @attributes[:timestamp]
     end
 
-    # string - IP Address of Public Hosting Client
+    # string - IP Address of Public Hosting Client.
     def remote_ip
       @attributes[:remote_ip]
     end
 
-    # string - IP Address of Public Hosting Server
+    # string - IP Address of Public Hosting Server.
     def server_ip
       @attributes[:server_ip]
     end
 
-    # string - HTTP Request Hostname
+    # string - HTTP Request Hostname.
     def hostname
       @attributes[:hostname]
     end
@@ -34,7 +34,7 @@ module Files
       @attributes[:path]
     end
 
-    # int64 - HTTP Response Code
+    # int64 - HTTP Response Code.
     def response_code
       @attributes[:responseCode]
     end
@@ -44,14 +44,24 @@ module Files
       @attributes[:success]
     end
 
-    # int64 - Duration (in milliseconds)
+    # int64 - Duration (in milliseconds).
     def duration_ms
       @attributes[:duration_ms]
     end
 
-    # date-time - Start Time of Action
+    # date-time - Start Time of Action.
     def created_at
       @attributes[:created_at]
+    end
+
+    # int64 - The number of bytes transferred for file downloads.
+    def bytes_transferred
+      @attributes[:bytes_transferred]
+    end
+
+    # string - Method of the HTTP call.
+    def http_method
+      @attributes[:http_method]
     end
 
     # Parameters:
