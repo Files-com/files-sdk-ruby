@@ -126,15 +126,6 @@ module Files
       @attributes[:disabled] = value
     end
 
-    # string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    def interval
-      @attributes[:interval]
-    end
-
-    def interval=(value)
-      @attributes[:interval] = value
-    end
-
     # string - Trigger type: daily, custom_schedule, or manual
     def trigger
       @attributes[:trigger]
@@ -190,6 +181,15 @@ module Files
       @attributes[:sync_interval_minutes] = value
     end
 
+    # string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    def interval
+      @attributes[:interval]
+    end
+
+    def interval=(value)
+      @attributes[:interval] = value
+    end
+
     # int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     def recurring_day
       @attributes[:recurring_day]
@@ -237,7 +237,7 @@ module Files
     #   keep_after_copy - boolean - Keep files after copying?
     #   delete_empty_folders - boolean - Delete empty folders after sync?
     #   disabled - boolean - Is this sync disabled?
-    #   interval - int64 - Interval in minutes for sync (if scheduled)
+    #   interval - string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
     #   trigger - string - Trigger type: daily, custom_schedule, or manual
     #   trigger_file - string - Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
@@ -255,7 +255,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: dest_path must be an String") if params[:dest_path] and !params[:dest_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: src_remote_server_id must be an Integer") if params[:src_remote_server_id] and !params[:src_remote_server_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: dest_remote_server_id must be an Integer") if params[:dest_remote_server_id] and !params[:dest_remote_server_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if params[:interval] and !params[:interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_file must be an String") if params[:trigger_file] and !params[:trigger_file].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
@@ -336,7 +336,7 @@ module Files
     #   keep_after_copy - boolean - Keep files after copying?
     #   delete_empty_folders - boolean - Delete empty folders after sync?
     #   disabled - boolean - Is this sync disabled?
-    #   interval - int64 - Interval in minutes for sync (if scheduled)
+    #   interval - string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
     #   trigger - string - Trigger type: daily, custom_schedule, or manual
     #   trigger_file - string - Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
@@ -350,7 +350,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: dest_path must be an String") if params[:dest_path] and !params[:dest_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: src_remote_server_id must be an Integer") if params[:src_remote_server_id] and !params[:src_remote_server_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: dest_remote_server_id must be an Integer") if params[:dest_remote_server_id] and !params[:dest_remote_server_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if params[:interval] and !params[:interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_file must be an String") if params[:trigger_file] and !params[:trigger_file].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
@@ -378,7 +378,7 @@ module Files
     #   keep_after_copy - boolean - Keep files after copying?
     #   delete_empty_folders - boolean - Delete empty folders after sync?
     #   disabled - boolean - Is this sync disabled?
-    #   interval - int64 - Interval in minutes for sync (if scheduled)
+    #   interval - string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
     #   trigger - string - Trigger type: daily, custom_schedule, or manual
     #   trigger_file - string - Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
@@ -395,7 +395,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: dest_path must be an String") if params[:dest_path] and !params[:dest_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: src_remote_server_id must be an Integer") if params[:src_remote_server_id] and !params[:src_remote_server_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: dest_remote_server_id must be an Integer") if params[:dest_remote_server_id] and !params[:dest_remote_server_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if params[:interval] and !params[:interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_file must be an String") if params[:trigger_file] and !params[:trigger_file].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
