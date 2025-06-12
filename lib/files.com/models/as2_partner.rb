@@ -81,13 +81,22 @@ module Files
       @attributes[:default_mime_type] = value
     end
 
-    # string - How should Files.com evaluate message transfer success based on a partner's MDN response?  This setting does not affect MDN storage; all MDNs received from a partner are always stored. `none`: MDN is stored for informational purposes only, a successful HTTPS transfer is a successful AS2 transfer. `weak`: Inspect the MDN for MIC and Disposition only. `normal`: `weak` plus validate MDN signature matches body, `strict`: `normal` but do not allow signatures from self-signed or incorrectly purposed certificates.
+    # string - How should Files.com evaluate message transfer success based on a partner's MDN response?  This setting does not affect MDN storage; all MDNs received from a partner are always stored. `none`: MDN is stored for informational purposes only, a successful HTTPS transfer is a successful AS2 transfer. `weak`: Inspect the MDN for MIC and Disposition only. `normal`: `weak` plus validate MDN signature matches body, `strict`: `normal` but do not allow signatures from self-signed or incorrectly purposed certificates. `auto`: Automatically set the correct value for this setting based on next mdn received.
     def mdn_validation_level
       @attributes[:mdn_validation_level]
     end
 
     def mdn_validation_level=(value)
       @attributes[:mdn_validation_level] = value
+    end
+
+    # string - Should Files.com require signatures on incoming AS2 messages?  `normal`: require that incoming messages are signed with a valid matching signature. `none`: Unsigned incoming messages are allowed. `auto`: Automatically set the correct value for this setting based on next message received.
+    def signature_validation_level
+      @attributes[:signature_validation_level]
+    end
+
+    def signature_validation_level=(value)
+      @attributes[:signature_validation_level] = value
     end
 
     # boolean - If `true`, we will use your site's dedicated IPs for all outbound connections to this AS2 Partner.
@@ -184,7 +193,8 @@ module Files
     #   enable_dedicated_ips - boolean - If `true`, we will use your site's dedicated IPs for all outbound connections to this AS2 Partner.
     #   http_auth_username - string - Username to send to server for HTTP Authentication.
     #   http_auth_password - string - Password to send to server for HTTP Authentication.
-    #   mdn_validation_level - string - How should Files.com evaluate message transfer success based on a partner's MDN response?  This setting does not affect MDN storage; all MDNs received from a partner are always stored. `none`: MDN is stored for informational purposes only, a successful HTTPS transfer is a successful AS2 transfer. `weak`: Inspect the MDN for MIC and Disposition only. `normal`: `weak` plus validate MDN signature matches body, `strict`: `normal` but do not allow signatures from self-signed or incorrectly purposed certificates.
+    #   mdn_validation_level - string - How should Files.com evaluate message transfer success based on a partner's MDN response?  This setting does not affect MDN storage; all MDNs received from a partner are always stored. `none`: MDN is stored for informational purposes only, a successful HTTPS transfer is a successful AS2 transfer. `weak`: Inspect the MDN for MIC and Disposition only. `normal`: `weak` plus validate MDN signature matches body, `strict`: `normal` but do not allow signatures from self-signed or incorrectly purposed certificates. `auto`: Automatically set the correct value for this setting based on next mdn received.
+    #   signature_validation_level - string - Should Files.com require signatures on incoming AS2 messages?  `normal`: require that incoming messages are signed with a valid matching signature. `none`: Unsigned incoming messages are allowed. `auto`: Automatically set the correct value for this setting based on next message received.
     #   server_certificate - string - Should we require that the remote HTTP server have a valid SSL Certificate for HTTPS? (This only applies to Outgoing AS2 message from Files.com to a Partner.)
     #   default_mime_type - string - Default mime type of the file attached to the encrypted message
     #   additional_http_headers - object - Additional HTTP Headers for outgoing message sent to this partner.
@@ -199,6 +209,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if params[:http_auth_username] and !params[:http_auth_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if params[:http_auth_password] and !params[:http_auth_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if params[:mdn_validation_level] and !params[:mdn_validation_level].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: signature_validation_level must be an String") if params[:signature_validation_level] and !params[:signature_validation_level].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: default_mime_type must be an String") if params[:default_mime_type] and !params[:default_mime_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -271,7 +282,8 @@ module Files
     #   enable_dedicated_ips - boolean - If `true`, we will use your site's dedicated IPs for all outbound connections to this AS2 Partner.
     #   http_auth_username - string - Username to send to server for HTTP Authentication.
     #   http_auth_password - string - Password to send to server for HTTP Authentication.
-    #   mdn_validation_level - string - How should Files.com evaluate message transfer success based on a partner's MDN response?  This setting does not affect MDN storage; all MDNs received from a partner are always stored. `none`: MDN is stored for informational purposes only, a successful HTTPS transfer is a successful AS2 transfer. `weak`: Inspect the MDN for MIC and Disposition only. `normal`: `weak` plus validate MDN signature matches body, `strict`: `normal` but do not allow signatures from self-signed or incorrectly purposed certificates.
+    #   mdn_validation_level - string - How should Files.com evaluate message transfer success based on a partner's MDN response?  This setting does not affect MDN storage; all MDNs received from a partner are always stored. `none`: MDN is stored for informational purposes only, a successful HTTPS transfer is a successful AS2 transfer. `weak`: Inspect the MDN for MIC and Disposition only. `normal`: `weak` plus validate MDN signature matches body, `strict`: `normal` but do not allow signatures from self-signed or incorrectly purposed certificates. `auto`: Automatically set the correct value for this setting based on next mdn received.
+    #   signature_validation_level - string - Should Files.com require signatures on incoming AS2 messages?  `normal`: require that incoming messages are signed with a valid matching signature. `none`: Unsigned incoming messages are allowed. `auto`: Automatically set the correct value for this setting based on next message received.
     #   server_certificate - string - Should we require that the remote HTTP server have a valid SSL Certificate for HTTPS? (This only applies to Outgoing AS2 message from Files.com to a Partner.)
     #   default_mime_type - string - Default mime type of the file attached to the encrypted message
     #   additional_http_headers - object - Additional HTTP Headers for outgoing message sent to this partner.
@@ -283,6 +295,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if params[:http_auth_username] and !params[:http_auth_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if params[:http_auth_password] and !params[:http_auth_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if params[:mdn_validation_level] and !params[:mdn_validation_level].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: signature_validation_level must be an String") if params[:signature_validation_level] and !params[:signature_validation_level].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: default_mime_type must be an String") if params[:default_mime_type] and !params[:default_mime_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: additional_http_headers must be an Hash") if params[:additional_http_headers] and !params[:additional_http_headers].is_a?(Hash)
@@ -303,7 +316,8 @@ module Files
     #   enable_dedicated_ips - boolean - If `true`, we will use your site's dedicated IPs for all outbound connections to this AS2 Partner.
     #   http_auth_username - string - Username to send to server for HTTP Authentication.
     #   http_auth_password - string - Password to send to server for HTTP Authentication.
-    #   mdn_validation_level - string - How should Files.com evaluate message transfer success based on a partner's MDN response?  This setting does not affect MDN storage; all MDNs received from a partner are always stored. `none`: MDN is stored for informational purposes only, a successful HTTPS transfer is a successful AS2 transfer. `weak`: Inspect the MDN for MIC and Disposition only. `normal`: `weak` plus validate MDN signature matches body, `strict`: `normal` but do not allow signatures from self-signed or incorrectly purposed certificates.
+    #   mdn_validation_level - string - How should Files.com evaluate message transfer success based on a partner's MDN response?  This setting does not affect MDN storage; all MDNs received from a partner are always stored. `none`: MDN is stored for informational purposes only, a successful HTTPS transfer is a successful AS2 transfer. `weak`: Inspect the MDN for MIC and Disposition only. `normal`: `weak` plus validate MDN signature matches body, `strict`: `normal` but do not allow signatures from self-signed or incorrectly purposed certificates. `auto`: Automatically set the correct value for this setting based on next mdn received.
+    #   signature_validation_level - string - Should Files.com require signatures on incoming AS2 messages?  `normal`: require that incoming messages are signed with a valid matching signature. `none`: Unsigned incoming messages are allowed. `auto`: Automatically set the correct value for this setting based on next message received.
     #   server_certificate - string - Should we require that the remote HTTP server have a valid SSL Certificate for HTTPS? (This only applies to Outgoing AS2 message from Files.com to a Partner.)
     #   default_mime_type - string - Default mime type of the file attached to the encrypted message
     #   additional_http_headers - object - Additional HTTP Headers for outgoing message sent to this partner.
@@ -317,6 +331,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if params[:http_auth_username] and !params[:http_auth_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if params[:http_auth_password] and !params[:http_auth_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if params[:mdn_validation_level] and !params[:mdn_validation_level].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: signature_validation_level must be an String") if params[:signature_validation_level] and !params[:signature_validation_level].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: default_mime_type must be an String") if params[:default_mime_type] and !params[:default_mime_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: additional_http_headers must be an Hash") if params[:additional_http_headers] and !params[:additional_http_headers].is_a?(Hash)
