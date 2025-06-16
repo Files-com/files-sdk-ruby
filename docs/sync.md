@@ -155,6 +155,19 @@ Files::Sync.create_migrate_to
 
 ---
 
+## Manually Run Sync
+
+```
+Files::Sync.manual_run(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Sync ID.
+
+
+---
+
 ## Update Sync
 
 ```
@@ -207,6 +220,21 @@ Files::Sync.update(id,
 
 ```
 Files::Sync.delete(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Sync ID.
+
+
+---
+
+## Manually Run Sync
+
+```
+sync = Files::Sync.find(id)
+
+sync.manual_run
 ```
 
 ### Parameters

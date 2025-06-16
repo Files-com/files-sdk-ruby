@@ -226,6 +226,17 @@ module Files
       @attributes[:schedule_time_zone] = value
     end
 
+    # Manually Run Sync
+    def manual_run(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/syncs/#{@attributes[:id]}/manual_run", :post, params, @options)
+    end
+
     # Parameters:
     #   name - string - Name for this sync job
     #   description - string - Description for this sync job
@@ -364,6 +375,17 @@ module Files
 
     def self.create_migrate_to(params = {}, options = {})
       Api.send_request("/syncs/migrate_to_syncs", :post, params, options)
+      nil
+    end
+
+    # Manually Run Sync
+    def self.manual_run(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/syncs/#{params[:id]}/manual_run", :post, params, options)
       nil
     end
 
