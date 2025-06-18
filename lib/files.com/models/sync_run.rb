@@ -74,14 +74,9 @@ module Files
       @attributes[:runtime]
     end
 
-    # string - S3 path to the main log file
-    def s3_body_path
-      @attributes[:s3_body_path]
-    end
-
-    # string - S3 path to the internal log file
-    def s3_internal_body_path
-      @attributes[:s3_internal_body_path]
+    # string - Link to external log file.
+    def log_url
+      @attributes[:log_url]
     end
 
     # date-time - When this run was completed
