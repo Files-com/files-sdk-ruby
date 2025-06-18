@@ -599,15 +599,6 @@ module Files
       @attributes[:password_expire_at] = value
     end
 
-    # boolean - Does this user have any associations that can be reassigned on delete?
-    def has_reassignable_associations
-      @attributes[:has_reassignable_associations]
-    end
-
-    def has_reassignable_associations=(value)
-      @attributes[:has_reassignable_associations] = value
-    end
-
     # file - An image file for your user avatar.
     def avatar_file
       @attributes[:avatar_file]
