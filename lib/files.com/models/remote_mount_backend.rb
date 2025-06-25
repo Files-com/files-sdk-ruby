@@ -54,6 +54,15 @@ module Files
       @attributes[:health_check_type] = value
     end
 
+    # int64 - Unique identifier for this backend.
+    def id
+      @attributes[:id]
+    end
+
+    def id=(value)
+      @attributes[:id] = value
+    end
+
     # int64 - Interval in seconds between health checks.
     def interval
       @attributes[:interval]
@@ -144,15 +153,6 @@ module Files
       @attributes[:undergoing_maintenance] = value
     end
 
-    # int64 - Remote Mount Backend ID.
-    def id
-      @attributes[:id]
-    end
-
-    def id=(value)
-      @attributes[:id] = value
-    end
-
     # Reset backend status to healthy
     def reset_status(params = {})
       params ||= {}
@@ -229,9 +229,11 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `remote_server_mount_id`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
       List.new(RemoteMountBackend, params) do
         Api.send_request("/remote_mount_backends", :get, params, options)
