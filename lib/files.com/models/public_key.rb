@@ -50,6 +50,15 @@ module Files
       @attributes[:fingerprint_sha256] = value
     end
 
+    # string - Can be invalid, not_generated, generating, complete
+    def status
+      @attributes[:status]
+    end
+
+    def status=(value)
+      @attributes[:status] = value
+    end
+
     # date-time - Key's most recent login time via SFTP
     def last_login_at
       @attributes[:last_login_at]
@@ -57,6 +66,24 @@ module Files
 
     def last_login_at=(value)
       @attributes[:last_login_at] = value
+    end
+
+    # string - Private key generated for the user.
+    def private_key
+      @attributes[:private_key]
+    end
+
+    def private_key=(value)
+      @attributes[:private_key] = value
+    end
+
+    # string - Public key generated for the user.
+    def public_key
+      @attributes[:public_key]
+    end
+
+    def public_key=(value)
+      @attributes[:public_key] = value
     end
 
     # string - Username of the user this public key is associated with
@@ -77,13 +104,40 @@ module Files
       @attributes[:user_id] = value
     end
 
-    # string - Actual contents of SSH key.
-    def public_key
-      @attributes[:public_key]
+    # boolean - If true, generate a new SSH key pair. Can not be used with `public_key`
+    def generate_keypair
+      @attributes[:generate_keypair]
     end
 
-    def public_key=(value)
-      @attributes[:public_key] = value
+    def generate_keypair=(value)
+      @attributes[:generate_keypair] = value
+    end
+
+    # string - Password for the private key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    def generate_private_key_password
+      @attributes[:generate_private_key_password]
+    end
+
+    def generate_private_key_password=(value)
+      @attributes[:generate_private_key_password] = value
+    end
+
+    # string - Type of key to generate.  One of rsa, dsa, ecdsa, ed25519. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    def generate_algorithm
+      @attributes[:generate_algorithm]
+    end
+
+    def generate_algorithm=(value)
+      @attributes[:generate_algorithm] = value
+    end
+
+    # int64 - Length of key to generate. If algorithm is ecdsa, this is the signature size. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    def generate_length
+      @attributes[:generate_length]
+    end
+
+    def generate_length=(value)
+      @attributes[:generate_length] = value
     end
 
     # Parameters:
@@ -173,13 +227,19 @@ module Files
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   title (required) - string - Internal reference for key.
-    #   public_key (required) - string - Actual contents of SSH key.
+    #   public_key - string - Actual contents of SSH key.
+    #   generate_keypair - boolean - If true, generate a new SSH key pair. Can not be used with `public_key`
+    #   generate_private_key_password - string - Password for the private key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    #   generate_algorithm - string - Type of key to generate.  One of rsa, dsa, ecdsa, ed25519. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    #   generate_length - int64 - Length of key to generate. If algorithm is ecdsa, this is the signature size. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: title must be an String") if params[:title] and !params[:title].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: generate_private_key_password must be an String") if params[:generate_private_key_password] and !params[:generate_private_key_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: generate_algorithm must be an String") if params[:generate_algorithm] and !params[:generate_algorithm].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: generate_length must be an Integer") if params[:generate_length] and !params[:generate_length].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: title") unless params[:title]
-      raise MissingParameterError.new("Parameter missing: public_key") unless params[:public_key]
 
       response, options = Api.send_request("/public_keys", :post, params, options)
       PublicKey.new(response.data, options)
