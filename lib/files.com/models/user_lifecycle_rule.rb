@@ -63,6 +63,15 @@ module Files
       @attributes[:action] = value
     end
 
+    # string - State of the users to apply the rule to (inactive or disabled)
+    def user_state
+      @attributes[:user_state]
+    end
+
+    def user_state=(value)
+      @attributes[:user_state] = value
+    end
+
     # int64 - Site ID
     def site_id
       @attributes[:site_id]
@@ -78,6 +87,7 @@ module Files
     #   inactivity_days (required) - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
+    #   user_state - string - State of the users to apply the rule to (inactive or disabled)
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -86,6 +96,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
       raise MissingParameterError.new("Parameter missing: action") unless params[:action]
       raise MissingParameterError.new("Parameter missing: authentication_method") unless params[:authentication_method]
@@ -158,10 +169,12 @@ module Files
     #   inactivity_days (required) - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
+    #   user_state - string - State of the users to apply the rule to (inactive or disabled)
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise MissingParameterError.new("Parameter missing: action") unless params[:action]
       raise MissingParameterError.new("Parameter missing: authentication_method") unless params[:authentication_method]
       raise MissingParameterError.new("Parameter missing: inactivity_days") unless params[:inactivity_days]
@@ -176,6 +189,7 @@ module Files
     #   inactivity_days (required) - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
+    #   user_state - string - State of the users to apply the rule to (inactive or disabled)
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -183,6 +197,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
       raise MissingParameterError.new("Parameter missing: action") unless params[:action]
       raise MissingParameterError.new("Parameter missing: authentication_method") unless params[:authentication_method]
