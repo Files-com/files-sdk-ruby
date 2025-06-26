@@ -226,6 +226,15 @@ module Files
       @attributes[:schedule_time_zone] = value
     end
 
+    # string - If trigger is `custom_schedule`, the Automation will check if there is a formal, observed holiday for the region, and if so, it will not run.
+    def holiday_region
+      @attributes[:holiday_region]
+    end
+
+    def holiday_region=(value)
+      @attributes[:holiday_region] = value
+    end
+
     # Manually Run Sync
     def manual_run(params = {})
       params ||= {}
