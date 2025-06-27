@@ -165,9 +165,6 @@ module Files
     end
 
     # Parameters:
-    #   canary_file_path (required) - string - Path to the canary file used for health checks.
-    #   remote_server_mount_id (required) - int64 - The mount ID of the Remote Server Mount that this backend is associated with.
-    #   remote_server_id (required) - int64 - The remote server that this backend is associated with.
     #   enabled - boolean - True if this backend is enabled.
     #   fall - int64 - Number of consecutive failures before considering the backend unhealthy.
     #   health_check_enabled - boolean - True if health checks are enabled for this backend.
@@ -178,24 +175,22 @@ module Files
     #   priority - int64 - Priority of this backend.
     #   remote_path - string - Path on the remote server to treat as the root of this mount.
     #   rise - int64 - Number of consecutive successes before considering the backend healthy.
+    #   canary_file_path - string - Path to the canary file used for health checks.
+    #   remote_server_id - int64 - The remote server that this backend is associated with.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if params[:canary_file_path] and !params[:canary_file_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: remote_server_mount_id must be an Integer") if params[:remote_server_mount_id] and !params[:remote_server_mount_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if params[:remote_server_id] and !params[:remote_server_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if params[:fall] and !params[:fall].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if params[:health_check_type] and !params[:health_check_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if params[:interval] and !params[:interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: priority must be an Integer") if params[:priority] and !params[:priority].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: remote_path must be an String") if params[:remote_path] and !params[:remote_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rise must be an Integer") if params[:rise] and !params[:rise].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if params[:canary_file_path] and !params[:canary_file_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if params[:remote_server_id] and !params[:remote_server_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: canary_file_path") unless params[:canary_file_path]
-      raise MissingParameterError.new("Parameter missing: remote_server_mount_id") unless params[:remote_server_mount_id]
-      raise MissingParameterError.new("Parameter missing: remote_server_id") unless params[:remote_server_id]
 
       Api.send_request("/remote_mount_backends/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -261,9 +256,6 @@ module Files
     end
 
     # Parameters:
-    #   canary_file_path (required) - string - Path to the canary file used for health checks.
-    #   remote_server_mount_id (required) - int64 - The mount ID of the Remote Server Mount that this backend is associated with.
-    #   remote_server_id (required) - int64 - The remote server that this backend is associated with.
     #   enabled - boolean - True if this backend is enabled.
     #   fall - int64 - Number of consecutive failures before considering the backend unhealthy.
     #   health_check_enabled - boolean - True if health checks are enabled for this backend.
@@ -274,10 +266,10 @@ module Files
     #   priority - int64 - Priority of this backend.
     #   remote_path - string - Path on the remote server to treat as the root of this mount.
     #   rise - int64 - Number of consecutive successes before considering the backend healthy.
+    #   canary_file_path (required) - string - Path to the canary file used for health checks.
+    #   remote_server_mount_id (required) - int64 - The mount ID of the Remote Server Mount that this backend is associated with.
+    #   remote_server_id (required) - int64 - The remote server that this backend is associated with.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if params[:canary_file_path] and !params[:canary_file_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: remote_server_mount_id must be an Integer") if params[:remote_server_mount_id] and !params[:remote_server_mount_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if params[:remote_server_id] and !params[:remote_server_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if params[:fall] and !params[:fall].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if params[:health_check_type] and !params[:health_check_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if params[:interval] and !params[:interval].is_a?(Integer)
@@ -286,6 +278,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: priority must be an Integer") if params[:priority] and !params[:priority].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: remote_path must be an String") if params[:remote_path] and !params[:remote_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rise must be an Integer") if params[:rise] and !params[:rise].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if params[:canary_file_path] and !params[:canary_file_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: remote_server_mount_id must be an Integer") if params[:remote_server_mount_id] and !params[:remote_server_mount_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if params[:remote_server_id] and !params[:remote_server_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: canary_file_path") unless params[:canary_file_path]
       raise MissingParameterError.new("Parameter missing: remote_server_mount_id") unless params[:remote_server_mount_id]
       raise MissingParameterError.new("Parameter missing: remote_server_id") unless params[:remote_server_id]
@@ -306,9 +301,6 @@ module Files
     end
 
     # Parameters:
-    #   canary_file_path (required) - string - Path to the canary file used for health checks.
-    #   remote_server_mount_id (required) - int64 - The mount ID of the Remote Server Mount that this backend is associated with.
-    #   remote_server_id (required) - int64 - The remote server that this backend is associated with.
     #   enabled - boolean - True if this backend is enabled.
     #   fall - int64 - Number of consecutive failures before considering the backend unhealthy.
     #   health_check_enabled - boolean - True if health checks are enabled for this backend.
@@ -319,13 +311,12 @@ module Files
     #   priority - int64 - Priority of this backend.
     #   remote_path - string - Path on the remote server to treat as the root of this mount.
     #   rise - int64 - Number of consecutive successes before considering the backend healthy.
+    #   canary_file_path - string - Path to the canary file used for health checks.
+    #   remote_server_id - int64 - The remote server that this backend is associated with.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if params[:canary_file_path] and !params[:canary_file_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: remote_server_mount_id must be an Integer") if params[:remote_server_mount_id] and !params[:remote_server_mount_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if params[:remote_server_id] and !params[:remote_server_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if params[:fall] and !params[:fall].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if params[:health_check_type] and !params[:health_check_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if params[:interval] and !params[:interval].is_a?(Integer)
@@ -334,10 +325,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: priority must be an Integer") if params[:priority] and !params[:priority].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: remote_path must be an String") if params[:remote_path] and !params[:remote_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: rise must be an Integer") if params[:rise] and !params[:rise].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if params[:canary_file_path] and !params[:canary_file_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if params[:remote_server_id] and !params[:remote_server_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: canary_file_path") unless params[:canary_file_path]
-      raise MissingParameterError.new("Parameter missing: remote_server_mount_id") unless params[:remote_server_mount_id]
-      raise MissingParameterError.new("Parameter missing: remote_server_id") unless params[:remote_server_id]
 
       response, options = Api.send_request("/remote_mount_backends/#{params[:id]}", :patch, params, options)
       RemoteMountBackend.new(response.data, options)
