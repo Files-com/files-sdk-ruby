@@ -50,7 +50,7 @@ module Files
       @attributes[:fingerprint_sha256] = value
     end
 
-    # string - Can be invalid, not_generated, generating, complete
+    # string - Only returned when generating keys. Can be invalid, not_generated, generating, complete
     def status
       @attributes[:status]
     end
@@ -68,7 +68,7 @@ module Files
       @attributes[:last_login_at] = value
     end
 
-    # string - Private key generated for the user.
+    # string - Only returned when generating keys. Private key generated for the user.
     def private_key
       @attributes[:private_key]
     end
@@ -77,7 +77,7 @@ module Files
       @attributes[:private_key] = value
     end
 
-    # string - Public key generated for the user.
+    # string - Only returned when generating keys. Public key generated for the user.
     def public_key
       @attributes[:public_key]
     end
