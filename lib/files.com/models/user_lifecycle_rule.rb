@@ -72,6 +72,15 @@ module Files
       @attributes[:user_state] = value
     end
 
+    # string - User Lifecycle Rule name
+    def name
+      @attributes[:name]
+    end
+
+    def name=(value)
+      @attributes[:name] = value
+    end
+
     # int64 - Site ID
     def site_id
       @attributes[:site_id]
@@ -88,6 +97,7 @@ module Files
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
+    #   name - string - User Lifecycle Rule name
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -97,6 +107,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/user_lifecycle_rules/#{@attributes[:id]}", :patch, params, @options)
@@ -167,11 +178,13 @@ module Files
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
+    #   name - string - User Lifecycle Rule name
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
 
       response, options = Api.send_request("/user_lifecycle_rules", :post, params, options)
       UserLifecycleRule.new(response.data, options)
@@ -184,6 +197,7 @@ module Files
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
+    #   name - string - User Lifecycle Rule name
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -192,6 +206,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/user_lifecycle_rules/#{params[:id]}", :patch, params, options)
