@@ -82,9 +82,9 @@ module Files
     end
 
     # Parameters:
-    #   action (required) - string - Action to take on inactive users (disable or delete)
-    #   authentication_method (required) - string - User authentication method for the rule
-    #   inactivity_days (required) - int64 - Number of days of inactivity before the rule applies
+    #   action - string - Action to take on inactive users (disable or delete)
+    #   authentication_method - string - User authentication method for the rule
+    #   inactivity_days - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
@@ -98,9 +98,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: action") unless params[:action]
-      raise MissingParameterError.new("Parameter missing: authentication_method") unless params[:authentication_method]
-      raise MissingParameterError.new("Parameter missing: inactivity_days") unless params[:inactivity_days]
 
       Api.send_request("/user_lifecycle_rules/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -164,9 +161,9 @@ module Files
     end
 
     # Parameters:
-    #   action (required) - string - Action to take on inactive users (disable or delete)
-    #   authentication_method (required) - string - User authentication method for the rule
-    #   inactivity_days (required) - int64 - Number of days of inactivity before the rule applies
+    #   action - string - Action to take on inactive users (disable or delete)
+    #   authentication_method - string - User authentication method for the rule
+    #   inactivity_days - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
@@ -175,18 +172,15 @@ module Files
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: action") unless params[:action]
-      raise MissingParameterError.new("Parameter missing: authentication_method") unless params[:authentication_method]
-      raise MissingParameterError.new("Parameter missing: inactivity_days") unless params[:inactivity_days]
 
       response, options = Api.send_request("/user_lifecycle_rules", :post, params, options)
       UserLifecycleRule.new(response.data, options)
     end
 
     # Parameters:
-    #   action (required) - string - Action to take on inactive users (disable or delete)
-    #   authentication_method (required) - string - User authentication method for the rule
-    #   inactivity_days (required) - int64 - Number of days of inactivity before the rule applies
+    #   action - string - Action to take on inactive users (disable or delete)
+    #   authentication_method - string - User authentication method for the rule
+    #   inactivity_days - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
@@ -199,9 +193,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: action") unless params[:action]
-      raise MissingParameterError.new("Parameter missing: authentication_method") unless params[:authentication_method]
-      raise MissingParameterError.new("Parameter missing: inactivity_days") unless params[:inactivity_days]
 
       response, options = Api.send_request("/user_lifecycle_rules/#{params[:id]}", :patch, params, options)
       UserLifecycleRule.new(response.data, options)
