@@ -689,14 +689,24 @@ module Files
       @attributes[:show_request_access_link]
     end
 
-    # string - Custom site footer text
+    # string - Custom site footer text for authenticated pages
     def site_footer
       @attributes[:site_footer]
     end
 
-    # string - Custom site header text
+    # string - Custom site header text for authenticated pages
     def site_header
       @attributes[:site_header]
+    end
+
+    # string - Custom site footer text for public pages
+    def site_public_footer
+      @attributes[:site_public_footer]
+    end
+
+    # string - Custom site header text for public pages
+    def site_public_header
+      @attributes[:site_public_header]
     end
 
     # string - SMTP server hostname or IP
@@ -989,8 +999,10 @@ module Files
     #   color2_link - string - Top bar link color
     #   color2_text - string - Page link and button color
     #   color2_top_text - string - Top bar text color
-    #   site_header - string - Custom site header text
-    #   site_footer - string - Custom site footer text
+    #   site_header - string - Custom site header text for authenticated pages
+    #   site_footer - string - Custom site footer text for authenticated pages
+    #   site_public_header - string - Custom site header text for public pages
+    #   site_public_footer - string - Custom site footer text for public pages
     #   login_help_text - string - Login help text
     #   use_dedicated_ips_for_smtp - boolean - If using custom SMTP, should we use dedicated IPs to deliver emails?
     #   smtp_address - string - SMTP server hostname or IP
@@ -1081,6 +1093,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: color2_top_text must be an String") if params[:color2_top_text] and !params[:color2_top_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: site_header must be an String") if params[:site_header] and !params[:site_header].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: site_footer must be an String") if params[:site_footer] and !params[:site_footer].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: site_public_header must be an String") if params[:site_public_header] and !params[:site_public_header].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: site_public_footer must be an String") if params[:site_public_footer] and !params[:site_public_footer].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: login_help_text must be an String") if params[:login_help_text] and !params[:login_help_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_address must be an String") if params[:smtp_address] and !params[:smtp_address].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_authentication must be an String") if params[:smtp_authentication] and !params[:smtp_authentication].is_a?(String)
