@@ -29,9 +29,14 @@ module Files
       @attributes[:status]
     end
 
-    # string - Type of remote server used, if any
-    def remote_server_type
-      @attributes[:remote_server_type]
+    # string - Source remote server type, if any
+    def src_remote_server_type
+      @attributes[:src_remote_server_type]
+    end
+
+    # string - Destination remote server type, if any
+    def dest_remote_server_type
+      @attributes[:dest_remote_server_type]
     end
 
     # string - Log or summary body for this run

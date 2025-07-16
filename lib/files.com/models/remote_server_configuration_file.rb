@@ -104,6 +104,11 @@ module Files
       @attributes[:transfer_rate_limit]
     end
 
+    # string - Auto update policy ['manual_trigger', 'critical_only', 'always'] (default critical_only)
+    def auto_update_policy
+      @attributes[:auto_update_policy]
+    end
+
     # string - Files Agent API Token
     def api_token
       @attributes[:api_token]
