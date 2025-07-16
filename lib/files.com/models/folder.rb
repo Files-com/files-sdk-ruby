@@ -487,6 +487,8 @@ module Files
     #   search_all - boolean - Search entire site?  If set, we will ignore the folder path provided and search the entire site.  This is the same API used by the search bar in the web UI when running 'Search All Files'.  Search results are a best effort, not real time, and not guaranteed to match every file.  This field should only be used for ad-hoc (human) searching, and not as part of an automated process.
     #   with_previews - boolean - Include file previews?
     #   with_priority_color - boolean - Include file priority color information?
+    #   type - string - Type of objects to return.  Can be `folder` or `file`.
+    #   modified_at_datetime - string - If provided, will only return files/folders modified after this time. Can be used only in combination with `type` filter.
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -497,6 +499,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params[:search] and !params[:search].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: search_custom_metadata_key must be an String") if params[:search_custom_metadata_key] and !params[:search_custom_metadata_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: type must be an String") if params[:type] and !params[:type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: modified_at_datetime must be an String") if params[:modified_at_datetime] and !params[:modified_at_datetime].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       List.new(File, params) do
