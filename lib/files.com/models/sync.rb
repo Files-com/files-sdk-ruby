@@ -390,11 +390,6 @@ module Files
       Sync.new(response.data, options)
     end
 
-    def self.create_migrate_to(params = {}, options = {})
-      Api.send_request("/syncs/migrate_to_syncs", :post, params, options)
-      nil
-    end
-
     # Manually Run Sync
     def self.manual_run(id, params = {}, options = {})
       params ||= {}

@@ -152,15 +152,6 @@ Files::Sync.create(
 
 ---
 
-## Migrate Legacy Syncs to Syncs
-
-```
-Files::Sync.create_migrate_to
-```
-
-
----
-
 ## Manually Run Sync
 
 ```
