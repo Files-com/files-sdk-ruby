@@ -157,7 +157,6 @@ module Files
   class CodeNotFoundError < NotFoundError; end
   class FileNotFoundError < NotFoundError; end
   class FileUploadNotFoundError < NotFoundError; end
-  class FolderNotFoundError < NotFoundError; end
   class GroupNotFoundError < NotFoundError; end
   class InboxNotFoundError < NotFoundError; end
   class NestedNotFoundError < NotFoundError; end

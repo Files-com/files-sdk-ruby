@@ -514,7 +514,6 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`CodeNotFoundError`|  `NotFoundError` |
 |`FileNotFoundError`|  `NotFoundError` |
 |`FileUploadNotFoundError`|  `NotFoundError` |
-|`FolderNotFoundError`|  `NotFoundError` |
 |`GroupNotFoundError`|  `NotFoundError` |
 |`InboxNotFoundError`|  `NotFoundError` |
 |`NestedNotFoundError`|  `NotFoundError` |
