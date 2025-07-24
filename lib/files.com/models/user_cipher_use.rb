@@ -14,6 +14,16 @@ module Files
       @attributes[:id]
     end
 
+    # int64 - ID of the user who performed this access
+    def user_id
+      @attributes[:user_id]
+    end
+
+    # string - Username of the user who performed this access
+    def username
+      @attributes[:username]
+    end
+
     # string - The protocol and cipher employed
     def protocol_cipher
       @attributes[:protocol_cipher]
@@ -37,11 +47,6 @@ module Files
     # date-time - The most recent use of this combination of interface and protocol and cipher (for this user)
     def updated_at
       @attributes[:updated_at]
-    end
-
-    # int64 - ID of the user who performed this access
-    def user_id
-      @attributes[:user_id]
     end
 
     # Parameters:
