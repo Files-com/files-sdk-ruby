@@ -45,6 +45,24 @@ module Files
       @attributes[:user_id] = value
     end
 
+    # string - MD5 hash of your GPG public key
+    def public_key_md5
+      @attributes[:public_key_md5]
+    end
+
+    def public_key_md5=(value)
+      @attributes[:public_key_md5] = value
+    end
+
+    # string - MD5 hash of your GPG private key.
+    def private_key_md5
+      @attributes[:private_key_md5]
+    end
+
+    def private_key_md5=(value)
+      @attributes[:private_key_md5] = value
+    end
+
     # string - Your GPG public key
     def public_key
       @attributes[:public_key]
@@ -109,8 +127,8 @@ module Files
     end
 
     # Parameters:
-    #   public_key - string - Your GPG public key
-    #   private_key - string - Your GPG private key.
+    #   public_key - string - MD5 hash of your GPG public key
+    #   private_key - string - MD5 hash of your GPG private key.
     #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
     #   name - string - Your GPG key name.
     def update(params = {})
@@ -191,8 +209,8 @@ module Files
 
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   public_key - string - Your GPG public key
-    #   private_key - string - Your GPG private key.
+    #   public_key - string - MD5 hash of your GPG public key
+    #   private_key - string - MD5 hash of your GPG private key.
     #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
     #   name (required) - string - Your GPG key name.
     #   generate_expires_at - string - Expiration date of the key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
@@ -215,8 +233,8 @@ module Files
     end
 
     # Parameters:
-    #   public_key - string - Your GPG public key
-    #   private_key - string - Your GPG private key.
+    #   public_key - string - MD5 hash of your GPG public key
+    #   private_key - string - MD5 hash of your GPG private key.
     #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
     #   name - string - Your GPG key name.
     def self.update(id, params = {}, options = {})
