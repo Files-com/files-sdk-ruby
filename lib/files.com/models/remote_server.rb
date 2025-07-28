@@ -243,33 +243,6 @@ module Files
       @attributes[:wasabi_access_key] = value
     end
 
-    # string - Rackspace: username used to login to the Rackspace Cloud Control Panel.
-    def rackspace_username
-      @attributes[:rackspace_username]
-    end
-
-    def rackspace_username=(value)
-      @attributes[:rackspace_username] = value
-    end
-
-    # string - Rackspace: Three letter code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    def rackspace_region
-      @attributes[:rackspace_region]
-    end
-
-    def rackspace_region=(value)
-      @attributes[:rackspace_region] = value
-    end
-
-    # string - Rackspace: The name of the container (top level directory) where files will sync.
-    def rackspace_container
-      @attributes[:rackspace_container]
-    end
-
-    def rackspace_container=(value)
-      @attributes[:rackspace_container] = value
-    end
-
     # string - Either `in_setup` or `complete`
     def auth_status
       @attributes[:auth_status]
@@ -684,15 +657,6 @@ module Files
       @attributes[:linode_secret_key] = value
     end
 
-    # string - Rackspace: API key from the Rackspace Cloud Control Panel
-    def rackspace_api_key
-      @attributes[:rackspace_api_key]
-    end
-
-    def rackspace_api_key=(value)
-      @attributes[:rackspace_api_key] = value
-    end
-
     # string - S3-compatible: Secret Key
     def s3_compatible_secret_key
       @attributes[:s3_compatible_secret_key]
@@ -764,7 +728,6 @@ module Files
     #   google_cloud_storage_credentials_json - string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
     #   linode_secret_key - string - Linode: Secret Key
-    #   rackspace_api_key - string - Rackspace: API key from the Rackspace Cloud Control Panel
     #   s3_compatible_secret_key - string - S3-compatible: Secret Key
     #   wasabi_secret_key - string - Wasabi: Secret Key
     #   aws_access_key - string - AWS Access Key.
@@ -799,9 +762,6 @@ module Files
     #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
     #   port - int64 - Port for remote server.  Not needed for S3.
-    #   rackspace_container - string - Rackspace: The name of the container (top level directory) where files will sync.
-    #   rackspace_region - string - Rackspace: Three letter code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    #   rackspace_username - string - Rackspace: username used to login to the Rackspace Cloud Control Panel.
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
     #   s3_compatible_bucket - string - S3-compatible: Bucket name
@@ -837,7 +797,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params[:google_cloud_storage_credentials_json] and !params[:google_cloud_storage_credentials_json].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_secret_key must be an String") if params[:google_cloud_storage_s3_compatible_secret_key] and !params[:google_cloud_storage_s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params[:rackspace_api_key] and !params[:rackspace_api_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
@@ -868,9 +827,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params[:rackspace_container] and !params[:rackspace_container].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params[:rackspace_region] and !params[:rackspace_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params[:rackspace_username] and !params[:rackspace_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
@@ -919,9 +875,9 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`, `server_type`, `backblaze_b2_bucket`, `google_cloud_storage_bucket`, `wasabi_bucket`, `s3_bucket`, `rackspace_container`, `azure_blob_storage_container`, `azure_files_storage_share_name`, `s3_compatible_bucket`, `filebase_bucket`, `cloudflare_bucket` or `linode_bucket`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `name`, `server_type`, `backblaze_b2_bucket`, `google_cloud_storage_bucket`, `wasabi_bucket`, `s3_bucket`, `rackspace_container`, `azure_blob_storage_container`, `azure_files_storage_share_name`, `s3_compatible_bucket`, `filebase_bucket`, `cloudflare_bucket` or `linode_bucket`. Valid field combinations are `[ server_type, name ]`, `[ backblaze_b2_bucket, name ]`, `[ google_cloud_storage_bucket, name ]`, `[ wasabi_bucket, name ]`, `[ s3_bucket, name ]`, `[ rackspace_container, name ]`, `[ azure_blob_storage_container, name ]`, `[ azure_files_storage_share_name, name ]`, `[ s3_compatible_bucket, name ]`, `[ filebase_bucket, name ]`, `[ cloudflare_bucket, name ]` or `[ linode_bucket, name ]`.
-    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`, `backblaze_b2_bucket`, `google_cloud_storage_bucket`, `wasabi_bucket`, `s3_bucket`, `rackspace_container`, `azure_blob_storage_container`, `azure_files_storage_share_name`, `s3_compatible_bucket`, `filebase_bucket`, `cloudflare_bucket` or `linode_bucket`. Valid field combinations are `[ backblaze_b2_bucket, name ]`, `[ google_cloud_storage_bucket, name ]`, `[ wasabi_bucket, name ]`, `[ s3_bucket, name ]`, `[ rackspace_container, name ]`, `[ azure_blob_storage_container, name ]`, `[ azure_files_storage_share_name, name ]`, `[ s3_compatible_bucket, name ]`, `[ filebase_bucket, name ]`, `[ cloudflare_bucket, name ]` or `[ linode_bucket, name ]`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`, `server_type`, `backblaze_b2_bucket`, `google_cloud_storage_bucket`, `wasabi_bucket`, `s3_bucket`, `azure_blob_storage_container`, `azure_files_storage_share_name`, `s3_compatible_bucket`, `filebase_bucket`, `cloudflare_bucket` or `linode_bucket`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `name`, `server_type`, `backblaze_b2_bucket`, `google_cloud_storage_bucket`, `wasabi_bucket`, `s3_bucket`, `azure_blob_storage_container`, `azure_files_storage_share_name`, `s3_compatible_bucket`, `filebase_bucket`, `cloudflare_bucket` or `linode_bucket`. Valid field combinations are `[ server_type, name ]`, `[ backblaze_b2_bucket, name ]`, `[ google_cloud_storage_bucket, name ]`, `[ wasabi_bucket, name ]`, `[ s3_bucket, name ]`, `[ azure_blob_storage_container, name ]`, `[ azure_files_storage_share_name, name ]`, `[ s3_compatible_bucket, name ]`, `[ filebase_bucket, name ]`, `[ cloudflare_bucket, name ]` or `[ linode_bucket, name ]`.
+    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`, `backblaze_b2_bucket`, `google_cloud_storage_bucket`, `wasabi_bucket`, `s3_bucket`, `azure_blob_storage_container`, `azure_files_storage_share_name`, `s3_compatible_bucket`, `filebase_bucket`, `cloudflare_bucket` or `linode_bucket`. Valid field combinations are `[ backblaze_b2_bucket, name ]`, `[ google_cloud_storage_bucket, name ]`, `[ wasabi_bucket, name ]`, `[ s3_bucket, name ]`, `[ azure_blob_storage_container, name ]`, `[ azure_files_storage_share_name, name ]`, `[ s3_compatible_bucket, name ]`, `[ filebase_bucket, name ]`, `[ cloudflare_bucket, name ]` or `[ linode_bucket, name ]`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -984,7 +940,6 @@ module Files
     #   google_cloud_storage_credentials_json - string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
     #   linode_secret_key - string - Linode: Secret Key
-    #   rackspace_api_key - string - Rackspace: API key from the Rackspace Cloud Control Panel
     #   s3_compatible_secret_key - string - S3-compatible: Secret Key
     #   wasabi_secret_key - string - Wasabi: Secret Key
     #   aws_access_key - string - AWS Access Key.
@@ -1019,9 +974,6 @@ module Files
     #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
     #   port - int64 - Port for remote server.  Not needed for S3.
-    #   rackspace_container - string - Rackspace: The name of the container (top level directory) where files will sync.
-    #   rackspace_region - string - Rackspace: Three letter code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    #   rackspace_username - string - Rackspace: username used to login to the Rackspace Cloud Control Panel.
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
     #   s3_compatible_bucket - string - S3-compatible: Bucket name
@@ -1053,7 +1005,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params[:google_cloud_storage_credentials_json] and !params[:google_cloud_storage_credentials_json].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_secret_key must be an String") if params[:google_cloud_storage_s3_compatible_secret_key] and !params[:google_cloud_storage_s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params[:rackspace_api_key] and !params[:rackspace_api_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
@@ -1084,9 +1035,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params[:rackspace_container] and !params[:rackspace_container].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params[:rackspace_region] and !params[:rackspace_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params[:rackspace_username] and !params[:rackspace_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
@@ -1159,7 +1107,6 @@ module Files
     #   google_cloud_storage_credentials_json - string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
     #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
     #   linode_secret_key - string - Linode: Secret Key
-    #   rackspace_api_key - string - Rackspace: API key from the Rackspace Cloud Control Panel
     #   s3_compatible_secret_key - string - S3-compatible: Secret Key
     #   wasabi_secret_key - string - Wasabi: Secret Key
     #   aws_access_key - string - AWS Access Key.
@@ -1194,9 +1141,6 @@ module Files
     #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
     #   port - int64 - Port for remote server.  Not needed for S3.
-    #   rackspace_container - string - Rackspace: The name of the container (top level directory) where files will sync.
-    #   rackspace_region - string - Rackspace: Three letter code for Rackspace region. See https://support.rackspace.com/how-to/about-regions/
-    #   rackspace_username - string - Rackspace: username used to login to the Rackspace Cloud Control Panel.
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
     #   s3_compatible_bucket - string - S3-compatible: Bucket name
@@ -1231,7 +1175,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params[:google_cloud_storage_credentials_json] and !params[:google_cloud_storage_credentials_json].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_secret_key must be an String") if params[:google_cloud_storage_s3_compatible_secret_key] and !params[:google_cloud_storage_s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_api_key must be an String") if params[:rackspace_api_key] and !params[:rackspace_api_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
@@ -1262,9 +1205,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: rackspace_container must be an String") if params[:rackspace_container] and !params[:rackspace_container].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_region must be an String") if params[:rackspace_region] and !params[:rackspace_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rackspace_username must be an String") if params[:rackspace_username] and !params[:rackspace_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
