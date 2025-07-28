@@ -864,6 +864,11 @@ module Files
       @attributes[:group_admins_can_set_user_password]
     end
 
+    # array(string) - List of site settings managed by the parent site
+    def managed_site_settings
+      @attributes[:managed_site_settings]
+    end
+
     def self.get(params = {}, options = {})
       response, options = Api.send_request("/site", :get, params, options)
       Site.new(response.data, options)

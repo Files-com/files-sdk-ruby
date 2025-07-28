@@ -104,7 +104,7 @@ module Files
       @attributes[:transfer_rate_limit]
     end
 
-    # string - Auto update policy ['manual_trigger', 'critical_only', 'always'] (default critical_only)
+    # string - Auto update policy ['manual_trigger', 'critical_only', 'always', 'never'] (default critical_only)
     def auto_update_policy
       @attributes[:auto_update_policy]
     end
