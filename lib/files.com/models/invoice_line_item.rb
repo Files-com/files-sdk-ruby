@@ -9,6 +9,11 @@ module Files
       @options = options || {}
     end
 
+    # int64 - Invoice Line item Id
+    def id
+      @attributes[:id]
+    end
+
     # double - Invoice line item amount
     def amount
       @attributes[:amount]

@@ -130,12 +130,16 @@ module Files
   class HistoryPermissionRequiredError < NotAuthorizedError; end
   class InsufficientPermissionForParamsError < NotAuthorizedError; end
   class InsufficientPermissionForSiteError < NotAuthorizedError; end
+  class MoverAccessDeniedError < NotAuthorizedError; end
+  class MoverPackageRequiredError < NotAuthorizedError; end
   class MustAuthenticateWithApiKeyError < NotAuthorizedError; end
   class NeedAdminPermissionForInboxError < NotAuthorizedError; end
   class NonAdminsMustQueryByFolderOrPathError < NotAuthorizedError; end
   class NotAllowedToCreateBundleError < NotAuthorizedError; end
+  class NotEnqueuableSyncError < NotAuthorizedError; end
   class PasswordChangeNotRequiredError < NotAuthorizedError; end
   class PasswordChangeRequiredError < NotAuthorizedError; end
+  class PaymentMethodErrorError < NotAuthorizedError; end
   class ReadOnlySessionError < NotAuthorizedError; end
   class ReadPermissionRequiredError < NotAuthorizedError; end
   class ReauthenticationFailedError < NotAuthorizedError; end
@@ -206,6 +210,7 @@ module Files
   class ResourceBelongsToParentSiteError < ProcessingFailureError; end
   class ResourceLockedError < ProcessingFailureError; end
   class SubfolderLockedError < ProcessingFailureError; end
+  class SyncInProgressError < ProcessingFailureError; end
   class TwoFactorAuthenticationCodeAlreadySentError < ProcessingFailureError; end
   class TwoFactorAuthenticationCountryBlacklistedError < ProcessingFailureError; end
   class TwoFactorAuthenticationGeneralErrorError < ProcessingFailureError; end

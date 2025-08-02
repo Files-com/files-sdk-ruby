@@ -49,11 +49,6 @@ module Files
       @attributes[:event_errors]
     end
 
-    # int64 - Total bytes synced in this run
-    def bytes_synced
-      @attributes[:bytes_synced]
-    end
-
     # int64 - Number of files compared
     def compared_files
       @attributes[:compared_files]
@@ -94,6 +89,21 @@ module Files
       @attributes[:notified]
     end
 
+    # boolean - Whether this run was a dry run (no actual changes made)
+    def dry_run
+      @attributes[:dry_run]
+    end
+
+    # int64 - Total bytes synced in this run
+    def bytes_synced
+      @attributes[:bytes_synced]
+    end
+
+    # int64 - Estimated bytes count for this run
+    def estimated_bytes_count
+      @attributes[:estimated_bytes_count]
+    end
+
     # date-time - When this run was created
     def created_at
       @attributes[:created_at]
@@ -108,17 +118,14 @@ module Files
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `sync_id`, `created_at` or `status`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `status` and `sync_id`. Valid field combinations are `[ sync_id, status ]`.
-    #   sync_id (required) - int64 - ID of the Sync this run belongs to
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `sync_id` or `created_at`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `status`, `dry_run` or `sync_id`. Valid field combinations are `[ sync_id, status ]`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: sync_id must be an Integer") if params[:sync_id] and !params[:sync_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: sync_id") unless params[:sync_id]
 
       List.new(SyncRun, params) do
         Api.send_request("/sync_runs", :get, params, options)

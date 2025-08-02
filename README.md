@@ -544,12 +544,16 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`HistoryPermissionRequiredError`|  `NotAuthorizedError` |
 |`InsufficientPermissionForParamsError`|  `NotAuthorizedError` |
 |`InsufficientPermissionForSiteError`|  `NotAuthorizedError` |
+|`MoverAccessDeniedError`|  `NotAuthorizedError` |
+|`MoverPackageRequiredError`|  `NotAuthorizedError` |
 |`MustAuthenticateWithApiKeyError`|  `NotAuthorizedError` |
 |`NeedAdminPermissionForInboxError`|  `NotAuthorizedError` |
 |`NonAdminsMustQueryByFolderOrPathError`|  `NotAuthorizedError` |
 |`NotAllowedToCreateBundleError`|  `NotAuthorizedError` |
+|`NotEnqueuableSyncError`|  `NotAuthorizedError` |
 |`PasswordChangeNotRequiredError`|  `NotAuthorizedError` |
 |`PasswordChangeRequiredError`|  `NotAuthorizedError` |
+|`PaymentMethodErrorError`|  `NotAuthorizedError` |
 |`ReadOnlySessionError`|  `NotAuthorizedError` |
 |`ReadPermissionRequiredError`|  `NotAuthorizedError` |
 |`ReauthenticationFailedError`|  `NotAuthorizedError` |
@@ -616,6 +620,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`ResourceBelongsToParentSiteError`|  `ProcessingFailureError` |
 |`ResourceLockedError`|  `ProcessingFailureError` |
 |`SubfolderLockedError`|  `ProcessingFailureError` |
+|`SyncInProgressError`|  `ProcessingFailureError` |
 |`TwoFactorAuthenticationCodeAlreadySentError`|  `ProcessingFailureError` |
 |`TwoFactorAuthenticationCountryBlacklistedError`|  `ProcessingFailureError` |
 |`TwoFactorAuthenticationGeneralErrorError`|  `ProcessingFailureError` |

@@ -235,6 +235,26 @@ module Files
       @attributes[:holiday_region] = value
     end
 
+    # SyncRun - The latest run of this sync
+    def latest_sync_run
+      @attributes[:latest_sync_run]
+    end
+
+    def latest_sync_run=(value)
+      @attributes[:latest_sync_run] = value
+    end
+
+    # Dry Run Sync
+    def dry_run(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/syncs/#{@attributes[:id]}/dry_run", :post, params, @options)
+    end
+
     # Manually Run Sync
     def manual_run(params = {})
       params ||= {}
@@ -388,6 +408,17 @@ module Files
 
       response, options = Api.send_request("/syncs", :post, params, options)
       Sync.new(response.data, options)
+    end
+
+    # Dry Run Sync
+    def self.dry_run(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/syncs/#{params[:id]}/dry_run", :post, params, options)
+      nil
     end
 
     # Manually Run Sync
