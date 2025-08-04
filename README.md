@@ -579,6 +579,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`PlanNotFoundError`|  `NotFoundError` |
 |`SiteNotFoundError`|  `NotFoundError` |
 |`UserNotFoundError`|  `NotFoundError` |
+|`AgentUnavailableError`|  `ProcessingFailureError` |
 |`AlreadyCompletedError`|  `ProcessingFailureError` |
 |`AutomationCannotBeRunManuallyError`|  `ProcessingFailureError` |
 |`BehaviorNotAllowedOnRemoteServerError`|  `ProcessingFailureError` |
@@ -634,7 +635,6 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`TooManyLoginAttemptsError`|  `RateLimitedError` |
 |`TooManyRequestsError`|  `RateLimitedError` |
 |`TooManySharesError`|  `RateLimitedError` |
-|`AgentUnavailableError`|  `ServiceUnavailableError` |
 |`AutomationsUnavailableError`|  `ServiceUnavailableError` |
 |`MigrationInProgressError`|  `ServiceUnavailableError` |
 |`SiteDisabledError`|  `ServiceUnavailableError` |

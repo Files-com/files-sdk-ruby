@@ -169,6 +169,7 @@ module Files
   class UserNotFoundError < NotFoundError; end
 
   class ProcessingFailureError < APIError; end
+  class AgentUnavailableError < ProcessingFailureError; end
   class AlreadyCompletedError < ProcessingFailureError; end
   class AutomationCannotBeRunManuallyError < ProcessingFailureError; end
   class BehaviorNotAllowedOnRemoteServerError < ProcessingFailureError; end
@@ -228,7 +229,6 @@ module Files
   class TooManySharesError < RateLimitedError; end
 
   class ServiceUnavailableError < APIError; end
-  class AgentUnavailableError < ServiceUnavailableError; end
   class AutomationsUnavailableError < ServiceUnavailableError; end
   class MigrationInProgressError < ServiceUnavailableError; end
   class SiteDisabledError < ServiceUnavailableError; end
