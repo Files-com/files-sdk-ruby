@@ -64,6 +64,33 @@ module Files
     end
 
     # string - Your GPG public key
+    def generated_public_key
+      @attributes[:generated_public_key]
+    end
+
+    def generated_public_key=(value)
+      @attributes[:generated_public_key] = value
+    end
+
+    # string - Your GPG private key.
+    def generated_private_key
+      @attributes[:generated_private_key]
+    end
+
+    def generated_private_key=(value)
+      @attributes[:generated_private_key] = value
+    end
+
+    # string - Your GPG private key password. Only required for password protected keys.
+    def private_key_password_md5
+      @attributes[:private_key_password_md5]
+    end
+
+    def private_key_password_md5=(value)
+      @attributes[:private_key_password_md5] = value
+    end
+
+    # string - MD5 hash of your GPG public key
     def public_key
       @attributes[:public_key]
     end
@@ -72,7 +99,7 @@ module Files
       @attributes[:public_key] = value
     end
 
-    # string - Your GPG private key.
+    # string - MD5 hash of your GPG private key.
     def private_key
       @attributes[:private_key]
     end

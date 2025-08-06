@@ -69,21 +69,21 @@ module Files
     end
 
     # string - Only returned when generating keys. Private key generated for the user.
-    def private_key
-      @attributes[:private_key]
+    def generated_private_key
+      @attributes[:generated_private_key]
     end
 
-    def private_key=(value)
-      @attributes[:private_key] = value
+    def generated_private_key=(value)
+      @attributes[:generated_private_key] = value
     end
 
     # string - Only returned when generating keys. Public key generated for the user.
-    def public_key
-      @attributes[:public_key]
+    def generated_public_key
+      @attributes[:generated_public_key]
     end
 
-    def public_key=(value)
-      @attributes[:public_key] = value
+    def generated_public_key=(value)
+      @attributes[:generated_public_key] = value
     end
 
     # string - Username of the user this public key is associated with
@@ -102,6 +102,15 @@ module Files
 
     def user_id=(value)
       @attributes[:user_id] = value
+    end
+
+    # string - Actual contents of SSH key.
+    def public_key
+      @attributes[:public_key]
+    end
+
+    def public_key=(value)
+      @attributes[:public_key] = value
     end
 
     # boolean - If true, generate a new SSH key pair. Can not be used with `public_key`
