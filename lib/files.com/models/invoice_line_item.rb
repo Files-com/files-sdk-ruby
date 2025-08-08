@@ -53,5 +53,25 @@ module Files
     def site
       @attributes[:site]
     end
+
+    # int64 - Prepaid bytes purchased for this invoice line item
+    def prepaid_bytes
+      @attributes[:prepaid_bytes]
+    end
+
+    # date-time - When the prepaid bytes expire
+    def prepaid_bytes_expire_at
+      @attributes[:prepaid_bytes_expire_at]
+    end
+
+    # int64 - Total prepaid bytes used for this invoice line item
+    def prepaid_bytes_used
+      @attributes[:prepaid_bytes_used]
+    end
+
+    # int64 - Available prepaid bytes for this invoice line item
+    def prepaid_bytes_avaliable
+      @attributes[:prepaid_bytes_avaliable]
+    end
   end
 end
