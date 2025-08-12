@@ -70,8 +70,8 @@ module Files
     end
 
     # int64 - Available prepaid bytes for this invoice line item
-    def prepaid_bytes_avaliable
-      @attributes[:prepaid_bytes_avaliable]
+    def prepaid_bytes_available
+      @attributes[:prepaid_bytes_available]
     end
   end
 end
