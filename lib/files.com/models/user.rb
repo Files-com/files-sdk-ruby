@@ -689,6 +689,15 @@ module Files
       @attributes[:announcements_read] = value
     end
 
+    # boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
+    def clear_2fa
+      @attributes[:clear_2fa]
+    end
+
+    def clear_2fa=(value)
+      @attributes[:clear_2fa] = value
+    end
+
     # Unlock user who has been locked out due to failed logins
     def unlock(params = {})
       params ||= {}
@@ -770,6 +779,7 @@ module Files
     #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set).  Note that this is not used for API, Desktop, or Web interface.
     #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
     #   username - string - User's username
+    #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -1050,6 +1060,7 @@ module Files
     #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set).  Note that this is not used for API, Desktop, or Web interface.
     #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
     #   username - string - User's username
+    #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
