@@ -613,6 +613,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`InvalidPriorityColorError`|  `ProcessingFailureError` |
 |`InvalidRangeError`|  `ProcessingFailureError` |
 |`InvalidSiteError`|  `ProcessingFailureError` |
+|`MetadataNotSupportedOnRemotesErrorError`|  `ProcessingFailureError` |
 |`ModelSaveErrorError`|  `ProcessingFailureError` |
 |`MultipleProcessingErrorsError`|  `ProcessingFailureError` |
 |`PathTooLongError`|  `ProcessingFailureError` |
