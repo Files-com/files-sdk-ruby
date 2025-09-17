@@ -179,7 +179,7 @@ module Files
 
     def initialize(*args)
       @attributes = (args[0].is_a?(Hash) && args[0]) || {}
-      @options = (args[1].is_a?(Hash) && args[1])
+      @options = args[1].is_a?(Hash) && args[1]
       @options ||= (args[2].is_a?(Hash) && args[2]) || {}
       @attributes[:path] = args[0] if args[0].is_a?(String)
       @mode = args[1] || 'r' if args[1].is_a?(String)
