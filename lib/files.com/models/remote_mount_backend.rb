@@ -45,6 +45,15 @@ module Files
       @attributes[:health_check_enabled] = value
     end
 
+    # array(object) - Array of recent health check results.
+    def health_check_results
+      @attributes[:health_check_results]
+    end
+
+    def health_check_results=(value)
+      @attributes[:health_check_results] = value
+    end
+
     # string - Type of health check to perform.
     def health_check_type
       @attributes[:health_check_type]
