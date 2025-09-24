@@ -504,6 +504,11 @@ module Files
       @attributes[:max_prior_passwords]
     end
 
+    # object - List of site settings managed by the parent site
+    def managed_site_settings
+      @attributes[:managed_site_settings]
+    end
+
     # string - A message to show users when they connect via FTP or SFTP.
     def motd_text
       @attributes[:motd_text]
@@ -862,11 +867,6 @@ module Files
     # boolean - Allow group admins set password authentication method
     def group_admins_can_set_user_password
       @attributes[:group_admins_can_set_user_password]
-    end
-
-    # array(string) - List of site settings managed by the parent site
-    def managed_site_settings
-      @attributes[:managed_site_settings]
     end
 
     def self.get(params = {}, options = {})

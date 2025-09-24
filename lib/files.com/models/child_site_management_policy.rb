@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # int64 - ChildSiteManagementPolicy ID
+    # int64 - Policy ID.
     def id
       @attributes[:id]
     end
@@ -18,34 +18,52 @@ module Files
       @attributes[:id] = value
     end
 
-    # int64 - ID of the Site managing the policy
-    def site_id
-      @attributes[:site_id]
+    # string - Type of policy.  Valid values: `settings`.
+    def policy_type
+      @attributes[:policy_type]
     end
 
-    def site_id=(value)
-      @attributes[:site_id] = value
+    def policy_type=(value)
+      @attributes[:policy_type] = value
     end
 
-    # string - The name of the setting that is managed by the policy
-    def site_setting_name
-      @attributes[:site_setting_name]
+    # string - Name for this policy.
+    def name
+      @attributes[:name]
     end
 
-    def site_setting_name=(value)
-      @attributes[:site_setting_name] = value
+    def name=(value)
+      @attributes[:name] = value
     end
 
-    # string - The value for the setting that will be enforced for all child sites that are not exempt
-    def managed_value
-      @attributes[:managed_value]
+    # string - Description for this policy.
+    def description
+      @attributes[:description]
     end
 
-    def managed_value=(value)
-      @attributes[:managed_value] = value
+    def description=(value)
+      @attributes[:description] = value
     end
 
-    # array(int64) - The list of child site IDs that are exempt from this policy
+    # object - Policy configuration data. Attributes differ by policy type. For more information, refer to the Value Hash section of the developer documentation.
+    def value
+      @attributes[:value]
+    end
+
+    def value=(value)
+      @attributes[:value] = value
+    end
+
+    # array(int64) - IDs of child sites that this policy has been applied to. This field is read-only.
+    def applied_child_site_ids
+      @attributes[:applied_child_site_ids]
+    end
+
+    def applied_child_site_ids=(value)
+      @attributes[:applied_child_site_ids] = value
+    end
+
+    # array(int64) - IDs of child sites that this policy has been exempted from. If `skip_child_site_ids` is empty, the policy will be applied to all child sites. To apply a policy to a child site that has been exempted, remove it from `skip_child_site_ids` or set it to an empty array (`[]`).
     def skip_child_site_ids
       @attributes[:skip_child_site_ids]
     end
@@ -54,21 +72,33 @@ module Files
       @attributes[:skip_child_site_ids] = value
     end
 
+    # date-time - When this policy was created.
+    def created_at
+      @attributes[:created_at]
+    end
+
+    # date-time - When this policy was last updated.
+    def updated_at
+      @attributes[:updated_at]
+    end
+
     # Parameters:
-    #   site_setting_name (required) - string - The name of the setting that is managed by the policy
-    #   managed_value (required) - string - The value for the setting that will be enforced for all child sites that are not exempt
-    #   skip_child_site_ids - array(int64) - The list of child site IDs that are exempt from this policy
+    #   value - string
+    #   skip_child_site_ids - array(int64) - IDs of child sites that this policy has been exempted from. If `skip_child_site_ids` is empty, the policy will be applied to all child sites. To apply a policy to a child site that has been exempted, remove it from `skip_child_site_ids` or set it to an empty array (`[]`).
+    #   policy_type - string - Type of policy.  Valid values: `settings`.
+    #   name - string - Name for this policy.
+    #   description - string - Description for this policy.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: site_setting_name must be an String") if params[:site_setting_name] and !params[:site_setting_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: managed_value must be an String") if params[:managed_value] and !params[:managed_value].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: value must be an String") if params[:value] and !params[:value].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: skip_child_site_ids must be an Array") if params[:skip_child_site_ids] and !params[:skip_child_site_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: policy_type must be an String") if params[:policy_type] and !params[:policy_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: site_setting_name") unless params[:site_setting_name]
-      raise MissingParameterError.new("Parameter missing: managed_value") unless params[:managed_value]
 
       Api.send_request("/child_site_management_policies/#{@attributes[:id]}", :patch, params, @options)
     end
@@ -132,34 +162,39 @@ module Files
     end
 
     # Parameters:
-    #   site_setting_name (required) - string - The name of the setting that is managed by the policy
-    #   managed_value (required) - string - The value for the setting that will be enforced for all child sites that are not exempt
-    #   skip_child_site_ids - array(int64) - The list of child site IDs that are exempt from this policy
+    #   value - string
+    #   skip_child_site_ids - array(int64) - IDs of child sites that this policy has been exempted from. If `skip_child_site_ids` is empty, the policy will be applied to all child sites. To apply a policy to a child site that has been exempted, remove it from `skip_child_site_ids` or set it to an empty array (`[]`).
+    #   policy_type (required) - string - Type of policy.  Valid values: `settings`.
+    #   name - string - Name for this policy.
+    #   description - string - Description for this policy.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: site_setting_name must be an String") if params[:site_setting_name] and !params[:site_setting_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: managed_value must be an String") if params[:managed_value] and !params[:managed_value].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: value must be an String") if params[:value] and !params[:value].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: skip_child_site_ids must be an Array") if params[:skip_child_site_ids] and !params[:skip_child_site_ids].is_a?(Array)
-      raise MissingParameterError.new("Parameter missing: site_setting_name") unless params[:site_setting_name]
-      raise MissingParameterError.new("Parameter missing: managed_value") unless params[:managed_value]
+      raise InvalidParameterError.new("Bad parameter: policy_type must be an String") if params[:policy_type] and !params[:policy_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: policy_type") unless params[:policy_type]
 
       response, options = Api.send_request("/child_site_management_policies", :post, params, options)
       ChildSiteManagementPolicy.new(response.data, options)
     end
 
     # Parameters:
-    #   site_setting_name (required) - string - The name of the setting that is managed by the policy
-    #   managed_value (required) - string - The value for the setting that will be enforced for all child sites that are not exempt
-    #   skip_child_site_ids - array(int64) - The list of child site IDs that are exempt from this policy
+    #   value - string
+    #   skip_child_site_ids - array(int64) - IDs of child sites that this policy has been exempted from. If `skip_child_site_ids` is empty, the policy will be applied to all child sites. To apply a policy to a child site that has been exempted, remove it from `skip_child_site_ids` or set it to an empty array (`[]`).
+    #   policy_type - string - Type of policy.  Valid values: `settings`.
+    #   name - string - Name for this policy.
+    #   description - string - Description for this policy.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: site_setting_name must be an String") if params[:site_setting_name] and !params[:site_setting_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: managed_value must be an String") if params[:managed_value] and !params[:managed_value].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: id must be one of String, Integer, Hash") if params[:id] and [ String, Integer, Hash ].none? { |klass| params[:id].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: value must be an String") if params[:value] and !params[:value].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: skip_child_site_ids must be an Array") if params[:skip_child_site_ids] and !params[:skip_child_site_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: policy_type must be an String") if params[:policy_type] and !params[:policy_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be one of String, Integer, Hash") if params[:description] and [ String, Integer, Hash ].none? { |klass| params[:description].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: site_setting_name") unless params[:site_setting_name]
-      raise MissingParameterError.new("Parameter missing: managed_value") unless params[:managed_value]
 
       response, options = Api.send_request("/child_site_management_policies/#{params[:id]}", :patch, params, options)
       ChildSiteManagementPolicy.new(response.data, options)
