@@ -84,11 +84,6 @@ module Files
       @attributes[:completed_at]
     end
 
-    # boolean - Whether notifications were sent for this run
-    def notified
-      @attributes[:notified]
-    end
-
     # boolean - Whether this run was a dry run (no actual changes made)
     def dry_run
       @attributes[:dry_run]
