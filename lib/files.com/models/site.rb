@@ -89,6 +89,11 @@ module Files
       @attributes[:always_mkdir_parents]
     end
 
+    # int64 - Number of days to retain AS2 messages (incoming and outgoing).
+    def as2_message_retention_days
+      @attributes[:as2_message_retention_days]
+    end
+
     # boolean - If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
     def ask_about_overwrites
       @attributes[:ask_about_overwrites]
@@ -923,6 +928,7 @@ module Files
     #   calculate_file_checksums_sha256 - boolean - Calculate SHA256 checksums for files?
     #   legacy_checksums_mode - boolean - Use legacy checksums mode?
     #   migrate_remote_server_sync_to_sync - boolean - If true, we will migrate all remote server syncs to the new Sync model.
+    #   as2_message_retention_days - int64 - Number of days to retain AS2 messages (incoming and outgoing).
     #   session_expiry - double - Session expiry in hours
     #   ssl_required - boolean - Is SSL required?  Disabling this is insecure.
     #   sftp_insecure_ciphers - boolean - If true, we will allow weak and known insecure ciphers to be used for SFTP connections.  Enabling this setting severely weakens the security of your site and it is not recommend, except as a last resort for compatibility.
@@ -1065,6 +1071,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: motd_text must be an String") if params[:motd_text] and !params[:motd_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: left_navigation_visibility must be an Hash") if params[:left_navigation_visibility] and !params[:left_navigation_visibility].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: additional_text_file_types must be an Array") if params[:additional_text_file_types] and !params[:additional_text_file_types].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: as2_message_retention_days must be an Integer") if params[:as2_message_retention_days] and !params[:as2_message_retention_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: session_expiry must be an Float") if params[:session_expiry] and !params[:session_expiry].is_a?(Float)
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params[:user_lockout_tries] and !params[:user_lockout_tries].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_within must be an Integer") if params[:user_lockout_within] and !params[:user_lockout_within].is_a?(Integer)
