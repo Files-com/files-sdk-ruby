@@ -27,6 +27,15 @@ module Files
       @attributes[:authentication_method] = value
     end
 
+    # array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
+    def group_ids
+      @attributes[:group_ids]
+    end
+
+    def group_ids=(value)
+      @attributes[:group_ids] = value
+    end
+
     # int64 - Number of days of inactivity before the rule applies
     def inactivity_days
       @attributes[:inactivity_days]
@@ -93,6 +102,7 @@ module Files
     # Parameters:
     #   action - string - Action to take on inactive users (disable or delete)
     #   authentication_method - string - User authentication method for the rule
+    #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
@@ -105,6 +115,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an Array") if params[:group_ids] and !params[:group_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -174,6 +185,7 @@ module Files
     # Parameters:
     #   action - string - Action to take on inactive users (disable or delete)
     #   authentication_method - string - User authentication method for the rule
+    #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
@@ -182,6 +194,7 @@ module Files
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an Array") if params[:group_ids] and !params[:group_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -193,6 +206,7 @@ module Files
     # Parameters:
     #   action - string - Action to take on inactive users (disable or delete)
     #   authentication_method - string - User authentication method for the rule
+    #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - Include site admins in the rule
     #   include_folder_admins - boolean - Include folder admins in the rule
@@ -204,6 +218,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an Array") if params[:group_ids] and !params[:group_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
