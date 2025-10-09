@@ -365,6 +365,15 @@ module Files
       @attributes[:office_integration_enabled] = value
     end
 
+    # boolean - Is this user a Partner administrator?
+    def partner_admin
+      @attributes[:partner_admin]
+    end
+
+    def partner_admin=(value)
+      @attributes[:partner_admin] = value
+    end
+
     # int64 - Partner ID if this user belongs to a Partner
     def partner_id
       @attributes[:partner_id]

@@ -197,6 +197,7 @@ module Files
 
     private def check_api_key!(api_key)
       raise AuthenticationError, "No Files.com API key provided. Set your API key using \"Files.api_key = <API-KEY>\". You can generate API keys from the Files.com's web interface. " unless api_key
+      raise AuthenticationError, "Your API key must be a string" unless api_key.is_a?(String)
 
       return unless api_key =~ /\s/
 
