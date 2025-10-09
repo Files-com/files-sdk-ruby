@@ -365,6 +365,15 @@ module Files
       @attributes[:office_integration_enabled] = value
     end
 
+    # int64 - Partner ID if this user belongs to a Partner
+    def partner_id
+      @attributes[:partner_id]
+    end
+
+    def partner_id=(value)
+      @attributes[:partner_id] = value
+    end
+
     # date-time - Last time the user's password was set
     def password_set_at
       @attributes[:password_set_at]
@@ -771,6 +780,7 @@ module Files
     #   company - string - User's company
     #   notes - string - Any internal notes on the user
     #   office_integration_enabled - boolean - Enable integration with Office for the web?
+    #   partner_id - int64 - Partner ID if this user belongs to a Partner
     #   password_validity_days - int64 - Number of days to allow user to use the same password
     #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
     #   receive_admin_alerts - boolean - Should the user receive admin alerts such a certificate expiration notifications and overages?
@@ -814,6 +824,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: company must be an String") if params[:company] and !params[:company].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_login_by must be an String") if params[:require_login_by] and !params[:require_login_by].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
@@ -939,6 +950,7 @@ module Files
     #   company - string - User's company
     #   notes - string - Any internal notes on the user
     #   office_integration_enabled - boolean - Enable integration with Office for the web?
+    #   partner_id - int64 - Partner ID if this user belongs to a Partner
     #   password_validity_days - int64 - Number of days to allow user to use the same password
     #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
     #   receive_admin_alerts - boolean - Should the user receive admin alerts such a certificate expiration notifications and overages?
@@ -977,6 +989,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: company must be an String") if params[:company] and !params[:company].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_login_by must be an String") if params[:require_login_by] and !params[:require_login_by].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
@@ -1056,6 +1069,7 @@ module Files
     #   company - string - User's company
     #   notes - string - Any internal notes on the user
     #   office_integration_enabled - boolean - Enable integration with Office for the web?
+    #   partner_id - int64 - Partner ID if this user belongs to a Partner
     #   password_validity_days - int64 - Number of days to allow user to use the same password
     #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
     #   receive_admin_alerts - boolean - Should the user receive admin alerts such a certificate expiration notifications and overages?
@@ -1098,6 +1112,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: company must be an String") if params[:company] and !params[:company].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_login_by must be an String") if params[:require_login_by] and !params[:require_login_by].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)

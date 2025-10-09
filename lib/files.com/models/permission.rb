@@ -63,6 +63,15 @@ module Files
       @attributes[:group_name] = value
     end
 
+    # int64 - Partner ID (if applicable)
+    def partner_id
+      @attributes[:partner_id]
+    end
+
+    def partner_id=(value)
+      @attributes[:partner_id] = value
+    end
+
     # string - Permission type.  See the table referenced in the documentation for an explanation of each permission.
     def permission
       @attributes[:permission]
@@ -119,12 +128,13 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `group_id`, `path`, `user_id` or `id`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `path`, `group_id` or `user_id`. Valid field combinations are `[ group_id, path ]`, `[ user_id, path ]`, `[ user_id, group_id ]` or `[ user_id, group_id, path ]`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `group_id`, `path`, `user_id`, `partner_id` or `id`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `path`, `group_id`, `partner_id` or `user_id`. Valid field combinations are `[ group_id, path ]`, `[ partner_id, path ]`, `[ user_id, path ]`, `[ user_id, group_id ]`, `[ user_id, group_id, path ]`, `[ user_id, group_id, partner_id ]` or `[ user_id, group_id, partner_id, path ]`.
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `path`.
     #   path - string - Permission path.  If provided, will scope all permissions(including upward) to this path.
     #   include_groups - boolean - If searching by user or group, also include user's permissions that are inherited from its groups?
     #   group_id - string
+    #   partner_id - string
     #   user_id - string
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
@@ -134,6 +144,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_id must be an String") if params[:group_id] and !params[:group_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an String") if params[:partner_id] and !params[:partner_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_id must be an String") if params[:user_id] and !params[:user_id].is_a?(String)
 
       List.new(Permission, params) do
@@ -150,6 +161,7 @@ module Files
     #   group_id - int64 - Group ID. Provide `group_name` or `group_id`
     #   permission - string - Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
     #   recursive - boolean - Apply to subfolders recursively?
+    #   partner_id - int64 - Partner ID if this Permission belongs to a partner.
     #   user_id - int64 - User ID.  Provide `username` or `user_id`
     #   username - string - User username.  Provide `username` or `user_id`
     #   group_name - string - Group name.  Provide `group_name` or `group_id`
@@ -158,6 +170,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: permission must be an String") if params[:permission] and !params[:permission].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_name must be an String") if params[:group_name] and !params[:group_name].is_a?(String)
