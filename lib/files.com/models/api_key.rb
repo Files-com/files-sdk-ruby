@@ -59,6 +59,33 @@ module Files
       @attributes[:key] = value
     end
 
+    # boolean - If `true`, this API key will be usable with AWS-compatible endpoints, such as our Inbound S3-compatible endpoint.
+    def aws_style_credentials
+      @attributes[:aws_style_credentials]
+    end
+
+    def aws_style_credentials=(value)
+      @attributes[:aws_style_credentials] = value
+    end
+
+    # string - AWS Access Key ID to use with AWS-compatible endpoints, such as our Inbound S3-compatible endpoint.
+    def aws_access_key_id
+      @attributes[:aws_access_key_id]
+    end
+
+    def aws_access_key_id=(value)
+      @attributes[:aws_access_key_id] = value
+    end
+
+    # string - AWS Secret Key to use with AWS-compatible endpoints, such as our Inbound S3-compatible endpoint.
+    def aws_secret_key
+      @attributes[:aws_secret_key]
+    end
+
+    def aws_secret_key=(value)
+      @attributes[:aws_secret_key] = value
+    end
+
     # date-time - API Key last used - note this value is only updated once per 3 hour period, so the 'actual' time of last use may be up to 3 hours later than this timestamp.
     def last_use_at
       @attributes[:last_use_at]
@@ -224,6 +251,7 @@ module Files
     #   expires_at - string - API Key expiration date
     #   permission_set - string - Permissions for this API Key. It must be full for site-wide API Keys.  Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations). Keys with the `office_integration` permission set are auto generated, and automatically expire, to allow users to interact with office integration platforms. Additional permission sets may become available in the future, such as for a Site Admin to give a key with no administrator privileges.  If you have ideas for permission sets, please let us know.
     #   name (required) - string - Internal name for the API Key.  For your use.
+    #   aws_style_credentials - boolean - If `true`, this API key will be usable with AWS-compatible endpoints, such as our Inbound S3-compatible endpoint.
     #   path - string - Folder path restriction for `office_integration` permission set API keys.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
