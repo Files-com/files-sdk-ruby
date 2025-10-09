@@ -89,7 +89,7 @@ module Files
       @attributes[:scim_oauth_access_token_expires_at]
     end
 
-    # string - Subdomain
+    # string - Subdomain or domain name for your auth provider.   Example: `https://[subdomain].okta.com/`
     def subdomain
       @attributes[:subdomain]
     end
@@ -192,6 +192,11 @@ module Files
     # string - 2FA required setting for auto provisioned users.
     def provision_require_2fa
       @attributes[:provision_require_2fa]
+    end
+
+    # string - File System layout to use for auto provisioned users.
+    def provision_filesystem_layout
+      @attributes[:provision_filesystem_layout]
     end
 
     # string - URL-friendly, unique identifier for Azure SAML configuration
