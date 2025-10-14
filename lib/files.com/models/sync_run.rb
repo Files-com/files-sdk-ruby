@@ -14,39 +14,14 @@ module Files
       @attributes[:id]
     end
 
-    # int64 - ID of the Sync this run belongs to
-    def sync_id
-      @attributes[:sync_id]
-    end
-
-    # int64 - Site ID
-    def site_id
-      @attributes[:site_id]
-    end
-
-    # string - Status of the sync run (success, failure, partial_failure, in_progress, skipped)
-    def status
-      @attributes[:status]
-    end
-
-    # string - Source remote server type, if any
-    def src_remote_server_type
-      @attributes[:src_remote_server_type]
-    end
-
-    # string - Destination remote server type, if any
-    def dest_remote_server_type
-      @attributes[:dest_remote_server_type]
-    end
-
     # string - Log or summary body for this run
     def body
       @attributes[:body]
     end
 
-    # array(string) - Array of errors encountered during the run
-    def event_errors
-      @attributes[:event_errors]
+    # int64 - Total bytes synced in this run
+    def bytes_synced
+      @attributes[:bytes_synced]
     end
 
     # int64 - Number of files compared
@@ -59,29 +34,19 @@ module Files
       @attributes[:compared_folders]
     end
 
-    # int64 - Number of files that errored
-    def errored_files
-      @attributes[:errored_files]
-    end
-
-    # int64 - Number of files successfully synced
-    def successful_files
-      @attributes[:successful_files]
-    end
-
-    # double - Total runtime in seconds
-    def runtime
-      @attributes[:runtime]
-    end
-
-    # string - Link to external log file.
-    def log_url
-      @attributes[:log_url]
-    end
-
     # date-time - When this run was completed
     def completed_at
       @attributes[:completed_at]
+    end
+
+    # date-time - When this run was created
+    def created_at
+      @attributes[:created_at]
+    end
+
+    # string - Destination remote server type, if any
+    def dest_remote_server_type
+      @attributes[:dest_remote_server_type]
     end
 
     # boolean - Whether this run was a dry run (no actual changes made)
@@ -89,9 +54,9 @@ module Files
       @attributes[:dry_run]
     end
 
-    # int64 - Total bytes synced in this run
-    def bytes_synced
-      @attributes[:bytes_synced]
+    # int64 - Number of files that errored
+    def errored_files
+      @attributes[:errored_files]
     end
 
     # int64 - Estimated bytes count for this run
@@ -99,9 +64,49 @@ module Files
       @attributes[:estimated_bytes_count]
     end
 
-    # date-time - When this run was created
-    def created_at
-      @attributes[:created_at]
+    # array(string) - Array of errors encountered during the run
+    def event_errors
+      @attributes[:event_errors]
+    end
+
+    # string - Link to external log file.
+    def log_url
+      @attributes[:log_url]
+    end
+
+    # double - Total runtime in seconds
+    def runtime
+      @attributes[:runtime]
+    end
+
+    # int64 - Site ID
+    def site_id
+      @attributes[:site_id]
+    end
+
+    # string - Source remote server type, if any
+    def src_remote_server_type
+      @attributes[:src_remote_server_type]
+    end
+
+    # string - Status of the sync run (success, failure, partial_failure, in_progress, skipped)
+    def status
+      @attributes[:status]
+    end
+
+    # int64 - Number of files successfully synced
+    def successful_files
+      @attributes[:successful_files]
+    end
+
+    # int64 - ID of the Sync this run belongs to
+    def sync_id
+      @attributes[:sync_id]
+    end
+
+    # string - Name of the Sync this run belongs to
+    def sync_name
+      @attributes[:sync_name]
     end
 
     # date-time - When this run was last updated
