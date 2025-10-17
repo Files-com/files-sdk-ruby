@@ -36,7 +36,16 @@ module Files
       @attributes[:name] = value
     end
 
-    # int64 - GPG owner's user id
+    # int64 - Partner ID who owns this GPG Key, if applicable.
+    def partner_id
+      @attributes[:partner_id]
+    end
+
+    def partner_id=(value)
+      @attributes[:partner_id] = value
+    end
+
+    # int64 - User ID who owns this GPG Key, if applicable.
     def user_id
       @attributes[:user_id]
     end
@@ -154,6 +163,7 @@ module Files
     end
 
     # Parameters:
+    #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
     #   public_key - string - MD5 hash of your GPG public key
     #   private_key - string - MD5 hash of your GPG private key.
     #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
@@ -163,6 +173,7 @@ module Files
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
@@ -236,6 +247,7 @@ module Files
 
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
     #   public_key - string - MD5 hash of your GPG public key
     #   private_key - string - MD5 hash of your GPG private key.
     #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
@@ -246,6 +258,7 @@ module Files
     #   generate_email - string - Email address of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
@@ -260,6 +273,7 @@ module Files
     end
 
     # Parameters:
+    #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
     #   public_key - string - MD5 hash of your GPG public key
     #   private_key - string - MD5 hash of your GPG private key.
     #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
@@ -268,6 +282,7 @@ module Files
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)

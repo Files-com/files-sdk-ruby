@@ -72,6 +72,15 @@ module Files
       @attributes[:partner_id] = value
     end
 
+    # string - Partner name (if applicable)
+    def partner_name
+      @attributes[:partner_name]
+    end
+
+    def partner_name=(value)
+      @attributes[:partner_name] = value
+    end
+
     # string - Permission type.  See the table referenced in the documentation for an explanation of each permission.
     def permission
       @attributes[:permission]

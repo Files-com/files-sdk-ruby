@@ -563,6 +563,15 @@ module Files
       @attributes[:externally_managed] = value
     end
 
+    # string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    def tags
+      @attributes[:tags]
+    end
+
+    def tags=(value)
+      @attributes[:tags] = value
+    end
+
     # string - User time zone
     def time_zone
       @attributes[:time_zone]
@@ -805,6 +814,7 @@ module Files
     #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
     #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
     #   require_2fa - string - 2FA required setting
+    #   tags - string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   time_zone - string - User time zone
     #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set).  Note that this is not used for API, Desktop, or Web interface.
     #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
@@ -840,6 +850,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params[:sso_strategy_id] and !params[:sso_strategy_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params[:require_2fa] and !params[:require_2fa].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params[:time_zone] and !params[:time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_home must be an String") if params[:user_home] and !params[:user_home].is_a?(String)
@@ -882,7 +893,7 @@ module Files
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `authenticate_until`, `email`, `last_desktop_login_at`, `last_login_at`, `name`, `company`, `password_validity_days`, `ssl_required`, `username`, `site_admin` or `disabled`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `username`, `name`, `email`, `company`, `site_admin`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until`, `not_site_admin` or `disabled`. Valid field combinations are `[ site_admin, username ]`, `[ not_site_admin, username ]` or `[ company, name ]`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `username`, `name`, `email`, `company`, `site_admin`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until`, `not_site_admin`, `disabled` or `partner_id`. Valid field combinations are `[ site_admin, username ]`, `[ not_site_admin, username ]` or `[ company, name ]`.
     #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
     #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `username`, `name`, `email` or `company`. Valid field combinations are `[ company, name ]`.
@@ -976,6 +987,7 @@ module Files
     #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
     #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
     #   require_2fa - string - 2FA required setting
+    #   tags - string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   time_zone - string - User time zone
     #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set).  Note that this is not used for API, Desktop, or Web interface.
     #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
@@ -1006,6 +1018,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params[:sso_strategy_id] and !params[:sso_strategy_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params[:require_2fa] and !params[:require_2fa].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params[:time_zone] and !params[:time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_home must be an String") if params[:user_home] and !params[:user_home].is_a?(String)
@@ -1096,6 +1109,7 @@ module Files
     #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
     #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
     #   require_2fa - string - 2FA required setting
+    #   tags - string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   time_zone - string - User time zone
     #   user_root - string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set).  Note that this is not used for API, Desktop, or Web interface.
     #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
@@ -1130,6 +1144,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params[:sso_strategy_id] and !params[:sso_strategy_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if params[:require_2fa] and !params[:require_2fa].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if params[:time_zone] and !params[:time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_home must be an String") if params[:user_home] and !params[:user_home].is_a?(String)

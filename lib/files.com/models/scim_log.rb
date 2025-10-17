@@ -66,5 +66,21 @@ module Files
     def self.all(params = {}, options = {})
       list(params, options)
     end
+
+    # Parameters:
+    #   id (required) - int64 - Scim Log ID.
+    def self.find(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      response, options = Api.send_request("/scim_logs/#{params[:id]}", :get, params, options)
+      ScimLog.new(response.data, options)
+    end
+
+    def self.get(id, params = {}, options = {})
+      find(id, params, options)
+    end
   end
 end
