@@ -160,6 +160,7 @@
 * `password_confirmation` (string): Optional, but if provided, we will ensure that it matches the value sent in `password`.
 * `announcements_read` (boolean): Signifies that the user has read all the announcements in the UI.
 * `clear_2fa` (boolean): If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
+* `convert_to_partner_user` (boolean): If true, convert this user to a partner user by assigning the partner_id provided.
 
 
 ---
@@ -398,7 +399,8 @@ Files::User.update(id,
   user_root: "example", 
   user_home: "example", 
   username: "user", 
-  clear_2fa: false
+  clear_2fa: false, 
+  convert_to_partner_user: false
 )
 ```
 
@@ -457,6 +459,7 @@ Files::User.update(id,
 * `user_home` (string): Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
 * `username` (string): User's username
 * `clear_2fa` (boolean): If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
+* `convert_to_partner_user` (boolean): If true, convert this user to a partner user by assigning the partner_id provided.
 
 
 ---
@@ -572,7 +575,8 @@ user.update(
   user_root: "example",
   user_home: "example",
   username: "user",
-  clear_2fa: false
+  clear_2fa: false,
+  convert_to_partner_user: false
 )
 ```
 
@@ -631,6 +635,7 @@ user.update(
 * `user_home` (string): Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
 * `username` (string): User's username
 * `clear_2fa` (boolean): If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
+* `convert_to_partner_user` (boolean): If true, convert this user to a partner user by assigning the partner_id provided.
 
 
 ---

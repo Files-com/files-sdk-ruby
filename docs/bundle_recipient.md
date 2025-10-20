@@ -24,7 +24,7 @@
 
 ---
 
-## List Bundle Recipients
+## List Share Link Recipients
 
 ```
 Files::BundleRecipient.list(
@@ -45,7 +45,7 @@ Files::BundleRecipient.list(
 
 ---
 
-## Create Bundle Recipient
+## Create Share Link Recipient
 
 ```
 Files::BundleRecipient.create(

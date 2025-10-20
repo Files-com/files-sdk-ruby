@@ -138,7 +138,7 @@
 
 ---
 
-## List Bundles
+## List Share Links
 
 ```
 Files::Bundle.list(
@@ -162,7 +162,7 @@ Files::Bundle.list(
 
 ---
 
-## Show Bundle
+## Show Share Link
 
 ```
 Files::Bundle.find(id)
@@ -175,7 +175,7 @@ Files::Bundle.find(id)
 
 ---
 
-## Create Bundle
+## Create Share Link
 
 ```
 Files::Bundle.create(
@@ -259,7 +259,7 @@ Files::Bundle.share(id,
 
 ---
 
-## Update Bundle
+## Update Share Link
 
 ```
 Files::Bundle.update(id, 
@@ -322,7 +322,7 @@ Files::Bundle.update(id,
 
 ---
 
-## Delete Bundle
+## Delete Share Link
 
 ```
 Files::Bundle.delete(id)
@@ -357,7 +357,7 @@ bundle.share(
 
 ---
 
-## Update Bundle
+## Update Share Link
 
 ```
 bundle = Files::Bundle.find(id)
@@ -422,7 +422,7 @@ bundle.update(
 
 ---
 
-## Delete Bundle
+## Delete Share Link
 
 ```
 bundle = Files::Bundle.find(id)

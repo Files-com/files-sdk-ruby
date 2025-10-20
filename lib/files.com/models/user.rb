@@ -734,6 +734,15 @@ module Files
       @attributes[:clear_2fa] = value
     end
 
+    # boolean - If true, convert this user to a partner user by assigning the partner_id provided.
+    def convert_to_partner_user
+      @attributes[:convert_to_partner_user]
+    end
+
+    def convert_to_partner_user=(value)
+      @attributes[:convert_to_partner_user] = value
+    end
+
     # Unlock user who has been locked out due to failed logins
     def unlock(params = {})
       params ||= {}
@@ -820,6 +829,7 @@ module Files
     #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
     #   username - string - User's username
     #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
+    #   convert_to_partner_user - boolean - If true, convert this user to a partner user by assigning the partner_id provided.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -1115,6 +1125,7 @@ module Files
     #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
     #   username - string - User's username
     #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
+    #   convert_to_partner_user - boolean - If true, convert this user to a partner user by assigning the partner_id provided.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

@@ -22,7 +22,7 @@
 
 ---
 
-## List Bundle Notifications
+## List Share Link Notifications
 
 ```
 Files::BundleNotification.list(
@@ -41,7 +41,7 @@ Files::BundleNotification.list(
 
 ---
 
-## Show Bundle Notification
+## Show Share Link Notification
 
 ```
 Files::BundleNotification.find(id)
@@ -54,7 +54,7 @@ Files::BundleNotification.find(id)
 
 ---
 
-## Create Bundle Notification
+## Create Share Link Notification
 
 ```
 Files::BundleNotification.create(
@@ -77,7 +77,7 @@ Files::BundleNotification.create(
 
 ---
 
-## Update Bundle Notification
+## Update Share Link Notification
 
 ```
 Files::BundleNotification.update(id, 
@@ -95,7 +95,7 @@ Files::BundleNotification.update(id,
 
 ---
 
-## Delete Bundle Notification
+## Delete Share Link Notification
 
 ```
 Files::BundleNotification.delete(id)
@@ -108,7 +108,7 @@ Files::BundleNotification.delete(id)
 
 ---
 
-## Update Bundle Notification
+## Update Share Link Notification
 
 ```
 bundle_notification = Files::BundleNotification.find(id)
@@ -128,7 +128,7 @@ bundle_notification.update(
 
 ---
 
-## Delete Bundle Notification
+## Delete Share Link Notification
 
 ```
 bundle_notification = Files::BundleNotification.find(id)
