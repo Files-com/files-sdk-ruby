@@ -383,6 +383,15 @@ module Files
       @attributes[:partner_id] = value
     end
 
+    # string - Name of the Partner if this user belongs to a Partner
+    def partner_name
+      @attributes[:partner_name]
+    end
+
+    def partner_name=(value)
+      @attributes[:partner_name] = value
+    end
+
     # date-time - Last time the user's password was set
     def password_set_at
       @attributes[:password_set_at]

@@ -45,6 +45,15 @@ module Files
       @attributes[:partner_id] = value
     end
 
+    # string - Name of the Partner who owns this GPG Key, if applicable.
+    def partner_name
+      @attributes[:partner_name]
+    end
+
+    def partner_name=(value)
+      @attributes[:partner_name] = value
+    end
+
     # int64 - User ID who owns this GPG Key, if applicable.
     def user_id
       @attributes[:user_id]
