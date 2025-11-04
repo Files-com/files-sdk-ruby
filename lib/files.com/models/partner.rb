@@ -90,6 +90,15 @@ module Files
       @attributes[:tags] = value
     end
 
+    # array(int64) - Array of User IDs that belong to this Partner.
+    def user_ids
+      @attributes[:user_ids]
+    end
+
+    def user_ids=(value)
+      @attributes[:user_ids] = value
+    end
+
     # Parameters:
     #   name - string - The name of the Partner.
     #   allow_bypassing_2fa_policies - boolean - Allow users created under this Partner to bypass Two-Factor Authentication policies.
