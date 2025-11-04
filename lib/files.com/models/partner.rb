@@ -72,6 +72,15 @@ module Files
       @attributes[:notes] = value
     end
 
+    # array(int64) - Array of User IDs that are Partner Admins for this Partner.
+    def partner_admin_ids
+      @attributes[:partner_admin_ids]
+    end
+
+    def partner_admin_ids=(value)
+      @attributes[:partner_admin_ids] = value
+    end
+
     # string - The root folder path for this Partner.
     def root_folder
       @attributes[:root_folder]
