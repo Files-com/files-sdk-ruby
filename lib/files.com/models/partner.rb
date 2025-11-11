@@ -109,7 +109,6 @@ module Files
     end
 
     # Parameters:
-    #   name - string - The name of the Partner.
     #   allow_bypassing_2fa_policies - boolean - Allow users created under this Partner to bypass Two-Factor Authentication policies.
     #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
     #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
@@ -117,15 +116,16 @@ module Files
     #   notes - string - Notes about this Partner.
     #   root_folder - string - The root folder path for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    #   name - string - The name of the Partner.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/partners/#{@attributes[:id]}", :patch, params, @options)
@@ -192,7 +192,6 @@ module Files
     end
 
     # Parameters:
-    #   name - string - The name of the Partner.
     #   allow_bypassing_2fa_policies - boolean - Allow users created under this Partner to bypass Two-Factor Authentication policies.
     #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
     #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
@@ -200,18 +199,19 @@ module Files
     #   notes - string - Notes about this Partner.
     #   root_folder - string - The root folder path for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    #   name (required) - string - The name of the Partner.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
       response, options = Api.send_request("/partners", :post, params, options)
       Partner.new(response.data, options)
     end
 
     # Parameters:
-    #   name - string - The name of the Partner.
     #   allow_bypassing_2fa_policies - boolean - Allow users created under this Partner to bypass Two-Factor Authentication policies.
     #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
     #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
@@ -219,14 +219,15 @@ module Files
     #   notes - string - Notes about this Partner.
     #   root_folder - string - The root folder path for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    #   name - string - The name of the Partner.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/partners/#{params[:id]}", :patch, params, options)
