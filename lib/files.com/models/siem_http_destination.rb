@@ -45,6 +45,33 @@ module Files
       @attributes[:destination_url] = value
     end
 
+    # string - Applicable only for destination type: file. Destination folder path on Files.com.
+    def file_destination_path
+      @attributes[:file_destination_path]
+    end
+
+    def file_destination_path=(value)
+      @attributes[:file_destination_path] = value
+    end
+
+    # string - Applicable only for destination type: file. Generated file format.
+    def file_format
+      @attributes[:file_format]
+    end
+
+    def file_format=(value)
+      @attributes[:file_format] = value
+    end
+
+    # int64 - Applicable only for destination type: file. Interval, in minutes, between file deliveries.
+    def file_interval_minutes
+      @attributes[:file_interval_minutes]
+    end
+
+    def file_interval_minutes=(value)
+      @attributes[:file_interval_minutes] = value
+    end
+
     # object - Additional HTTP Headers included in calls to the destination URL
     def additional_headers
       @attributes[:additional_headers]
@@ -509,6 +536,9 @@ module Files
     #   additional_headers - object - Additional HTTP Headers included in calls to the destination URL
     #   sending_active - boolean - Whether this SIEM HTTP Destination is currently being sent to or not
     #   generic_payload_type - string - Applicable only for destination type: generic. Indicates the type of HTTP body. Can be json_newline or json_array. json_newline is multiple log entries as JSON separated by newlines. json_array is a single JSON array containing multiple log entries as JSON.
+    #   file_destination_path - string - Applicable only for destination type: file. Destination folder path on Files.com.
+    #   file_format - string - Applicable only for destination type: file. Generated file format.
+    #   file_interval_minutes - int64 - Applicable only for destination type: file. Interval, in minutes, between file deliveries. Valid values are 5, 10, 15, 20, 30, 60, 90, 180, 240, 360.
     #   splunk_token - string - Applicable only for destination type: splunk. Authentication token provided by Splunk.
     #   azure_dcr_immutable_id - string - Applicable only for destination types: azure, azure_legacy. Immutable ID of the Data Collection Rule.
     #   azure_stream_name - string - Applicable only for destination type: azure. Name of the stream in the DCR that represents the destination table.
@@ -540,6 +570,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if params[:generic_payload_type] and !params[:generic_payload_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if params[:file_destination_path] and !params[:file_destination_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
@@ -621,6 +654,9 @@ module Files
     #   additional_headers - object - Additional HTTP Headers included in calls to the destination URL
     #   sending_active - boolean - Whether this SIEM HTTP Destination is currently being sent to or not
     #   generic_payload_type - string - Applicable only for destination type: generic. Indicates the type of HTTP body. Can be json_newline or json_array. json_newline is multiple log entries as JSON separated by newlines. json_array is a single JSON array containing multiple log entries as JSON.
+    #   file_destination_path - string - Applicable only for destination type: file. Destination folder path on Files.com.
+    #   file_format - string - Applicable only for destination type: file. Generated file format.
+    #   file_interval_minutes - int64 - Applicable only for destination type: file. Interval, in minutes, between file deliveries. Valid values are 5, 10, 15, 20, 30, 60, 90, 180, 240, 360.
     #   splunk_token - string - Applicable only for destination type: splunk. Authentication token provided by Splunk.
     #   azure_dcr_immutable_id - string - Applicable only for destination types: azure, azure_legacy. Immutable ID of the Data Collection Rule.
     #   azure_stream_name - string - Applicable only for destination type: azure. Name of the stream in the DCR that represents the destination table.
@@ -644,11 +680,14 @@ module Files
     #   exavault_api_request_send_enabled - boolean - Whether or not sending is enabled for exavault_api_request logs.
     #   settings_change_send_enabled - boolean - Whether or not sending is enabled for settings_change logs.
     #   destination_type (required) - string - Destination Type
-    #   destination_url (required) - string - Destination Url
+    #   destination_url - string - Destination Url
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if params[:additional_headers] and !params[:additional_headers].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if params[:generic_payload_type] and !params[:generic_payload_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if params[:file_destination_path] and !params[:file_destination_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
@@ -663,7 +702,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if params[:destination_type] and !params[:destination_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if params[:destination_url] and !params[:destination_url].is_a?(String)
       raise MissingParameterError.new("Parameter missing: destination_type") unless params[:destination_type]
-      raise MissingParameterError.new("Parameter missing: destination_url") unless params[:destination_url]
 
       response, options = Api.send_request("/siem_http_destinations", :post, params, options)
       SiemHttpDestination.new(response.data, options)
@@ -677,6 +715,9 @@ module Files
     #   additional_headers - object - Additional HTTP Headers included in calls to the destination URL
     #   sending_active - boolean - Whether this SIEM HTTP Destination is currently being sent to or not
     #   generic_payload_type - string - Applicable only for destination type: generic. Indicates the type of HTTP body. Can be json_newline or json_array. json_newline is multiple log entries as JSON separated by newlines. json_array is a single JSON array containing multiple log entries as JSON.
+    #   file_destination_path - string - Applicable only for destination type: file. Destination folder path on Files.com.
+    #   file_format - string - Applicable only for destination type: file. Generated file format.
+    #   file_interval_minutes - int64 - Applicable only for destination type: file. Interval, in minutes, between file deliveries. Valid values are 5, 10, 15, 20, 30, 60, 90, 180, 240, 360.
     #   splunk_token - string - Applicable only for destination type: splunk. Authentication token provided by Splunk.
     #   azure_dcr_immutable_id - string - Applicable only for destination types: azure, azure_legacy. Immutable ID of the Data Collection Rule.
     #   azure_stream_name - string - Applicable only for destination type: azure. Name of the stream in the DCR that represents the destination table.
@@ -706,6 +747,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if params[:additional_headers] and !params[:additional_headers].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if params[:generic_payload_type] and !params[:generic_payload_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if params[:file_destination_path] and !params[:file_destination_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
@@ -727,6 +771,9 @@ module Files
     #   additional_headers - object - Additional HTTP Headers included in calls to the destination URL
     #   sending_active - boolean - Whether this SIEM HTTP Destination is currently being sent to or not
     #   generic_payload_type - string - Applicable only for destination type: generic. Indicates the type of HTTP body. Can be json_newline or json_array. json_newline is multiple log entries as JSON separated by newlines. json_array is a single JSON array containing multiple log entries as JSON.
+    #   file_destination_path - string - Applicable only for destination type: file. Destination folder path on Files.com.
+    #   file_format - string - Applicable only for destination type: file. Generated file format.
+    #   file_interval_minutes - int64 - Applicable only for destination type: file. Interval, in minutes, between file deliveries. Valid values are 5, 10, 15, 20, 30, 60, 90, 180, 240, 360.
     #   splunk_token - string - Applicable only for destination type: splunk. Authentication token provided by Splunk.
     #   azure_dcr_immutable_id - string - Applicable only for destination types: azure, azure_legacy. Immutable ID of the Data Collection Rule.
     #   azure_stream_name - string - Applicable only for destination type: azure. Name of the stream in the DCR that represents the destination table.
@@ -758,6 +805,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if params[:additional_headers] and !params[:additional_headers].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if params[:generic_payload_type] and !params[:generic_payload_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if params[:file_destination_path] and !params[:file_destination_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
