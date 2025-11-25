@@ -72,13 +72,13 @@ module Files
       @attributes[:port] = value
     end
 
-    # boolean - If true, uploads to this server will be uploaded first to Files.com before being sent to the remote server. This can improve performance in certain access patterns, such as high-latency connections.  It will cause data to be temporarily stored in Files.com.
-    def buffer_uploads_always
-      @attributes[:buffer_uploads_always]
+    # string - If set to always, uploads to this server will be uploaded first to Files.com before being sent to the remote server. This can improve performance in certain access patterns, such as high-latency connections.  It will cause data to be temporarily stored in Files.com. If set to auto, we will perform this optimization if we believe it to be a benefit in a given situation.
+    def buffer_uploads
+      @attributes[:buffer_uploads]
     end
 
-    def buffer_uploads_always=(value)
-      @attributes[:buffer_uploads_always] = value
+    def buffer_uploads=(value)
+      @attributes[:buffer_uploads] = value
     end
 
     # int64 - Max number of parallel connections.  Ignored for S3 connections (we will parallelize these as much as possible).
@@ -749,7 +749,7 @@ module Files
     #   azure_files_storage_share_name - string - Azure Files:  Storage Share name
     #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage: Bucket name
     #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage: S3 Endpoint
-    #   buffer_uploads_always - boolean - If true, uploads to this server will be uploaded first to Files.com before being sent to the remote server. This can improve performance in certain access patterns, such as high-latency connections.  It will cause data to be temporarily stored in Files.com.
+    #   buffer_uploads - string - If set to always, uploads to this server will be uploaded first to Files.com before being sent to the remote server. This can improve performance in certain access patterns, such as high-latency connections.  It will cause data to be temporarily stored in Files.com. If set to auto, we will perform this optimization if we believe it to be a benefit in a given situation.
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   cloudflare_bucket - string - Cloudflare: Bucket name
     #   cloudflare_endpoint - string - Cloudflare: endpoint
@@ -818,6 +818,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params[:backblaze_b2_bucket] and !params[:backblaze_b2_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params[:backblaze_b2_s3_endpoint] and !params[:backblaze_b2_s3_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: buffer_uploads must be an String") if params[:buffer_uploads] and !params[:buffer_uploads].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
@@ -962,7 +963,7 @@ module Files
     #   azure_files_storage_share_name - string - Azure Files:  Storage Share name
     #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage: Bucket name
     #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage: S3 Endpoint
-    #   buffer_uploads_always - boolean - If true, uploads to this server will be uploaded first to Files.com before being sent to the remote server. This can improve performance in certain access patterns, such as high-latency connections.  It will cause data to be temporarily stored in Files.com.
+    #   buffer_uploads - string - If set to always, uploads to this server will be uploaded first to Files.com before being sent to the remote server. This can improve performance in certain access patterns, such as high-latency connections.  It will cause data to be temporarily stored in Files.com. If set to auto, we will perform this optimization if we believe it to be a benefit in a given situation.
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   cloudflare_bucket - string - Cloudflare: Bucket name
     #   cloudflare_endpoint - string - Cloudflare: endpoint
@@ -1027,6 +1028,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params[:backblaze_b2_bucket] and !params[:backblaze_b2_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params[:backblaze_b2_s3_endpoint] and !params[:backblaze_b2_s3_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: buffer_uploads must be an String") if params[:buffer_uploads] and !params[:buffer_uploads].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
@@ -1130,7 +1132,7 @@ module Files
     #   azure_files_storage_share_name - string - Azure Files:  Storage Share name
     #   backblaze_b2_bucket - string - Backblaze B2 Cloud Storage: Bucket name
     #   backblaze_b2_s3_endpoint - string - Backblaze B2 Cloud Storage: S3 Endpoint
-    #   buffer_uploads_always - boolean - If true, uploads to this server will be uploaded first to Files.com before being sent to the remote server. This can improve performance in certain access patterns, such as high-latency connections.  It will cause data to be temporarily stored in Files.com.
+    #   buffer_uploads - string - If set to always, uploads to this server will be uploaded first to Files.com before being sent to the remote server. This can improve performance in certain access patterns, such as high-latency connections.  It will cause data to be temporarily stored in Files.com. If set to auto, we will perform this optimization if we believe it to be a benefit in a given situation.
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   cloudflare_bucket - string - Cloudflare: Bucket name
     #   cloudflare_endpoint - string - Cloudflare: endpoint
@@ -1198,6 +1200,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params[:backblaze_b2_bucket] and !params[:backblaze_b2_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params[:backblaze_b2_s3_endpoint] and !params[:backblaze_b2_s3_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: buffer_uploads must be an String") if params[:buffer_uploads] and !params[:buffer_uploads].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
