@@ -63,6 +63,15 @@ module Files
       @attributes[:name] = value
     end
 
+    # string - Internal description for your reference
+    def description
+      @attributes[:description]
+    end
+
+    def description=(value)
+      @attributes[:description] = value
+    end
+
     # int64 - Port for remote server.  Not needed for S3.
     def port
       @attributes[:port]
@@ -753,6 +762,7 @@ module Files
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   cloudflare_bucket - string - Cloudflare: Bucket name
     #   cloudflare_endpoint - string - Cloudflare: endpoint
+    #   description - string - Internal description for your reference
     #   dropbox_teams - boolean - Dropbox: If true, list Team folders in root?
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   filebase_access_key - string - Filebase: Access Key.
@@ -822,6 +832,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
@@ -967,6 +978,7 @@ module Files
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   cloudflare_bucket - string - Cloudflare: Bucket name
     #   cloudflare_endpoint - string - Cloudflare: endpoint
+    #   description - string - Internal description for your reference
     #   dropbox_teams - boolean - Dropbox: If true, list Team folders in root?
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   filebase_access_key - string - Filebase: Access Key.
@@ -1032,6 +1044,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
@@ -1136,6 +1149,7 @@ module Files
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   cloudflare_bucket - string - Cloudflare: Bucket name
     #   cloudflare_endpoint - string - Cloudflare: endpoint
+    #   description - string - Internal description for your reference
     #   dropbox_teams - boolean - Dropbox: If true, list Team folders in root?
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   filebase_access_key - string - Filebase: Access Key.
@@ -1204,6 +1218,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)

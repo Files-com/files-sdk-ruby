@@ -589,6 +589,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`AlreadyCompletedError`|  `ProcessingFailureError` |
 |`AutomationCannotBeRunManuallyError`|  `ProcessingFailureError` |
 |`BehaviorNotAllowedOnRemoteServerError`|  `ProcessingFailureError` |
+|`BufferedUploadDisabledForThisDestinationError`|  `ProcessingFailureError` |
 |`BundleOnlyAllowsPreviewsError`|  `ProcessingFailureError` |
 |`BundleOperationRequiresSubfolderError`|  `ProcessingFailureError` |
 |`CouldNotCreateParentError`|  `ProcessingFailureError` |
