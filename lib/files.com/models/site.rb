@@ -844,6 +844,11 @@ module Files
       @attributes[:welcome_custom_text]
     end
 
+    # string - Custom footer text for system-generated emails. Supports standard strftime date/time patterns like %Y (4-digit year), %m (month), %d (day).
+    def email_footer_custom_text
+      @attributes[:email_footer_custom_text]
+    end
+
     # email - Include this email in welcome emails if enabled
     def welcome_email_cc
       @attributes[:welcome_email_cc]
@@ -1010,6 +1015,7 @@ module Files
     #   site_public_footer - string - Custom site footer text for public pages
     #   login_help_text - string - Login help text
     #   use_dedicated_ips_for_smtp - boolean - If using custom SMTP, should we use dedicated IPs to deliver emails?
+    #   email_footer_custom_text - string - Custom footer text for system-generated emails. Supports standard strftime date/time patterns like %Y (4-digit year), %m (month), %d (day).
     #   smtp_address - string - SMTP server hostname or IP
     #   smtp_authentication - string - SMTP server authentication type
     #   smtp_from - string - From address to use when mailing through custom SMTP
@@ -1102,6 +1108,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: site_public_header must be an String") if params[:site_public_header] and !params[:site_public_header].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: site_public_footer must be an String") if params[:site_public_footer] and !params[:site_public_footer].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: login_help_text must be an String") if params[:login_help_text] and !params[:login_help_text].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: email_footer_custom_text must be an String") if params[:email_footer_custom_text] and !params[:email_footer_custom_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_address must be an String") if params[:smtp_address] and !params[:smtp_address].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_authentication must be an String") if params[:smtp_authentication] and !params[:smtp_authentication].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_from must be an String") if params[:smtp_from] and !params[:smtp_from].is_a?(String)
