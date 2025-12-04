@@ -432,6 +432,15 @@ module Files
       @attributes[:files_agent_version] = value
     end
 
+    # int64 - Route traffic to outbound on a files-agent
+    def outbound_agent_id
+      @attributes[:outbound_agent_id]
+    end
+
+    def outbound_agent_id=(value)
+      @attributes[:outbound_agent_id] = value
+    end
+
     # string - Filebase: Bucket name
     def filebase_bucket
       @attributes[:filebase_bucket]
@@ -770,6 +779,7 @@ module Files
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
+    #   outbound_agent_id - int64 - Route traffic to outbound on a files-agent
     #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
     #   google_cloud_storage_project_id - string - Google Cloud Storage: Project ID
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
@@ -838,6 +848,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: outbound_agent_id must be an Integer") if params[:outbound_agent_id] and !params[:outbound_agent_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
@@ -986,6 +997,7 @@ module Files
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
+    #   outbound_agent_id - int64 - Route traffic to outbound on a files-agent
     #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
     #   google_cloud_storage_project_id - string - Google Cloud Storage: Project ID
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
@@ -1050,6 +1062,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: outbound_agent_id must be an Integer") if params[:outbound_agent_id] and !params[:outbound_agent_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
@@ -1157,6 +1170,7 @@ module Files
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
+    #   outbound_agent_id - int64 - Route traffic to outbound on a files-agent
     #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
     #   google_cloud_storage_project_id - string - Google Cloud Storage: Project ID
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
@@ -1224,6 +1238,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: outbound_agent_id must be an Integer") if params[:outbound_agent_id] and !params[:outbound_agent_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
