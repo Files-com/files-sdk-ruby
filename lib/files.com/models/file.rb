@@ -638,13 +638,13 @@ module Files
       @attributes[:created_by_remote_server_id] = value
     end
 
-    # int64 - ID of the Remote Server Sync that created the file/folder
-    def created_by_remote_server_sync_id
-      @attributes[:created_by_remote_server_sync_id]
+    # int64 - ID of the Sync that created the file/folder
+    def created_by_sync_id
+      @attributes[:created_by_sync_id]
     end
 
-    def created_by_remote_server_sync_id=(value)
-      @attributes[:created_by_remote_server_sync_id] = value
+    def created_by_sync_id=(value)
+      @attributes[:created_by_sync_id] = value
     end
 
     # object - Custom metadata map of keys and values. Limited to 32 keys, 256 characters per key and 1024 characters per value.
@@ -733,13 +733,13 @@ module Files
       @attributes[:last_modified_by_remote_server_id] = value
     end
 
-    # int64 - ID of the Remote Server Sync that last modified the file/folder
-    def last_modified_by_remote_server_sync_id
-      @attributes[:last_modified_by_remote_server_sync_id]
+    # int64 - ID of the Sync that last modified the file/folder
+    def last_modified_by_sync_id
+      @attributes[:last_modified_by_sync_id]
     end
 
-    def last_modified_by_remote_server_sync_id=(value)
-      @attributes[:last_modified_by_remote_server_sync_id] = value
+    def last_modified_by_sync_id=(value)
+      @attributes[:last_modified_by_sync_id] = value
     end
 
     # date-time - File last modified date/time, according to the server.  This is the timestamp of the last Files.com operation of the file, regardless of what modified timestamp was sent.
