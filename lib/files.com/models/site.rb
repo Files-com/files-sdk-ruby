@@ -744,11 +744,6 @@ module Files
       @attributes[:smtp_username]
     end
 
-    # double - Session expiry in hours
-    def session_expiry
-      @attributes[:session_expiry]
-    end
-
     # int64 - Session expiry in minutes
     def session_expiry_minutes
       @attributes[:session_expiry_minutes]
@@ -934,7 +929,7 @@ module Files
     #   legacy_checksums_mode - boolean - Use legacy checksums mode?
     #   migrate_remote_server_sync_to_sync - boolean - If true, we will migrate all remote server syncs to the new Sync model.
     #   as2_message_retention_days - int64 - Number of days to retain AS2 messages (incoming and outgoing).
-    #   session_expiry - double - Session expiry in hours
+    #   session_expiry_minutes - int64 - Session expiry in minutes
     #   ssl_required - boolean - Is SSL required?  Disabling this is insecure.
     #   sftp_insecure_ciphers - boolean - If true, we will allow weak and known insecure ciphers to be used for SFTP connections.  Enabling this setting severely weakens the security of your site and it is not recommend, except as a last resort for compatibility.
     #   sftp_insecure_diffie_hellman - boolean - If true, we will allow weak Diffie Hellman parameters to be used within ciphers for SFTP that are otherwise on our secure list.  This has the effect of making the cipher weaker than our normal threshold for security, but is required to support certain legacy or broken SSH and MFT clients.  Enabling this weakens security, but not nearly as much as enabling the full `sftp_insecure_ciphers` option.
@@ -1056,7 +1051,6 @@ module Files
     #   ldap_password_change - string - New LDAP password.
     #   ldap_password_change_confirmation - string - Confirm new LDAP password.
     #   smtp_password - string - Password for SMTP server.
-    #   session_expiry_minutes - int64 - Session expiry in minutes
     def self.update(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subdomain must be an String") if params[:subdomain] and !params[:subdomain].is_a?(String)
@@ -1078,7 +1072,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: left_navigation_visibility must be an Hash") if params[:left_navigation_visibility] and !params[:left_navigation_visibility].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: additional_text_file_types must be an Array") if params[:additional_text_file_types] and !params[:additional_text_file_types].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: as2_message_retention_days must be an Integer") if params[:as2_message_retention_days] and !params[:as2_message_retention_days].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: session_expiry must be an Float") if params[:session_expiry] and !params[:session_expiry].is_a?(Float)
+      raise InvalidParameterError.new("Bad parameter: session_expiry_minutes must be an Integer") if params[:session_expiry_minutes] and !params[:session_expiry_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params[:user_lockout_tries] and !params[:user_lockout_tries].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_within must be an Integer") if params[:user_lockout_within] and !params[:user_lockout_within].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_lock_period must be an Integer") if params[:user_lockout_lock_period] and !params[:user_lockout_lock_period].is_a?(Integer)
@@ -1131,7 +1125,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ldap_password_change must be an String") if params[:ldap_password_change] and !params[:ldap_password_change].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_password_change_confirmation must be an String") if params[:ldap_password_change_confirmation] and !params[:ldap_password_change_confirmation].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_password must be an String") if params[:smtp_password] and !params[:smtp_password].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: session_expiry_minutes must be an Integer") if params[:session_expiry_minutes] and !params[:session_expiry_minutes].is_a?(Integer)
 
       response, options = Api.send_request("/site", :patch, params, options)
       Site.new(response.data, options)
