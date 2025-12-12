@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Your GPG key ID.
+    # int64 - GPG key ID.
     def id
       @attributes[:id]
     end
@@ -18,7 +18,7 @@ module Files
       @attributes[:id] = value
     end
 
-    # date-time - Your GPG key expiration date.
+    # date-time - GPG key expiration date.
     def expires_at
       @attributes[:expires_at]
     end
@@ -27,7 +27,7 @@ module Files
       @attributes[:expires_at] = value
     end
 
-    # string - Your GPG key name.
+    # string - GPG key name.
     def name
       @attributes[:name]
     end
@@ -63,7 +63,7 @@ module Files
       @attributes[:user_id] = value
     end
 
-    # string - MD5 hash of your GPG public key
+    # string - MD5 hash of the GPG public key
     def public_key_md5
       @attributes[:public_key_md5]
     end
@@ -72,7 +72,7 @@ module Files
       @attributes[:public_key_md5] = value
     end
 
-    # string - MD5 hash of your GPG private key.
+    # string - MD5 hash of the GPG private key.
     def private_key_md5
       @attributes[:private_key_md5]
     end
@@ -81,7 +81,7 @@ module Files
       @attributes[:private_key_md5] = value
     end
 
-    # string - Your GPG public key
+    # string - GPG public key
     def generated_public_key
       @attributes[:generated_public_key]
     end
@@ -90,7 +90,7 @@ module Files
       @attributes[:generated_public_key] = value
     end
 
-    # string - Your GPG private key.
+    # string - GPG private key.
     def generated_private_key
       @attributes[:generated_private_key]
     end
@@ -99,7 +99,7 @@ module Files
       @attributes[:generated_private_key] = value
     end
 
-    # string - Your GPG private key password. Only required for password protected keys.
+    # string - GPG private key password. Only required for password protected keys.
     def private_key_password_md5
       @attributes[:private_key_password_md5]
     end
@@ -108,7 +108,7 @@ module Files
       @attributes[:private_key_password_md5] = value
     end
 
-    # string - MD5 hash of your GPG public key
+    # string - The GPG public key
     def public_key
       @attributes[:public_key]
     end
@@ -117,7 +117,7 @@ module Files
       @attributes[:public_key] = value
     end
 
-    # string - MD5 hash of your GPG private key.
+    # string - The GPG private key
     def private_key
       @attributes[:private_key]
     end
@@ -126,7 +126,7 @@ module Files
       @attributes[:private_key] = value
     end
 
-    # string - Your GPG private key password. Only required for password protected keys.
+    # string - The GPG private key password
     def private_key_password
       @attributes[:private_key_password]
     end
@@ -173,10 +173,10 @@ module Files
 
     # Parameters:
     #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
-    #   public_key - string - MD5 hash of your GPG public key
-    #   private_key - string - MD5 hash of your GPG private key.
-    #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
-    #   name - string - Your GPG key name.
+    #   public_key - string - The GPG public key
+    #   private_key - string - The GPG private key
+    #   private_key_password - string - The GPG private key password
+    #   name - string - GPG key name.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -257,10 +257,10 @@ module Files
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
-    #   public_key - string - MD5 hash of your GPG public key
-    #   private_key - string - MD5 hash of your GPG private key.
-    #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
-    #   name (required) - string - Your GPG key name.
+    #   public_key - string - The GPG public key
+    #   private_key - string - The GPG private key
+    #   private_key_password - string - The GPG private key password
+    #   name (required) - string - GPG key name.
     #   generate_expires_at - string - Expiration date of the key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
     #   generate_keypair - boolean - If true, generate a new GPG key pair. Can not be used with `public_key`/`private_key`
     #   generate_full_name - string - Full name of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
@@ -283,10 +283,10 @@ module Files
 
     # Parameters:
     #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
-    #   public_key - string - MD5 hash of your GPG public key
-    #   private_key - string - MD5 hash of your GPG private key.
-    #   private_key_password - string - Your GPG private key password. Only required for password protected keys.
-    #   name - string - Your GPG key name.
+    #   public_key - string - The GPG public key
+    #   private_key - string - The GPG private key
+    #   private_key_password - string - The GPG private key password
+    #   name - string - GPG key name.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
