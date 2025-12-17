@@ -72,7 +72,7 @@ module Files
       @attributes[:description] = value
     end
 
-    # int64 - Port for remote server.  Not needed for S3.
+    # int64 - Port for remote server.
     def port
       @attributes[:port]
     end
@@ -115,6 +115,15 @@ module Files
 
     def pinned_region=(value)
       @attributes[:pinned_region] = value
+    end
+
+    # int64 - ID of Remote Server Credential, if applicable.
+    def remote_server_credential_id
+      @attributes[:remote_server_credential_id]
+    end
+
+    def remote_server_credential_id=(value)
+      @attributes[:remote_server_credential_id] = value
     end
 
     # string - S3 bucket name
@@ -180,7 +189,7 @@ module Files
       @attributes[:ssl] = value
     end
 
-    # string - Remote server username.  Not needed for S3 buckets.
+    # string - Remote server username.
     def username
       @attributes[:username]
     end
@@ -791,7 +800,8 @@ module Files
     #   name - string - Internal name for your reference
     #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
-    #   port - int64 - Port for remote server.  Not needed for S3.
+    #   port - int64 - Port for remote server.
+    #   remote_server_credential_id - int64 - ID of Remote Server Credential, if applicable.
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
     #   s3_compatible_bucket - string - S3-compatible: Bucket name
@@ -802,7 +812,7 @@ module Files
     #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
-    #   username - string - Remote server username.  Not needed for S3 buckets.
+    #   username - string - Remote server username.
     #   wasabi_access_key - string - Wasabi: Access Key.
     #   wasabi_bucket - string - Wasabi: Bucket name
     #   wasabi_region - string - Wasabi: Region
@@ -860,6 +870,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if params[:remote_server_credential_id] and !params[:remote_server_credential_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
@@ -1009,7 +1020,8 @@ module Files
     #   name - string - Internal name for your reference
     #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
-    #   port - int64 - Port for remote server.  Not needed for S3.
+    #   port - int64 - Port for remote server.
+    #   remote_server_credential_id - int64 - ID of Remote Server Credential, if applicable.
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
     #   s3_compatible_bucket - string - S3-compatible: Bucket name
@@ -1020,7 +1032,7 @@ module Files
     #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
-    #   username - string - Remote server username.  Not needed for S3 buckets.
+    #   username - string - Remote server username.
     #   wasabi_access_key - string - Wasabi: Access Key.
     #   wasabi_bucket - string - Wasabi: Bucket name
     #   wasabi_region - string - Wasabi: Region
@@ -1074,6 +1086,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if params[:remote_server_credential_id] and !params[:remote_server_credential_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
@@ -1182,7 +1195,8 @@ module Files
     #   name - string - Internal name for your reference
     #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
-    #   port - int64 - Port for remote server.  Not needed for S3.
+    #   port - int64 - Port for remote server.
+    #   remote_server_credential_id - int64 - ID of Remote Server Credential, if applicable.
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
     #   s3_compatible_bucket - string - S3-compatible: Bucket name
@@ -1193,7 +1207,7 @@ module Files
     #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
     #   ssl - string - Should we require SSL?
-    #   username - string - Remote server username.  Not needed for S3 buckets.
+    #   username - string - Remote server username.
     #   wasabi_access_key - string - Wasabi: Access Key.
     #   wasabi_bucket - string - Wasabi: Bucket name
     #   wasabi_region - string - Wasabi: Region
@@ -1250,6 +1264,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if params[:remote_server_credential_id] and !params[:remote_server_credential_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
