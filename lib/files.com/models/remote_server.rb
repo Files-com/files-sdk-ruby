@@ -441,6 +441,24 @@ module Files
       @attributes[:files_agent_version] = value
     end
 
+    # boolean - If true, the Files Agent is up to date.
+    def files_agent_up_to_date
+      @attributes[:files_agent_up_to_date]
+    end
+
+    def files_agent_up_to_date=(value)
+      @attributes[:files_agent_up_to_date] = value
+    end
+
+    # string - Latest available Files Agent version
+    def files_agent_latest_version
+      @attributes[:files_agent_latest_version]
+    end
+
+    def files_agent_latest_version=(value)
+      @attributes[:files_agent_latest_version] = value
+    end
+
     # int64 - Route traffic to outbound on a files-agent
     def outbound_agent_id
       @attributes[:outbound_agent_id]
@@ -709,6 +727,17 @@ module Files
 
     def wasabi_secret_key=(value)
       @attributes[:wasabi_secret_key] = value
+    end
+
+    # Push update to Files Agent
+    def agent_push_update(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/remote_servers/#{@attributes[:id]}/agent_push_update", :post, params, @options)
     end
 
     # Post local changes, check in, and download configuration file (used by some Remote Server integrations, such as the Files.com Agent)
@@ -1104,6 +1133,17 @@ module Files
 
       response, options = Api.send_request("/remote_servers", :post, params, options)
       RemoteServer.new(response.data, options)
+    end
+
+    # Push update to Files Agent
+    def self.agent_push_update(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      response, options = Api.send_request("/remote_servers/#{params[:id]}/agent_push_update", :post, params, options)
+      AgentPushUpdate.new(response.data, options)
     end
 
     # Post local changes, check in, and download configuration file (used by some Remote Server integrations, such as the Files.com Agent)
