@@ -462,6 +462,7 @@ module Files
     #   start_access_on_date - string - Date when share will start to be accessible. If `nil` access granted right after create.
     #   skip_email - boolean - BundleRegistrations can be saved without providing email?
     #   skip_name - boolean - BundleRegistrations can be saved without providing name?
+    #   user_id - int64 - The owning user id. Only site admins can set this.
     #   watermark_attachment_delete - boolean - If true, will delete the file stored in watermark_attachment
     #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
     def update(params = {})
@@ -483,6 +484,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path_template_time_zone must be an String") if params[:path_template_time_zone] and !params[:path_template_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if params[:start_access_on_date] and !params[:start_access_on_date].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/bundles/#{@attributes[:id]}", :patch, params, @options)
@@ -655,6 +657,7 @@ module Files
     #   start_access_on_date - string - Date when share will start to be accessible. If `nil` access granted right after create.
     #   skip_email - boolean - BundleRegistrations can be saved without providing email?
     #   skip_name - boolean - BundleRegistrations can be saved without providing name?
+    #   user_id - int64 - The owning user id. Only site admins can set this.
     #   watermark_attachment_delete - boolean - If true, will delete the file stored in watermark_attachment
     #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
     def self.update(id, params = {}, options = {})
@@ -675,6 +678,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path_template_time_zone must be an String") if params[:path_template_time_zone] and !params[:path_template_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if params[:start_access_on_date] and !params[:start_access_on_date].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/bundles/#{params[:id]}", :patch, params, options)
