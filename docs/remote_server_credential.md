@@ -92,7 +92,6 @@ Files::RemoteServerCredential.find(id)
 
 ```
 Files::RemoteServerCredential.create(
-  workspace_id: 0, 
   name: "My Credential", 
   description: "More information or notes about this credential.", 
   server_type: "s3", 
@@ -105,13 +104,13 @@ Files::RemoteServerCredential.create(
   linode_access_key: "example", 
   s3_compatible_access_key: "example", 
   username: "user", 
-  wasabi_access_key: "example"
+  wasabi_access_key: "example", 
+  workspace_id: 0
 )
 ```
 
 ### Parameters
 
-* `workspace_id` (int64): Workspace ID (0 for default workspace)
 * `name` (string): Internal name for your reference
 * `description` (string): Internal description for your reference
 * `server_type` (string): Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
@@ -142,6 +141,7 @@ Files::RemoteServerCredential.create(
 * `linode_secret_key` (string): Linode: Secret Key
 * `s3_compatible_secret_key` (string): S3-compatible: Secret Key
 * `wasabi_secret_key` (string): Wasabi: Secret Key
+* `workspace_id` (int64): Workspace ID (0 for default workspace)
 
 
 ---
@@ -150,7 +150,6 @@ Files::RemoteServerCredential.create(
 
 ```
 Files::RemoteServerCredential.update(id, 
-  workspace_id: 0, 
   name: "My Credential", 
   description: "More information or notes about this credential.", 
   server_type: "s3", 
@@ -170,7 +169,6 @@ Files::RemoteServerCredential.update(id,
 ### Parameters
 
 * `id` (int64): Required - Remote Server Credential ID.
-* `workspace_id` (int64): Workspace ID (0 for default workspace)
 * `name` (string): Internal name for your reference
 * `description` (string): Internal description for your reference
 * `server_type` (string): Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
@@ -224,7 +222,6 @@ Files::RemoteServerCredential.delete(id)
 remote_server_credential = Files::RemoteServerCredential.find(id)
 
 remote_server_credential.update(
-  workspace_id: 0,
   name: "My Credential",
   description: "More information or notes about this credential.",
   server_type: "s3",
@@ -244,7 +241,6 @@ remote_server_credential.update(
 ### Parameters
 
 * `id` (int64): Required - Remote Server Credential ID.
-* `workspace_id` (int64): Workspace ID (0 for default workspace)
 * `name` (string): Internal name for your reference
 * `description` (string): Internal description for your reference
 * `server_type` (string): Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.

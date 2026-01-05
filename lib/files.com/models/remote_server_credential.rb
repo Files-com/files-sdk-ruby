@@ -298,7 +298,6 @@ module Files
     end
 
     # Parameters:
-    #   workspace_id - int64 - Workspace ID (0 for default workspace)
     #   name - string - Internal name for your reference
     #   description - string - Internal description for your reference
     #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
@@ -334,7 +333,6 @@ module Files
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
@@ -435,7 +433,6 @@ module Files
     end
 
     # Parameters:
-    #   workspace_id - int64 - Workspace ID (0 for default workspace)
     #   name - string - Internal name for your reference
     #   description - string - Internal description for your reference
     #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
@@ -466,8 +463,8 @@ module Files
     #   linode_secret_key - string - Linode: Secret Key
     #   s3_compatible_secret_key - string - S3-compatible: Secret Key
     #   wasabi_secret_key - string - Wasabi: Secret Key
+    #   workspace_id - int64 - Workspace ID (0 for default workspace)
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
@@ -498,13 +495,13 @@ module Files
       raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
 
       response, options = Api.send_request("/remote_server_credentials", :post, params, options)
       RemoteServerCredential.new(response.data, options)
     end
 
     # Parameters:
-    #   workspace_id - int64 - Workspace ID (0 for default workspace)
     #   name - string - Internal name for your reference
     #   description - string - Internal description for your reference
     #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
@@ -539,7 +536,6 @@ module Files
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)

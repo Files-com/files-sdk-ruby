@@ -182,7 +182,6 @@ module Files
 
     # Parameters:
     #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
-    #   workspace_id - int64 - Workspace ID (0 for default workspace).
     #   public_key - string - The GPG public key
     #   private_key - string - The GPG private key
     #   private_key_password - string - The GPG private key password
@@ -193,7 +192,6 @@ module Files
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
@@ -278,11 +276,11 @@ module Files
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
-    #   workspace_id - int64 - Workspace ID (0 for default workspace).
     #   public_key - string - The GPG public key
     #   private_key - string - The GPG private key
     #   private_key_password - string - The GPG private key password
     #   name (required) - string - GPG key name.
+    #   workspace_id - int64 - Workspace ID (0 for default workspace).
     #   generate_expires_at - string - Expiration date of the key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
     #   generate_keypair - boolean - If true, generate a new GPG key pair. Can not be used with `public_key`/`private_key`
     #   generate_full_name - string - Full name of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
@@ -290,11 +288,11 @@ module Files
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: generate_expires_at must be an String") if params[:generate_expires_at] and !params[:generate_expires_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: generate_full_name must be an String") if params[:generate_full_name] and !params[:generate_full_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: generate_email must be an String") if params[:generate_email] and !params[:generate_email].is_a?(String)
@@ -306,7 +304,6 @@ module Files
 
     # Parameters:
     #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
-    #   workspace_id - int64 - Workspace ID (0 for default workspace).
     #   public_key - string - The GPG public key
     #   private_key - string - The GPG private key
     #   private_key_password - string - The GPG private key password
@@ -316,7 +313,6 @@ module Files
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)

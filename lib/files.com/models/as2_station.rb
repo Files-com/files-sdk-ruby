@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # int64 - ID of the Workspace associated with this AS2 Station.
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
     # string - The station's formal AS2 name.
     def name
       @attributes[:name]
@@ -154,7 +163,7 @@ module Files
     end
 
     # Parameters:
-    #   name - string - AS2 Name
+    #   name - string - The station's formal AS2 name.
     #   public_certificate - string
     #   private_key - string
     #   private_key_password - string
@@ -201,11 +210,13 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
       List.new(As2Station, params) do
         Api.send_request("/as2_stations", :get, params, options)
@@ -233,12 +244,14 @@ module Files
     end
 
     # Parameters:
-    #   name (required) - string - AS2 Name
+    #   name (required) - string - The station's formal AS2 name.
+    #   workspace_id - int64 - ID of the Workspace associated with this AS2 Station.
     #   public_certificate (required) - string
     #   private_key (required) - string
     #   private_key_password - string
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
@@ -251,7 +264,7 @@ module Files
     end
 
     # Parameters:
-    #   name - string - AS2 Name
+    #   name - string - The station's formal AS2 name.
     #   public_certificate - string
     #   private_key - string
     #   private_key_password - string
