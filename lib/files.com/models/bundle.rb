@@ -329,6 +329,15 @@ module Files
       @attributes[:watermark_value] = value
     end
 
+    # boolean - If true, require_share_recipient bundles will send a one-time password to the recipient when they register. Cannot be enabled if the bundle has a password set.
+    def send_one_time_password_to_recipient_at_registration
+      @attributes[:send_one_time_password_to_recipient_at_registration]
+    end
+
+    def send_one_time_password_to_recipient_at_registration=(value)
+      @attributes[:send_one_time_password_to_recipient_at_registration] = value
+    end
+
     # boolean - Does this bundle have an associated inbox?
     def has_inbox
       @attributes[:has_inbox]
@@ -457,6 +466,7 @@ module Files
     #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    #   send_one_time_password_to_recipient_at_registration - boolean - If true, require_share_recipient bundles will send a one-time password to the recipient when they register. Cannot be enabled if the bundle has a password set.
     #   send_email_receipt_to_uploader - boolean - Send delivery receipt to the uploader. Note: For writable share only
     #   skip_company - boolean - BundleRegistrations can be saved without providing company?
     #   start_access_on_date - string - Date when share will start to be accessible. If `nil` access granted right after create.
@@ -584,6 +594,7 @@ module Files
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   inbox_id - int64 - ID of the associated inbox, if available.
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    #   send_one_time_password_to_recipient_at_registration - boolean - If true, require_share_recipient bundles will send a one-time password to the recipient when they register. Cannot be enabled if the bundle has a password set.
     #   send_email_receipt_to_uploader - boolean - Send delivery receipt to the uploader. Note: For writable share only
     #   skip_email - boolean - BundleRegistrations can be saved without providing email?
     #   skip_name - boolean - BundleRegistrations can be saved without providing name?
@@ -652,6 +663,7 @@ module Files
     #   permissions - string - Permissions that apply to Folders in this Share Link.
     #   require_registration - boolean - Show a registration page that captures the downloader's name and email address?
     #   require_share_recipient - boolean - Only allow access to recipients who have explicitly received the share via an email sent through the Files.com UI?
+    #   send_one_time_password_to_recipient_at_registration - boolean - If true, require_share_recipient bundles will send a one-time password to the recipient when they register. Cannot be enabled if the bundle has a password set.
     #   send_email_receipt_to_uploader - boolean - Send delivery receipt to the uploader. Note: For writable share only
     #   skip_company - boolean - BundleRegistrations can be saved without providing company?
     #   start_access_on_date - string - Date when share will start to be accessible. If `nil` access granted right after create.
