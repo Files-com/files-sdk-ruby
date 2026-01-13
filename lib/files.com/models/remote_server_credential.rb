@@ -81,24 +81,6 @@ module Files
       @attributes[:wasabi_access_key] = value
     end
 
-    # string - Azure Blob Storage: Account name
-    def azure_blob_storage_account
-      @attributes[:azure_blob_storage_account]
-    end
-
-    def azure_blob_storage_account=(value)
-      @attributes[:azure_blob_storage_account] = value
-    end
-
-    # string - Azure Files: Storage Account name
-    def azure_files_storage_account
-      @attributes[:azure_files_storage_account]
-    end
-
-    def azure_files_storage_account=(value)
-      @attributes[:azure_files_storage_account] = value
-    end
-
     # string - S3-compatible: Access Key
     def s3_compatible_access_key
       @attributes[:s3_compatible_access_key]
@@ -302,8 +284,6 @@ module Files
     #   description - string - Internal description for your reference
     #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
     #   aws_access_key - string - AWS Access Key.
-    #   azure_blob_storage_account - string - Azure Blob Storage: Account name
-    #   azure_files_storage_account - string - Azure Files: Storage Account name
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   filebase_access_key - string - Filebase: Access Key.
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
@@ -337,8 +317,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
@@ -437,8 +415,6 @@ module Files
     #   description - string - Internal description for your reference
     #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
     #   aws_access_key - string - AWS Access Key.
-    #   azure_blob_storage_account - string - Azure Blob Storage: Account name
-    #   azure_files_storage_account - string - Azure Files: Storage Account name
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   filebase_access_key - string - Filebase: Access Key.
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
@@ -469,8 +445,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
@@ -506,8 +480,6 @@ module Files
     #   description - string - Internal description for your reference
     #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
     #   aws_access_key - string - AWS Access Key.
-    #   azure_blob_storage_account - string - Azure Blob Storage: Account name
-    #   azure_files_storage_account - string - Azure Files: Storage Account name
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   filebase_access_key - string - Filebase: Access Key.
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
@@ -540,8 +512,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
