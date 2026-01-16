@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Remote server ID
+    # int64 - Remote Server ID
     def id
       @attributes[:id]
     end
@@ -18,7 +18,7 @@ module Files
       @attributes[:id] = value
     end
 
-    # boolean - If true, this server has been disabled due to failures.  Make any change or set disabled to false to clear this flag.
+    # boolean - If true, this Remote Server has been disabled due to failures.  Make any change or set disabled to false to clear this flag.
     def disabled
       @attributes[:disabled]
     end
@@ -27,7 +27,7 @@ module Files
       @attributes[:disabled] = value
     end
 
-    # string - Type of authentication method
+    # string - Type of authentication method to use
     def authentication_method
       @attributes[:authentication_method]
     end
@@ -52,6 +52,15 @@ module Files
 
     def remote_home_path=(value)
       @attributes[:remote_home_path] = value
+    end
+
+    # string - Upload staging path.  Applies to SFTP only.  If a path is provided here, files will first be uploaded to this path on the remote folder and the moved into the final correct path via an SFTP move command.  This is required by some remote MFT systems to emulate atomic uploads, which are otherwise not supoprted by SFTP.
+    def upload_staging_path
+      @attributes[:upload_staging_path]
+    end
+
+    def upload_staging_path=(value)
+      @attributes[:upload_staging_path] = value
     end
 
     # string - Internal name for your reference
@@ -848,6 +857,7 @@ module Files
     #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
     #   port - int64 - Port for remote server.
+    #   upload_staging_path - string - Upload staging path.  Applies to SFTP only.  If a path is provided here, files will first be uploaded to this path on the remote folder and the moved into the final correct path via an SFTP move command.  This is required by some remote MFT systems to emulate atomic uploads, which are otherwise not supoprted by SFTP.
     #   remote_server_credential_id - int64 - ID of Remote Server Credential, if applicable.
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
@@ -917,6 +927,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: upload_staging_path must be an String") if params[:upload_staging_path] and !params[:upload_staging_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if params[:remote_server_credential_id] and !params[:remote_server_credential_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
@@ -1068,6 +1079,7 @@ module Files
     #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
     #   port - int64 - Port for remote server.
+    #   upload_staging_path - string - Upload staging path.  Applies to SFTP only.  If a path is provided here, files will first be uploaded to this path on the remote folder and the moved into the final correct path via an SFTP move command.  This is required by some remote MFT systems to emulate atomic uploads, which are otherwise not supoprted by SFTP.
     #   remote_server_credential_id - int64 - ID of Remote Server Credential, if applicable.
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
@@ -1134,6 +1146,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: upload_staging_path must be an String") if params[:upload_staging_path] and !params[:upload_staging_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if params[:remote_server_credential_id] and !params[:remote_server_credential_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
@@ -1256,6 +1269,7 @@ module Files
     #   one_drive_account_type - string - OneDrive: Either personal or business_other account types
     #   pin_to_site_region - boolean - If true, we will ensure that all communications with this remote server are made through the primary region of the site.  This setting can also be overridden by a site-wide setting which will force it to true.
     #   port - int64 - Port for remote server.
+    #   upload_staging_path - string - Upload staging path.  Applies to SFTP only.  If a path is provided here, files will first be uploaded to this path on the remote folder and the moved into the final correct path via an SFTP move command.  This is required by some remote MFT systems to emulate atomic uploads, which are otherwise not supoprted by SFTP.
     #   remote_server_credential_id - int64 - ID of Remote Server Credential, if applicable.
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
@@ -1324,6 +1338,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: upload_staging_path must be an String") if params[:upload_staging_path] and !params[:upload_staging_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if params[:remote_server_credential_id] and !params[:remote_server_credential_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
