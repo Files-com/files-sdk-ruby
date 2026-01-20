@@ -74,6 +74,7 @@ module Files
   class InvalidUploadOffsetError < BadRequestError; end
   class InvalidUploadPartGapError < BadRequestError; end
   class InvalidUploadPartSizeError < BadRequestError; end
+  class InvalidWorkspaceIdHeaderError < BadRequestError; end
   class MethodNotAllowedError < BadRequestError; end
   class MultipleSortParamsNotAllowedError < BadRequestError; end
   class NoValidInputParamsError < BadRequestError; end

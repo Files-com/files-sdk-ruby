@@ -498,6 +498,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`InvalidUploadOffsetError`|  `BadRequestError` |
 |`InvalidUploadPartGapError`|  `BadRequestError` |
 |`InvalidUploadPartSizeError`|  `BadRequestError` |
+|`InvalidWorkspaceIdHeaderError`|  `BadRequestError` |
 |`MethodNotAllowedError`|  `BadRequestError` |
 |`MultipleSortParamsNotAllowedError`|  `BadRequestError` |
 |`NoValidInputParamsError`|  `BadRequestError` |
