@@ -592,6 +592,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`BufferedUploadDisabledForThisDestinationError`|  `ProcessingFailureError` |
 |`BundleOnlyAllowsPreviewsError`|  `ProcessingFailureError` |
 |`BundleOperationRequiresSubfolderError`|  `ProcessingFailureError` |
+|`ConfigurationLockedPathError`|  `ProcessingFailureError` |
 |`CouldNotCreateParentError`|  `ProcessingFailureError` |
 |`DestinationExistsError`|  `ProcessingFailureError` |
 |`DestinationFolderLimitedError`|  `ProcessingFailureError` |

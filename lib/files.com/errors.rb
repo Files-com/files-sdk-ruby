@@ -176,6 +176,7 @@ module Files
   class BufferedUploadDisabledForThisDestinationError < ProcessingFailureError; end
   class BundleOnlyAllowsPreviewsError < ProcessingFailureError; end
   class BundleOperationRequiresSubfolderError < ProcessingFailureError; end
+  class ConfigurationLockedPathError < ProcessingFailureError; end
   class CouldNotCreateParentError < ProcessingFailureError; end
   class DestinationExistsError < ProcessingFailureError; end
   class DestinationFolderLimitedError < ProcessingFailureError; end
