@@ -476,6 +476,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`CantMoveWithMultipleLocationsError`|  `BadRequestError` |
 |`DatetimeParseError`|  `BadRequestError` |
 |`DestinationSameError`|  `BadRequestError` |
+|`DestinationSiteMismatchError`|  `BadRequestError` |
 |`DoesNotSupportSortingError`|  `BadRequestError` |
 |`FolderMustNotBeAFileError`|  `BadRequestError` |
 |`FoldersNotAllowedError`|  `BadRequestError` |

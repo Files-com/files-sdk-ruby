@@ -52,6 +52,7 @@ module Files
   class CantMoveWithMultipleLocationsError < BadRequestError; end
   class DatetimeParseError < BadRequestError; end
   class DestinationSameError < BadRequestError; end
+  class DestinationSiteMismatchError < BadRequestError; end
   class DoesNotSupportSortingError < BadRequestError; end
   class FolderMustNotBeAFileError < BadRequestError; end
   class FoldersNotAllowedError < BadRequestError; end
