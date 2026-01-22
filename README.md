@@ -480,6 +480,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`DoesNotSupportSortingError`|  `BadRequestError` |
 |`FolderMustNotBeAFileError`|  `BadRequestError` |
 |`FoldersNotAllowedError`|  `BadRequestError` |
+|`InternalGeneralErrorError`|  `BadRequestError` |
 |`InvalidBodyError`|  `BadRequestError` |
 |`InvalidCursorError`|  `BadRequestError` |
 |`InvalidCursorTypeForSortError`|  `BadRequestError` |

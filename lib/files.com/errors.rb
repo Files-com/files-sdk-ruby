@@ -56,6 +56,7 @@ module Files
   class DoesNotSupportSortingError < BadRequestError; end
   class FolderMustNotBeAFileError < BadRequestError; end
   class FoldersNotAllowedError < BadRequestError; end
+  class InternalGeneralErrorError < BadRequestError; end
   class InvalidBodyError < BadRequestError; end
   class InvalidCursorError < BadRequestError; end
   class InvalidCursorTypeForSortError < BadRequestError; end
