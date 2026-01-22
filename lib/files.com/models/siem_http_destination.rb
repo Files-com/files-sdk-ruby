@@ -198,6 +198,24 @@ module Files
       @attributes[:datadog_api_key_masked] = value
     end
 
+    # boolean - Whether or not sending is enabled for action logs.
+    def action_send_enabled
+      @attributes[:action_send_enabled]
+    end
+
+    def action_send_enabled=(value)
+      @attributes[:action_send_enabled] = value
+    end
+
+    # int64 - Number of log entries sent for the lifetime of this destination.
+    def action_entries_sent
+      @attributes[:action_entries_sent]
+    end
+
+    def action_entries_sent=(value)
+      @attributes[:action_entries_sent] = value
+    end
+
     # boolean - Whether or not sending is enabled for sftp_action logs.
     def sftp_action_send_enabled
       @attributes[:sftp_action_send_enabled]
@@ -550,6 +568,7 @@ module Files
     #   solar_winds_token - string - Applicable only for destination type: solar_winds. Authentication token provided by Solar Winds.
     #   new_relic_api_key - string - Applicable only for destination type: new_relic. API key provided by New Relic.
     #   datadog_api_key - string - Applicable only for destination type: datadog. API key provided by Datadog.
+    #   action_send_enabled - boolean - Whether or not sending is enabled for action logs.
     #   sftp_action_send_enabled - boolean - Whether or not sending is enabled for sftp_action logs.
     #   ftp_action_send_enabled - boolean - Whether or not sending is enabled for ftp_action logs.
     #   web_dav_action_send_enabled - boolean - Whether or not sending is enabled for web_dav_action logs.
@@ -668,6 +687,7 @@ module Files
     #   solar_winds_token - string - Applicable only for destination type: solar_winds. Authentication token provided by Solar Winds.
     #   new_relic_api_key - string - Applicable only for destination type: new_relic. API key provided by New Relic.
     #   datadog_api_key - string - Applicable only for destination type: datadog. API key provided by Datadog.
+    #   action_send_enabled - boolean - Whether or not sending is enabled for action logs.
     #   sftp_action_send_enabled - boolean - Whether or not sending is enabled for sftp_action logs.
     #   ftp_action_send_enabled - boolean - Whether or not sending is enabled for ftp_action logs.
     #   web_dav_action_send_enabled - boolean - Whether or not sending is enabled for web_dav_action logs.
@@ -729,6 +749,7 @@ module Files
     #   solar_winds_token - string - Applicable only for destination type: solar_winds. Authentication token provided by Solar Winds.
     #   new_relic_api_key - string - Applicable only for destination type: new_relic. API key provided by New Relic.
     #   datadog_api_key - string - Applicable only for destination type: datadog. API key provided by Datadog.
+    #   action_send_enabled - boolean - Whether or not sending is enabled for action logs.
     #   sftp_action_send_enabled - boolean - Whether or not sending is enabled for sftp_action logs.
     #   ftp_action_send_enabled - boolean - Whether or not sending is enabled for ftp_action logs.
     #   web_dav_action_send_enabled - boolean - Whether or not sending is enabled for web_dav_action logs.
@@ -785,6 +806,7 @@ module Files
     #   solar_winds_token - string - Applicable only for destination type: solar_winds. Authentication token provided by Solar Winds.
     #   new_relic_api_key - string - Applicable only for destination type: new_relic. API key provided by New Relic.
     #   datadog_api_key - string - Applicable only for destination type: datadog. API key provided by Datadog.
+    #   action_send_enabled - boolean - Whether or not sending is enabled for action logs.
     #   sftp_action_send_enabled - boolean - Whether or not sending is enabled for sftp_action logs.
     #   ftp_action_send_enabled - boolean - Whether or not sending is enabled for ftp_action logs.
     #   web_dav_action_send_enabled - boolean - Whether or not sending is enabled for web_dav_action logs.
