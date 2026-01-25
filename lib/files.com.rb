@@ -145,6 +145,7 @@ require "files.com/models/user_sftp_client_use"
 require "files.com/models/web_dav_action_log"
 require "files.com/models/webhook_test"
 require "files.com/models/workspace"
+require "files.com/models/zip_list_entry"
 
 require "files.com/models/dir"
 require "files.com/models/file_utils"

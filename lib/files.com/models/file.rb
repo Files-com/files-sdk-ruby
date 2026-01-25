@@ -1019,6 +1019,17 @@ module Files
       nil
     end
 
+    # List the contents of a ZIP file
+    def zip_list_contents(params = {})
+      params ||= {}
+      params[:path] = @attributes[:path]
+      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+
+      Api.send_request("/file_actions/zip_list/#{@attributes[:path]}", :get, params, @options)
+    end
+
     # Copy File/Folder
     #
     # Parameters:
@@ -1052,6 +1063,25 @@ module Files
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
       Api.send_request("/file_actions/move/#{@attributes[:path]}", :post, params, @options)
+    end
+
+    # Extract a ZIP file to a destination folder
+    #
+    # Parameters:
+    #   destination (required) - string - Destination folder path for extracted files.
+    #   filename - string - Optional single entry filename to extract.
+    #   overwrite - boolean - Overwrite existing files in the destination?
+    def unzip(params = {})
+      params ||= {}
+      params[:path] = @attributes[:path]
+      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filename must be an String") if params[:filename] and !params[:filename].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
+
+      Api.send_request("/file_actions/unzip", :post, params, @options)
     end
 
     # Begin File Upload
@@ -1193,6 +1223,19 @@ module Files
       find(path, params, options)
     end
 
+    # List the contents of a ZIP file
+    def self.zip_list_contents(path, params = {}, options = {})
+      params ||= {}
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+
+      response, options = Api.send_request("/file_actions/zip_list/#{params[:path]}", :get, params, options)
+      response.data.map do |entity_data|
+        ZipListEntry.new(entity_data, options)
+      end
+    end
+
     # Copy File/Folder
     #
     # Parameters:
@@ -1225,6 +1268,39 @@ module Files
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
       response, options = Api.send_request("/file_actions/move/#{params[:path]}", :post, params, options)
+      FileAction.new(response.data, options)
+    end
+
+    # Extract a ZIP file to a destination folder
+    #
+    # Parameters:
+    #   destination (required) - string - Destination folder path for extracted files.
+    #   filename - string - Optional single entry filename to extract.
+    #   overwrite - boolean - Overwrite existing files in the destination?
+    def self.unzip(path, params = {}, options = {})
+      params ||= {}
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filename must be an String") if params[:filename] and !params[:filename].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
+
+      response, options = Api.send_request("/file_actions/unzip", :post, params, options)
+      FileAction.new(response.data, options)
+    end
+
+    # Parameters:
+    #   paths (required) - array(string) - Paths to include in the ZIP.
+    #   destination (required) - string - Destination file path for the ZIP.
+    #   overwrite - boolean - Overwrite existing file in the destination?
+    def self.zip(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: paths") unless params[:paths]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
+
+      response, options = Api.send_request("/file_actions/zip", :post, params, options)
       FileAction.new(response.data, options)
     end
 

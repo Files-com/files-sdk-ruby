@@ -214,6 +214,19 @@ Files::File.find(path,
 
 ---
 
+## List the contents of a ZIP file
+
+```
+Files::File.zip_list_contents(path)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+
+
+---
+
 ## Copy File/Folder
 
 ```
@@ -248,6 +261,44 @@ Files::File.move(path,
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Move destination path.
 * `overwrite` (boolean): Overwrite existing file(s) in the destination?
+
+
+---
+
+## Extract a ZIP file to a destination folder
+
+```
+Files::File.unzip(path, 
+  destination: "destination", 
+  overwrite: false
+)
+```
+
+### Parameters
+
+* `path` (string): Required - ZIP file path to extract.
+* `destination` (string): Required - Destination folder path for extracted files.
+* `filename` (string): Optional single entry filename to extract.
+* `overwrite` (boolean): Overwrite existing files in the destination?
+
+
+---
+
+## Create a ZIP from one or more paths and save it to a destination path
+
+```
+Files::File.zip(
+  paths: "paths", 
+  destination: "destination", 
+  overwrite: false
+)
+```
+
+### Parameters
+
+* `paths` (array(string)): Required - Paths to include in the ZIP.
+* `destination` (string): Required - Destination file path for the ZIP.
+* `overwrite` (boolean): Overwrite existing file in the destination?
 
 
 ---
@@ -342,6 +393,21 @@ file.delete(
 
 ---
 
+## List the contents of a ZIP file
+
+```
+file = Files::File.find(path)
+
+file.zip_list_contents
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+
+
+---
+
 ## Copy File/Folder
 
 ```
@@ -380,6 +446,27 @@ file.move(
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Move destination path.
 * `overwrite` (boolean): Overwrite existing file(s) in the destination?
+
+
+---
+
+## Extract a ZIP file to a destination folder
+
+```
+file = Files::File.find(path)
+
+file.unzip(
+  destination: "destination",
+  overwrite: false
+)
+```
+
+### Parameters
+
+* `path` (string): Required - ZIP file path to extract.
+* `destination` (string): Required - Destination folder path for extracted files.
+* `filename` (string): Optional single entry filename to extract.
+* `overwrite` (boolean): Overwrite existing files in the destination?
 
 
 ---
