@@ -29,52 +29,52 @@ module Files
       @attributes[:high_water_user_count]
     end
 
-    # double - Current total Storage Usage GB as of end date (not necessarily high water mark, which is used for billing)
+    # int64 - Current total Storage Usage GB as of end date (not necessarily high water mark, which is used for billing)
     def current_storage
       @attributes[:current_storage]
     end
 
-    # double - Highest Storage Usage GB recorded in time period (used for billing)
+    # int64 - Highest Storage Usage GB recorded in time period (used for billing)
     def high_water_storage
       @attributes[:high_water_storage]
     end
 
-    # double - Storage Usage for root folder as of end date (not necessarily high water mark, which is used for billing)
+    # int64 - Storage Usage for root folder as of end date (not necessarily high water mark, which is used for billing)
     def root_storage
       @attributes[:root_storage]
     end
 
-    # double - Storage Usage for files that are deleted but uploaded within last 30 days as of end date (not necessarily high water mark, which is used for billing)
+    # int64 - Storage Usage for files that are deleted but uploaded within last 30 days as of end date (not necessarily high water mark, which is used for billing)
     def deleted_files_counted_in_minimum
       @attributes[:deleted_files_counted_in_minimum]
     end
 
-    # double - Storage Usage for files that are deleted but retained as backups as of end date (not necessarily high water mark, which is used for billing)
+    # int64 - Storage Usage for files that are deleted but retained as backups as of end date (not necessarily high water mark, which is used for billing)
     def deleted_files_storage
       @attributes[:deleted_files_storage]
     end
 
-    # double - Storage + Transfer Usage - Total Billable amount
+    # int64 - Storage + Transfer Usage - Total Billable amount
     def total_billable_usage
       @attributes[:total_billable_usage]
     end
 
-    # double - Transfer usage for period - Total Billable amount
+    # int64 - Transfer usage for period - Total Billable amount
     def total_billable_transfer_usage
       @attributes[:total_billable_transfer_usage]
     end
 
-    # double - Transfer Usage for period - Outbound GB from Files Native Storage
+    # int64 - Transfer Usage for period - Outbound GB from Files Native Storage
     def bytes_sent
       @attributes[:bytes_sent]
     end
 
-    # double - Transfer Usage for period - Inbound GB to Remote Servers (Sync/Mount)
+    # int64 - Transfer Usage for period - Inbound GB to Remote Servers (Sync/Mount)
     def sync_bytes_received
       @attributes[:sync_bytes_received]
     end
 
-    # double - Transfer Usage for period - Outbound GB from Remote Servers (Sync/Mount)
+    # int64 - Transfer Usage for period - Outbound GB from Remote Servers (Sync/Mount)
     def sync_bytes_sent
       @attributes[:sync_bytes_sent]
     end
