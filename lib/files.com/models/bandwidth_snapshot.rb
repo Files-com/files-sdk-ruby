@@ -14,37 +14,37 @@ module Files
       @attributes[:id]
     end
 
-    # double - Site bandwidth report bytes received
+    # int64 - Site bandwidth report bytes received
     def bytes_received
       @attributes[:bytes_received]
     end
 
-    # double - Site bandwidth report bytes sent
+    # int64 - Site bandwidth report bytes sent
     def bytes_sent
       @attributes[:bytes_sent]
     end
 
-    # double - Site sync bandwidth report bytes received
+    # int64 - Site sync bandwidth report bytes received
     def sync_bytes_received
       @attributes[:sync_bytes_received]
     end
 
-    # double - Site sync bandwidth report bytes sent
+    # int64 - Site sync bandwidth report bytes sent
     def sync_bytes_sent
       @attributes[:sync_bytes_sent]
     end
 
-    # double - Site bandwidth report get requests
+    # int64 - Site bandwidth report get requests
     def requests_get
       @attributes[:requests_get]
     end
 
-    # double - Site bandwidth report put requests
+    # int64 - Site bandwidth report put requests
     def requests_put
       @attributes[:requests_put]
     end
 
-    # double - Site bandwidth report other requests
+    # int64 - Site bandwidth report other requests
     def requests_other
       @attributes[:requests_other]
     end
