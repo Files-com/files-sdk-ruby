@@ -14,12 +14,12 @@ module Files
       @attributes[:id]
     end
 
-    # double - Site sync bandwidth report bytes received
+    # int64 - Site sync bandwidth report bytes received
     def sync_bytes_received
       @attributes[:sync_bytes_received]
     end
 
-    # double - Site sync bandwidth report bytes sent
+    # int64 - Site sync bandwidth report bytes sent
     def sync_bytes_sent
       @attributes[:sync_bytes_sent]
     end
