@@ -34,6 +34,7 @@ require "files.com/path_util"
 
 require "files.com/models/account_line_item"
 require "files.com/models/action"
+require "files.com/models/action_log"
 require "files.com/models/action_notification_export"
 require "files.com/models/action_notification_export_result"
 require "files.com/models/agent_push_update"
