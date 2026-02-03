@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bigdecimal"
+
 module Files
   class InvoiceLineItem
     attr_reader :options, :attributes
@@ -14,9 +16,12 @@ module Files
       @attributes[:id]
     end
 
-    # double - Invoice line item amount
+    # decimal - Invoice line item amount
     def amount
-      @attributes[:amount]
+      value = @attributes[:amount]
+      return value if value.nil? || value.is_a?(BigDecimal)
+
+      BigDecimal(value.to_s)
     end
 
     # date-time - Invoice line item created at date/time

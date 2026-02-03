@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bigdecimal"
+
 module Files
   class RemoteMountBackend
     attr_reader :options, :attributes
@@ -81,18 +83,24 @@ module Files
       @attributes[:interval] = value
     end
 
-    # double - Minimum free CPU percentage required for this backend to be considered healthy.
+    # decimal - Minimum free CPU percentage required for this backend to be considered healthy.
     def min_free_cpu
-      @attributes[:min_free_cpu]
+      value = @attributes[:min_free_cpu]
+      return value if value.nil? || value.is_a?(BigDecimal)
+
+      BigDecimal(value.to_s)
     end
 
     def min_free_cpu=(value)
       @attributes[:min_free_cpu] = value
     end
 
-    # double - Minimum free memory percentage required for this backend to be considered healthy.
+    # decimal - Minimum free memory percentage required for this backend to be considered healthy.
     def min_free_mem
-      @attributes[:min_free_mem]
+      value = @attributes[:min_free_mem]
+      return value if value.nil? || value.is_a?(BigDecimal)
+
+      BigDecimal(value.to_s)
     end
 
     def min_free_mem=(value)

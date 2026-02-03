@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bigdecimal"
+
 module Files
   class Site
     attr_reader :options, :attributes
@@ -529,9 +531,12 @@ module Files
       @attributes[:motd_use_for_sftp]
     end
 
-    # double - Next billing amount
+    # decimal - Next billing amount
     def next_billing_amount
-      @attributes[:next_billing_amount]
+      value = @attributes[:next_billing_amount]
+      return value if value.nil? || value.is_a?(BigDecimal)
+
+      BigDecimal(value.to_s)
     end
 
     # string - Next billing date

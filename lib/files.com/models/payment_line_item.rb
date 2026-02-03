@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bigdecimal"
+
 module Files
   class PaymentLineItem
     attr_reader :options, :attributes
@@ -9,9 +11,12 @@ module Files
       @options = options || {}
     end
 
-    # double - Payment line item amount
+    # decimal - Payment line item amount
     def amount
-      @attributes[:amount]
+      value = @attributes[:amount]
+      return value if value.nil? || value.is_a?(BigDecimal)
+
+      BigDecimal(value.to_s)
     end
 
     # date-time - Payment line item created at date/time
