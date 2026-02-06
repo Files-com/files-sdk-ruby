@@ -45,6 +45,15 @@ module Files
       @attributes[:status] = value
     end
 
+    # string - Main Site Name
+    def main_site_name
+      @attributes[:main_site_name]
+    end
+
+    def main_site_name=(value)
+      @attributes[:main_site_name] = value
+    end
+
     # string - Pairing key used to approve this request on the target site
     def pairing_key
       @attributes[:pairing_key]

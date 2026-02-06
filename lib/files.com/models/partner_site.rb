@@ -24,6 +24,28 @@ module Files
       @attributes[:linked_site_id]
     end
 
+    # string - Linked Site Name
+    def linked_site_name
+      @attributes[:linked_site_name]
+    end
+
+    # int64 - Main Site ID
+    def main_site_id
+      @attributes[:main_site_id]
+    end
+
+    # string - Main Site Name
+    def main_site_name
+      @attributes[:main_site_name]
+    end
+
+    def self.linkeds(params = {}, options = {})
+      response, options = Api.send_request("/partner_sites/linked_partner_sites", :get, params, options)
+      response.data.map do |entity_data|
+        PartnerSite.new(entity_data, options)
+      end
+    end
+
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
