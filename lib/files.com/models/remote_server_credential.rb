@@ -63,6 +63,33 @@ module Files
       @attributes[:aws_access_key] = value
     end
 
+    # string - AWS IAM Role ARN for AssumeRole authentication.
+    def s3_assume_role_arn
+      @attributes[:s3_assume_role_arn]
+    end
+
+    def s3_assume_role_arn=(value)
+      @attributes[:s3_assume_role_arn] = value
+    end
+
+    # int64 - Session duration in seconds for AssumeRole authentication (900-43200).
+    def s3_assume_role_duration_seconds
+      @attributes[:s3_assume_role_duration_seconds]
+    end
+
+    def s3_assume_role_duration_seconds=(value)
+      @attributes[:s3_assume_role_duration_seconds] = value
+    end
+
+    # string - External ID for AssumeRole authentication.
+    def s3_assume_role_external_id
+      @attributes[:s3_assume_role_external_id]
+    end
+
+    def s3_assume_role_external_id=(value)
+      @attributes[:s3_assume_role_external_id] = value
+    end
+
     # string - Google Cloud Storage: S3-compatible Access Key.
     def google_cloud_storage_s3_compatible_access_key
       @attributes[:google_cloud_storage_s3_compatible_access_key]
@@ -284,6 +311,8 @@ module Files
     #   description - string - Internal description for your reference
     #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
     #   aws_access_key - string - AWS Access Key.
+    #   s3_assume_role_arn - string - AWS IAM Role ARN for AssumeRole authentication.
+    #   s3_assume_role_duration_seconds - int64 - Session duration in seconds for AssumeRole authentication (900-43200).
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   filebase_access_key - string - Filebase: Access Key.
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
@@ -317,6 +346,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_arn must be an String") if params[:s3_assume_role_arn] and !params[:s3_assume_role_arn].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_duration_seconds must be an Integer") if params[:s3_assume_role_duration_seconds] and !params[:s3_assume_role_duration_seconds].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
@@ -415,6 +446,8 @@ module Files
     #   description - string - Internal description for your reference
     #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
     #   aws_access_key - string - AWS Access Key.
+    #   s3_assume_role_arn - string - AWS IAM Role ARN for AssumeRole authentication.
+    #   s3_assume_role_duration_seconds - int64 - Session duration in seconds for AssumeRole authentication (900-43200).
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   filebase_access_key - string - Filebase: Access Key.
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
@@ -445,6 +478,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_arn must be an String") if params[:s3_assume_role_arn] and !params[:s3_assume_role_arn].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_duration_seconds must be an Integer") if params[:s3_assume_role_duration_seconds] and !params[:s3_assume_role_duration_seconds].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
@@ -480,6 +515,8 @@ module Files
     #   description - string - Internal description for your reference
     #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
     #   aws_access_key - string - AWS Access Key.
+    #   s3_assume_role_arn - string - AWS IAM Role ARN for AssumeRole authentication.
+    #   s3_assume_role_duration_seconds - int64 - Session duration in seconds for AssumeRole authentication (900-43200).
     #   cloudflare_access_key - string - Cloudflare: Access Key.
     #   filebase_access_key - string - Filebase: Access Key.
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
@@ -512,6 +549,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_arn must be an String") if params[:s3_assume_role_arn] and !params[:s3_assume_role_arn].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_duration_seconds must be an Integer") if params[:s3_assume_role_duration_seconds] and !params[:s3_assume_role_duration_seconds].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)

@@ -171,6 +171,33 @@ module Files
       @attributes[:aws_access_key] = value
     end
 
+    # string - AWS IAM Role ARN for AssumeRole authentication.
+    def s3_assume_role_arn
+      @attributes[:s3_assume_role_arn]
+    end
+
+    def s3_assume_role_arn=(value)
+      @attributes[:s3_assume_role_arn] = value
+    end
+
+    # int64 - Session duration in seconds for AssumeRole authentication (900-43200).
+    def s3_assume_role_duration_seconds
+      @attributes[:s3_assume_role_duration_seconds]
+    end
+
+    def s3_assume_role_duration_seconds=(value)
+      @attributes[:s3_assume_role_duration_seconds] = value
+    end
+
+    # string - External ID for AssumeRole authentication.
+    def s3_assume_role_external_id
+      @attributes[:s3_assume_role_external_id]
+    end
+
+    def s3_assume_role_external_id=(value)
+      @attributes[:s3_assume_role_external_id] = value
+    end
+
     # string - Remote server certificate
     def server_certificate
       @attributes[:server_certificate]
@@ -869,6 +896,8 @@ module Files
     #   port - int64 - Port for remote server.
     #   upload_staging_path - string - Upload staging path.  Applies to SFTP only.  If a path is provided here, files will first be uploaded to this path on the remote folder and the moved into the final correct path via an SFTP move command.  This is required by some remote MFT systems to emulate atomic uploads, which are otherwise not supoprted by SFTP.
     #   remote_server_credential_id - int64 - ID of Remote Server Credential, if applicable.
+    #   s3_assume_role_arn - string - AWS IAM Role ARN for AssumeRole authentication.
+    #   s3_assume_role_duration_seconds - int64 - Session duration in seconds for AssumeRole authentication (900-43200).
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
     #   s3_compatible_bucket - string - S3-compatible: Bucket name
@@ -939,6 +968,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: upload_staging_path must be an String") if params[:upload_staging_path] and !params[:upload_staging_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if params[:remote_server_credential_id] and !params[:remote_server_credential_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_arn must be an String") if params[:s3_assume_role_arn] and !params[:s3_assume_role_arn].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_duration_seconds must be an Integer") if params[:s3_assume_role_duration_seconds] and !params[:s3_assume_role_duration_seconds].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
@@ -1092,6 +1123,8 @@ module Files
     #   port - int64 - Port for remote server.
     #   upload_staging_path - string - Upload staging path.  Applies to SFTP only.  If a path is provided here, files will first be uploaded to this path on the remote folder and the moved into the final correct path via an SFTP move command.  This is required by some remote MFT systems to emulate atomic uploads, which are otherwise not supoprted by SFTP.
     #   remote_server_credential_id - int64 - ID of Remote Server Credential, if applicable.
+    #   s3_assume_role_arn - string - AWS IAM Role ARN for AssumeRole authentication.
+    #   s3_assume_role_duration_seconds - int64 - Session duration in seconds for AssumeRole authentication (900-43200).
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
     #   s3_compatible_bucket - string - S3-compatible: Bucket name
@@ -1159,6 +1192,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: upload_staging_path must be an String") if params[:upload_staging_path] and !params[:upload_staging_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if params[:remote_server_credential_id] and !params[:remote_server_credential_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_arn must be an String") if params[:s3_assume_role_arn] and !params[:s3_assume_role_arn].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_duration_seconds must be an Integer") if params[:s3_assume_role_duration_seconds] and !params[:s3_assume_role_duration_seconds].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
@@ -1283,6 +1318,8 @@ module Files
     #   port - int64 - Port for remote server.
     #   upload_staging_path - string - Upload staging path.  Applies to SFTP only.  If a path is provided here, files will first be uploaded to this path on the remote folder and the moved into the final correct path via an SFTP move command.  This is required by some remote MFT systems to emulate atomic uploads, which are otherwise not supoprted by SFTP.
     #   remote_server_credential_id - int64 - ID of Remote Server Credential, if applicable.
+    #   s3_assume_role_arn - string - AWS IAM Role ARN for AssumeRole authentication.
+    #   s3_assume_role_duration_seconds - int64 - Session duration in seconds for AssumeRole authentication (900-43200).
     #   s3_bucket - string - S3 bucket name
     #   s3_compatible_access_key - string - S3-compatible: Access Key
     #   s3_compatible_bucket - string - S3-compatible: Bucket name
@@ -1352,6 +1389,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: upload_staging_path must be an String") if params[:upload_staging_path] and !params[:upload_staging_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if params[:remote_server_credential_id] and !params[:remote_server_credential_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_arn must be an String") if params[:s3_assume_role_arn] and !params[:s3_assume_role_arn].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_duration_seconds must be an Integer") if params[:s3_assume_role_duration_seconds] and !params[:s3_assume_role_duration_seconds].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
