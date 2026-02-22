@@ -123,18 +123,18 @@ module Files
     #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
     #   allow_user_creation - boolean - Allow Partner Admins to create users.
     #   notes - string - Notes about this Partner.
-    #   root_folder - string - The root folder path for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   name - string - The name of the Partner.
+    #   root_folder - string - The root folder path for this Partner.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/partners/#{@attributes[:id]}", :patch, params, @options)
@@ -208,17 +208,18 @@ module Files
     #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
     #   allow_user_creation - boolean - Allow Partner Admins to create users.
     #   notes - string - Notes about this Partner.
-    #   root_folder - string - The root folder path for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   name (required) - string - The name of the Partner.
+    #   root_folder (required) - string - The root folder path for this Partner.
     #   workspace_id - int64 - ID of the Workspace associated with this Partner.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
+      raise MissingParameterError.new("Parameter missing: root_folder") unless params[:root_folder]
 
       response, options = Api.send_request("/partners", :post, params, options)
       Partner.new(response.data, options)
@@ -230,17 +231,17 @@ module Files
     #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
     #   allow_user_creation - boolean - Allow Partner Admins to create users.
     #   notes - string - Notes about this Partner.
-    #   root_folder - string - The root folder path for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   name - string - The name of the Partner.
+    #   root_folder - string - The root folder path for this Partner.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/partners/#{params[:id]}", :patch, params, options)
