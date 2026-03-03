@@ -624,6 +624,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`InvalidPriorityColorError`|  `ProcessingFailureError` |
 |`InvalidRangeError`|  `ProcessingFailureError` |
 |`InvalidSiteError`|  `ProcessingFailureError` |
+|`InvalidZipFileError`|  `ProcessingFailureError` |
 |`MetadataNotSupportedOnRemotesError`|  `ProcessingFailureError` |
 |`ModelSaveErrorError`|  `ProcessingFailureError` |
 |`MultipleProcessingErrorsError`|  `ProcessingFailureError` |

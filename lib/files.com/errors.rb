@@ -208,6 +208,7 @@ module Files
   class InvalidPriorityColorError < ProcessingFailureError; end
   class InvalidRangeError < ProcessingFailureError; end
   class InvalidSiteError < ProcessingFailureError; end
+  class InvalidZipFileError < ProcessingFailureError; end
   class MetadataNotSupportedOnRemotesError < ProcessingFailureError; end
   class ModelSaveErrorError < ProcessingFailureError; end
   class MultipleProcessingErrorsError < ProcessingFailureError; end
