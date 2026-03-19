@@ -158,6 +158,15 @@ module Files
       @attributes[:disabled_expired_or_inactive] = value
     end
 
+    # int64 - Desktop Configuration Profile ID assigned directly to this user, if any.
+    def desktop_configuration_profile_id
+      @attributes[:desktop_configuration_profile_id]
+    end
+
+    def desktop_configuration_profile_id=(value)
+      @attributes[:desktop_configuration_profile_id] = value
+    end
+
     # email - User email address
     def email
       @attributes[:email]
@@ -824,6 +833,7 @@ module Files
     #   bypass_user_lifecycle_rules - boolean - Exempt this user from user lifecycle rules?
     #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
     #   dav_permission - boolean - Can the user connect with WebDAV?
+    #   desktop_configuration_profile_id - int64 - Desktop Configuration Profile ID assigned directly to this user, if any.
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
     #   filesystem_layout - string - File system layout
     #   ftp_permission - boolean - Can the user access with FTP/FTPS?
@@ -875,6 +885,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params[:authenticate_until] and !params[:authenticate_until].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if params[:desktop_configuration_profile_id] and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if params[:filesystem_layout] and !params[:filesystem_layout].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params[:header_text] and !params[:header_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params[:language] and !params[:language].is_a?(String)
@@ -999,6 +1010,7 @@ module Files
     #   bypass_user_lifecycle_rules - boolean - Exempt this user from user lifecycle rules?
     #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
     #   dav_permission - boolean - Can the user connect with WebDAV?
+    #   desktop_configuration_profile_id - int64 - Desktop Configuration Profile ID assigned directly to this user, if any.
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
     #   filesystem_layout - string - File system layout
     #   ftp_permission - boolean - Can the user access with FTP/FTPS?
@@ -1045,6 +1057,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params[:authenticate_until] and !params[:authenticate_until].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if params[:desktop_configuration_profile_id] and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if params[:filesystem_layout] and !params[:filesystem_layout].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params[:header_text] and !params[:header_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params[:language] and !params[:language].is_a?(String)
@@ -1124,6 +1137,7 @@ module Files
     #   bypass_user_lifecycle_rules - boolean - Exempt this user from user lifecycle rules?
     #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
     #   dav_permission - boolean - Can the user connect with WebDAV?
+    #   desktop_configuration_profile_id - int64 - Desktop Configuration Profile ID assigned directly to this user, if any.
     #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
     #   filesystem_layout - string - File system layout
     #   ftp_permission - boolean - Can the user access with FTP/FTPS?
@@ -1174,6 +1188,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params[:authenticate_until] and !params[:authenticate_until].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if params[:desktop_configuration_profile_id] and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if params[:filesystem_layout] and !params[:filesystem_layout].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params[:header_text] and !params[:header_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params[:language] and !params[:language].is_a?(String)
