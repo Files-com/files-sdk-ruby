@@ -679,6 +679,11 @@ module Files
       @attributes[:sftp_enabled]
     end
 
+    # boolean - Finalize partial SFTP uploads from interrupted connections? Default: true.
+    def sftp_finalize_partial_uploads
+      @attributes[:sftp_finalize_partial_uploads]
+    end
+
     # string - Sftp Host Key Type
     def sftp_host_key_type
       @attributes[:sftp_host_key_type]
@@ -1001,6 +1006,7 @@ module Files
     #   dav_enabled - boolean - Is WebDAV enabled?
     #   ftp_enabled - boolean - Is FTP enabled?
     #   sftp_enabled - boolean - Is SFTP enabled?
+    #   sftp_finalize_partial_uploads - boolean - Finalize partial SFTP uploads from interrupted connections? Default: true.
     #   users_can_create_api_keys - boolean - Allow users to create their own API keys?
     #   users_can_create_ssh_keys - boolean - Allow users to create their own SSH keys?
     #   show_user_notifications_log_in_link - boolean - Show log in link in user notifications?
