@@ -189,6 +189,15 @@ module Files
       @attributes[:update_timestamps] = value
     end
 
+    # int64 - Workspace ID for a workspace-scoped restore. `0` means the default site-wide scope.
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
     # array(string) - Error messages received while restoring files and/or directories. Only present if there were errors.
     def error_messages
       @attributes[:error_messages]
@@ -212,7 +221,7 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `restoration_type`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
@@ -236,10 +245,12 @@ module Files
     #   restore_deleted_permissions - boolean - If true, we will also restore any Permissions that match the same path prefix from the same dates.
     #   restore_in_place - boolean - If true, we will restore the files in place (into their original paths). If false, we will create a new restoration folder in the root and restore files there.
     #   update_timestamps - boolean - If true, we will update the last modified timestamp of restored files to today's date. If false, we might trigger File Expiration to delete the file again.
+    #   workspace_id - int64 - Workspace ID for a workspace-scoped restore. `0` means the default site-wide scope.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: earliest_date must be an String") if params[:earliest_date] and !params[:earliest_date].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prefix must be an String") if params[:prefix] and !params[:prefix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: restoration_type must be an String") if params[:restoration_type] and !params[:restoration_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: earliest_date") unless params[:earliest_date]
 
       response, options = Api.send_request("/restores", :post, params, options)

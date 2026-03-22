@@ -72,6 +72,15 @@ module Files
       @attributes[:include_site_admins] = value
     end
 
+    # boolean - If true, a default-workspace rule also applies to users in all workspaces.
+    def apply_to_all_workspaces
+      @attributes[:apply_to_all_workspaces]
+    end
+
+    def apply_to_all_workspaces=(value)
+      @attributes[:apply_to_all_workspaces] = value
+    end
+
     # string - User Lifecycle Rule name
     def name
       @attributes[:name]
@@ -99,6 +108,15 @@ module Files
       @attributes[:site_id] = value
     end
 
+    # int64 - Workspace ID. `0` means the default workspace.
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
     # string - State of the users to apply the rule to (inactive or disabled)
     def user_state
       @attributes[:user_state]
@@ -119,6 +137,7 @@ module Files
 
     # Parameters:
     #   action - string - Action to take on inactive users (disable or delete)
+    #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to users in all workspaces.
     #   authentication_method - string - User authentication method for which the rule will apply.
     #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies
@@ -128,6 +147,7 @@ module Files
     #   partner_tag - string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
     #   user_tag - string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -141,6 +161,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: partner_tag must be an String") if params[:partner_tag] and !params[:partner_tag].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_tag must be an String") if params[:user_tag] and !params[:user_tag].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/user_lifecycle_rules/#{@attributes[:id]}", :patch, params, @options)
@@ -175,11 +196,13 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id` and `workspace_id`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
       List.new(UserLifecycleRule, params) do
         Api.send_request("/user_lifecycle_rules", :get, params, options)
@@ -208,6 +231,7 @@ module Files
 
     # Parameters:
     #   action - string - Action to take on inactive users (disable or delete)
+    #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to users in all workspaces.
     #   authentication_method - string - User authentication method for which the rule will apply.
     #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies
@@ -217,6 +241,7 @@ module Files
     #   partner_tag - string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
     #   user_tag - string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
@@ -226,6 +251,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: partner_tag must be an String") if params[:partner_tag] and !params[:partner_tag].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_tag must be an String") if params[:user_tag] and !params[:user_tag].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
 
       response, options = Api.send_request("/user_lifecycle_rules", :post, params, options)
       UserLifecycleRule.new(response.data, options)
@@ -233,6 +259,7 @@ module Files
 
     # Parameters:
     #   action - string - Action to take on inactive users (disable or delete)
+    #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to users in all workspaces.
     #   authentication_method - string - User authentication method for which the rule will apply.
     #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies
@@ -242,6 +269,7 @@ module Files
     #   partner_tag - string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
     #   user_tag - string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -254,6 +282,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: partner_tag must be an String") if params[:partner_tag] and !params[:partner_tag].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if params[:user_state] and !params[:user_state].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_tag must be an String") if params[:user_tag] and !params[:user_tag].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/user_lifecycle_rules/#{params[:id]}", :patch, params, options)

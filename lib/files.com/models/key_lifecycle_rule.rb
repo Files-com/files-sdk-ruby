@@ -36,6 +36,15 @@ module Files
       @attributes[:inactivity_days] = value
     end
 
+    # boolean - If true, a default-workspace rule also applies to keys in all workspaces.
+    def apply_to_all_workspaces
+      @attributes[:apply_to_all_workspaces]
+    end
+
+    def apply_to_all_workspaces=(value)
+      @attributes[:apply_to_all_workspaces] = value
+    end
+
     # string - Key Lifecycle Rule name
     def name
       @attributes[:name]
@@ -45,10 +54,21 @@ module Files
       @attributes[:name] = value
     end
 
+    # int64 - Workspace ID. `0` means the default workspace.
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
     # Parameters:
+    #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to keys in all workspaces.
     #   key_type - string - Key type for which the rule will apply (gpg or ssh).
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies.
     #   name - string - Key Lifecycle Rule name
+    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -57,6 +77,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: key_type must be an String") if params[:key_type] and !params[:key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/key_lifecycle_rules/#{@attributes[:id]}", :patch, params, @options)
@@ -91,8 +112,8 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `key_type`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `key_type`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `key_type`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -125,22 +146,27 @@ module Files
     end
 
     # Parameters:
+    #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to keys in all workspaces.
     #   key_type - string - Key type for which the rule will apply (gpg or ssh).
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies.
     #   name - string - Key Lifecycle Rule name
+    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: key_type must be an String") if params[:key_type] and !params[:key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
 
       response, options = Api.send_request("/key_lifecycle_rules", :post, params, options)
       KeyLifecycleRule.new(response.data, options)
     end
 
     # Parameters:
+    #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to keys in all workspaces.
     #   key_type - string - Key type for which the rule will apply (gpg or ssh).
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies.
     #   name - string - Key Lifecycle Rule name
+    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -148,6 +174,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: key_type must be an String") if params[:key_type] and !params[:key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/key_lifecycle_rules/#{params[:id]}", :patch, params, options)
