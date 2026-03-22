@@ -90,8 +90,18 @@ module Files
       @attributes[:user_id] = value
     end
 
+    # int64 - Workspace ID
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
     # Parameters:
     #   title - string - Title to be displayed
+    #   workspace_id - int64 - Workspace ID
     #   skip_email - boolean - Skip validating form email
     #   skip_name - boolean - Skip validating form name
     #   skip_company - boolean - Skip validating company
@@ -102,6 +112,7 @@ module Files
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: title must be an String") if params[:title] and !params[:title].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params[:form_fields] and !params[:form_fields].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
@@ -171,6 +182,7 @@ module Files
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   title - string - Title to be displayed
+    #   workspace_id - int64 - Workspace ID
     #   skip_email - boolean - Skip validating form email
     #   skip_name - boolean - Skip validating form name
     #   skip_company - boolean - Skip validating company
@@ -178,6 +190,7 @@ module Files
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: title must be an String") if params[:title] and !params[:title].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params[:form_fields] and !params[:form_fields].is_a?(Array)
 
       response, options = Api.send_request("/form_field_sets", :post, params, options)
@@ -186,6 +199,7 @@ module Files
 
     # Parameters:
     #   title - string - Title to be displayed
+    #   workspace_id - int64 - Workspace ID
     #   skip_email - boolean - Skip validating form email
     #   skip_name - boolean - Skip validating form name
     #   skip_company - boolean - Skip validating company
@@ -195,6 +209,7 @@ module Files
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: title must be an String") if params[:title] and !params[:title].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params[:form_fields] and !params[:form_fields].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
