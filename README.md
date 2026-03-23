@@ -563,6 +563,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`PasswordChangeNotRequiredError`|  `NotAuthorizedError` |
 |`PasswordChangeRequiredError`|  `NotAuthorizedError` |
 |`PaymentMethodErrorError`|  `NotAuthorizedError` |
+|`PreviewOnlyPermissionCannotDownloadError`|  `NotAuthorizedError` |
 |`ReadOnlySessionError`|  `NotAuthorizedError` |
 |`ReadPermissionRequiredError`|  `NotAuthorizedError` |
 |`ReauthenticationFailedError`|  `NotAuthorizedError` |

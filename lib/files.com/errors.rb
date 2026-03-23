@@ -143,6 +143,7 @@ module Files
   class PasswordChangeNotRequiredError < NotAuthorizedError; end
   class PasswordChangeRequiredError < NotAuthorizedError; end
   class PaymentMethodErrorError < NotAuthorizedError; end
+  class PreviewOnlyPermissionCannotDownloadError < NotAuthorizedError; end
   class ReadOnlySessionError < NotAuthorizedError; end
   class ReadPermissionRequiredError < NotAuthorizedError; end
   class ReauthenticationFailedError < NotAuthorizedError; end
