@@ -63,6 +63,24 @@ module Files
       @attributes[:group_name] = value
     end
 
+    # array(int64) - Group IDs when this permission requires multiple groups
+    def group_ids
+      @attributes[:group_ids]
+    end
+
+    def group_ids=(value)
+      @attributes[:group_ids] = value
+    end
+
+    # array(string) - Group names when this permission requires multiple groups
+    def group_names
+      @attributes[:group_names]
+    end
+
+    def group_names=(value)
+      @attributes[:group_names] = value
+    end
+
     # int64 - Partner ID (if applicable)
     def partner_id
       @attributes[:partner_id]
@@ -168,6 +186,7 @@ module Files
     # Parameters:
     #   path (required) - string - Folder path
     #   group_id - int64 - Group ID. Provide `group_name` or `group_id`
+    #   group_ids - string - Group IDs when the permission requires multiple groups. If sent as a string, it should be comma-delimited.
     #   permission - string - Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
     #   recursive - boolean - Apply to subfolders recursively?
     #   partner_id - int64 - Partner ID if this Permission belongs to a partner.
@@ -178,6 +197,7 @@ module Files
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params[:group_ids] and !params[:group_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permission must be an String") if params[:permission] and !params[:permission].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
