@@ -605,6 +605,8 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`DestinationParentConflictError`|  `ProcessingFailureError` |
 |`DestinationParentDoesNotExistError`|  `ProcessingFailureError` |
 |`ExceededRuntimeLimitError`|  `ProcessingFailureError` |
+|`ExpectationAlreadyHasOpenWindowError`|  `ProcessingFailureError` |
+|`ExpectationNotManualTriggerError`|  `ProcessingFailureError` |
 |`ExpiredPrivateKeyError`|  `ProcessingFailureError` |
 |`ExpiredPublicKeyError`|  `ProcessingFailureError` |
 |`ExportFailureError`|  `ProcessingFailureError` |

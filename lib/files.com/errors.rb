@@ -187,6 +187,8 @@ module Files
   class DestinationParentConflictError < ProcessingFailureError; end
   class DestinationParentDoesNotExistError < ProcessingFailureError; end
   class ExceededRuntimeLimitError < ProcessingFailureError; end
+  class ExpectationAlreadyHasOpenWindowError < ProcessingFailureError; end
+  class ExpectationNotManualTriggerError < ProcessingFailureError; end
   class ExpiredPrivateKeyError < ProcessingFailureError; end
   class ExpiredPublicKeyError < ProcessingFailureError; end
   class ExportFailureError < ProcessingFailureError; end
