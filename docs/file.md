@@ -95,6 +95,7 @@ may places where a Ruby File object can be used.
 * `parts` (int64): How many parts to fetch?
 * `ref` (string): 
 * `restart` (int64): File byte offset to restart from.
+* `copy_behaviors` (boolean): If copying a folder, also copy supported behaviors to the destination folder tree?
 * `structure` (string): If copying folder, copy just the structure?
 * `with_rename` (boolean): Allow file rename instead of overwrite?
 * `buffered_upload` (boolean): If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
@@ -133,6 +134,7 @@ Files::File.create(path,
   provided_mtime: "2000-01-01T01:00:00Z", 
   restart: 1, 
   size: 1, 
+  copy_behaviors: false, 
   with_rename: false, 
   buffered_upload: false
 )
@@ -152,6 +154,7 @@ Files::File.create(path,
 * `ref` (string): 
 * `restart` (int64): File byte offset to restart from.
 * `size` (int64): Size of file.
+* `copy_behaviors` (boolean): If copying a folder, also copy supported behaviors to the destination folder tree?
 * `structure` (string): If copying folder, copy just the structure?
 * `with_rename` (boolean): Allow file rename instead of overwrite?
 * `buffered_upload` (boolean): If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
@@ -232,6 +235,7 @@ Files::File.zip_list_contents(path)
 ```
 Files::File.copy(path, 
   destination: "destination", 
+  copy_behaviors: false, 
   structure: false, 
   overwrite: false
 )
@@ -241,6 +245,7 @@ Files::File.copy(path,
 
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Copy destination path.
+* `copy_behaviors` (boolean): If copying a folder, also copy supported behaviors to the destination folder tree?
 * `structure` (boolean): Copy structure only?
 * `overwrite` (boolean): Overwrite existing file(s) in the destination?
 
@@ -415,6 +420,7 @@ file = Files::File.find(path)
 
 file.copy(
   destination: "destination",
+  copy_behaviors: false,
   structure: false,
   overwrite: false
 )
@@ -424,6 +430,7 @@ file.copy(
 
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Copy destination path.
+* `copy_behaviors` (boolean): If copying a folder, also copy supported behaviors to the destination folder tree?
 * `structure` (boolean): Copy structure only?
 * `overwrite` (boolean): Overwrite existing file(s) in the destination?
 

@@ -940,6 +940,15 @@ module Files
       @attributes[:restart] = value
     end
 
+    # boolean - If copying a folder, also copy supported behaviors to the destination folder tree?
+    def copy_behaviors
+      @attributes[:copy_behaviors]
+    end
+
+    def copy_behaviors=(value)
+      @attributes[:copy_behaviors] = value
+    end
+
     # string - If copying folder, copy just the structure?
     def structure
       @attributes[:structure]
@@ -1034,6 +1043,7 @@ module Files
     #
     # Parameters:
     #   destination (required) - string - Copy destination path.
+    #   copy_behaviors - boolean - If copying a folder, also copy supported behaviors to the destination folder tree?
     #   structure - boolean - Copy structure only?
     #   overwrite - boolean - Overwrite existing file(s) in the destination?
     def copy(params = {})
@@ -1147,6 +1157,7 @@ module Files
     #   ref - string -
     #   restart - int64 - File byte offset to restart from.
     #   size - int64 - Size of file.
+    #   copy_behaviors - boolean - If copying a folder, also copy supported behaviors to the destination folder tree?
     #   structure - string - If copying folder, copy just the structure?
     #   with_rename - boolean - Allow file rename instead of overwrite?
     #   buffered_upload - boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
@@ -1240,6 +1251,7 @@ module Files
     #
     # Parameters:
     #   destination (required) - string - Copy destination path.
+    #   copy_behaviors - boolean - If copying a folder, also copy supported behaviors to the destination folder tree?
     #   structure - boolean - Copy structure only?
     #   overwrite - boolean - Overwrite existing file(s) in the destination?
     def self.copy(path, params = {}, options = {})
