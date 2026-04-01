@@ -61,7 +61,7 @@ Files::MessageComment.find(id)
 ```
 Files::MessageComment.create(
   user_id: 1, 
-  body: "body"
+  body: "What a great idea, thank you!"
 )
 ```
 
@@ -77,7 +77,7 @@ Files::MessageComment.create(
 
 ```
 Files::MessageComment.update(id, 
-  body: "body"
+  body: "What a great idea, thank you!"
 )
 ```
 
@@ -108,7 +108,7 @@ Files::MessageComment.delete(id)
 message_comment = Files::MessageComment.find(id)
 
 message_comment.update(
-  body: "body"
+  body: "What a great idea, thank you!"
 )
 ```
 

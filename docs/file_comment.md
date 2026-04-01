@@ -42,7 +42,7 @@ Files::FileComment.list_for(path)
 
 ```
 Files::FileComment.create(
-  body: "body", 
+  body: "What a great file!", 
   path: "path"
 )
 ```
@@ -59,7 +59,7 @@ Files::FileComment.create(
 
 ```
 Files::FileComment.update(id, 
-  body: "body"
+  body: "What a great file!"
 )
 ```
 
@@ -90,7 +90,7 @@ Files::FileComment.delete(id)
 file_comment = Files::FileComment.list.first
 
 file_comment.update(
-  body: "body"
+  body: "What a great file!"
 )
 ```
 
