@@ -36,6 +36,15 @@ module Files
       @attributes[:logo] = value
     end
 
+    # string - URL to open when a public visitor clicks the logo
+    def logo_click_href
+      @attributes[:logo_click_href]
+    end
+
+    def logo_click_href=(value)
+      @attributes[:logo_click_href] = value
+    end
+
     # Image - Logo thumbnail
     def thumbnail
       @attributes[:thumbnail]
@@ -45,7 +54,7 @@ module Files
       @attributes[:thumbnail] = value
     end
 
-    # file - Logo for custom branding.
+    # file - Logo for custom branding. Required when creating a new style.
     def file
       @attributes[:file]
     end
@@ -55,14 +64,15 @@ module Files
     end
 
     # Parameters:
-    #   file (required) - file - Logo for custom branding.
+    #   file - file - Logo for custom branding. Required when creating a new style.
+    #   logo_click_href - string - URL to open when a public visitor clicks the logo.
     def update(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: logo_click_href must be an String") if params[:logo_click_href] and !params[:logo_click_href].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
-      raise MissingParameterError.new("Parameter missing: file") unless params[:file]
 
       Api.send_request("/styles/#{@attributes[:path]}", :patch, params, @options)
     end
@@ -105,13 +115,14 @@ module Files
     end
 
     # Parameters:
-    #   file (required) - file - Logo for custom branding.
+    #   file - file - Logo for custom branding. Required when creating a new style.
+    #   logo_click_href - string - URL to open when a public visitor clicks the logo.
     def self.update(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: logo_click_href must be an String") if params[:logo_click_href] and !params[:logo_click_href].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
-      raise MissingParameterError.new("Parameter missing: file") unless params[:file]
 
       response, options = Api.send_request("/styles/#{params[:path]}", :patch, params, options)
       Style.new(response.data, options)
