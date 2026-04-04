@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bigdecimal"
+
 module Files
   class UsageDailySnapshot
     attr_reader :options, :attributes
@@ -32,6 +34,14 @@ module Files
     # int64 - Write API Calls used on this day. Note: only updated for days before the current day.
     def write_api_usage
       @attributes[:write_api_usage]
+    end
+
+    # decimal - Transformation and AI credits used on this day. Note: initially this tracks GPG encrypt, decrypt, and recrypt usage.
+    def transformation_credits_usage
+      value = @attributes[:transformation_credits_usage]
+      return value if value.nil? || value.is_a?(BigDecimal)
+
+      BigDecimal(value.to_s)
     end
 
     # int64 - Number of billable users as of this day.
