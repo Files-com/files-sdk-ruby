@@ -119,6 +119,11 @@ module Files
       @attributes[:updated_at]
     end
 
+    # array(object) - Array of in-progress file transfers with progress data. Only present when the sync run status is in_progress.
+    def live_transfers
+      @attributes[:live_transfers]
+    end
+
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
