@@ -45,6 +45,24 @@ module Files
       @attributes[:group_name] = value
     end
 
+    # array(int64) - Group IDs when the notification requires multiple groups
+    def group_ids
+      @attributes[:group_ids]
+    end
+
+    def group_ids=(value)
+      @attributes[:group_ids] = value
+    end
+
+    # array(string) - Group names when the notification requires multiple groups
+    def group_names
+      @attributes[:group_names]
+    end
+
+    def group_names=(value)
+      @attributes[:group_names] = value
+    end
+
     # array(int64) - If set, will only notify on actions made by a member of one of the specified groups
     def triggering_group_ids
       @attributes[:triggering_group_ids]
@@ -321,6 +339,7 @@ module Files
     #   triggering_user_ids - array(int64) - If set, will only notify on actions made one of the specified users
     #   trigger_by_share_recipients - boolean - Notify when actions are performed by a share recipient?
     #   group_id - int64 - The ID of the group to notify.  Provide `user_id`, `username` or `group_id`.
+    #   group_ids - string - Group IDs when the notification requires multiple groups. If sent as a string, it should be comma-delimited.
     #   path - string - Path
     #   username - string - The username of the user to notify.  Provide `user_id`, `username` or `group_id`.
     def self.create(params = {}, options = {})
@@ -331,6 +350,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: triggering_group_ids must be an Array") if params[:triggering_group_ids] and !params[:triggering_group_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: triggering_user_ids must be an Array") if params[:triggering_user_ids] and !params[:triggering_user_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params[:group_ids] and !params[:group_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
 
