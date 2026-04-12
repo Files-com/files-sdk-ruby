@@ -419,6 +419,15 @@ module Files
       @attributes[:password_validity_days] = value
     end
 
+    # int64 - Primary group ID for Group Admin scoping
+    def primary_group_id
+      @attributes[:primary_group_id]
+    end
+
+    def primary_group_id=(value)
+      @attributes[:primary_group_id] = value
+    end
+
     # int64 - Number of public keys associated with this user
     def public_keys_count
       @attributes[:public_keys_count]
@@ -847,6 +856,7 @@ module Files
     #   partner_admin - boolean - Is this user a Partner administrator?
     #   partner_id - int64 - Partner ID if this user belongs to a Partner
     #   password_validity_days - int64 - Number of days to allow user to use the same password
+    #   primary_group_id - int64 - Primary group ID for Group Admin scoping
     #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
     #   receive_admin_alerts - boolean - Should the user receive admin alerts such a certificate expiration notifications and overages?
     #   require_login_by - string - Require user to login by specified date otherwise it will be disabled.
@@ -895,6 +905,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: primary_group_id must be an Integer") if params[:primary_group_id] and !params[:primary_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_login_by must be an String") if params[:require_login_by] and !params[:require_login_by].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params[:sso_strategy_id] and !params[:sso_strategy_id].is_a?(Integer)
@@ -1024,6 +1035,7 @@ module Files
     #   partner_admin - boolean - Is this user a Partner administrator?
     #   partner_id - int64 - Partner ID if this user belongs to a Partner
     #   password_validity_days - int64 - Number of days to allow user to use the same password
+    #   primary_group_id - int64 - Primary group ID for Group Admin scoping
     #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
     #   receive_admin_alerts - boolean - Should the user receive admin alerts such a certificate expiration notifications and overages?
     #   require_login_by - string - Require user to login by specified date otherwise it will be disabled.
@@ -1067,6 +1079,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: primary_group_id must be an Integer") if params[:primary_group_id] and !params[:primary_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_login_by must be an String") if params[:require_login_by] and !params[:require_login_by].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params[:sso_strategy_id] and !params[:sso_strategy_id].is_a?(Integer)
@@ -1151,6 +1164,7 @@ module Files
     #   partner_admin - boolean - Is this user a Partner administrator?
     #   partner_id - int64 - Partner ID if this user belongs to a Partner
     #   password_validity_days - int64 - Number of days to allow user to use the same password
+    #   primary_group_id - int64 - Primary group ID for Group Admin scoping
     #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
     #   receive_admin_alerts - boolean - Should the user receive admin alerts such a certificate expiration notifications and overages?
     #   require_login_by - string - Require user to login by specified date otherwise it will be disabled.
@@ -1198,6 +1212,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if params[:password_validity_days] and !params[:password_validity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: primary_group_id must be an Integer") if params[:primary_group_id] and !params[:primary_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_login_by must be an String") if params[:require_login_by] and !params[:require_login_by].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if params[:ssl_required] and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if params[:sso_strategy_id] and !params[:sso_strategy_id].is_a?(Integer)

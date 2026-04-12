@@ -119,7 +119,6 @@ module Files
   class ApiKeyOnlyForDesktopAppError < NotAuthorizedError; end
   class ApiKeyOnlyForMobileAppError < NotAuthorizedError; end
   class ApiKeyOnlyForOfficeIntegrationError < NotAuthorizedError; end
-  class BillingOrSiteAdminPermissionRequiredError < NotAuthorizedError; end
   class BillingPermissionRequiredError < NotAuthorizedError; end
   class BundleMaximumUsesReachedError < NotAuthorizedError; end
   class BundlePermissionRequiredError < NotAuthorizedError; end
@@ -151,6 +150,11 @@ module Files
   class ReauthenticationNeededActionError < NotAuthorizedError; end
   class RecaptchaFailedError < NotAuthorizedError; end
   class SelfManagedRequiredError < NotAuthorizedError; end
+  class SiteAdminOrPartnerAdminPermissionRequiredError < NotAuthorizedError; end
+  class SiteAdminOrWorkspaceAdminOrFolderAdminPermissionRequiredError < NotAuthorizedError; end
+  class SiteAdminOrWorkspaceAdminOrPartnerAdminOrFolderAdminPermissionRequiredError < NotAuthorizedError; end
+  class SiteAdminOrWorkspaceAdminOrPartnerAdminPermissionRequiredError < NotAuthorizedError; end
+  class SiteAdminOrWorkspaceAdminPermissionRequiredError < NotAuthorizedError; end
   class SiteAdminRequiredError < NotAuthorizedError; end
   class SiteFilesAreImmutableError < NotAuthorizedError; end
   class TwoFactorAuthenticationRequiredError < NotAuthorizedError; end
