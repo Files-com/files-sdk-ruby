@@ -24,6 +24,11 @@ module Files
       @attributes[:dest_path]
     end
 
+    # string - Reason for the failure, if applicable.
+    def failure_message
+      @attributes[:failure_message]
+    end
+
     # int64 - Number of files processed
     def files_moved
       @attributes[:files_moved]
