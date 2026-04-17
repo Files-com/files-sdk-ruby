@@ -18,7 +18,7 @@ module Files
       @attributes[:id] = value
     end
 
-    # string - User authentication method for which the rule will apply.
+    # string - User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
     def authentication_method
       @attributes[:authentication_method]
     end
@@ -138,7 +138,7 @@ module Files
     # Parameters:
     #   action - string - Action to take on inactive users (disable or delete)
     #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to users in all workspaces.
-    #   authentication_method - string - User authentication method for which the rule will apply.
+    #   authentication_method - string - User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
     #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - If true, the rule will apply to site admins.
@@ -232,7 +232,7 @@ module Files
     # Parameters:
     #   action - string - Action to take on inactive users (disable or delete)
     #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to users in all workspaces.
-    #   authentication_method - string - User authentication method for which the rule will apply.
+    #   authentication_method - string - User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
     #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - If true, the rule will apply to site admins.
@@ -260,7 +260,7 @@ module Files
     # Parameters:
     #   action - string - Action to take on inactive users (disable or delete)
     #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to users in all workspaces.
-    #   authentication_method - string - User authentication method for which the rule will apply.
+    #   authentication_method - string - User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
     #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies
     #   include_site_admins - boolean - If true, the rule will apply to site admins.

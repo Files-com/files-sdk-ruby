@@ -5,7 +5,7 @@
 ```
 {
   "id": 1,
-  "authentication_method": "password",
+  "authentication_method": "all_non_sso",
   "group_ids": [
     1,
     2,
@@ -26,7 +26,7 @@
 ```
 
 * `id` (int64): User Lifecycle Rule ID
-* `authentication_method` (string): User authentication method for which the rule will apply.
+* `authentication_method` (string): User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
 * `group_ids` (array(int64)): Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
 * `action` (string): Action to take on inactive users (disable or delete)
 * `inactivity_days` (int64): Number of days of inactivity before the rule applies
@@ -77,7 +77,7 @@ Files::UserLifecycleRule.find(id)
 ```
 Files::UserLifecycleRule.create(
   apply_to_all_workspaces: true, 
-  authentication_method: "password", 
+  authentication_method: "all_non_sso", 
   group_ids: [1,2,3], 
   inactivity_days: 12, 
   include_site_admins: true, 
@@ -94,7 +94,7 @@ Files::UserLifecycleRule.create(
 
 * `action` (string): Action to take on inactive users (disable or delete)
 * `apply_to_all_workspaces` (boolean): If true, a default-workspace rule also applies to users in all workspaces.
-* `authentication_method` (string): User authentication method for which the rule will apply.
+* `authentication_method` (string): User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
 * `group_ids` (array(int64)): Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
 * `inactivity_days` (int64): Number of days of inactivity before the rule applies
 * `include_site_admins` (boolean): If true, the rule will apply to site admins.
@@ -113,7 +113,7 @@ Files::UserLifecycleRule.create(
 ```
 Files::UserLifecycleRule.update(id, 
   apply_to_all_workspaces: true, 
-  authentication_method: "password", 
+  authentication_method: "all_non_sso", 
   group_ids: [1,2,3], 
   inactivity_days: 12, 
   include_site_admins: true, 
@@ -131,7 +131,7 @@ Files::UserLifecycleRule.update(id,
 * `id` (int64): Required - User Lifecycle Rule ID.
 * `action` (string): Action to take on inactive users (disable or delete)
 * `apply_to_all_workspaces` (boolean): If true, a default-workspace rule also applies to users in all workspaces.
-* `authentication_method` (string): User authentication method for which the rule will apply.
+* `authentication_method` (string): User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
 * `group_ids` (array(int64)): Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
 * `inactivity_days` (int64): Number of days of inactivity before the rule applies
 * `include_site_admins` (boolean): If true, the rule will apply to site admins.
@@ -165,7 +165,7 @@ user_lifecycle_rule = Files::UserLifecycleRule.find(id)
 
 user_lifecycle_rule.update(
   apply_to_all_workspaces: true,
-  authentication_method: "password",
+  authentication_method: "all_non_sso",
   group_ids: [1,2,3],
   inactivity_days: 12,
   include_site_admins: true,
@@ -183,7 +183,7 @@ user_lifecycle_rule.update(
 * `id` (int64): Required - User Lifecycle Rule ID.
 * `action` (string): Action to take on inactive users (disable or delete)
 * `apply_to_all_workspaces` (boolean): If true, a default-workspace rule also applies to users in all workspaces.
-* `authentication_method` (string): User authentication method for which the rule will apply.
+* `authentication_method` (string): User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
 * `group_ids` (array(int64)): Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
 * `inactivity_days` (int64): Number of days of inactivity before the rule applies
 * `include_site_admins` (boolean): If true, the rule will apply to site admins.
