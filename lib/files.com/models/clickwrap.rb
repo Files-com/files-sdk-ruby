@@ -36,7 +36,7 @@ module Files
       @attributes[:body] = value
     end
 
-    # string - Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
+    # string - Use this Clickwrap for Users?  Values: `none`, `require` (new user signup via email invitation only), `require_all_users_once` (show to all users at their next web login; once accepted, not shown again), `require_all_users_always` (show to all users on every web login).
     def use_with_users
       @attributes[:use_with_users]
     end
@@ -68,7 +68,7 @@ module Files
     #   body - string - Body text of Clickwrap (supports Markdown formatting).
     #   use_with_bundles - string - Use this Clickwrap for Bundles?
     #   use_with_inboxes - string - Use this Clickwrap for Inboxes?
-    #   use_with_users - string - Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
+    #   use_with_users - string - Use this Clickwrap for Users?  Values: `none`, `require` (new user signup via email invitation only), `require_all_users_once` (show to all users at their next web login; once accepted, not shown again), `require_all_users_always` (show to all users on every web login).
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -149,7 +149,7 @@ module Files
     #   body - string - Body text of Clickwrap (supports Markdown formatting).
     #   use_with_bundles - string - Use this Clickwrap for Bundles?
     #   use_with_inboxes - string - Use this Clickwrap for Inboxes?
-    #   use_with_users - string - Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
+    #   use_with_users - string - Use this Clickwrap for Users?  Values: `none`, `require` (new user signup via email invitation only), `require_all_users_once` (show to all users at their next web login; once accepted, not shown again), `require_all_users_always` (show to all users on every web login).
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
@@ -166,7 +166,7 @@ module Files
     #   body - string - Body text of Clickwrap (supports Markdown formatting).
     #   use_with_bundles - string - Use this Clickwrap for Bundles?
     #   use_with_inboxes - string - Use this Clickwrap for Inboxes?
-    #   use_with_users - string - Use this Clickwrap for User Registrations?  Note: This only applies to User Registrations where the User is invited to your Files.com site using an E-Mail invitation process where they then set their own password.
+    #   use_with_users - string - Use this Clickwrap for Users?  Values: `none`, `require` (new user signup via email invitation only), `require_all_users_once` (show to all users at their next web login; once accepted, not shown again), `require_all_users_always` (show to all users on every web login).
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
