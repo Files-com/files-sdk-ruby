@@ -219,6 +219,11 @@ module Files
       @attributes[:enabled]
     end
 
+    # boolean - Should this strategy be displayed on the login page?
+    def display_on_login_page
+      @attributes[:display_on_login_page]
+    end
+
     # string - LDAP host
     def ldap_host
       @attributes[:ldap_host]

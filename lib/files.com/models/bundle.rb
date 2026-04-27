@@ -207,6 +207,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # boolean - If true, this Share Link bypasses site-wide expiration rules. Only site admins may set this.
+    def bypasses_site_expiration_rules
+      @attributes[:bypasses_site_expiration_rules]
+    end
+
+    def bypasses_site_expiration_rules=(value)
+      @attributes[:bypasses_site_expiration_rules] = value
+    end
+
     # date-time - Bundle created at date/time
     def created_at
       @attributes[:created_at]
@@ -459,6 +468,7 @@ module Files
     # Parameters:
     #   paths - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
+    #   bypasses_site_expiration_rules - boolean - If true, this Share Link bypasses site-wide expiration rules. Only site admins may set this.
     #   form_field_set_id - int64 - Id of Form Field Set to use with this bundle
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
@@ -542,7 +552,7 @@ module Files
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `expires_at`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at`, `expires_at`, `code` or `user_id`. Valid field combinations are `[ user_id, expires_at ]`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at`, `expires_at`, `code`, `user_id` or `bypasses_site_expiration_rules`. Valid field combinations are `[ user_id, expires_at ]`.
     #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `created_at` and `expires_at`.
     #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at` and `expires_at`.
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `code`.
@@ -589,6 +599,7 @@ module Files
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   paths (required) - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
+    #   bypasses_site_expiration_rules - boolean - If true, this Share Link bypasses site-wide expiration rules. Only site admins may set this.
     #   form_field_set_id - int64 - Id of Form Field Set to use with this bundle
     #   create_snapshot - boolean - If true, create a snapshot of this bundle's contents.
     #   dont_separate_submissions_by_folder - boolean - Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
@@ -660,6 +671,7 @@ module Files
     # Parameters:
     #   paths - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
+    #   bypasses_site_expiration_rules - boolean - If true, this Share Link bypasses site-wide expiration rules. Only site admins may set this.
     #   form_field_set_id - int64 - Id of Form Field Set to use with this bundle
     #   clickwrap_id - int64 - ID of the clickwrap to use with this bundle.
     #   code - string - Bundle code.  This code forms the end part of the Public URL.
