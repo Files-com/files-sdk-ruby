@@ -244,9 +244,19 @@ module Files
       @attributes[:ldap_port]
     end
 
+    # boolean - Use LDAP server settings for scheduled provisioning while using this SSO provider for authentication?
+    def ldap_provisioning_enabled
+      @attributes[:ldap_provisioning_enabled]
+    end
+
     # boolean - Use secure LDAP?
     def ldap_secure
       @attributes[:ldap_secure]
+    end
+
+    # string - LDAP server type
+    def ldap_type
+      @attributes[:ldap_type]
     end
 
     # string - Username for signing in to LDAP server.
