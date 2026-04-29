@@ -41,6 +41,24 @@ module Files
       @attributes[:created_at]
     end
 
+    # date-time - Public key expiration date/time
+    def expires_at
+      @attributes[:expires_at]
+    end
+
+    def expires_at=(value)
+      @attributes[:expires_at] = value
+    end
+
+    # boolean - Is this public key expired?
+    def expired
+      @attributes[:expired]
+    end
+
+    def expired=(value)
+      @attributes[:expired] = value
+    end
+
     # string - Public key fingerprint (MD5)
     def fingerprint
       @attributes[:fingerprint]

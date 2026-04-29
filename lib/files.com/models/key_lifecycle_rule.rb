@@ -36,6 +36,15 @@ module Files
       @attributes[:inactivity_days] = value
     end
 
+    # int64 - Number of days after creation before an SSH key expires. Applies only to SSH keys.
+    def expiration_days
+      @attributes[:expiration_days]
+    end
+
+    def expiration_days=(value)
+      @attributes[:expiration_days] = value
+    end
+
     # boolean - If true, a default-workspace rule also applies to keys in all workspaces.
     def apply_to_all_workspaces
       @attributes[:apply_to_all_workspaces]
@@ -65,6 +74,7 @@ module Files
 
     # Parameters:
     #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to keys in all workspaces.
+    #   expiration_days - int64 - Number of days after creation before an SSH key expires. Applies only to SSH keys.
     #   key_type - string - Key type for which the rule will apply (gpg or ssh).
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies.
     #   name - string - Key Lifecycle Rule name
@@ -74,6 +84,7 @@ module Files
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: expiration_days must be an Integer") if params[:expiration_days] and !params[:expiration_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: key_type must be an String") if params[:key_type] and !params[:key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -147,11 +158,13 @@ module Files
 
     # Parameters:
     #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to keys in all workspaces.
+    #   expiration_days - int64 - Number of days after creation before an SSH key expires. Applies only to SSH keys.
     #   key_type - string - Key type for which the rule will apply (gpg or ssh).
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies.
     #   name - string - Key Lifecycle Rule name
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: expiration_days must be an Integer") if params[:expiration_days] and !params[:expiration_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: key_type must be an String") if params[:key_type] and !params[:key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -163,6 +176,7 @@ module Files
 
     # Parameters:
     #   apply_to_all_workspaces - boolean - If true, a default-workspace rule also applies to keys in all workspaces.
+    #   expiration_days - int64 - Number of days after creation before an SSH key expires. Applies only to SSH keys.
     #   key_type - string - Key type for which the rule will apply (gpg or ssh).
     #   inactivity_days - int64 - Number of days of inactivity before the rule applies.
     #   name - string - Key Lifecycle Rule name
@@ -171,6 +185,7 @@ module Files
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: expiration_days must be an Integer") if params[:expiration_days] and !params[:expiration_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: key_type must be an String") if params[:key_type] and !params[:key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if params[:inactivity_days] and !params[:inactivity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
