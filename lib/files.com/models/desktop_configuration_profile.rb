@@ -45,6 +45,15 @@ module Files
       @attributes[:use_for_all_users] = value
     end
 
+    # boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    def disable_drive_mounting
+      @attributes[:disable_drive_mounting]
+    end
+
+    def disable_drive_mounting=(value)
+      @attributes[:disable_drive_mounting] = value
+    end
+
     # object - Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
     def mount_mappings
       @attributes[:mount_mappings]
@@ -59,6 +68,7 @@ module Files
     #   workspace_id - int64 - Workspace ID
     #   mount_mappings - object - Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
     #   use_for_all_users - boolean - Whether this profile applies to all users in the Workspace by default
+    #   disable_drive_mounting - boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -138,6 +148,7 @@ module Files
     #   mount_mappings (required) - object - Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
     #   workspace_id - int64 - Workspace ID
     #   use_for_all_users - boolean - Whether this profile applies to all users in the Workspace by default
+    #   disable_drive_mounting - boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: mount_mappings must be an Hash") if params[:mount_mappings] and !params[:mount_mappings].is_a?(Hash)
@@ -154,6 +165,7 @@ module Files
     #   workspace_id - int64 - Workspace ID
     #   mount_mappings - object - Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
     #   use_for_all_users - boolean - Whether this profile applies to all users in the Workspace by default
+    #   disable_drive_mounting - boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
