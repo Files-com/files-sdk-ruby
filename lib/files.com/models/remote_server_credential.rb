@@ -306,6 +306,15 @@ module Files
       @attributes[:wasabi_secret_key] = value
     end
 
+    # int64 - ID of Remote Server Credential to copy omitted values from.
+    def copy_values_from_credential_id
+      @attributes[:copy_values_from_credential_id]
+    end
+
+    def copy_values_from_credential_id=(value)
+      @attributes[:copy_values_from_credential_id] = value
+    end
+
     # Parameters:
     #   name - string - Internal name for your reference
     #   description - string - Internal description for your reference
@@ -473,6 +482,7 @@ module Files
     #   s3_compatible_secret_key - string - S3-compatible: Secret Key
     #   wasabi_secret_key - string - Wasabi: Secret Key
     #   workspace_id - int64 - Workspace ID (0 for default workspace)
+    #   copy_values_from_credential_id - int64 - ID of Remote Server Credential to copy omitted values from.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
@@ -505,6 +515,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: copy_values_from_credential_id must be an Integer") if params[:copy_values_from_credential_id] and !params[:copy_values_from_credential_id].is_a?(Integer)
 
       response, options = Api.send_request("/remote_server_credentials", :post, params, options)
       RemoteServerCredential.new(response.data, options)
