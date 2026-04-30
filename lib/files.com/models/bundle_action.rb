@@ -64,6 +64,16 @@ module Files
       @attributes[:bundle_registration_ip]
     end
 
+    # int64 - Id of associated form field set
+    def form_field_set_id
+      @attributes[:form_field_set_id]
+    end
+
+    # object - Data for form field set with form field ids as keys and user data as values
+    def form_field_data
+      @attributes[:form_field_data]
+    end
+
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
