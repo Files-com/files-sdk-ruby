@@ -79,7 +79,7 @@ module Files
       @attributes[:missing_files]
     end
 
-    # array(object) - Captured criteria failures for the window.
+    # array(string) - Captured criteria failures for the window.
     def criteria_errors
       @attributes[:criteria_errors]
     end
