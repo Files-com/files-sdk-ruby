@@ -90,6 +90,15 @@ module Files
       @attributes[:name] = value
     end
 
+    # boolean - If true, users will be emailed before the rule disables or deletes them.
+    def notify_users
+      @attributes[:notify_users]
+    end
+
+    def notify_users=(value)
+      @attributes[:notify_users] = value
+    end
+
     # string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
     def partner_tag
       @attributes[:partner_tag]
@@ -144,6 +153,7 @@ module Files
     #   include_site_admins - boolean - If true, the rule will apply to site admins.
     #   include_folder_admins - boolean - If true, the rule will apply to folder admins.
     #   name - string - User Lifecycle Rule name
+    #   notify_users - boolean - If true, users will be emailed before the rule disables or deletes them.
     #   partner_tag - string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
     #   user_tag - string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
@@ -238,6 +248,7 @@ module Files
     #   include_site_admins - boolean - If true, the rule will apply to site admins.
     #   include_folder_admins - boolean - If true, the rule will apply to folder admins.
     #   name - string - User Lifecycle Rule name
+    #   notify_users - boolean - If true, users will be emailed before the rule disables or deletes them.
     #   partner_tag - string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
     #   user_tag - string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
@@ -266,6 +277,7 @@ module Files
     #   include_site_admins - boolean - If true, the rule will apply to site admins.
     #   include_folder_admins - boolean - If true, the rule will apply to folder admins.
     #   name - string - User Lifecycle Rule name
+    #   notify_users - boolean - If true, users will be emailed before the rule disables or deletes them.
     #   partner_tag - string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
     #   user_state - string - State of the users to apply the rule to (inactive or disabled)
     #   user_tag - string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.

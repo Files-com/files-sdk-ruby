@@ -54,6 +54,15 @@ module Files
       @attributes[:allow_user_creation] = value
     end
 
+    # boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
+    def cc_emails_to_responsible_party
+      @attributes[:cc_emails_to_responsible_party]
+    end
+
+    def cc_emails_to_responsible_party=(value)
+      @attributes[:cc_emails_to_responsible_party] = value
+    end
+
     # int64 - The unique ID of the Partner.
     def id
       @attributes[:id]
@@ -99,6 +108,24 @@ module Files
       @attributes[:partner_admin_ids] = value
     end
 
+    # int64 - ID of the Group responsible for this Partner.
+    def responsible_group_id
+      @attributes[:responsible_group_id]
+    end
+
+    def responsible_group_id=(value)
+      @attributes[:responsible_group_id] = value
+    end
+
+    # int64 - ID of the User responsible for this Partner.
+    def responsible_user_id
+      @attributes[:responsible_user_id]
+    end
+
+    def responsible_user_id=(value)
+      @attributes[:responsible_user_id] = value
+    end
+
     # string - The root folder path for this Partner.
     def root_folder
       @attributes[:root_folder]
@@ -132,7 +159,10 @@ module Files
     #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
     #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
     #   allow_user_creation - boolean - Allow Partner Admins to create users.
+    #   cc_emails_to_responsible_party - boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
     #   notes - string - Notes about this Partner.
+    #   responsible_group_id - int64 - ID of the Group responsible for this Partner.
+    #   responsible_user_id - int64 - ID of the User responsible for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   name - string - The name of the Partner.
     #   root_folder - string - The root folder path for this Partner.
@@ -143,6 +173,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
@@ -219,7 +251,10 @@ module Files
     #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
     #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
     #   allow_user_creation - boolean - Allow Partner Admins to create users.
+    #   cc_emails_to_responsible_party - boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
     #   notes - string - Notes about this Partner.
+    #   responsible_group_id - int64 - ID of the Group responsible for this Partner.
+    #   responsible_user_id - int64 - ID of the User responsible for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   name (required) - string - The name of the Partner.
     #   root_folder (required) - string - The root folder path for this Partner.
@@ -227,6 +262,8 @@ module Files
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
@@ -244,7 +281,10 @@ module Files
     #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
     #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
     #   allow_user_creation - boolean - Allow Partner Admins to create users.
+    #   cc_emails_to_responsible_party - boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
     #   notes - string - Notes about this Partner.
+    #   responsible_group_id - int64 - ID of the Group responsible for this Partner.
+    #   responsible_user_id - int64 - ID of the User responsible for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   name - string - The name of the Partner.
     #   root_folder - string - The root folder path for this Partner.
@@ -254,6 +294,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
