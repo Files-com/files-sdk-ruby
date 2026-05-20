@@ -437,13 +437,85 @@ module Files
       @attributes[:public_keys_count] = value
     end
 
-    # boolean - Should the user receive admin alerts such a certificate expiration notifications and overages?
+    # boolean - Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
     def receive_admin_alerts
       @attributes[:receive_admin_alerts]
     end
 
     def receive_admin_alerts=(value)
       @attributes[:receive_admin_alerts] = value
+    end
+
+    # boolean - Should the user receive site warnings via email?
+    def notify_on_all_site_warnings
+      @attributes[:notify_on_all_site_warnings]
+    end
+
+    def notify_on_all_site_warnings=(value)
+      @attributes[:notify_on_all_site_warnings] = value
+    end
+
+    # boolean - Should the user receive sso/scim/ldap configuration/sync failures via email?
+    def notify_on_all_sso_failures
+      @attributes[:notify_on_all_sso_failures]
+    end
+
+    def notify_on_all_sso_failures=(value)
+      @attributes[:notify_on_all_sso_failures] = value
+    end
+
+    # boolean - Should the user receive user security events via email?
+    def notify_on_all_user_security_events
+      @attributes[:notify_on_all_user_security_events]
+    end
+
+    def notify_on_all_user_security_events=(value)
+      @attributes[:notify_on_all_user_security_events] = value
+    end
+
+    # boolean - Should the user receive pending work failures via email?
+    def notify_on_all_pending_work_failures
+      @attributes[:notify_on_all_pending_work_failures]
+    end
+
+    def notify_on_all_pending_work_failures=(value)
+      @attributes[:notify_on_all_pending_work_failures] = value
+    end
+
+    # boolean - Should the user receive siem failures via email?
+    def notify_on_all_siem_http_destination_failures
+      @attributes[:notify_on_all_siem_http_destination_failures]
+    end
+
+    def notify_on_all_siem_http_destination_failures=(value)
+      @attributes[:notify_on_all_siem_http_destination_failures] = value
+    end
+
+    # boolean - Should the user receive sync failures via email?
+    def notify_on_all_sync_failures
+      @attributes[:notify_on_all_sync_failures]
+    end
+
+    def notify_on_all_sync_failures=(value)
+      @attributes[:notify_on_all_sync_failures] = value
+    end
+
+    # boolean - Should the user receive automation failures via email?
+    def notify_on_all_automation_failures
+      @attributes[:notify_on_all_automation_failures]
+    end
+
+    def notify_on_all_automation_failures=(value)
+      @attributes[:notify_on_all_automation_failures] = value
+    end
+
+    # boolean - Should the user receive expectation failures and misses via email?
+    def notify_on_all_expectation_failures
+      @attributes[:notify_on_all_expectation_failures]
+    end
+
+    def notify_on_all_expectation_failures=(value)
+      @attributes[:notify_on_all_expectation_failures] = value
     end
 
     # string - 2FA required setting
@@ -858,7 +930,15 @@ module Files
     #   password_validity_days - int64 - Number of days to allow user to use the same password
     #   primary_group_id - int64 - Primary group ID for Group Admin scoping
     #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
-    #   receive_admin_alerts - boolean - Should the user receive admin alerts such a certificate expiration notifications and overages?
+    #   receive_admin_alerts - boolean - Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
+    #   notify_on_all_site_warnings - boolean - Should the user receive site warnings via email?
+    #   notify_on_all_sso_failures - boolean - Should the user receive sso/scim/ldap configuration/sync failures via email?
+    #   notify_on_all_user_security_events - boolean - Should the user receive user security events via email?
+    #   notify_on_all_pending_work_failures - boolean - Should the user receive pending work failures via email?
+    #   notify_on_all_siem_http_destination_failures - boolean - Should the user receive siem failures via email?
+    #   notify_on_all_sync_failures - boolean - Should the user receive sync failures via email?
+    #   notify_on_all_automation_failures - boolean - Should the user receive automation failures via email?
+    #   notify_on_all_expectation_failures - boolean - Should the user receive expectation failures and misses via email?
     #   require_login_by - string - Require user to login by specified date otherwise it will be disabled.
     #   require_password_change - boolean - Is a password change required upon next user login?
     #   restapi_permission - boolean - Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)
@@ -1037,7 +1117,15 @@ module Files
     #   password_validity_days - int64 - Number of days to allow user to use the same password
     #   primary_group_id - int64 - Primary group ID for Group Admin scoping
     #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
-    #   receive_admin_alerts - boolean - Should the user receive admin alerts such a certificate expiration notifications and overages?
+    #   receive_admin_alerts - boolean - Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
+    #   notify_on_all_site_warnings - boolean - Should the user receive site warnings via email?
+    #   notify_on_all_sso_failures - boolean - Should the user receive sso/scim/ldap configuration/sync failures via email?
+    #   notify_on_all_user_security_events - boolean - Should the user receive user security events via email?
+    #   notify_on_all_pending_work_failures - boolean - Should the user receive pending work failures via email?
+    #   notify_on_all_siem_http_destination_failures - boolean - Should the user receive siem failures via email?
+    #   notify_on_all_sync_failures - boolean - Should the user receive sync failures via email?
+    #   notify_on_all_automation_failures - boolean - Should the user receive automation failures via email?
+    #   notify_on_all_expectation_failures - boolean - Should the user receive expectation failures and misses via email?
     #   require_login_by - string - Require user to login by specified date otherwise it will be disabled.
     #   require_password_change - boolean - Is a password change required upon next user login?
     #   restapi_permission - boolean - Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)
@@ -1166,7 +1254,15 @@ module Files
     #   password_validity_days - int64 - Number of days to allow user to use the same password
     #   primary_group_id - int64 - Primary group ID for Group Admin scoping
     #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
-    #   receive_admin_alerts - boolean - Should the user receive admin alerts such a certificate expiration notifications and overages?
+    #   receive_admin_alerts - boolean - Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
+    #   notify_on_all_site_warnings - boolean - Should the user receive site warnings via email?
+    #   notify_on_all_sso_failures - boolean - Should the user receive sso/scim/ldap configuration/sync failures via email?
+    #   notify_on_all_user_security_events - boolean - Should the user receive user security events via email?
+    #   notify_on_all_pending_work_failures - boolean - Should the user receive pending work failures via email?
+    #   notify_on_all_siem_http_destination_failures - boolean - Should the user receive siem failures via email?
+    #   notify_on_all_sync_failures - boolean - Should the user receive sync failures via email?
+    #   notify_on_all_automation_failures - boolean - Should the user receive automation failures via email?
+    #   notify_on_all_expectation_failures - boolean - Should the user receive expectation failures and misses via email?
     #   require_login_by - string - Require user to login by specified date otherwise it will be disabled.
     #   require_password_change - boolean - Is a password change required upon next user login?
     #   restapi_permission - boolean - Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)

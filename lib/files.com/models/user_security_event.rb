@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Files
-  class ExternalEvent
+  class UserSecurityEvent
     attr_reader :options, :attributes
 
     def initialize(attributes = {}, options = {})
@@ -14,38 +14,22 @@ module Files
       @attributes[:id]
     end
 
-    def id=(value)
-      @attributes[:id] = value
-    end
-
-    # string - Type of event being recorded.
+    # string - Type of user security event being recorded.
     def event_type
       @attributes[:event_type]
     end
 
-    def event_type=(value)
-      @attributes[:event_type] = value
-    end
-
-    # string - Status of event.
-    def status
-      @attributes[:status]
-    end
-
-    def status=(value)
-      @attributes[:status] = value
-    end
-
-    # string - Event body
+    # string - Event body.
     def body
       @attributes[:body]
     end
 
-    def body=(value)
-      @attributes[:body] = value
+    # array(string) - Event errors.
+    def event_errors
+      @attributes[:event_errors]
     end
 
-    # date-time - External event create date/time
+    # date-time - Event create date/time.
     def created_at
       @attributes[:created_at]
     end
@@ -55,26 +39,16 @@ module Files
       @attributes[:body_url]
     end
 
-    def body_url=(value)
-      @attributes[:body_url] = value
-    end
-
-    def save
-      if @attributes[:id]
-        raise NotImplementedError.new("The ExternalEvent object doesn't support updates.")
-      else
-        new_obj = ExternalEvent.create(@attributes, @options)
-      end
-
-      @attributes = new_obj.attributes
-      true
+    # int64 - User ID.
+    def user_id
+      @attributes[:user_id]
     end
 
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`, `status` or `event_type`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at` and `status`. Valid field combinations are `[ status, created_at ]`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at` and `user_id`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at` and `user_id`. Valid field combinations are `[ user_id, created_at ]`.
     #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `created_at`.
     #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at`.
     #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
@@ -89,8 +63,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
 
-      List.new(ExternalEvent, params) do
-        Api.send_request("/external_events", :get, params, options)
+      List.new(UserSecurityEvent, params) do
+        Api.send_request("/user_security_events", :get, params, options)
       end
     end
 
@@ -99,32 +73,19 @@ module Files
     end
 
     # Parameters:
-    #   id (required) - int64 - External Event ID.
+    #   id (required) - int64 - User Security Event ID.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/external_events/#{params[:id]}", :get, params, options)
-      ExternalEvent.new(response.data, options)
+      response, options = Api.send_request("/user_security_events/#{params[:id]}", :get, params, options)
+      UserSecurityEvent.new(response.data, options)
     end
 
     def self.get(id, params = {}, options = {})
       find(id, params, options)
-    end
-
-    # Parameters:
-    #   status (required) - string - Status of event.
-    #   body (required) - string - Event body
-    def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: status must be an String") if params[:status] and !params[:status].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: status") unless params[:status]
-      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
-
-      response, options = Api.send_request("/external_events", :post, params, options)
-      ExternalEvent.new(response.data, options)
     end
   end
 end
