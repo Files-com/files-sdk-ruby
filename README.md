@@ -552,6 +552,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`FolderAdminPermissionRequiredError`|  `NotAuthorizedError` |
 |`FullPermissionRequiredError`|  `NotAuthorizedError` |
 |`HistoryPermissionRequiredError`|  `NotAuthorizedError` |
+|`InAppAiAssistantUnavailableError`|  `NotAuthorizedError` |
 |`InsufficientPermissionForParamsError`|  `NotAuthorizedError` |
 |`InsufficientPermissionForSiteError`|  `NotAuthorizedError` |
 |`MoverAccessDeniedError`|  `NotAuthorizedError` |

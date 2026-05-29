@@ -26,6 +26,11 @@ module Files
       @attributes[:additional_text_file_types]
     end
 
+    # object - Availability settings for AI features by user class
+    def ai_feature_availability
+      @attributes[:ai_feature_availability]
+    end
+
     # boolean - Is SMS two factor authentication allowed?
     def allowed_2fa_method_sms
       @attributes[:allowed_2fa_method_sms]
@@ -324,6 +329,11 @@ module Files
     # string - Comma separated list of disallowed Country codes
     def disallowed_countries
       @attributes[:disallowed_countries]
+    end
+
+    # boolean - If true, all AI features are disabled for this site.
+    def disable_all_ai_features
+      @attributes[:disable_all_ai_features]
     end
 
     # boolean - If set, Files.com will not set the CAA records required to generate future SSL certificates for this domain.
@@ -974,6 +984,8 @@ module Files
     #   motd_use_for_ftp - boolean - Show message to users connecting via FTP
     #   motd_use_for_sftp - boolean - Show message to users connecting via SFTP
     #   left_navigation_visibility - object - Visibility settings for account navigation
+    #   disable_all_ai_features - boolean - If true, all AI features are disabled for this site.
+    #   ai_feature_availability - object - Availability settings for AI features by user class
     #   additional_text_file_types - array(string) - Additional extensions that are considered text files
     #   bundle_require_note - boolean - Do Bundles require internal notes?
     #   bundle_send_shared_receipts - boolean - Do Bundle creators receive receipts of invitations?
@@ -1136,6 +1148,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: office_integration_type must be an String") if params[:office_integration_type] and !params[:office_integration_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: motd_text must be an String") if params[:motd_text] and !params[:motd_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: left_navigation_visibility must be an Hash") if params[:left_navigation_visibility] and !params[:left_navigation_visibility].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: ai_feature_availability must be an Hash") if params[:ai_feature_availability] and !params[:ai_feature_availability].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: additional_text_file_types must be an Array") if params[:additional_text_file_types] and !params[:additional_text_file_types].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: as2_message_retention_days must be an Integer") if params[:as2_message_retention_days] and !params[:as2_message_retention_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: session_expiry_minutes must be an Integer") if params[:session_expiry_minutes] and !params[:session_expiry_minutes].is_a?(Integer)

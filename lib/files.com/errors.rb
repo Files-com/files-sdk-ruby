@@ -130,6 +130,7 @@ module Files
   class FolderAdminPermissionRequiredError < NotAuthorizedError; end
   class FullPermissionRequiredError < NotAuthorizedError; end
   class HistoryPermissionRequiredError < NotAuthorizedError; end
+  class InAppAiAssistantUnavailableError < NotAuthorizedError; end
   class InsufficientPermissionForParamsError < NotAuthorizedError; end
   class InsufficientPermissionForSiteError < NotAuthorizedError; end
   class MoverAccessDeniedError < NotAuthorizedError; end
