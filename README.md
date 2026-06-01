@@ -542,6 +542,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`PartNumberTooLargeError`|  `BadRequestError` |
 |`PathCannotHaveTrailingWhitespaceError`|  `BadRequestError` |
 |`ReauthenticationNeededFieldsError`|  `BadRequestError` |
+|`RequestBodyTooLargeError`|  `BadRequestError` |
 |`RequestParamsContainInvalidCharacterError`|  `BadRequestError` |
 |`RequestParamsInvalidError`|  `BadRequestError` |
 |`RequestParamsRequiredError`|  `BadRequestError` |
@@ -605,6 +606,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`ReauthenticationFailedFinalError`|  `NotAuthorizedError` |
 |`ReauthenticationNeededActionError`|  `NotAuthorizedError` |
 |`RecaptchaFailedError`|  `NotAuthorizedError` |
+|`RemoteDesktopDebugLoggingDisabledError`|  `NotAuthorizedError` |
 |`SelfManagedRequiredError`|  `NotAuthorizedError` |
 |`SiteAdminOrPartnerAdminPermissionRequiredError`|  `NotAuthorizedError` |
 |`SiteAdminOrWorkspaceAdminOrFolderAdminPermissionRequiredError`|  `NotAuthorizedError` |

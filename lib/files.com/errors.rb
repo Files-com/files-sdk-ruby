@@ -83,6 +83,7 @@ module Files
   class PartNumberTooLargeError < BadRequestError; end
   class PathCannotHaveTrailingWhitespaceError < BadRequestError; end
   class ReauthenticationNeededFieldsError < BadRequestError; end
+  class RequestBodyTooLargeError < BadRequestError; end
   class RequestParamsContainInvalidCharacterError < BadRequestError; end
   class RequestParamsInvalidError < BadRequestError; end
   class RequestParamsRequiredError < BadRequestError; end
@@ -150,6 +151,7 @@ module Files
   class ReauthenticationFailedFinalError < NotAuthorizedError; end
   class ReauthenticationNeededActionError < NotAuthorizedError; end
   class RecaptchaFailedError < NotAuthorizedError; end
+  class RemoteDesktopDebugLoggingDisabledError < NotAuthorizedError; end
   class SelfManagedRequiredError < NotAuthorizedError; end
   class SiteAdminOrPartnerAdminPermissionRequiredError < NotAuthorizedError; end
   class SiteAdminOrWorkspaceAdminOrFolderAdminPermissionRequiredError < NotAuthorizedError; end
