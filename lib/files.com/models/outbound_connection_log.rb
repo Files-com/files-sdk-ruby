@@ -29,9 +29,19 @@ module Files
       @attributes[:src_remote_server_id]
     end
 
+    # string - Source Remote Server name
+    def src_remote_server_name
+      @attributes[:src_remote_server_name]
+    end
+
     # int64 - Destination Remote Server ID
     def dest_remote_server_id
       @attributes[:dest_remote_server_id]
+    end
+
+    # string - Destination Remote Server name
+    def dest_remote_server_name
+      @attributes[:dest_remote_server_name]
     end
 
     # string - Operation Type
