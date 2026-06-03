@@ -966,6 +966,7 @@ module Files
     #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
     #   workspace_admin - boolean - Is the user a Workspace administrator?  Applicable only to the workspace ID related to this user, if one is set.
     #   username - string - User's username
+    #   workspace_id - int64 - Workspace ID
     #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
     #   convert_to_partner_user - boolean - If true, convert this user to a partner user by assigning the partner_id provided.
     def update(params = {})
@@ -1006,6 +1007,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_home must be an String") if params[:user_home] and !params[:user_home].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/users/#{@attributes[:id]}", :patch, params, @options)
@@ -1294,6 +1296,7 @@ module Files
     #   user_home - string - Home folder for FTP/SFTP.  Note that this is not used for API, Desktop, or Web interface.
     #   workspace_admin - boolean - Is the user a Workspace administrator?  Applicable only to the workspace ID related to this user, if one is set.
     #   username - string - User's username
+    #   workspace_id - int64 - Workspace ID
     #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
     #   convert_to_partner_user - boolean - If true, convert this user to a partner user by assigning the partner_id provided.
     def self.update(id, params = {}, options = {})
@@ -1333,6 +1336,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if params[:user_root] and !params[:user_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_home must be an String") if params[:user_home] and !params[:user_home].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/users/#{params[:id]}", :patch, params, options)
