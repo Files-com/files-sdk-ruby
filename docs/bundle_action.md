@@ -60,7 +60,9 @@
 
 ```
 Files::BundleAction.list(
-  user_id: 1
+  user_id: 1, 
+  bundle_id: 1, 
+  bundle_registration_id: 1
 )
 ```
 
@@ -75,3 +77,5 @@ Files::BundleAction.list(
 * `filter_gteq` (object): If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at`.
 * `filter_lt` (object): If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
 * `filter_lteq` (object): If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at`.
+* `bundle_id` (int64): Bundle ID
+* `bundle_registration_id` (int64): Bundle Registration ID

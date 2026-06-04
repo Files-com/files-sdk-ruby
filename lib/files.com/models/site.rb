@@ -141,6 +141,11 @@ module Files
       @attributes[:bundle_password_required]
     end
 
+    # boolean - If true, new Share Links created by a user with a primary group will default to that group as owner.
+    def bundles_default_owned_by_primary_group
+      @attributes[:bundles_default_owned_by_primary_group]
+    end
+
     # array(string) - List of email domains to disallow when entering a Bundle/Inbox recipients
     def bundle_recipient_blacklist_domains
       @attributes[:bundle_recipient_blacklist_domains]
@@ -989,6 +994,7 @@ module Files
     #   additional_text_file_types - array(string) - Additional extensions that are considered text files
     #   bundle_require_note - boolean - Do Bundles require internal notes?
     #   bundle_send_shared_receipts - boolean - Do Bundle creators receive receipts of invitations?
+    #   bundles_default_owned_by_primary_group - boolean - If true, new Share Links created by a user with a primary group will default to that group as owner.
     #   calculate_file_checksums_crc32 - boolean - Calculate CRC32 checksums for files?
     #   calculate_file_checksums_md5 - boolean - Calculate MD5 checksums for files?
     #   calculate_file_checksums_sha1 - boolean - Calculate SHA1 checksums for files?

@@ -84,6 +84,8 @@ module Files
     #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at`.
     #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
     #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at`.
+    #   bundle_id - int64 - Bundle ID
+    #   bundle_registration_id - int64 - Bundle Registration ID
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
@@ -94,6 +96,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: bundle_registration_id must be an Integer") if params[:bundle_registration_id] and !params[:bundle_registration_id].is_a?(Integer)
 
       List.new(BundleAction, params) do
         Api.send_request("/bundle_actions", :get, params, options)
