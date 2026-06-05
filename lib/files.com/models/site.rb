@@ -699,6 +699,11 @@ module Files
       @attributes[:require_2fa]
     end
 
+    # boolean - If true, SSO users using the default user-level two-factor authentication setting are exempt from the site-wide two-factor authentication requirement.
+    def require_2fa_exempt_all_sso_users
+      @attributes[:require_2fa_exempt_all_sso_users]
+    end
+
     # date-time - If set, requirement for two-factor authentication has been scheduled to end on this date-time.
     def require_2fa_stop_time
       @attributes[:require_2fa_stop_time]
@@ -1081,6 +1086,7 @@ module Files
     #   allowed_2fa_method_static - boolean - Is OTP via static codes for two factor authentication allowed?
     #   allowed_2fa_method_bypass_for_ftp_sftp_dav - boolean - Are users allowed to configure their two factor authentication to be bypassed for FTP/SFTP/WebDAV?
     #   require_2fa - boolean - Require two-factor authentication for all users?
+    #   require_2fa_exempt_all_sso_users - boolean - If true, SSO users using the default user-level two-factor authentication setting are exempt from the site-wide two-factor authentication requirement.
     #   require_2fa_user_type - string - What type of user is required to use two-factor authentication (when require_2fa is set to `true` for this site)?
     #   color2_top - string - Top bar background color
     #   color2_left - string - Page link and button color
