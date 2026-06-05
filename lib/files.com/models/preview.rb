@@ -24,7 +24,7 @@ module Files
       @attributes[:download_uri]
     end
 
-    # string - Preview type. Can be image, pdf, pdf_native, video, or audio
+    # string - Preview type. Can be image, pdf, pdf_native, video, audio, or text
     def type
       @attributes[:type]
     end
