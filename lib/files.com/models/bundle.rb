@@ -221,6 +221,24 @@ module Files
       @attributes[:created_at]
     end
 
+    # boolean - Indicates if the bundle has been deleted.
+    def deleted
+      @attributes[:deleted]
+    end
+
+    def deleted=(value)
+      @attributes[:deleted] = value
+    end
+
+    # date-time - Bundle deleted at date/time
+    def deleted_at
+      @attributes[:deleted_at]
+    end
+
+    def deleted_at=(value)
+      @attributes[:deleted_at] = value
+    end
+
     # boolean - Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     def dont_separate_submissions_by_folder
       @attributes[:dont_separate_submissions_by_folder]
@@ -569,6 +587,7 @@ module Files
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `code`.
     #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `created_at` and `expires_at`.
     #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at` and `expires_at`.
+    #   deleted - boolean - If true, only list deleted Share Links.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
