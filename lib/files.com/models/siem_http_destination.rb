@@ -99,13 +99,22 @@ module Files
       @attributes[:generic_payload_type] = value
     end
 
-    # string - Applicable only for destination type: splunk. Authentication token provided by Splunk.
+    # string - Applicable only for destination types: splunk, splunk_compatible. Authentication token for the destination.
     def splunk_token_masked
       @attributes[:splunk_token_masked]
     end
 
     def splunk_token_masked=(value)
       @attributes[:splunk_token_masked] = value
+    end
+
+    # string - Applicable only for destination type: crowdstrike. Authentication token provided by Crowdstrike.
+    def crowdstrike_token_masked
+      @attributes[:crowdstrike_token_masked]
+    end
+
+    def crowdstrike_token_masked=(value)
+      @attributes[:crowdstrike_token_masked] = value
     end
 
     # string - Applicable only for destination types: azure, azure_legacy. Immutable ID of the Data Collection Rule.
@@ -495,13 +504,22 @@ module Files
       @attributes[:connection_test_entry] = value
     end
 
-    # string - Applicable only for destination type: splunk. Authentication token provided by Splunk.
+    # string - Applicable only for destination types: splunk, splunk_compatible. Authentication token for the destination.
     def splunk_token
       @attributes[:splunk_token]
     end
 
     def splunk_token=(value)
       @attributes[:splunk_token] = value
+    end
+
+    # string - Applicable only for destination type: crowdstrike. Authentication token provided by Crowdstrike.
+    def crowdstrike_token
+      @attributes[:crowdstrike_token]
+    end
+
+    def crowdstrike_token=(value)
+      @attributes[:crowdstrike_token] = value
     end
 
     # string - Applicable only for destination type: azure. Client Credentials OAuth Client Secret.
@@ -557,7 +575,8 @@ module Files
     #   file_destination_path - string - Applicable only for destination type: file. Destination folder path on Files.com.
     #   file_format - string - Applicable only for destination type: file. Generated file format.
     #   file_interval_minutes - int64 - Applicable only for destination type: file. Interval, in minutes, between file deliveries. Valid values are 5, 10, 15, 20, 30, 60, 90, 180, 240, 360.
-    #   splunk_token - string - Applicable only for destination type: splunk. Authentication token provided by Splunk.
+    #   splunk_token - string - Applicable only for destination types: splunk, splunk_compatible. Authentication token for the destination.
+    #   crowdstrike_token - string - Applicable only for destination type: crowdstrike. Authentication token provided by Crowdstrike.
     #   azure_dcr_immutable_id - string - Applicable only for destination types: azure, azure_legacy. Immutable ID of the Data Collection Rule.
     #   azure_stream_name - string - Applicable only for destination type: azure. Name of the stream in the DCR that represents the destination table.
     #   azure_oauth_client_credentials_tenant_id - string - Applicable only for destination types: azure, azure_legacy. Client Credentials OAuth Tenant ID.
@@ -593,6 +612,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if params[:crowdstrike_token] and !params[:crowdstrike_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if params[:azure_oauth_client_credentials_tenant_id] and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
@@ -676,7 +696,8 @@ module Files
     #   file_destination_path - string - Applicable only for destination type: file. Destination folder path on Files.com.
     #   file_format - string - Applicable only for destination type: file. Generated file format.
     #   file_interval_minutes - int64 - Applicable only for destination type: file. Interval, in minutes, between file deliveries. Valid values are 5, 10, 15, 20, 30, 60, 90, 180, 240, 360.
-    #   splunk_token - string - Applicable only for destination type: splunk. Authentication token provided by Splunk.
+    #   splunk_token - string - Applicable only for destination types: splunk, splunk_compatible. Authentication token for the destination.
+    #   crowdstrike_token - string - Applicable only for destination type: crowdstrike. Authentication token provided by Crowdstrike.
     #   azure_dcr_immutable_id - string - Applicable only for destination types: azure, azure_legacy. Immutable ID of the Data Collection Rule.
     #   azure_stream_name - string - Applicable only for destination type: azure. Name of the stream in the DCR that represents the destination table.
     #   azure_oauth_client_credentials_tenant_id - string - Applicable only for destination types: azure, azure_legacy. Client Credentials OAuth Tenant ID.
@@ -709,6 +730,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if params[:crowdstrike_token] and !params[:crowdstrike_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if params[:azure_oauth_client_credentials_tenant_id] and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
@@ -738,7 +760,8 @@ module Files
     #   file_destination_path - string - Applicable only for destination type: file. Destination folder path on Files.com.
     #   file_format - string - Applicable only for destination type: file. Generated file format.
     #   file_interval_minutes - int64 - Applicable only for destination type: file. Interval, in minutes, between file deliveries. Valid values are 5, 10, 15, 20, 30, 60, 90, 180, 240, 360.
-    #   splunk_token - string - Applicable only for destination type: splunk. Authentication token provided by Splunk.
+    #   splunk_token - string - Applicable only for destination types: splunk, splunk_compatible. Authentication token for the destination.
+    #   crowdstrike_token - string - Applicable only for destination type: crowdstrike. Authentication token provided by Crowdstrike.
     #   azure_dcr_immutable_id - string - Applicable only for destination types: azure, azure_legacy. Immutable ID of the Data Collection Rule.
     #   azure_stream_name - string - Applicable only for destination type: azure. Name of the stream in the DCR that represents the destination table.
     #   azure_oauth_client_credentials_tenant_id - string - Applicable only for destination types: azure, azure_legacy. Client Credentials OAuth Tenant ID.
@@ -772,6 +795,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if params[:crowdstrike_token] and !params[:crowdstrike_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if params[:azure_oauth_client_credentials_tenant_id] and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
@@ -795,7 +819,8 @@ module Files
     #   file_destination_path - string - Applicable only for destination type: file. Destination folder path on Files.com.
     #   file_format - string - Applicable only for destination type: file. Generated file format.
     #   file_interval_minutes - int64 - Applicable only for destination type: file. Interval, in minutes, between file deliveries. Valid values are 5, 10, 15, 20, 30, 60, 90, 180, 240, 360.
-    #   splunk_token - string - Applicable only for destination type: splunk. Authentication token provided by Splunk.
+    #   splunk_token - string - Applicable only for destination types: splunk, splunk_compatible. Authentication token for the destination.
+    #   crowdstrike_token - string - Applicable only for destination type: crowdstrike. Authentication token provided by Crowdstrike.
     #   azure_dcr_immutable_id - string - Applicable only for destination types: azure, azure_legacy. Immutable ID of the Data Collection Rule.
     #   azure_stream_name - string - Applicable only for destination type: azure. Name of the stream in the DCR that represents the destination table.
     #   azure_oauth_client_credentials_tenant_id - string - Applicable only for destination types: azure, azure_legacy. Client Credentials OAuth Tenant ID.
@@ -831,6 +856,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if params[:crowdstrike_token] and !params[:crowdstrike_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if params[:azure_oauth_client_credentials_tenant_id] and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
