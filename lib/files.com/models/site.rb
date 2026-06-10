@@ -914,6 +914,11 @@ module Files
       @attributes[:users_can_create_ssh_keys]
     end
 
+    # string - How usernames are displayed in the web UI. Can be `username_only`, `full_name_only`, `full_name_username`, `full_name_company`, or `full_name_username_company`.
+    def username_display
+      @attributes[:username_display]
+    end
+
     # string - Custom text send in user welcome email
     def welcome_custom_text
       @attributes[:welcome_custom_text]
@@ -1007,6 +1012,7 @@ module Files
     #   legacy_checksums_mode - boolean - Use legacy checksums mode?
     #   migrate_remote_server_sync_to_sync - boolean - If true, we will migrate all remote server syncs to the new Sync model.
     #   as2_message_retention_days - int64 - Number of days to retain AS2 messages (incoming and outgoing).
+    #   username_display - string - How usernames are displayed in the web UI. Can be `username_only`, `full_name_only`, `full_name_username`, `full_name_company`, or `full_name_username_company`.
     #   session_expiry_minutes - int64 - Session expiry in minutes
     #   ssl_required - boolean - Is SSL required?  Disabling this is insecure.
     #   sftp_insecure_ciphers - boolean - If true, we will allow weak and known insecure ciphers to be used for SFTP connections.  Enabling this setting severely weakens the security of your site and it is not recommend, except as a last resort for compatibility.
@@ -1163,6 +1169,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ai_feature_availability must be an Hash") if params[:ai_feature_availability] and !params[:ai_feature_availability].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: additional_text_file_types must be an Array") if params[:additional_text_file_types] and !params[:additional_text_file_types].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: as2_message_retention_days must be an Integer") if params[:as2_message_retention_days] and !params[:as2_message_retention_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: username_display must be an String") if params[:username_display] and !params[:username_display].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: session_expiry_minutes must be an Integer") if params[:session_expiry_minutes] and !params[:session_expiry_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_tries must be an Integer") if params[:user_lockout_tries] and !params[:user_lockout_tries].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_lockout_within must be an Integer") if params[:user_lockout_within] and !params[:user_lockout_within].is_a?(Integer)
