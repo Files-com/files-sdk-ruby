@@ -18,22 +18,22 @@ module Files
       @attributes[:id] = value
     end
 
-    # int64 - Partner ID
-    def partner_id
-      @attributes[:partner_id]
+    # int64 - Host Partner ID
+    def host_partner_id
+      @attributes[:host_partner_id]
     end
 
-    def partner_id=(value)
-      @attributes[:partner_id] = value
+    def host_partner_id=(value)
+      @attributes[:host_partner_id] = value
     end
 
-    # int64 - Linked Site ID
-    def linked_site_id
-      @attributes[:linked_site_id]
+    # int64 - Guest Site ID
+    def guest_site_id
+      @attributes[:guest_site_id]
     end
 
-    def linked_site_id=(value)
-      @attributes[:linked_site_id] = value
+    def guest_site_id=(value)
+      @attributes[:guest_site_id] = value
     end
 
     # string - Request status (pending, approved, rejected)
@@ -45,16 +45,16 @@ module Files
       @attributes[:status] = value
     end
 
-    # string - Main Site Name
-    def main_site_name
-      @attributes[:main_site_name]
+    # string - Host Site Name
+    def host_site_name
+      @attributes[:host_site_name]
     end
 
-    def main_site_name=(value)
-      @attributes[:main_site_name] = value
+    def host_site_name=(value)
+      @attributes[:host_site_name] = value
     end
 
-    # string - Pairing key used to approve this request on the target site
+    # string - Pairing key used to approve this request on the Guest Site
     def pairing_key
       @attributes[:pairing_key]
     end
@@ -157,12 +157,12 @@ module Files
     end
 
     # Parameters:
-    #   partner_id (required) - int64 - Partner ID to link with
+    #   host_partner_id (required) - int64 - Host Partner ID to link with
     #   site_url (required) - string - Site URL to link to
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: host_partner_id must be an Integer") if params[:host_partner_id] and !params[:host_partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: site_url must be an String") if params[:site_url] and !params[:site_url].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: partner_id") unless params[:partner_id]
+      raise MissingParameterError.new("Parameter missing: host_partner_id") unless params[:host_partner_id]
       raise MissingParameterError.new("Parameter missing: site_url") unless params[:site_url]
 
       response, options = Api.send_request("/partner_site_requests", :post, params, options)

@@ -9,34 +9,49 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Partner ID
-    def partner_id
-      @attributes[:partner_id]
+    # int64 - Host Partner ID
+    def host_partner_id
+      @attributes[:host_partner_id]
     end
 
-    # string - Partner Name
-    def partner_name
-      @attributes[:partner_name]
+    # string - Host Partner Name
+    def host_partner_name
+      @attributes[:host_partner_name]
     end
 
-    # int64 - Linked Site ID
-    def linked_site_id
-      @attributes[:linked_site_id]
+    # int64 - Guest Partner ID
+    def guest_partner_id
+      @attributes[:guest_partner_id]
     end
 
-    # string - Linked Site Name
-    def linked_site_name
-      @attributes[:linked_site_name]
+    # string - Guest Partner Name
+    def guest_partner_name
+      @attributes[:guest_partner_name]
     end
 
-    # int64 - Main Site ID
-    def main_site_id
-      @attributes[:main_site_id]
+    # int64 - Host Site ID
+    def host_site_id
+      @attributes[:host_site_id]
     end
 
-    # string - Main Site Name
-    def main_site_name
-      @attributes[:main_site_name]
+    # string - Host Site Name
+    def host_site_name
+      @attributes[:host_site_name]
+    end
+
+    # int64 - Guest Site ID
+    def guest_site_id
+      @attributes[:guest_site_id]
+    end
+
+    # string - Guest Site Name
+    def guest_site_name
+      @attributes[:guest_site_name]
+    end
+
+    # int64 - Workspace ID for the Host Partner
+    def workspace_id
+      @attributes[:workspace_id]
     end
 
     def self.linkeds(params = {}, options = {})
