@@ -611,6 +611,7 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Bundle ID.
+    #   deleted - boolean - If true, show a deleted Share Link.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
