@@ -27,6 +27,15 @@ module Files
       @attributes[:name] = value
     end
 
+    # int64 - Workspace ID. 0 means the default workspace.
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
     # string - Event Channel description.
     def description
       @attributes[:description]
@@ -66,6 +75,7 @@ module Files
 
     # Parameters:
     #   name - string - Event Channel name.
+    #   workspace_id - int64 - Workspace ID. 0 means the default workspace.
     #   description - string - Event Channel description.
     #   enabled - boolean - Whether this Event Channel can dispatch events.
     #   default_channel - boolean - Whether this Event Channel is the default destination for newly published events.
@@ -75,6 +85,7 @@ module Files
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
@@ -110,8 +121,8 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`, `enabled` or `default_channel`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `enabled` and `default_channel`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`, `enabled`, `default_channel` or `workspace_id`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `enabled`, `default_channel` or `workspace_id`. Valid field combinations are `[ workspace_id, enabled ]` and `[ workspace_id, default_channel ]`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -145,11 +156,13 @@ module Files
 
     # Parameters:
     #   name (required) - string - Event Channel name.
+    #   workspace_id - int64 - Workspace ID. 0 means the default workspace.
     #   description - string - Event Channel description.
     #   enabled - boolean - Whether this Event Channel can dispatch events.
     #   default_channel - boolean - Whether this Event Channel is the default destination for newly published events.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
@@ -159,6 +172,7 @@ module Files
 
     # Parameters:
     #   name - string - Event Channel name.
+    #   workspace_id - int64 - Workspace ID. 0 means the default workspace.
     #   description - string - Event Channel description.
     #   enabled - boolean - Whether this Event Channel can dispatch events.
     #   default_channel - boolean - Whether this Event Channel is the default destination for newly published events.
@@ -167,6 +181,7 @@ module Files
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
