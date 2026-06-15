@@ -45,6 +45,15 @@ module Files
       @attributes[:notify_on_upload] = value
     end
 
+    # boolean - Is the current user the user to notify?
+    def notify_current_user
+      @attributes[:notify_current_user]
+    end
+
+    def notify_current_user=(value)
+      @attributes[:notify_current_user] = value
+    end
+
     # int64 - The id of the user to notify.
     def notify_user_id
       @attributes[:notify_user_id]
