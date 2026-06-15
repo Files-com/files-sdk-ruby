@@ -261,6 +261,24 @@ module Files
       @attributes[:google_cloud_storage_bucket] = value
     end
 
+    # string - Google Cloud Storage: Authentication method. Can be json, hmac, or oauth.
+    def google_cloud_storage_authentication_method
+      @attributes[:google_cloud_storage_authentication_method]
+    end
+
+    def google_cloud_storage_authentication_method=(value)
+      @attributes[:google_cloud_storage_authentication_method] = value
+    end
+
+    # string - Google Cloud Storage: OAuth scope. Can be https://www.googleapis.com/auth/devstorage.read_only or https://www.googleapis.com/auth/devstorage.read_write.
+    def google_cloud_storage_oauth_scope
+      @attributes[:google_cloud_storage_oauth_scope]
+    end
+
+    def google_cloud_storage_oauth_scope=(value)
+      @attributes[:google_cloud_storage_oauth_scope] = value
+    end
+
     # string - Google Cloud Storage: Project ID
     def google_cloud_storage_project_id
       @attributes[:google_cloud_storage_project_id]
@@ -891,7 +909,9 @@ module Files
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
     #   outbound_agent_id - int64 - Route traffic to outbound on a files-agent
+    #   google_cloud_storage_authentication_method - string - Google Cloud Storage: Authentication method. Can be json, hmac, or oauth.
     #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
+    #   google_cloud_storage_oauth_scope - string - Google Cloud Storage: OAuth scope. Can be https://www.googleapis.com/auth/devstorage.read_only or https://www.googleapis.com/auth/devstorage.read_write.
     #   google_cloud_storage_project_id - string - Google Cloud Storage: Project ID
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
     #   hostname - string - Hostname or IP address
@@ -965,7 +985,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: outbound_agent_id must be an Integer") if params[:outbound_agent_id] and !params[:outbound_agent_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_authentication_method must be an String") if params[:google_cloud_storage_authentication_method] and !params[:google_cloud_storage_authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_oauth_scope must be an String") if params[:google_cloud_storage_oauth_scope] and !params[:google_cloud_storage_oauth_scope].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params[:hostname] and !params[:hostname].is_a?(String)
@@ -1119,7 +1141,9 @@ module Files
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
     #   outbound_agent_id - int64 - Route traffic to outbound on a files-agent
+    #   google_cloud_storage_authentication_method - string - Google Cloud Storage: Authentication method. Can be json, hmac, or oauth.
     #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
+    #   google_cloud_storage_oauth_scope - string - Google Cloud Storage: OAuth scope. Can be https://www.googleapis.com/auth/devstorage.read_only or https://www.googleapis.com/auth/devstorage.read_write.
     #   google_cloud_storage_project_id - string - Google Cloud Storage: Project ID
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
     #   hostname - string - Hostname or IP address
@@ -1190,7 +1214,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: outbound_agent_id must be an Integer") if params[:outbound_agent_id] and !params[:outbound_agent_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_authentication_method must be an String") if params[:google_cloud_storage_authentication_method] and !params[:google_cloud_storage_authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_oauth_scope must be an String") if params[:google_cloud_storage_oauth_scope] and !params[:google_cloud_storage_oauth_scope].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params[:hostname] and !params[:hostname].is_a?(String)
@@ -1315,7 +1341,9 @@ module Files
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
     #   outbound_agent_id - int64 - Route traffic to outbound on a files-agent
+    #   google_cloud_storage_authentication_method - string - Google Cloud Storage: Authentication method. Can be json, hmac, or oauth.
     #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
+    #   google_cloud_storage_oauth_scope - string - Google Cloud Storage: OAuth scope. Can be https://www.googleapis.com/auth/devstorage.read_only or https://www.googleapis.com/auth/devstorage.read_write.
     #   google_cloud_storage_project_id - string - Google Cloud Storage: Project ID
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
     #   hostname - string - Hostname or IP address
@@ -1388,7 +1416,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: outbound_agent_id must be an Integer") if params[:outbound_agent_id] and !params[:outbound_agent_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_authentication_method must be an String") if params[:google_cloud_storage_authentication_method] and !params[:google_cloud_storage_authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_oauth_scope must be an String") if params[:google_cloud_storage_oauth_scope] and !params[:google_cloud_storage_oauth_scope].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params[:hostname] and !params[:hostname].is_a?(String)
