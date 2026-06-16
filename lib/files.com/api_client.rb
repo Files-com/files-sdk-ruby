@@ -93,9 +93,10 @@ module Files
       end
     end
 
-    def execute_request(method, path, base_url: nil, api_key: nil, session_id: nil, headers: {}, params: {})
+    def execute_request(method, path, base_url: nil, api_key: nil, session_id: nil, workspace_id: nil, headers: {}, params: {})
       base_url ||= Files.base_url
       session_id ||= Files.session_id
+      workspace_id = Files.workspace_id if workspace_id.nil?
 
       if session_id and session_id != ""
         check_session_id!(session_id)
@@ -113,7 +114,7 @@ module Files
         body = params
       end
 
-      headers = request_headers(api_key, session_id, method).update(headers)
+      headers = request_headers(api_key, session_id, method, workspace_id).update(headers)
       url = api_url(path, base_url)
 
       context = RequestLogContext.new
@@ -315,7 +316,7 @@ module Files
       raise APIConnectionError, message
     end
 
-    private def request_headers(api_key, session_id, _method)
+    private def request_headers(api_key, session_id, _method, workspace_id)
       user_agent = "Files.com Ruby SDK v#{Files::VERSION}"
       user_agent += " #{format_app_info(Files.app_info)}" unless Files.app_info.nil?
 
@@ -334,6 +335,8 @@ module Files
       headers["X-FilesAPI-Key"] = api_key if api_key
       headers["X-FilesAPI-Auth"] = session_id if session_id
       headers["Accept-Language"] = Files.language if Files.language
+      workspace_id = workspace_id.to_s
+      headers["X-Files-Workspace-Id"] = workspace_id unless workspace_id.empty?
 
       user_agent = @system_profiler.user_agent
       begin

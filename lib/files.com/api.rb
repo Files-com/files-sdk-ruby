@@ -11,13 +11,14 @@ module Files
       api_key = headers.delete(:api_key)
       client = headers.delete(:client)
       session_id = headers.delete(:session_id)
+      workspace_id = headers.delete(:workspace_id)
       if session = headers.delete(:session)
         session.save unless session.id
         session_id = session.id
       end
 
       resp, options[:api_key], options[:session_id] = client.execute_request(
-        verb, path, api_key: api_key, headers: headers, params: params, session_id: session_id
+        verb, path, api_key: api_key, headers: headers, params: params, session_id: session_id, workspace_id: workspace_id
       )
 
       # Hash#select returns an array before 1.9

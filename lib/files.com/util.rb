@@ -2,7 +2,7 @@
 
 module Files
   module Util
-    OPTS = Set[:api_key, :client, :session_id].freeze
+    OPTS = Set[:api_key, :client, :session_id, :workspace_id].freeze
     COLOR_CODES = {
       black:   0, light_black:   60,
       red:     1, light_red:     61,
