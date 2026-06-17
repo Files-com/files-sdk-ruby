@@ -1075,6 +1075,53 @@ module Files
       Api.send_request("/file_actions/move/#{@attributes[:path]}", :post, params, @options)
     end
 
+    # Decrypt a GPG-encrypted file and save it to a destination path
+    #
+    # Parameters:
+    #   destination (required) - string - Destination file path for the decrypted file.
+    #   gpg_key_ids - array(int64) - GPG Key IDs to decrypt with. If omitted, every accessible private GPG key in the source workspace is used.
+    #   gpg_key_partner_id - int64 - Partner ID whose GPG keys should be used for decryption.
+    #   use_all_private_keys - boolean - Use every accessible private GPG key in the source workspace for decryption.
+    #   ignore_mdc_error - boolean - Ignore errors from the MDC (modification detection code) check.
+    #   overwrite - boolean - Overwrite existing file in the destination?
+    def gpg_decrypt(params = {})
+      params ||= {}
+      params[:path] = @attributes[:path]
+      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if params[:gpg_key_ids] and !params[:gpg_key_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if params[:gpg_key_partner_id] and !params[:gpg_key_partner_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
+
+      Api.send_request("/file_actions/gpg_decrypt/#{@attributes[:path]}", :post, params, @options)
+    end
+
+    # Encrypt a file with GPG and save it to a destination path
+    #
+    # Parameters:
+    #   destination (required) - string - Destination file path for the encrypted file.
+    #   gpg_key_ids - array(int64) - GPG Key IDs to encrypt with.
+    #   gpg_key_partner_id - int64 - Partner ID whose GPG keys should be used for encryption.
+    #   signing_key_id - int64 - Optional GPG Key ID to sign with.
+    #   armor - boolean - Output ASCII-armored encrypted data.
+    #   overwrite - boolean - Overwrite existing file in the destination?
+    def gpg_encrypt(params = {})
+      params ||= {}
+      params[:path] = @attributes[:path]
+      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if params[:gpg_key_ids] and !params[:gpg_key_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if params[:gpg_key_partner_id] and !params[:gpg_key_partner_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: signing_key_id must be an Integer") if params[:signing_key_id] and !params[:signing_key_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
+
+      Api.send_request("/file_actions/gpg_encrypt/#{@attributes[:path]}", :post, params, @options)
+    end
+
     # Extract a ZIP file to a destination folder
     #
     # Parameters:
@@ -1281,6 +1328,53 @@ module Files
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
       response, options = Api.send_request("/file_actions/move/#{params[:path]}", :post, params, options)
+      FileAction.new(response.data, options)
+    end
+
+    # Decrypt a GPG-encrypted file and save it to a destination path
+    #
+    # Parameters:
+    #   destination (required) - string - Destination file path for the decrypted file.
+    #   gpg_key_ids - array(int64) - GPG Key IDs to decrypt with. If omitted, every accessible private GPG key in the source workspace is used.
+    #   gpg_key_partner_id - int64 - Partner ID whose GPG keys should be used for decryption.
+    #   use_all_private_keys - boolean - Use every accessible private GPG key in the source workspace for decryption.
+    #   ignore_mdc_error - boolean - Ignore errors from the MDC (modification detection code) check.
+    #   overwrite - boolean - Overwrite existing file in the destination?
+    def self.gpg_decrypt(path, params = {}, options = {})
+      params ||= {}
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if params[:gpg_key_ids] and !params[:gpg_key_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if params[:gpg_key_partner_id] and !params[:gpg_key_partner_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
+
+      response, options = Api.send_request("/file_actions/gpg_decrypt/#{params[:path]}", :post, params, options)
+      FileAction.new(response.data, options)
+    end
+
+    # Encrypt a file with GPG and save it to a destination path
+    #
+    # Parameters:
+    #   destination (required) - string - Destination file path for the encrypted file.
+    #   gpg_key_ids - array(int64) - GPG Key IDs to encrypt with.
+    #   gpg_key_partner_id - int64 - Partner ID whose GPG keys should be used for encryption.
+    #   signing_key_id - int64 - Optional GPG Key ID to sign with.
+    #   armor - boolean - Output ASCII-armored encrypted data.
+    #   overwrite - boolean - Overwrite existing file in the destination?
+    def self.gpg_encrypt(path, params = {}, options = {})
+      params ||= {}
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if params[:gpg_key_ids] and !params[:gpg_key_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if params[:gpg_key_partner_id] and !params[:gpg_key_partner_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: signing_key_id must be an Integer") if params[:signing_key_id] and !params[:signing_key_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
+
+      response, options = Api.send_request("/file_actions/gpg_encrypt/#{params[:path]}", :post, params, options)
       FileAction.new(response.data, options)
     end
 
