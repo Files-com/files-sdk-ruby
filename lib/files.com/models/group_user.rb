@@ -45,13 +45,13 @@ module Files
       @attributes[:admin] = value
     end
 
-    # string - Comma-delimited list of usernames who belong to this group (separated by commas).
-    def usernames
-      @attributes[:usernames]
+    # string - Username of the user
+    def username
+      @attributes[:username]
     end
 
-    def usernames=(value)
-      @attributes[:usernames] = value
+    def username=(value)
+      @attributes[:username] = value
     end
 
     # int64 - Group User ID.
