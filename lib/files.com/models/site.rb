@@ -316,6 +316,11 @@ module Files
       @attributes[:migrate_remote_server_sync_to_sync]
     end
 
+    # boolean - Is OAuth DCR (dynamic client registration) for MCP enabled?
+    def mcp_dcr_enabled
+      @attributes[:mcp_dcr_enabled]
+    end
+
     # boolean - Is the mobile app enabled?
     def mobile_app
       @attributes[:mobile_app]
@@ -1001,6 +1006,7 @@ module Files
     #   left_navigation_visibility - object - Visibility settings for account navigation
     #   disable_all_ai_features - boolean - If true, all AI features are disabled for this site.
     #   ai_feature_availability - object - Availability settings for AI features by user class
+    #   mcp_dcr_enabled - boolean - Is OAuth DCR (dynamic client registration) for MCP enabled?
     #   additional_text_file_types - array(string) - Additional extensions that are considered text files
     #   bundle_require_note - boolean - Do Bundles require internal notes?
     #   bundle_send_shared_receipts - boolean - Do Bundle creators receive receipts of invitations?
