@@ -120,6 +120,7 @@ module Files
   class ApiKeyOnlyForDesktopAppError < NotAuthorizedError; end
   class ApiKeyOnlyForMobileAppError < NotAuthorizedError; end
   class ApiKeyOnlyForOfficeIntegrationError < NotAuthorizedError; end
+  class BillingInformationHiddenError < NotAuthorizedError; end
   class BillingPermissionRequiredError < NotAuthorizedError; end
   class BundleMaximumUsesReachedError < NotAuthorizedError; end
   class BundlePermissionRequiredError < NotAuthorizedError; end
