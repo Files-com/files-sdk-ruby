@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Chat Session ID.
+    # string - Chat Session ID.
     def id
       @attributes[:id]
     end
@@ -56,11 +56,11 @@ module Files
     end
 
     # Parameters:
-    #   id (required) - int64 - Chat Session ID.
+    #   id (required) - string - Chat Session ID.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: id must be an String") if params[:id] and !params[:id].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/chat_sessions/#{params[:id]}", :get, params, options)
