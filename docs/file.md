@@ -270,6 +270,32 @@ Files::File.move(path,
 
 ---
 
+## Transform a file and save the output to a destination path
+
+```
+Files::File.transform(path, 
+  destination: "destination", 
+  transform_type: "transform_type", 
+  target_format: "target_format", 
+  width: 1, 
+  height: 1, 
+  overwrite: false
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `destination` (string): Required - Destination file path for the transformed output.
+* `transform_type` (string): Required - Transform type. Supported values are `image_convert` and `document_convert`.
+* `target_format` (string): Required - Destination format to create.
+* `width` (int64): Maximum output width for image_convert.
+* `height` (int64): Maximum output height for image_convert.
+* `overwrite` (boolean): Overwrite existing file in the destination?
+
+
+---
+
 ## Decrypt a GPG-encrypted file and save it to a destination path
 
 ```
@@ -505,6 +531,34 @@ file.move(
 * `path` (string): Required - Path to operate on.
 * `destination` (string): Required - Move destination path.
 * `overwrite` (boolean): Overwrite existing file(s) in the destination?
+
+
+---
+
+## Transform a file and save the output to a destination path
+
+```
+file = Files::File.find(path)
+
+file.transform(
+  destination: "destination",
+  transform_type: "transform_type",
+  target_format: "target_format",
+  width: 1,
+  height: 1,
+  overwrite: false
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `destination` (string): Required - Destination file path for the transformed output.
+* `transform_type` (string): Required - Transform type. Supported values are `image_convert` and `document_convert`.
+* `target_format` (string): Required - Destination format to create.
+* `width` (int64): Maximum output width for image_convert.
+* `height` (int64): Maximum output height for image_convert.
+* `overwrite` (boolean): Overwrite existing file in the destination?
 
 
 ---

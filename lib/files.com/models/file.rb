@@ -1075,6 +1075,33 @@ module Files
       Api.send_request("/file_actions/move/#{@attributes[:path]}", :post, params, @options)
     end
 
+    # Transform a file and save the output to a destination path
+    #
+    # Parameters:
+    #   destination (required) - string - Destination file path for the transformed output.
+    #   transform_type (required) - string - Transform type. Supported values are `image_convert` and `document_convert`.
+    #   target_format (required) - string - Destination format to create.
+    #   width - int64 - Maximum output width for image_convert.
+    #   height - int64 - Maximum output height for image_convert.
+    #   overwrite - boolean - Overwrite existing file in the destination?
+    def transform(params = {})
+      params ||= {}
+      params[:path] = @attributes[:path]
+      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: transform_type must be an String") if params[:transform_type] and !params[:transform_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: target_format must be an String") if params[:target_format] and !params[:target_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: width must be an Integer") if params[:width] and !params[:width].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: height must be an Integer") if params[:height] and !params[:height].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
+      raise MissingParameterError.new("Parameter missing: transform_type") unless params[:transform_type]
+      raise MissingParameterError.new("Parameter missing: target_format") unless params[:target_format]
+
+      Api.send_request("/file_actions/transform/#{@attributes[:path]}", :post, params, @options)
+    end
+
     # Decrypt a GPG-encrypted file and save it to a destination path
     #
     # Parameters:
@@ -1328,6 +1355,33 @@ module Files
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
       response, options = Api.send_request("/file_actions/move/#{params[:path]}", :post, params, options)
+      FileAction.new(response.data, options)
+    end
+
+    # Transform a file and save the output to a destination path
+    #
+    # Parameters:
+    #   destination (required) - string - Destination file path for the transformed output.
+    #   transform_type (required) - string - Transform type. Supported values are `image_convert` and `document_convert`.
+    #   target_format (required) - string - Destination format to create.
+    #   width - int64 - Maximum output width for image_convert.
+    #   height - int64 - Maximum output height for image_convert.
+    #   overwrite - boolean - Overwrite existing file in the destination?
+    def self.transform(path, params = {}, options = {})
+      params ||= {}
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: transform_type must be an String") if params[:transform_type] and !params[:transform_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: target_format must be an String") if params[:target_format] and !params[:target_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: width must be an Integer") if params[:width] and !params[:width].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: height must be an Integer") if params[:height] and !params[:height].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
+      raise MissingParameterError.new("Parameter missing: transform_type") unless params[:transform_type]
+      raise MissingParameterError.new("Parameter missing: target_format") unless params[:target_format]
+
+      response, options = Api.send_request("/file_actions/transform/#{params[:path]}", :post, params, options)
       FileAction.new(response.data, options)
     end
 
