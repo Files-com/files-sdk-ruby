@@ -617,6 +617,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`SiteNotFoundError`|  `NotFoundError` |
 |`UserNotFoundError`|  `NotFoundError` |
 |`AgentUnavailableError`|  `ProcessingFailureError` |
+|`AiTaskCannotBeRunManuallyError`|  `ProcessingFailureError` |
 |`AlreadyCompletedError`|  `ProcessingFailureError` |
 |`AutomationCannotBeRunManuallyError`|  `ProcessingFailureError` |
 |`BehaviorNotAllowedOnRemoteServerError`|  `ProcessingFailureError` |

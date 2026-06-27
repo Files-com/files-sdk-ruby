@@ -19,6 +19,11 @@ module Files
       @attributes[:user_id]
     end
 
+    # int64 - AI Task ID. Present when the conversation was started by an AI Task.
+    def ai_task_id
+      @attributes[:ai_task_id]
+    end
+
     # int64 - Workspace ID. `0` means the default workspace.
     def workspace_id
       @attributes[:workspace_id]
@@ -42,9 +47,11 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `ai_task_id`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
       List.new(ChatSession, params) do
         Api.send_request("/chat_sessions", :get, params, options)

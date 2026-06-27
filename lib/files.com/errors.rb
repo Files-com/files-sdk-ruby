@@ -182,6 +182,7 @@ module Files
 
   class ProcessingFailureError < APIError; end
   class AgentUnavailableError < ProcessingFailureError; end
+  class AiTaskCannotBeRunManuallyError < ProcessingFailureError; end
   class AlreadyCompletedError < ProcessingFailureError; end
   class AutomationCannotBeRunManuallyError < ProcessingFailureError; end
   class BehaviorNotAllowedOnRemoteServerError < ProcessingFailureError; end
