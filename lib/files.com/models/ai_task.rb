@@ -54,6 +54,15 @@ module Files
       @attributes[:prompt] = value
     end
 
+    # string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
+    def permission_set
+      @attributes[:permission_set]
+    end
+
+    def permission_set=(value)
+      @attributes[:permission_set] = value
+    end
+
     # string - Path scope used for action-triggered AI Tasks. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
@@ -208,6 +217,7 @@ module Files
     #   interval - string - If trigger is `daily`, this specifies how often to run the AI Task.
     #   name - string - AI Task name.
     #   path - string - Path scope used for action-triggered AI Tasks.
+    #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
     #   prompt - string - Prompt sent when this AI Task is invoked.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
@@ -227,6 +237,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prompt must be an String") if params[:prompt] and !params[:prompt].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
@@ -310,6 +321,7 @@ module Files
     #   interval - string - If trigger is `daily`, this specifies how often to run the AI Task.
     #   name (required) - string - AI Task name.
     #   path - string - Path scope used for action-triggered AI Tasks.
+    #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
     #   prompt (required) - string - Prompt sent when this AI Task is invoked.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
@@ -325,6 +337,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prompt must be an String") if params[:prompt] and !params[:prompt].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
@@ -359,6 +372,7 @@ module Files
     #   interval - string - If trigger is `daily`, this specifies how often to run the AI Task.
     #   name - string - AI Task name.
     #   path - string - Path scope used for action-triggered AI Tasks.
+    #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
     #   prompt - string - Prompt sent when this AI Task is invoked.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
@@ -377,6 +391,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prompt must be an String") if params[:prompt] and !params[:prompt].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
