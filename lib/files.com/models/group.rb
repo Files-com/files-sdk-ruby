@@ -72,6 +72,15 @@ module Files
       @attributes[:usernames] = value
     end
 
+    # int64 - AI Assistant Personality ID assigned to this Group, if any. Users in the Group inherit it unless a direct per-user or Partner assignment overrides it.
+    def ai_assistant_personality_id
+      @attributes[:ai_assistant_personality_id]
+    end
+
+    def ai_assistant_personality_id=(value)
+      @attributes[:ai_assistant_personality_id] = value
+    end
+
     # boolean - If true, users in this group can use FTP to login.  This will override a false value of `ftp_permission` on the user level.
     def ftp_permission
       @attributes[:ftp_permission]
@@ -139,6 +148,7 @@ module Files
     #   notes - string - Group notes.
     #   user_ids - string - A list of user ids. If sent as a string, should be comma-delimited.
     #   admin_ids - string - A list of group admin user ids. If sent as a string, should be comma-delimited.
+    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned to this Group, if any. Users in the Group inherit it unless a direct per-user or Partner assignment overrides it.
     #   ftp_permission - boolean - If true, users in this group can use FTP to login.  This will override a false value of `ftp_permission` on the user level.
     #   sftp_permission - boolean - If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
     #   dav_permission - boolean - If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
@@ -154,6 +164,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if params[:admin_ids] and !params[:admin_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if params[:desktop_configuration_profile_id] and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -233,6 +244,7 @@ module Files
     #   notes - string - Group notes.
     #   user_ids - string - A list of user ids. If sent as a string, should be comma-delimited.
     #   admin_ids - string - A list of group admin user ids. If sent as a string, should be comma-delimited.
+    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned to this Group, if any. Users in the Group inherit it unless a direct per-user or Partner assignment overrides it.
     #   ftp_permission - boolean - If true, users in this group can use FTP to login.  This will override a false value of `ftp_permission` on the user level.
     #   sftp_permission - boolean - If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
     #   dav_permission - boolean - If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
@@ -245,6 +257,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if params[:admin_ids] and !params[:admin_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if params[:desktop_configuration_profile_id] and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -259,6 +272,7 @@ module Files
     #   notes - string - Group notes.
     #   user_ids - string - A list of user ids. If sent as a string, should be comma-delimited.
     #   admin_ids - string - A list of group admin user ids. If sent as a string, should be comma-delimited.
+    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned to this Group, if any. Users in the Group inherit it unless a direct per-user or Partner assignment overrides it.
     #   ftp_permission - boolean - If true, users in this group can use FTP to login.  This will override a false value of `ftp_permission` on the user level.
     #   sftp_permission - boolean - If true, users in this group can use SFTP to login.  This will override a false value of `sftp_permission` on the user level.
     #   dav_permission - boolean - If true, users in this group can use WebDAV to login.  This will override a false value of `dav_permission` on the user level.
@@ -273,6 +287,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if params[:admin_ids] and !params[:admin_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if params[:desktop_configuration_profile_id] and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)

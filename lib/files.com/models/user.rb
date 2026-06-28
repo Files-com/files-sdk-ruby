@@ -158,6 +158,15 @@ module Files
       @attributes[:disabled_expired_or_inactive] = value
     end
 
+    # int64 - AI Assistant Personality ID assigned directly to this user, if any.
+    def ai_assistant_personality_id
+      @attributes[:ai_assistant_personality_id]
+    end
+
+    def ai_assistant_personality_id=(value)
+      @attributes[:ai_assistant_personality_id] = value
+    end
+
     # int64 - Desktop Configuration Profile ID assigned directly to this user, if any.
     def desktop_configuration_profile_id
       @attributes[:desktop_configuration_profile_id]
@@ -915,6 +924,7 @@ module Files
     #   password - string - User password.
     #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
     #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
+    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned directly to this user, if any.
     #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
     #   attachments_permission - boolean - DEPRECATED: If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
@@ -983,6 +993,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params[:imported_password_hash] and !params[:imported_password_hash].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params[:password_confirmation] and !params[:password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params[:authenticate_until] and !params[:authenticate_until].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
@@ -1106,6 +1117,7 @@ module Files
     #   password - string - User password.
     #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
     #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
+    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned directly to this user, if any.
     #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
     #   attachments_permission - boolean - DEPRECATED: If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
@@ -1168,6 +1180,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params[:imported_password_hash] and !params[:imported_password_hash].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params[:password_confirmation] and !params[:password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params[:authenticate_until] and !params[:authenticate_until].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)
@@ -1245,6 +1258,7 @@ module Files
     #   password - string - User password.
     #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
     #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
+    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned directly to this user, if any.
     #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
     #   attachments_permission - boolean - DEPRECATED: If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
     #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
@@ -1312,6 +1326,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if params[:imported_password_hash] and !params[:imported_password_hash].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if params[:password_confirmation] and !params[:password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if params[:authenticate_until] and !params[:authenticate_until].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if params[:authentication_method] and !params[:authentication_method].is_a?(String)

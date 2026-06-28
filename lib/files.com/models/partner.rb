@@ -72,6 +72,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # int64 - AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
+    def ai_assistant_personality_id
+      @attributes[:ai_assistant_personality_id]
+    end
+
+    def ai_assistant_personality_id=(value)
+      @attributes[:ai_assistant_personality_id] = value
+    end
+
     # int64 - ID of the Workspace associated with this Partner.
     def workspace_id
       @attributes[:workspace_id]
@@ -163,6 +172,7 @@ module Files
     end
 
     # Parameters:
+    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
     #   allowed_ips - string - A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
     #   allow_bypassing_2fa_policies - boolean - Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
     #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
@@ -180,6 +190,7 @@ module Files
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
@@ -255,6 +266,7 @@ module Files
     end
 
     # Parameters:
+    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
     #   allowed_ips - string - A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
     #   allow_bypassing_2fa_policies - boolean - Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
     #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
@@ -269,6 +281,7 @@ module Files
     #   root_folder (required) - string - The root folder path for this Partner.
     #   workspace_id - int64 - ID of the Workspace associated with this Partner.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
@@ -285,6 +298,7 @@ module Files
     end
 
     # Parameters:
+    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
     #   allowed_ips - string - A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
     #   allow_bypassing_2fa_policies - boolean - Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
     #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
@@ -301,6 +315,7 @@ module Files
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
