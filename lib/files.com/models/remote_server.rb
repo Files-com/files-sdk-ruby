@@ -576,6 +576,15 @@ module Files
       @attributes[:filebase_access_key] = value
     end
 
+    # string - Files.com direct link: paired API key prefix.
+    def files_api_key_prefix
+      @attributes[:files_api_key_prefix]
+    end
+
+    def files_api_key_prefix=(value)
+      @attributes[:files_api_key_prefix] = value
+    end
+
     # string - Cloudflare: Bucket name
     def cloudflare_bucket
       @attributes[:cloudflare_bucket]
@@ -819,6 +828,15 @@ module Files
       @attributes[:wasabi_secret_key] = value
     end
 
+    # string - Files.com direct link: API key used once to pair the remote server.
+    def files_api_key
+      @attributes[:files_api_key]
+    end
+
+    def files_api_key=(value)
+      @attributes[:files_api_key] = value
+    end
+
     # Push update to Files Agent
     def agent_push_update(params = {})
       params ||= {}
@@ -905,6 +923,7 @@ module Files
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   filebase_access_key - string - Filebase: Access Key.
     #   filebase_bucket - string - Filebase: Bucket name
+    #   files_api_key - string - Files.com direct link: API key used once to pair the remote server.
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
@@ -981,6 +1000,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_api_key must be an String") if params[:files_api_key] and !params[:files_api_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
@@ -1137,6 +1157,7 @@ module Files
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   filebase_access_key - string - Filebase: Access Key.
     #   filebase_bucket - string - Filebase: Bucket name
+    #   files_api_key - string - Files.com direct link: API key used once to pair the remote server.
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
@@ -1210,6 +1231,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_api_key must be an String") if params[:files_api_key] and !params[:files_api_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
@@ -1337,6 +1359,7 @@ module Files
     #   enable_dedicated_ips - boolean - `true` if remote server only accepts connections from dedicated IPs
     #   filebase_access_key - string - Filebase: Access Key.
     #   filebase_bucket - string - Filebase: Bucket name
+    #   files_api_key - string - Files.com direct link: API key used once to pair the remote server.
     #   files_agent_permission_set - string - Local permissions for files agent. read_only, write_only, or read_write
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
@@ -1412,6 +1435,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_api_key must be an String") if params[:files_api_key] and !params[:files_api_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_permission_set must be an String") if params[:files_agent_permission_set] and !params[:files_agent_permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
