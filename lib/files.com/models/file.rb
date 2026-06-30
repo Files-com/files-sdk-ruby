@@ -1079,8 +1079,9 @@ module Files
     #
     # Parameters:
     #   destination (required) - string - Destination file path for the transformed output.
-    #   transform_type (required) - string - Transform type. Supported values are `image_convert` and `document_convert`.
+    #   transform_type (required) - string - Transform type. Supported values are `image_convert`, `document_convert`, and `files_transform_script_execute`.
     #   target_format (required) - string - Destination format to create.
+    #   script - string - Files TransformScript source. Required when transform_type is `files_transform_script_execute`.
     #   width - int64 - Maximum output width for image_convert.
     #   height - int64 - Maximum output height for image_convert.
     #   overwrite - boolean - Overwrite existing file in the destination?
@@ -1092,6 +1093,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: transform_type must be an String") if params[:transform_type] and !params[:transform_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: target_format must be an String") if params[:target_format] and !params[:target_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: script must be an String") if params[:script] and !params[:script].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: width must be an Integer") if params[:width] and !params[:width].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: height must be an Integer") if params[:height] and !params[:height].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
@@ -1362,8 +1364,9 @@ module Files
     #
     # Parameters:
     #   destination (required) - string - Destination file path for the transformed output.
-    #   transform_type (required) - string - Transform type. Supported values are `image_convert` and `document_convert`.
+    #   transform_type (required) - string - Transform type. Supported values are `image_convert`, `document_convert`, and `files_transform_script_execute`.
     #   target_format (required) - string - Destination format to create.
+    #   script - string - Files TransformScript source. Required when transform_type is `files_transform_script_execute`.
     #   width - int64 - Maximum output width for image_convert.
     #   height - int64 - Maximum output height for image_convert.
     #   overwrite - boolean - Overwrite existing file in the destination?
@@ -1374,6 +1377,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: transform_type must be an String") if params[:transform_type] and !params[:transform_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: target_format must be an String") if params[:target_format] and !params[:target_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: script must be an String") if params[:script] and !params[:script].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: width must be an Integer") if params[:width] and !params[:width].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: height must be an Integer") if params[:height] and !params[:height].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
