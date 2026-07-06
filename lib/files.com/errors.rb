@@ -71,6 +71,7 @@ module Files
   class InvalidOauthProviderError < BadRequestError; end
   class InvalidPathError < BadRequestError; end
   class InvalidReturnToUrlError < BadRequestError; end
+  class InvalidSearchQueryError < BadRequestError; end
   class InvalidSortFieldError < BadRequestError; end
   class InvalidSortFilterCombinationError < BadRequestError; end
   class InvalidUploadOffsetError < BadRequestError; end
