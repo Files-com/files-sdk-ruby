@@ -69,6 +69,15 @@ Files::UserRequest.create(
 
 ---
 
+## Create an export CSV of User Request resources
+
+```
+Files::UserRequest.create_export
+```
+
+
+---
+
 ## Delete User Request
 
 ```

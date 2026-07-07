@@ -140,3 +140,88 @@ Files::History.list(
 * `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
 * `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `user_id`, `folder` or `path`. Valid field combinations are `[  ]`, `[ path ]`, `[ path ]` or `[ path ]`.
 * `filter_prefix` (object): If set, return records where the specified field is prefixed by the supplied value. Valid fields are `path`.
+
+
+---
+
+## List history for specific file
+
+```
+Files::History.list_for_file_create_export(path)
+```
+
+### Parameters
+
+* `start_at` (string): Leave blank or set to a date/time to filter earlier entries.
+* `end_at` (string): Leave blank or set to a date/time to filter later entries.
+* `display` (string): Display format. Leave blank or set to `full` or `parent`.
+* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+* `path` (string): Required - Path to operate on.
+
+
+---
+
+## List history for specific folder
+
+```
+Files::History.list_for_folder_create_export(path)
+```
+
+### Parameters
+
+* `start_at` (string): Leave blank or set to a date/time to filter earlier entries.
+* `end_at` (string): Leave blank or set to a date/time to filter later entries.
+* `display` (string): Display format. Leave blank or set to `full` or `parent`.
+* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+* `path` (string): Required - Path to operate on.
+
+
+---
+
+## List history for specific user
+
+```
+Files::History.list_for_user_create_export(user_id)
+```
+
+### Parameters
+
+* `start_at` (string): Leave blank or set to a date/time to filter earlier entries.
+* `end_at` (string): Leave blank or set to a date/time to filter later entries.
+* `display` (string): Display format. Leave blank or set to `full` or `parent`.
+* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+* `user_id` (int64): Required - User ID.
+
+
+---
+
+## List site login history
+
+```
+Files::History.list_logins_create_export
+```
+
+### Parameters
+
+* `start_at` (string): Leave blank or set to a date/time to filter earlier entries.
+* `end_at` (string): Leave blank or set to a date/time to filter later entries.
+* `display` (string): Display format. Leave blank or set to `full` or `parent`.
+* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+
+
+---
+
+## List site full action history
+
+```
+Files::History.list_create_export
+```
+
+### Parameters
+
+* `start_at` (string): Leave blank or set to a date/time to filter earlier entries.
+* `end_at` (string): Leave blank or set to a date/time to filter later entries.
+* `display` (string): Display format. Leave blank or set to `full` or `parent`.
+* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+* `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `user_id`, `folder` or `path`. Valid field combinations are `[  ]`, `[ path ]`, `[ path ]` or `[ path ]`.
+* `filter_prefix` (object): If set, return records where the specified field is prefixed by the supplied value. Valid fields are `path`.

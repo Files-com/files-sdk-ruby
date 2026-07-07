@@ -81,6 +81,15 @@ module Files
       @attributes[:bundle_id] = value
     end
 
+    # string - The method to use, must be email or null
+    def method
+      @attributes[:method]
+    end
+
+    def method=(value)
+      @attributes[:method] = value
+    end
+
     # boolean - Set to true to share the link with the recipient upon creation.
     def share_after_create
       @attributes[:share_after_create]
@@ -133,6 +142,7 @@ module Files
     #   name - string - Name of recipient.
     #   company - string - Company of recipient.
     #   note - string - Note to include in email.
+    #   method - string - The method to use, must be email or null
     #   share_after_create - boolean - Set to true to share the link with the recipient upon creation.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
@@ -141,11 +151,28 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: company must be an String") if params[:company] and !params[:company].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: method must be an String") if params[:method] and !params[:method].is_a?(String)
       raise MissingParameterError.new("Parameter missing: bundle_id") unless params[:bundle_id]
       raise MissingParameterError.new("Parameter missing: recipient") unless params[:recipient]
 
       response, options = Api.send_request("/bundle_recipients", :post, params, options)
       BundleRecipient.new(response.data, options)
+    end
+
+    # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `has_registrations`.
+    #   bundle_id (required) - int64 - List recipients for the bundle with this ID.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: bundle_id") unless params[:bundle_id]
+
+      response, options = Api.send_request("/bundle_recipients/create_export", :post, params, options)
+      Export.new(response.data, options)
     end
   end
 end

@@ -30,5 +30,10 @@ module Files
         Api.send_request("/holiday_regions/supported", :get, params, options)
       end
     end
+
+    def self.supported_create_export(params = {}, options = {})
+      response, options = Api.send_request("/holiday_regions/supported/create_export", :post, params, options)
+      Export.new(response.data, options)
+    end
   end
 end

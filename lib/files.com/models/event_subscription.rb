@@ -221,6 +221,17 @@ module Files
     end
 
     # Parameters:
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`, `enabled`, `event_channel_id` or `workspace_id`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `enabled`, `event_channel_id` or `workspace_id`. Valid field combinations are `[ enabled, event_channel_id ]`, `[ workspace_id, enabled ]` or `[ workspace_id, enabled, event_channel_id ]`.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+
+      response, options = Api.send_request("/event_subscriptions/create_export", :post, params, options)
+      Export.new(response.data, options)
+    end
+
+    # Parameters:
     #   event_channel_id - int64 - Event Channel ID
     #   workspace_id - int64 - Workspace ID. 0 means the default workspace or site-wide.
     #   apply_to_all_workspaces - boolean - If true, this default-workspace subscription applies to events from all workspaces.

@@ -88,5 +88,10 @@ module Files
     def upload_uri
       @attributes[:upload_uri]
     end
+
+    # string - For use with internal services URI to upload this part to
+    def internal_upload_uri
+      @attributes[:internal_upload_uri]
+    end
   end
 end

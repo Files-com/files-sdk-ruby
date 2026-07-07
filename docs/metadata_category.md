@@ -90,6 +90,19 @@ Files::MetadataCategory.create(
 
 ---
 
+## Create an export CSV of Metadata Category resources
+
+```
+Files::MetadataCategory.create_export
+```
+
+### Parameters
+
+* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
+
+
+---
+
 ## Update Metadata Category
 
 ```

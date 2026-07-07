@@ -117,14 +117,25 @@ module Files
       @attributes[:username] = value
     end
 
+    # string
+    def bundle_registration_code
+      @attributes[:bundle_registration_code]
+    end
+
+    def bundle_registration_code=(value)
+      @attributes[:bundle_registration_code] = value
+    end
+
     # Parameters:
     #   token (required) - string - Lock token
+    #   bundle_registration_code - string
     def delete(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: token must be an String") if params[:token] and !params[:token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: token") unless params[:token]
 
@@ -147,12 +158,14 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   path (required) - string - Path to operate on.
     #   include_children - boolean - Include locks from children objects?
+    #   bundle_registration_code - string
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       List.new(Lock, params) do
@@ -162,15 +175,27 @@ module Files
 
     # Parameters:
     #   path (required) - string - Path
+    #   token - string
+    #   type - string
     #   allow_access_by_any_user - boolean - Can lock be modified by users other than its creator?
+    #   scope - string
     #   exclusive - boolean - Is lock exclusive?
+    #   depth - string
     #   recursive - boolean - Does lock apply to subfolders?
+    #   owner - string
     #   timeout - int64 - Lock timeout in seconds
+    #   bundle_registration_code - string
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: token must be an String") if params[:token] and !params[:token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: type must be an String") if params[:type] and !params[:type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: scope must be an String") if params[:scope] and !params[:scope].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: depth must be an String") if params[:depth] and !params[:depth].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: owner must be an String") if params[:owner] and !params[:owner].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params[:timeout] and !params[:timeout].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/locks/#{params[:path]}", :post, params, options)
@@ -179,11 +204,13 @@ module Files
 
     # Parameters:
     #   token (required) - string - Lock token
+    #   bundle_registration_code - string
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: token must be an String") if params[:token] and !params[:token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: token") unless params[:token]
 

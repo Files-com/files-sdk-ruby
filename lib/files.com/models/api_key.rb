@@ -104,6 +104,15 @@ module Files
       @attributes[:name] = value
     end
 
+    # string - Folder path restriction for `office_integration` permission set API keys. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    def path
+      @attributes[:path]
+    end
+
+    def path=(value)
+      @attributes[:path] = value
+    end
+
     # string - Permissions for this API Key. Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations). Keys with the `office_integration` permission set are auto generated, and automatically expire, to allow users to interact with office integration platforms. Keys with the `files_only` permission set can perform file operations as a full-access file user in the key's workspace scope, but cannot use site admin, workspace admin, folder admin, group admin, partner admin, or billing privileges from the owning user.
     def permission_set
       @attributes[:permission_set]
@@ -167,13 +176,13 @@ module Files
       @attributes[:workspace_id] = value
     end
 
-    # string - Folder path restriction for `office_integration` permission set API keys.
-    def path
-      @attributes[:path]
+    # string - The pairing key to use
+    def pairing_key
+      @attributes[:pairing_key]
     end
 
-    def path=(value)
-      @attributes[:path] = value
+    def pairing_key=(value)
+      @attributes[:pairing_key] = value
     end
 
     # Parameters:
@@ -275,6 +284,8 @@ module Files
     #   description - string - User-supplied description of API key.
     #   expires_at - string - API Key expiration date
     #   name (required) - string - Internal name for the API Key.  For your use.
+    #   pairing_key - string - The pairing key to use
+    #   platform - string
     #   aws_style_credentials - boolean - If `true`, this API key will be usable with AWS-compatible endpoints, such as our Inbound S3-compatible endpoint.
     #   path - string - Folder path restriction for `office_integration` permission set API keys.
     #   permission_set - string - Permissions for this API Key. Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations). Keys with the `office_integration` permission set are auto generated, and automatically expire, to allow users to interact with office integration platforms. Keys with the `files_only` permission set can perform file operations as a full-access file user in the key's workspace scope, but cannot use site admin, workspace admin, folder admin, group admin, partner admin, or billing privileges from the owning user.
@@ -284,6 +295,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pairing_key must be an String") if params[:pairing_key] and !params[:pairing_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: platform must be an String") if params[:platform] and !params[:platform].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
@@ -291,6 +304,27 @@ module Files
 
       response, options = Api.send_request("/api_keys", :post, params, options)
       ApiKey.new(response.data, options)
+    end
+
+    # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id` and `workspace_id`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `aws_style_credentials` and `expires_at`.
+    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `expires_at`.
+    #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `expires_at`.
+    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `expires_at`.
+    #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `expires_at`.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
+
+      response, options = Api.send_request("/api_keys/create_export", :post, params, options)
+      Export.new(response.data, options)
     end
 
     # Parameters:

@@ -734,6 +734,11 @@ module Files
       @attributes[:type_of_2fa_for_display] = value
     end
 
+    # date-time - When this user was updated.  Used only for ExaVault compatibility API.  Do not use for other purposes, as this value reveals information about internal changes to users that isn't necessarily public.
+    def updated_at
+      @attributes[:updated_at]
+    end
+
     # string - Root folder for FTP (and optionally SFTP if the appropriate site-wide setting is set).  Note that this is not used for API, Desktop, or Web interface.
     def user_root
       @attributes[:user_root]
@@ -768,6 +773,15 @@ module Files
 
     def password_expire_at=(value)
       @attributes[:password_expire_at] = value
+    end
+
+    # boolean - Does this user have any associations that can be reassigned on delete?
+    def has_reassignable_associations
+      @attributes[:has_reassignable_associations]
+    end
+
+    def has_reassignable_associations=(value)
+      @attributes[:has_reassignable_associations] = value
     end
 
     # file - An image file for your user avatar.
@@ -1063,8 +1077,16 @@ module Files
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `username`, `name`, `email` or `company`. Valid field combinations are `[ company, name ]`.
     #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
     #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
+    #   action - string - Set to `count` to return a count of results rather than the actual results.
     #   ids - string - comma-separated list of User IDs
     #   include_parent_site_users - boolean - Include users from the parent site.
+    #   q[username] - string - List users matching username.
+    #   q[email] - string - List users matching email.
+    #   q[notes] - string - List users matching notes field.
+    #   q[admin] - string - If `true`, list only admin users.
+    #   q[allowed_ips] - string - If set, list only users with overridden allowed IP setting.
+    #   q[password_validity_days] - string - If set, list only users with overridden password validity days setting.
+    #   q[ssl_required] - string - If set, list only users with overridden SSL required setting.
     #   search - string - Searches for partial matches of name, username, or email.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
@@ -1076,6 +1098,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ids must be an String") if params[:ids] and !params[:ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params[:search] and !params[:search].is_a?(String)
 
@@ -1090,6 +1113,7 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - User ID.
+    #   include_reassignable_associations - boolean - If true includes has_reassignable_associations in the response.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -1243,6 +1267,41 @@ module Files
 
       Api.send_request("/users/#{params[:id]}/2fa/reset", :post, params, options)
       nil
+    end
+
+    # Parameters:
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `workspace_id`, `company`, `name`, `disabled`, `authenticate_until`, `username`, `email`, `site_admin`, `last_desktop_login_at`, `last_login_at`, `password_validity_days` or `ssl_required`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `username`, `name`, `email`, `company`, `site_admin`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until`, `not_site_admin`, `disabled`, `partner_id`, `primary_group_id` or `workspace_id`. Valid field combinations are `[ site_admin, username ]`, `[ not_site_admin, username ]`, `[ workspace_id, username ]`, `[ company, name ]`, `[ workspace_id, name ]`, `[ workspace_id, email ]`, `[ workspace_id, company ]`, `[ workspace_id, site_admin ]`, `[ workspace_id, not_site_admin ]`, `[ workspace_id, disabled ]`, `[ workspace_id, partner_id ]`, `[ workspace_id, site_admin, username ]`, `[ workspace_id, not_site_admin, username ]`, `[ workspace_id, disabled, username ]`, `[ workspace_id, partner_id, username ]` or `[ workspace_id, company, name ]`.
+    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
+    #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
+    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `username`, `name`, `email` or `company`. Valid field combinations are `[ company, name ]`.
+    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
+    #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
+    #   action - string - Set to `count` to return a count of results rather than the actual results.
+    #   ids - string - comma-separated list of User IDs
+    #   include_parent_site_users - boolean - Include users from the parent site.
+    #   q[username] - string - List users matching username.
+    #   q[email] - string - List users matching email.
+    #   q[notes] - string - List users matching notes field.
+    #   q[admin] - string - If `true`, list only admin users.
+    #   q[allowed_ips] - string - If set, list only users with overridden allowed IP setting.
+    #   q[password_validity_days] - string - If set, list only users with overridden password validity days setting.
+    #   q[ssl_required] - string - If set, list only users with overridden SSL required setting.
+    #   search - string - Searches for partial matches of name, username, or email.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ids must be an String") if params[:ids] and !params[:ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: search must be an String") if params[:search] and !params[:search].is_a?(String)
+
+      response, options = Api.send_request("/users/create_export", :post, params, options)
+      Export.new(response.data, options)
     end
 
     # Parameters:

@@ -31,6 +31,7 @@
 * `allow_access_by_any_user` (boolean): Can lock be modified by users other than its creator?
 * `user_id` (int64): Lock creator user ID
 * `username` (string): Lock creator username
+* `bundle_registration_code` (string): 
 
 
 ---
@@ -49,6 +50,7 @@ Files::Lock.list_for(path,
 * `per_page` (int64): Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
 * `path` (string): Required - Path to operate on.
 * `include_children` (boolean): Include locks from children objects?
+* `bundle_registration_code` (string): 
 
 
 ---
@@ -57,9 +59,14 @@ Files::Lock.list_for(path,
 
 ```
 Files::Lock.create(path, 
+  token: "17c54824e9931a4688ca032d03f6663c", 
+  type: "write", 
   allow_access_by_any_user: false, 
+  scope: "shared", 
   exclusive: false, 
+  depth: "infinity", 
   recursive: true, 
+  owner: "user", 
   timeout: 1
 )
 ```
@@ -67,10 +74,16 @@ Files::Lock.create(path,
 ### Parameters
 
 * `path` (string): Required - Path
+* `token` (string): 
+* `type` (string): 
 * `allow_access_by_any_user` (boolean): Can lock be modified by users other than its creator?
+* `scope` (string): 
 * `exclusive` (boolean): Is lock exclusive?
+* `depth` (string): 
 * `recursive` (boolean): Does lock apply to subfolders?
+* `owner` (string): 
 * `timeout` (int64): Lock timeout in seconds
+* `bundle_registration_code` (string): 
 
 
 ---
@@ -87,6 +100,7 @@ Files::Lock.delete(path,
 
 * `path` (string): Required - Path
 * `token` (string): Required - Lock token
+* `bundle_registration_code` (string): 
 
 
 ---
@@ -105,3 +119,4 @@ lock.delete(
 
 * `path` (string): Required - Path
 * `token` (string): Required - Lock token
+* `bundle_registration_code` (string): 

@@ -177,6 +177,21 @@ module Files
     end
 
     # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `bundle_id`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `bundle_id`.
+    #   bundle_id - int64 - Bundle ID
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
+
+      response, options = Api.send_request("/bundle_notifications/create_export", :post, params, options)
+      Export.new(response.data, options)
+    end
+
+    # Parameters:
     #   notify_on_registration - boolean - Triggers bundle notification when a registration action occurs for it.
     #   notify_on_upload - boolean - Triggers bundle notification when a upload action occurs for it.
     def self.update(id, params = {}, options = {})

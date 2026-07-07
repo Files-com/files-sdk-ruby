@@ -302,6 +302,19 @@ module Files
     end
 
     # Parameters:
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`, `export_type` or `disabled`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `disabled` and `export_type`.
+    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `export_type`.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
+
+      response, options = Api.send_request("/scheduled_exports/create_export", :post, params, options)
+      Export.new(response.data, options)
+    end
+
+    # Parameters:
     #   name - string - Name for this scheduled export.
     #   export_type - string - Export report type. Valid values: folder_size_audit, group_membership_audit, permission_audit, share_link_audit
     #   export_options - object - Report-specific options. `permission_audit` supports `group_by` with `user` or `path`.

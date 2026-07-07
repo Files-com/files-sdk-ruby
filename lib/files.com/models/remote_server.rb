@@ -342,6 +342,15 @@ module Files
       @attributes[:wasabi_access_key] = value
     end
 
+    # string - Returns link to login with an Oauth provider
+    def auth_setup_link
+      @attributes[:auth_setup_link]
+    end
+
+    def auth_setup_link=(value)
+      @attributes[:auth_setup_link] = value
+    end
+
     # string - Either `in_setup` or `complete`
     def auth_status
       @attributes[:auth_status]
@@ -848,6 +857,58 @@ module Files
       Api.send_request("/remote_servers/#{@attributes[:id]}/agent_push_update", :post, params, @options)
     end
 
+    # Disconnect a Files Agent Proxy
+    #
+    # Parameters:
+    #   proxy_url - string - Files Agent Proxy URL
+    #   proxy_host_header - string - Files Agent Proxy Host Header
+    def disconnect_agent(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: proxy_url must be an String") if params[:proxy_url] and !params[:proxy_url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: proxy_host_header must be an String") if params[:proxy_host_header] and !params[:proxy_host_header].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/remote_servers/#{@attributes[:id]}/disconnect_agent", :post, params, @options)
+    end
+
+    # Authenticate a Files Agent Proxy
+    #
+    # Parameters:
+    #   signed_nonce - string - Signed nonce
+    #   proxy_registration_refresh - boolean - Proxy is refreshing an already validated agent registration
+    #   agent_version - string - Agent version
+    #   peer_id - string - Peer ID
+    #   proxy_url - string - Files Agent Proxy URL
+    #   proxy_host_header - string - Files Agent Proxy Host Header
+    #   root - string - Agent local root path
+    #   agent_hostname - string - Agent local hostname used for system identification
+    #   downstream_proxy_port - int64 - Agent downstream proxy port
+    #   agent_platform - string - Agent Platform (OS/Architecture)
+    #   permission_set - string - Permission set
+    #   supports_push_updates - boolean - Agent supports push updates
+    def authenticate_agent(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: signed_nonce must be an String") if params[:signed_nonce] and !params[:signed_nonce].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: agent_version must be an String") if params[:agent_version] and !params[:agent_version].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: peer_id must be an String") if params[:peer_id] and !params[:peer_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: proxy_url must be an String") if params[:proxy_url] and !params[:proxy_url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: proxy_host_header must be an String") if params[:proxy_host_header] and !params[:proxy_host_header].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: root must be an String") if params[:root] and !params[:root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: agent_hostname must be an String") if params[:agent_hostname] and !params[:agent_hostname].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: downstream_proxy_port must be an Integer") if params[:downstream_proxy_port] and !params[:downstream_proxy_port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: agent_platform must be an String") if params[:agent_platform] and !params[:agent_platform].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/remote_servers/#{@attributes[:id]}/authenticate_agent", :post, params, @options)
+    end
+
     # Post local changes, check in, and download configuration file (used by some Remote Server integrations, such as the Files.com Agent)
     #
     # Parameters:
@@ -1091,6 +1152,18 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Remote Server ID.
+    def self.find_ping_agent(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      response, options = Api.send_request("/remote_servers/#{params[:id]}/ping_agent", :get, params, options)
+      RemoteServer.new(response.data, options)
+    end
+
+    # Parameters:
+    #   id (required) - int64 - Remote Server ID.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -1284,6 +1357,58 @@ module Files
       AgentPushUpdate.new(response.data, options)
     end
 
+    # Disconnect a Files Agent Proxy
+    #
+    # Parameters:
+    #   proxy_url - string - Files Agent Proxy URL
+    #   proxy_host_header - string - Files Agent Proxy Host Header
+    def self.disconnect_agent(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: proxy_url must be an String") if params[:proxy_url] and !params[:proxy_url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: proxy_host_header must be an String") if params[:proxy_host_header] and !params[:proxy_host_header].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      response, options = Api.send_request("/remote_servers/#{params[:id]}/disconnect_agent", :post, params, options)
+      AgentV2Auth.new(response.data, options)
+    end
+
+    # Authenticate a Files Agent Proxy
+    #
+    # Parameters:
+    #   signed_nonce - string - Signed nonce
+    #   proxy_registration_refresh - boolean - Proxy is refreshing an already validated agent registration
+    #   agent_version - string - Agent version
+    #   peer_id - string - Peer ID
+    #   proxy_url - string - Files Agent Proxy URL
+    #   proxy_host_header - string - Files Agent Proxy Host Header
+    #   root - string - Agent local root path
+    #   agent_hostname - string - Agent local hostname used for system identification
+    #   downstream_proxy_port - int64 - Agent downstream proxy port
+    #   agent_platform - string - Agent Platform (OS/Architecture)
+    #   permission_set - string - Permission set
+    #   supports_push_updates - boolean - Agent supports push updates
+    def self.authenticate_agent(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: signed_nonce must be an String") if params[:signed_nonce] and !params[:signed_nonce].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: agent_version must be an String") if params[:agent_version] and !params[:agent_version].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: peer_id must be an String") if params[:peer_id] and !params[:peer_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: proxy_url must be an String") if params[:proxy_url] and !params[:proxy_url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: proxy_host_header must be an String") if params[:proxy_host_header] and !params[:proxy_host_header].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: root must be an String") if params[:root] and !params[:root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: agent_hostname must be an String") if params[:agent_hostname] and !params[:agent_hostname].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: downstream_proxy_port must be an Integer") if params[:downstream_proxy_port] and !params[:downstream_proxy_port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: agent_platform must be an String") if params[:agent_platform] and !params[:agent_platform].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      response, options = Api.send_request("/remote_servers/#{params[:id]}/authenticate_agent", :post, params, options)
+      AgentV2Auth.new(response.data, options)
+    end
+
     # Post local changes, check in, and download configuration file (used by some Remote Server integrations, such as the Files.com Agent)
     #
     # Parameters:
@@ -1317,6 +1442,178 @@ module Files
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}/configuration_file", :post, params, options)
       RemoteServerConfigurationFile.new(response.data, options)
+    end
+
+    # Parameters:
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `name`, `server_type`, `backblaze_b2_bucket`, `google_cloud_storage_bucket`, `wasabi_bucket`, `s3_bucket`, `azure_blob_storage_container`, `azure_files_storage_share_name`, `s3_compatible_bucket`, `filebase_bucket`, `cloudflare_bucket` or `linode_bucket`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `name`, `server_type`, `workspace_id`, `backblaze_b2_bucket`, `google_cloud_storage_bucket`, `wasabi_bucket`, `s3_bucket`, `azure_blob_storage_container`, `azure_files_storage_share_name`, `s3_compatible_bucket`, `filebase_bucket`, `cloudflare_bucket` or `linode_bucket`. Valid field combinations are `[ server_type, name ]`, `[ workspace_id, name ]`, `[ backblaze_b2_bucket, name ]`, `[ google_cloud_storage_bucket, name ]`, `[ wasabi_bucket, name ]`, `[ s3_bucket, name ]`, `[ azure_blob_storage_container, name ]`, `[ azure_files_storage_share_name, name ]`, `[ s3_compatible_bucket, name ]`, `[ filebase_bucket, name ]`, `[ cloudflare_bucket, name ]`, `[ linode_bucket, name ]`, `[ workspace_id, server_type ]` or `[ workspace_id, server_type, name ]`.
+    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`, `backblaze_b2_bucket`, `google_cloud_storage_bucket`, `wasabi_bucket`, `s3_bucket`, `azure_blob_storage_container`, `azure_files_storage_share_name`, `s3_compatible_bucket`, `filebase_bucket`, `cloudflare_bucket` or `linode_bucket`. Valid field combinations are `[ backblaze_b2_bucket, name ]`, `[ google_cloud_storage_bucket, name ]`, `[ wasabi_bucket, name ]`, `[ s3_bucket, name ]`, `[ azure_blob_storage_container, name ]`, `[ azure_files_storage_share_name, name ]`, `[ s3_compatible_bucket, name ]`, `[ filebase_bucket, name ]`, `[ cloudflare_bucket, name ]` or `[ linode_bucket, name ]`.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
+
+      response, options = Api.send_request("/remote_servers/create_export", :post, params, options)
+      Export.new(response.data, options)
+    end
+
+    # Parameters:
+    #   aws_access_key - string - AWS: Access Key
+    #   aws_secret_key - string - AWS: Secret Key
+    #   azure_blob_storage_access_key - string - Azure Blob Storage: Secret Key
+    #   azure_blob_storage_account - string
+    #   azure_blob_storage_container - string
+    #   azure_blob_storage_dns_suffix - string
+    #   azure_blob_storage_hierarchical_namespace - boolean
+    #   azure_blob_storage_sas_token - string - Azure Blob Storage: Shared Access Signature (SAS) token
+    #   azure_files_storage_access_key - string - Azure Files: Access Key
+    #   azure_files_storage_account - string
+    #   azure_files_storage_dns_suffix - string
+    #   azure_files_storage_sas_token - string - Azure Files: Shared Access Signature (SAS) token
+    #   azure_files_storage_share_name - string
+    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage: applicationKey
+    #   backblaze_b2_bucket - string
+    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage: keyID
+    #   backblaze_b2_s3_endpoint - string
+    #   buffer_uploads - string - If set to always, uploads to this server will be uploaded first to Files.com before being sent to the remote server. This can improve performance in certain access patterns, such as high-latency connections.  It will cause data to be temporarily stored in Files.com. If set to auto, we will perform this optimization if we believe it to be a benefit in a given situation.
+    #   cloudflare_access_key - string - Cloudflare: Access Key
+    #   cloudflare_bucket - string
+    #   cloudflare_endpoint - string
+    #   cloudflare_secret_key - string - Cloudflare: Secret Key
+    #   dropbox_teams - boolean
+    #   upload_staging_path - string - Upload staging path
+    #   enable_dedicated_ips - boolean
+    #   filebase_access_key - string - Filebase: Access Key
+    #   filebase_bucket - string
+    #   filebase_secret_key - string - Filebase: Secret Key
+    #   files_api_key - string - Files.com direct link: API key used once to pair the remote server.
+    #   files_agent_api_token - string
+    #   files_agent_public_key - string
+    #   files_agent_root - string
+    #   files_agent_version - string
+    #   outbound_agent_id - int64 - Route traffic to outbound on a files-agent
+    #   google_cloud_storage_authentication_method - string - Google Cloud Storage: Authentication method. Can be json, hmac, or oauth.
+    #   google_cloud_storage_bucket - string
+    #   google_cloud_storage_credentials_json - string - Google Cloud Storage: A JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    #   google_cloud_storage_oauth_scope - string - Google Cloud Storage: OAuth scope. Can be https://www.googleapis.com/auth/devstorage.read_only or https://www.googleapis.com/auth/devstorage.read_write.
+    #   google_cloud_storage_project_id - string
+    #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible access key
+    #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
+    #   hostname - string
+    #   linode_access_key - string - Linode: access key
+    #   linode_bucket - string
+    #   linode_region - string
+    #   linode_secret_key - string - Linode: secret key
+    #   max_connections - int64
+    #   name - string
+    #   one_drive_account_type - string
+    #   password - string - Password, if needed
+    #   pin_to_site_region - boolean - Pin to site region?
+    #   port - int64
+    #   private_key_passphrase - string - Passphrase for private key, if needed
+    #   private_key - string - Private key if needed.
+    #   remote_server_id - int64 - Remote Server ID
+    #   remote_server_credential_id - int64 - Remote Server Credential ID
+    #   reset_authentication - boolean - Reset authenticated account?
+    #   root - string - Remote path to list
+    #   s3_assume_role_arn - string
+    #   s3_assume_role_duration_seconds - int64
+    #   s3_bucket - string
+    #   s3_compatible_access_key - string
+    #   s3_compatible_bucket - string
+    #   s3_compatible_endpoint - string
+    #   s3_compatible_region - string
+    #   s3_compatible_virtual_hosted_style - boolean
+    #   s3_compatible_secret_key - string
+    #   s3_region - string
+    #   server_certificate - string
+    #   server_host_key - string
+    #   server_type - string
+    #   ssl_certificate - string - SSL client certificate.
+    #   ssl - string
+    #   username - string
+    #   wasabi_access_key - string - Wasabi: Access Key
+    #   wasabi_bucket - string
+    #   wasabi_region - string
+    #   wasabi_secret_key - string - Wasabi Secret Key
+    #   workspace_id - int64 - Workspace ID (0 for default workspace)
+    def self.list_for_testing(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if params[:aws_access_key] and !params[:aws_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params[:azure_blob_storage_access_key] and !params[:azure_blob_storage_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if params[:azure_blob_storage_account] and !params[:azure_blob_storage_account].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if params[:azure_blob_storage_container] and !params[:azure_blob_storage_container].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if params[:azure_blob_storage_dns_suffix] and !params[:azure_blob_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_sas_token must be an String") if params[:azure_blob_storage_sas_token] and !params[:azure_blob_storage_sas_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_access_key must be an String") if params[:azure_files_storage_access_key] and !params[:azure_files_storage_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if params[:azure_files_storage_account] and !params[:azure_files_storage_account].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if params[:azure_files_storage_dns_suffix] and !params[:azure_files_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_sas_token must be an String") if params[:azure_files_storage_sas_token] and !params[:azure_files_storage_sas_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if params[:azure_files_storage_share_name] and !params[:azure_files_storage_share_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_application_key must be an String") if params[:backblaze_b2_application_key] and !params[:backblaze_b2_application_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_bucket must be an String") if params[:backblaze_b2_bucket] and !params[:backblaze_b2_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_key_id must be an String") if params[:backblaze_b2_key_id] and !params[:backblaze_b2_key_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: backblaze_b2_s3_endpoint must be an String") if params[:backblaze_b2_s3_endpoint] and !params[:backblaze_b2_s3_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: buffer_uploads must be an String") if params[:buffer_uploads] and !params[:buffer_uploads].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_access_key must be an String") if params[:cloudflare_access_key] and !params[:cloudflare_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if params[:cloudflare_bucket] and !params[:cloudflare_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if params[:cloudflare_endpoint] and !params[:cloudflare_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cloudflare_secret_key must be an String") if params[:cloudflare_secret_key] and !params[:cloudflare_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: upload_staging_path must be an String") if params[:upload_staging_path] and !params[:upload_staging_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if params[:filebase_access_key] and !params[:filebase_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if params[:filebase_bucket] and !params[:filebase_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: filebase_secret_key must be an String") if params[:filebase_secret_key] and !params[:filebase_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_api_key must be an String") if params[:files_api_key] and !params[:files_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_api_token must be an String") if params[:files_agent_api_token] and !params[:files_agent_api_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_public_key must be an String") if params[:files_agent_public_key] and !params[:files_agent_public_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: outbound_agent_id must be an Integer") if params[:outbound_agent_id] and !params[:outbound_agent_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_authentication_method must be an String") if params[:google_cloud_storage_authentication_method] and !params[:google_cloud_storage_authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_credentials_json must be an String") if params[:google_cloud_storage_credentials_json] and !params[:google_cloud_storage_credentials_json].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_oauth_scope must be an String") if params[:google_cloud_storage_oauth_scope] and !params[:google_cloud_storage_oauth_scope].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_project_id must be an String") if params[:google_cloud_storage_project_id] and !params[:google_cloud_storage_project_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_secret_key must be an String") if params[:google_cloud_storage_s3_compatible_secret_key] and !params[:google_cloud_storage_s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params[:hostname] and !params[:hostname].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_bucket must be an String") if params[:linode_bucket] and !params[:linode_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_region must be an String") if params[:linode_region] and !params[:linode_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if params[:max_connections] and !params[:max_connections].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if params[:one_drive_account_type] and !params[:one_drive_account_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if params[:private_key_passphrase] and !params[:private_key_passphrase].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if params[:remote_server_id] and !params[:remote_server_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if params[:remote_server_credential_id] and !params[:remote_server_credential_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: root must be an String") if params[:root] and !params[:root].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_arn must be an String") if params[:s3_assume_role_arn] and !params[:s3_assume_role_arn].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_assume_role_duration_seconds must be an Integer") if params[:s3_assume_role_duration_seconds] and !params[:s3_assume_role_duration_seconds].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: s3_bucket must be an String") if params[:s3_bucket] and !params[:s3_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params[:s3_compatible_region] and !params[:s3_compatible_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params[:s3_region] and !params[:s3_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if params[:ssl_certificate] and !params[:ssl_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params[:ssl] and !params[:ssl].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: wasabi_bucket must be an String") if params[:wasabi_bucket] and !params[:wasabi_bucket].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: wasabi_region must be an String") if params[:wasabi_region] and !params[:wasabi_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
+
+      response, options = Api.send_request("/remote_servers/list_for_testing", :post, params, options)
+      File.new(response.data, options)
     end
 
     # Parameters:

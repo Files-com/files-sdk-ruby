@@ -137,6 +137,20 @@ module Files
     end
 
     # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
+    #   message_id (required) - int64 - Message comment to return comments for.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: message_id must be an Integer") if params[:message_id] and !params[:message_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: message_id") unless params[:message_id]
+
+      response, options = Api.send_request("/message_comments/create_export", :post, params, options)
+      Export.new(response.data, options)
+    end
+
+    # Parameters:
     #   body (required) - string - Comment body.
     def self.update(id, params = {}, options = {})
       params ||= {}

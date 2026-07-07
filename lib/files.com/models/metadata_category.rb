@@ -150,6 +150,15 @@ module Files
     end
 
     # Parameters:
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+
+      response, options = Api.send_request("/metadata_categories/create_export", :post, params, options)
+      Export.new(response.data, options)
+    end
+
+    # Parameters:
     #   name - string - Name of the metadata category.
     #   default_columns - array(string) - Metadata keys that should appear as columns in the UI by default.
     def self.update(id, params = {}, options = {})

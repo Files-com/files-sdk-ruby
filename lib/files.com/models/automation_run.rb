@@ -119,5 +119,21 @@ module Files
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
+
+    # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `automation_id`, `created_at` or `status`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `status`, `workspace_id` or `automation_id`. Valid field combinations are `[ workspace_id, status ]`, `[ automation_id, status ]`, `[ workspace_id, automation_id ]` or `[ workspace_id, automation_id, status ]`.
+    #   automation_id (required) - int64 - ID of the associated Automation.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: automation_id must be an Integer") if params[:automation_id] and !params[:automation_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: automation_id") unless params[:automation_id]
+
+      response, options = Api.send_request("/automation_runs/create_export", :post, params, options)
+      Export.new(response.data, options)
+    end
   end
 end

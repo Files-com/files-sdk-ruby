@@ -112,6 +112,20 @@ Files::ExpectationIncident.acknowledge(id)
 
 ---
 
+## Create an export CSV of Expectation Incident resources
+
+```
+Files::ExpectationIncident.create_export
+```
+
+### Parameters
+
+* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `created_at` or `expectation_id`.
+* `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `expectation_id` and `workspace_id`. Valid field combinations are `[ workspace_id, expectation_id ]`.
+
+
+---
+
 ## Resolve an expectation incident
 
 ```

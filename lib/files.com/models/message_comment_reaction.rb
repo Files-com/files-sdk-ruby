@@ -113,6 +113,20 @@ module Files
       MessageCommentReaction.new(response.data, options)
     end
 
+    # Parameters:
+    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
+    #   message_comment_id (required) - int64 - Message comment to return reactions for.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: message_comment_id must be an Integer") if params[:message_comment_id] and !params[:message_comment_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: message_comment_id") unless params[:message_comment_id]
+
+      response, options = Api.send_request("/message_comment_reactions/create_export", :post, params, options)
+      Export.new(response.data, options)
+    end
+
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

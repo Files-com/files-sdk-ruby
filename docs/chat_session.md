@@ -57,3 +57,17 @@ Files::ChatSession.find(id)
 ### Parameters
 
 * `id` (string): Required - Chat Session ID.
+
+
+---
+
+## Create an export CSV of Chat Session resources
+
+```
+Files::ChatSession.create_export
+```
+
+### Parameters
+
+* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `id`.
+* `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `ai_task_id`, `user_id` or `workspace_id`.

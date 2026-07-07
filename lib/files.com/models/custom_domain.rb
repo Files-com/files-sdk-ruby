@@ -178,6 +178,15 @@ module Files
     end
 
     # Parameters:
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `id`.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+
+      response, options = Api.send_request("/custom_domains/create_export", :post, params, options)
+      Export.new(response.data, options)
+    end
+
+    # Parameters:
     #   destination - string - Where this custom domain routes. Can be `site_alias`, `public_hosting`, or `s3_endpoint`.
     #   folder_behavior_id - int64 - Public Hosting behavior ID when this domain routes to a specific Public Hosting behavior.
     #   ssl_certificate_id - int64 - Current SSL certificate ID.

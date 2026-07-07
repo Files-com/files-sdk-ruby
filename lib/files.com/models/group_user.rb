@@ -54,7 +54,16 @@ module Files
       @attributes[:username] = value
     end
 
-    # int64 - Group User ID.
+    # string
+    def name
+      @attributes[:name]
+    end
+
+    def name=(value)
+      @attributes[:name] = value
+    end
+
+    # int64
     def id
       @attributes[:id]
     end
@@ -146,6 +155,17 @@ module Files
 
       response, options = Api.send_request("/group_users", :post, params, options)
       GroupUser.new(response.data, options)
+    end
+
+    # Parameters:
+    #   group_id - int64 - Group ID.  If provided, will return group_users of this group.
+    #   user_id - int64 - User ID.  If provided, will return group_users of this user.
+    def self.create_export(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+
+      response, options = Api.send_request("/group_users/create_export", :post, params, options)
+      Export.new(response.data, options)
     end
 
     # Parameters:
