@@ -11,4 +11,9 @@ RSpec.describe Files::PathUtil do
       expect(Files::PathUtil.same?(src_chars, dst_chars)).to eq(true)
     end
   end
+
+  it "normalizes API paths without changing path identity" do
+    expect(Files::PathUtil.normalize("/../../remote\\path//./to/file.txt")).to eq("remote/path/to/file.txt")
+    expect(Files::PathUtil.normalize("remote/../path/to/file.txt")).to eq("remote/path/to/file.txt")
+  end
 end

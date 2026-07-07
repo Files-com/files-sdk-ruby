@@ -21,7 +21,7 @@ module Files
       new_path
     end
 
-    private_class_method def self.normalize(*paths)
+    def self.normalize(*paths)
       all_paths = paths.flatten.compact.map { |path| u8(path).gsub("\x00", "").gsub("\\", "/").split("/") }.flatten
       all_paths.map { |path| cleanpath(path) }.reject(&:empty?).join("/")
     end

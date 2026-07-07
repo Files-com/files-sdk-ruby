@@ -38,6 +38,49 @@ module Files
       new(path).download_file(local_path)
     end
 
+    private_class_method def self.underscore_destination_path(root, id, relative_path = nil)
+      PathUtil.normalize("_", root, id.to_s, relative_path)
+    end
+
+    def self.upload_to_remote_server(path, remote_server_id, destination = nil, options = {}, params: {})
+      destination ||= ::File.basename(path)
+      upload_file(path, underscore_destination_path("RemoteServers", remote_server_id, destination), options, params: params)
+    end
+
+    def self.copy_to_remote_server(path, remote_server_id, destination, params = {}, options = {})
+      copy(path, params.merge(destination: underscore_destination_path("RemoteServers", remote_server_id, destination)), options)
+    end
+
+    def self.move_to_remote_server(path, remote_server_id, destination, params = {}, options = {})
+      move(path, params.merge(destination: underscore_destination_path("RemoteServers", remote_server_id, destination)), options)
+    end
+
+    def self.upload_to_snapshot(path, snapshot_id, destination = nil, options = {}, params: {})
+      destination ||= ::File.basename(path)
+      upload_file(path, underscore_destination_path("Snapshots", snapshot_id, destination), options, params: params)
+    end
+
+    def self.copy_to_snapshot(path, snapshot_id, destination, params = {}, options = {})
+      copy(path, params.merge(destination: underscore_destination_path("Snapshots", snapshot_id, destination)), options)
+    end
+
+    def self.move_to_snapshot(path, snapshot_id, destination, params = {}, options = {})
+      move(path, params.merge(destination: underscore_destination_path("Snapshots", snapshot_id, destination)), options)
+    end
+
+    def self.upload_to_child_site(path, site_id, destination = nil, options = {}, params: {})
+      destination ||= ::File.basename(path)
+      upload_file(path, underscore_destination_path("Sites", site_id, destination), options, params: params)
+    end
+
+    def self.copy_to_child_site(path, site_id, destination, params = {}, options = {})
+      copy(path, params.merge(destination: underscore_destination_path("Sites", site_id, destination)), options)
+    end
+
+    def self.move_to_child_site(path, site_id, destination, params = {}, options = {})
+      move(path, params.merge(destination: underscore_destination_path("Sites", site_id, destination)), options)
+    end
+
     def self.exist?(path, options = {})
       find(path, {}, options)
       true
@@ -185,6 +228,30 @@ module Files
       @mode = args[1] || 'r' if args[1].is_a?(String)
       @write_io = StringIO.new
       @bytes_written = 0
+    end
+
+    def copy_to_remote_server(remote_server_id, destination, params = {})
+      self.class.copy_to_remote_server(path, remote_server_id, destination, params, @options)
+    end
+
+    def move_to_remote_server(remote_server_id, destination, params = {})
+      self.class.move_to_remote_server(path, remote_server_id, destination, params, @options)
+    end
+
+    def copy_to_snapshot(snapshot_id, destination, params = {})
+      self.class.copy_to_snapshot(path, snapshot_id, destination, params, @options)
+    end
+
+    def move_to_snapshot(snapshot_id, destination, params = {})
+      self.class.move_to_snapshot(path, snapshot_id, destination, params, @options)
+    end
+
+    def copy_to_child_site(site_id, destination, params = {})
+      self.class.copy_to_child_site(path, site_id, destination, params, @options)
+    end
+
+    def move_to_child_site(site_id, destination, params = {})
+      self.class.move_to_child_site(path, site_id, destination, params, @options)
     end
 
     def advise(*_args); end
