@@ -378,15 +378,6 @@ module Files
       @attributes[:holiday_region] = value
     end
 
-    # int64 - Set to the ID of automation used as a clone template. This is an informational field only.
-    def cloned_from
-      @attributes[:cloned_from]
-    end
-
-    def cloned_from=(value)
-      @attributes[:cloned_from] = value
-    end
-
     # Manually Run Automation
     def manual_run(params = {})
       params ||= {}
@@ -572,7 +563,6 @@ module Files
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   automation (required) - string - Automation type
     #   workspace_id - int64 - Workspace ID
-    #   cloned_from - int64 - Set to the ID of automation used as a clone template. This is an informational field only.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params[:source] and !params[:source].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destinations must be an Array") if params[:destinations] and !params[:destinations].is_a?(Array)
@@ -601,7 +591,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params[:automation] and !params[:automation].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: cloned_from must be an Integer") if params[:cloned_from] and !params[:cloned_from].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: automation") unless params[:automation]
 
       response, options = Api.send_request("/automations", :post, params, options)
@@ -617,25 +606,6 @@ module Files
 
       Api.send_request("/automations/#{params[:id]}/manual_run", :post, params, options)
       nil
-    end
-
-    # Parameters:
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `name`, `automation`, `last_modified_at` or `disabled`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `disabled`, `last_modified_at`, `workspace_id` or `automation`. Valid field combinations are `[ disabled, last_modified_at ]`, `[ workspace_id, disabled ]`, `[ disabled, automation ]`, `[ workspace_id, last_modified_at ]`, `[ automation, last_modified_at ]`, `[ workspace_id, automation ]`, `[ workspace_id, disabled, last_modified_at ]`, `[ disabled, automation, last_modified_at ]`, `[ workspace_id, disabled, automation ]`, `[ workspace_id, automation, last_modified_at ]` or `[ workspace_id, disabled, automation, last_modified_at ]`.
-    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `last_modified_at`.
-    #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `last_modified_at`.
-    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `last_modified_at`.
-    #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `last_modified_at`.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
-
-      response, options = Api.send_request("/automations/create_export", :post, params, options)
-      Export.new(response.data, options)
     end
 
     # Parameters:

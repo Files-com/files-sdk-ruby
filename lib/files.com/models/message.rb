@@ -165,18 +165,6 @@ module Files
     end
 
     # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   project_id (required) - int64 - Project for which to return messages.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: project_id must be an Integer") if params[:project_id] and !params[:project_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: project_id") unless params[:project_id]
-
-      response, options = Api.send_request("/messages/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
-    # Parameters:
     #   project_id (required) - int64 - Project to which the message should be attached.
     #   subject (required) - string - Message subject.
     #   body (required) - string - Message body.

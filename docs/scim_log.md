@@ -51,16 +51,3 @@ Files::ScimLog.find(id)
 ### Parameters
 
 * `id` (int64): Required - Scim Log ID.
-
-
----
-
-## Create an export CSV of Scim Log resources
-
-```
-Files::ScimLog.create_export
-```
-
-### Parameters
-
-* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.

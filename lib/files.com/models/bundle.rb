@@ -428,15 +428,6 @@ module Files
       @attributes[:bundlepaths] = value
     end
 
-    # int64 - Site id
-    def site_id
-      @attributes[:site_id]
-    end
-
-    def site_id=(value)
-      @attributes[:site_id] = value
-    end
-
     # string - Password for this bundle.
     def password
       @attributes[:password]
@@ -496,7 +487,6 @@ module Files
     # Parameters:
     #   to - array(string) - A list of email addresses to share this bundle with. Required unless `recipients` is used.
     #   note - string - Note to include in email.
-    #   method - string - The method to use, must be email or null
     #   recipients - array(object) - A list of recipients to share this bundle with. Required unless `to` is used.
     def share(params = {})
       params ||= {}
@@ -505,7 +495,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: to must be an Array") if params[:to] and !params[:to].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: method must be an String") if params[:method] and !params[:method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recipients must be an Array") if params[:recipients] and !params[:recipients].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
@@ -649,21 +638,6 @@ module Files
     end
 
     # Parameters:
-    #   code (required) - string - Bundle code
-    #   imported_from_file_ac - boolean - Is bundle imported from File.ac?
-    #   bundle_registration_code - string - Bundle registration cookie code
-    #   recipient_code - string - Bundle recipient code
-    def self.get_info(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: code must be an String") if params[:code] and !params[:code].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recipient_code must be an String") if params[:recipient_code] and !params[:recipient_code].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: code") unless params[:code]
-
-      response, options = Api.send_request("/bundles/info", :get, params, options)
-      Bundle.new(response.data, options)
-    end
-
-    # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   paths (required) - array(string) - A list of paths to include in this bundle.
     #   password - string - Password for this bundle.
@@ -721,36 +695,11 @@ module Files
       Bundle.new(response.data, options)
     end
 
-    # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `expires_at`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at`, `expires_at`, `code`, `group_id`, `user_id` or `bypasses_site_expiration_rules`. Valid field combinations are `[ group_id, expires_at ]` and `[ user_id, expires_at ]`.
-    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `created_at` and `expires_at`.
-    #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at` and `expires_at`.
-    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `code`.
-    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `created_at` and `expires_at`.
-    #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at` and `expires_at`.
-    #   deleted - boolean - If true, only list deleted Share Links.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
-
-      response, options = Api.send_request("/bundles/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
     # Send email(s) with a link to bundle
     #
     # Parameters:
     #   to - array(string) - A list of email addresses to share this bundle with. Required unless `recipients` is used.
     #   note - string - Note to include in email.
-    #   method - string - The method to use, must be email or null
     #   recipients - array(object) - A list of recipients to share this bundle with. Required unless `to` is used.
     def self.share(id, params = {}, options = {})
       params ||= {}
@@ -758,7 +707,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: to must be an Array") if params[:to] and !params[:to].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: method must be an String") if params[:method] and !params[:method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recipients must be an Array") if params[:recipients] and !params[:recipients].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 

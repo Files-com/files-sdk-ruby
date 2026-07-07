@@ -136,19 +136,6 @@ Files::RemoteMountBackend.reset_status(id)
 
 ---
 
-## Create an export CSV of Remote Mount Backend resources
-
-```
-Files::RemoteMountBackend.create_export
-```
-
-### Parameters
-
-* `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `remote_server_mount_id`.
-
-
----
-
 ## Update Remote Mount Backend
 
 ```

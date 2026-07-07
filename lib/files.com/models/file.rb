@@ -566,15 +566,6 @@ module Files
       @write_io.write_nonblock *args
     end
 
-    # int64 - File/Folder ID.  Used only for ExaVault compatibility API.  Do not use for other purposes, as this value will not always be set.
-    def id
-      @attributes[:id]
-    end
-
-    def id=(value)
-      @attributes[:id] = value
-    end
-
     # string - File/Folder path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
@@ -582,15 +573,6 @@ module Files
 
     def path=(value)
       @attributes[:path] = value
-    end
-
-    # string - File/Folder absolute path for Bundle Trusted Relay use
-    def path_absolute
-      @attributes[:path_absolute]
-    end
-
-    def path_absolute=(value)
-      @attributes[:path_absolute] = value
     end
 
     # int64 - User ID of the User who created the file/folder
@@ -859,42 +841,6 @@ module Files
       @attributes[:is_locked] = value
     end
 
-    # int64 - Used for internal bandwidth tracking
-    def remote_server_id
-      @attributes[:remote_server_id]
-    end
-
-    def remote_server_id=(value)
-      @attributes[:remote_server_id] = value
-    end
-
-    # object - Used for internal url management
-    def headers
-      @attributes[:headers]
-    end
-
-    def headers=(value)
-      @attributes[:headers] = value
-    end
-
-    # array(string) - Used for internal url management
-    def socks_ips
-      @attributes[:socks_ips]
-    end
-
-    def socks_ips=(value)
-      @attributes[:socks_ips] = value
-    end
-
-    # string - For use with internal services and should also be with headers and socks_ips
-    def internal_download_uri
-      @attributes[:internal_download_uri]
-    end
-
-    def internal_download_uri=(value)
-      @attributes[:internal_download_uri] = value
-    end
-
     # string - Link to download file. Provided only in response to a download request.
     def download_uri
       @attributes[:download_uri]
@@ -931,24 +877,6 @@ module Files
       @attributes[:preview] = value
     end
 
-    # string
-    def copy_destination
-      @attributes[:copy_destination]
-    end
-
-    def copy_destination=(value)
-      @attributes[:copy_destination] = value
-    end
-
-    # string
-    def move_destination
-      @attributes[:move_destination]
-    end
-
-    def move_destination=(value)
-      @attributes[:move_destination] = value
-    end
-
     # string - The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
     def action
       @attributes[:action]
@@ -956,33 +884,6 @@ module Files
 
     def action=(value)
       @attributes[:action] = value
-    end
-
-    # object - Attributes to pass through for recording the Action.  Used for overriding action types (i.e. representing copy/move)
-    def action_attributes
-      @attributes[:action_attributes]
-    end
-
-    def action_attributes=(value)
-      @attributes[:action_attributes] = value
-    end
-
-    # object
-    def file
-      @attributes[:file]
-    end
-
-    def file=(value)
-      @attributes[:file] = value
-    end
-
-    # string
-    def crc32b
-      @attributes[:crc32b]
-    end
-
-    def crc32b=(value)
-      @attributes[:crc32b] = value
     end
 
     # int64 - Length of file.
@@ -1003,15 +904,6 @@ module Files
       @attributes[:mkdir_parents] = value
     end
 
-    # boolean - Overwrite existing file(s) in the destination?
-    def overwrite
-      @attributes[:overwrite]
-    end
-
-    def overwrite=(value)
-      @attributes[:overwrite] = value
-    end
-
     # int64 - Part if uploading a part.
     def part
       @attributes[:part]
@@ -1028,15 +920,6 @@ module Files
 
     def parts=(value)
       @attributes[:parts] = value
-    end
-
-    # boolean
-    def prefer_spdy
-      @attributes[:prefer_spdy]
-    end
-
-    def prefer_spdy=(value)
-      @attributes[:prefer_spdy] = value
     end
 
     # string -
@@ -1084,24 +967,6 @@ module Files
       @attributes[:with_rename] = value
     end
 
-    # string
-    def inbox_registration_code
-      @attributes[:inbox_registration_code]
-    end
-
-    def inbox_registration_code=(value)
-      @attributes[:inbox_registration_code] = value
-    end
-
-    # string
-    def bundle_registration_code
-      @attributes[:bundle_registration_code]
-    end
-
-    def bundle_registration_code=(value)
-      @attributes[:bundle_registration_code] = value
-    end
-
     # boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
     def buffered_upload
       @attributes[:buffered_upload]
@@ -1115,19 +980,15 @@ module Files
     #
     # Parameters:
     #   action - string - Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
-    #   bundle_registration_code - string
-    #   prefer_spdy - boolean
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
-    #   full_document_preview - boolean - If true, always return a proxied download uri
     def download(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
@@ -1152,13 +1013,11 @@ module Files
 
     # Parameters:
     #   recursive - boolean - If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
-    #   bundle_registration_code - string
     def delete(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       Api.send_request("/files/#{@attributes[:path]}", :delete, params, @options)
@@ -1187,14 +1046,12 @@ module Files
     #   copy_behaviors - boolean - If copying a folder, also copy supported behaviors to the destination folder tree?
     #   structure - boolean - Copy structure only?
     #   overwrite - boolean - Overwrite existing file(s) in the destination?
-    #   bundle_registration_code - string
     def copy(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
@@ -1206,14 +1063,12 @@ module Files
     # Parameters:
     #   destination (required) - string - Move destination path.
     #   overwrite - boolean - Overwrite existing file(s) in the destination?
-    #   bundle_registration_code - string
     def move(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
@@ -1321,13 +1176,10 @@ module Files
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
     #   part - int64 - Part if uploading a part.
     #   parts - int64 - How many parts to fetch?
-    #   prefer_spdy - boolean
     #   ref - string -
     #   restart - int64 - File byte offset to restart from.
     #   size - int64 - Total bytes of file being uploaded (include bytes being retained if appending/restarting).
     #   with_rename - boolean - Allow file rename instead of overwrite?
-    #   action - string
-    #   bundle_registration_code - string
     #   buffered_upload - boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
     def begin_upload(params = {})
       params ||= {}
@@ -1339,8 +1191,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ref must be an String") if params[:ref] and !params[:ref].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params[:restart] and !params[:restart].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params[:size] and !params[:size].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       Api.send_request("/file_actions/begin_upload/#{@attributes[:path]}", :post, params, @options)
@@ -1356,18 +1206,14 @@ module Files
     #
     # Parameters:
     #   action - string - Can be blank, `redirect` or `stat`.  If set to `stat`, we will return file information but without a download URL, and without logging a download.  If set to `redirect` we will serve a 302 redirect directly to the file.  This is used for integrations with Zapier, and is not recommended for most integrations.
-    #   bundle_registration_code - string
-    #   prefer_spdy - boolean
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
-    #   full_document_preview - boolean - If true, always return a proxied download uri
     def self.download(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
@@ -1377,58 +1223,34 @@ module Files
 
     # Parameters:
     #   path (required) - string - Path to operate on.
-    #   copy_destination - string
-    #   move_destination - string
     #   action - string - The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
-    #   action_attributes - object - Attributes to pass through for recording the Action.  Used for overriding action types (i.e. representing copy/move)
-    #   file - object
-    #   crc32 - string
-    #   crc32b - string
     #   etags[etag] (required) - array(string) - etag identifier.
     #   etags[part] (required) - array(int64) - Part number.
     #   length - int64 - Length of file.
-    #   md5 - string
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
-    #   overwrite - boolean - Overwrite existing file(s) in the destination?
     #   part - int64 - Part if uploading a part.
     #   parts - int64 - How many parts to fetch?
-    #   prefer_spdy - boolean
     #   provided_mtime - string - User provided modification time.
     #   ref - string -
     #   restart - int64 - File byte offset to restart from.
-    #   sha1 - string
-    #   sha256 - string
     #   size - int64 - Size of file.
     #   copy_behaviors - boolean - If copying a folder, also copy supported behaviors to the destination folder tree?
     #   structure - string - If copying folder, copy just the structure?
     #   with_rename - boolean - Allow file rename instead of overwrite?
-    #   inbox_registration_code - string
-    #   bundle_registration_code - string
     #   buffered_upload - boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: copy_destination must be an String") if params[:copy_destination] and !params[:copy_destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: move_destination must be an String") if params[:move_destination] and !params[:move_destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: action_attributes must be an Hash") if params[:action_attributes] and !params[:action_attributes].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: file must be an Hash") if params[:file] and !params[:file].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: crc32 must be an String") if params[:crc32] and !params[:crc32].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: crc32b must be an String") if params[:crc32b] and !params[:crc32b].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: length must be an Integer") if params[:length] and !params[:length].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: md5 must be an String") if params[:md5] and !params[:md5].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: part must be an Integer") if params[:part] and !params[:part].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params[:parts] and !params[:parts].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params[:provided_mtime] and !params[:provided_mtime].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ref must be an String") if params[:ref] and !params[:ref].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params[:restart] and !params[:restart].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sha1 must be an String") if params[:sha1] and !params[:sha1].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: sha256 must be an String") if params[:sha256] and !params[:sha256].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params[:size] and !params[:size].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: structure must be an String") if params[:structure] and !params[:structure].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: inbox_registration_code must be an String") if params[:inbox_registration_code] and !params[:inbox_registration_code].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/files/#{params[:path]}", :post, params, options)
@@ -1454,12 +1276,10 @@ module Files
 
     # Parameters:
     #   recursive - boolean - If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
-    #   bundle_registration_code - string
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       Api.send_request("/files/#{params[:path]}", :delete, params, options)
@@ -1472,33 +1292,15 @@ module Files
     end
 
     # Parameters:
-    #   id (required) - int64 - File/Folder ID
-    #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
-    #   with_previews - boolean - Include file preview information?
-    #   with_priority_color - boolean - Include file priority color information?
-    def self.find_id(id, params = {}, options = {})
-      params ||= {}
-      params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-
-      response, options = Api.send_request("/file_actions/id/#{params[:id]}", :get, params, options)
-      File.new(response.data, options)
-    end
-
-    # Parameters:
     #   path (required) - string - Path to operate on.
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
-    #   bundle_registration_code - string
     def self.find(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/file_actions/metadata/#{params[:path]}", :get, params, options)
@@ -1529,13 +1331,11 @@ module Files
     #   copy_behaviors - boolean - If copying a folder, also copy supported behaviors to the destination folder tree?
     #   structure - boolean - Copy structure only?
     #   overwrite - boolean - Overwrite existing file(s) in the destination?
-    #   bundle_registration_code - string
     def self.copy(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
@@ -1548,13 +1348,11 @@ module Files
     # Parameters:
     #   destination (required) - string - Move destination path.
     #   overwrite - boolean - Overwrite existing file(s) in the destination?
-    #   bundle_registration_code - string
     def self.move(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
@@ -1677,13 +1475,10 @@ module Files
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
     #   part - int64 - Part if uploading a part.
     #   parts - int64 - How many parts to fetch?
-    #   prefer_spdy - boolean
     #   ref - string -
     #   restart - int64 - File byte offset to restart from.
     #   size - int64 - Total bytes of file being uploaded (include bytes being retained if appending/restarting).
     #   with_rename - boolean - Allow file rename instead of overwrite?
-    #   action - string
-    #   bundle_registration_code - string
     #   buffered_upload - boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
     def self.begin_upload(path, params = {}, options = {})
       params ||= {}
@@ -1694,8 +1489,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ref must be an String") if params[:ref] and !params[:ref].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if params[:restart] and !params[:restart].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params[:size] and !params[:size].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/file_actions/begin_upload/#{params[:path]}", :post, params, options)

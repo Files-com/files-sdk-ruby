@@ -57,15 +57,6 @@ Files::Project.create(
 
 ---
 
-## Create an export CSV of Project resources
-
-```
-Files::Project.create_export
-```
-
-
----
-
 ## Update Project
 
 ```

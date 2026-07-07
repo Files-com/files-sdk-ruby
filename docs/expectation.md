@@ -171,20 +171,6 @@ Files::Expectation.trigger_evaluation(id)
 
 ---
 
-## Create an export CSV of Expectation resources
-
-```
-Files::Expectation.create_export
-```
-
-### Parameters
-
-* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `name` or `disabled`.
-* `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `disabled` and `workspace_id`. Valid field combinations are `[ workspace_id, disabled ]`.
-
-
----
-
 ## Update Expectation
 
 ```

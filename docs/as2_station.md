@@ -94,20 +94,6 @@ Files::As2Station.create(
 
 ---
 
-## Create an export CSV of AS2 Station resources
-
-```
-Files::As2Station.create_export
-```
-
-### Parameters
-
-* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
-* `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
-
-
----
-
 ## Update AS2 Station
 
 ```

@@ -83,12 +83,3 @@ Files::Payment.find(id)
 ### Parameters
 
 * `id` (int64): Required - Payment ID.
-
-
----
-
-## Create an export CSV of Payment resources
-
-```
-Files::Payment.create_export
-```

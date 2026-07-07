@@ -85,15 +85,6 @@ Files::ChildSiteManagementPolicy.create(
 
 ---
 
-## Create an export CSV of Child Site Management Policy resources
-
-```
-Files::ChildSiteManagementPolicy.create_export
-```
-
-
----
-
 ## Update Child Site Management Policy
 
 ```

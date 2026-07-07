@@ -99,10 +99,5 @@ module Files
     def self.all(params = {}, options = {})
       list(params, options)
     end
-
-    def self.create_export(params = {}, options = {})
-      response, options = Api.send_request("/usage_snapshots/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
   end
 end

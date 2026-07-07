@@ -51,14 +51,5 @@ module Files
     def self.all(params = {}, options = {})
       list(params, options)
     end
-
-    # Parameters:
-    #   user_id - int64 - User ID. If provided, will return uses for this user.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-
-      response, options = Api.send_request("/user_sftp_client_uses/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
   end
 end

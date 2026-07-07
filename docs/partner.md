@@ -125,20 +125,6 @@ Files::Partner.create(
 
 ---
 
-## Create an export CSV of Partner resources
-
-```
-Files::Partner.create_export
-```
-
-### Parameters
-
-* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `id`.
-* `filter` (object): If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
-
-
----
-
 ## Update Partner
 
 ```

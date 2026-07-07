@@ -318,15 +318,6 @@ module Files
     end
 
     # Parameters:
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `remote_server_mount_id`.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-
-      response, options = Api.send_request("/remote_mount_backends/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
-    # Parameters:
     #   enabled - boolean - True if this backend is enabled.
     #   fall - int64 - Number of consecutive failures before considering the backend unhealthy.
     #   health_check_enabled - boolean - True if health checks are enabled for this backend.

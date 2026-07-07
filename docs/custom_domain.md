@@ -78,19 +78,6 @@ Files::CustomDomain.create(
 
 ---
 
-## Create an export CSV of Custom Domain resources
-
-```
-Files::CustomDomain.create_export
-```
-
-### Parameters
-
-* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `id`.
-
-
----
-
 ## Update Custom Domain
 
 ```

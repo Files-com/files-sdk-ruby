@@ -162,15 +162,6 @@ module Files
     end
 
     # Parameters:
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-
-      response, options = Api.send_request("/clickwraps/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
-
-    # Parameters:
     #   name - string - Name of the Clickwrap agreement (used when selecting from multiple Clickwrap agreements.)
     #   body - string - Body text of Clickwrap (supports Markdown formatting).
     #   use_with_bundles - string - Use this Clickwrap for Bundles?

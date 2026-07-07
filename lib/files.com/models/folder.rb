@@ -150,15 +150,6 @@ module Files
       path
     end
 
-    # int64 - File/Folder ID.  Used only for ExaVault compatibility API.  Do not use for other purposes, as this value will not always be set.
-    def id
-      @attributes[:id]
-    end
-
-    def id=(value)
-      @attributes[:id] = value
-    end
-
     # string - File/Folder path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
@@ -166,15 +157,6 @@ module Files
 
     def path=(value)
       @attributes[:path] = value
-    end
-
-    # string - File/Folder absolute path for Bundle Trusted Relay use
-    def path_absolute
-      @attributes[:path_absolute]
-    end
-
-    def path_absolute=(value)
-      @attributes[:path_absolute] = value
     end
 
     # int64 - User ID of the User who created the file/folder
@@ -443,42 +425,6 @@ module Files
       @attributes[:is_locked] = value
     end
 
-    # int64 - Used for internal bandwidth tracking
-    def remote_server_id
-      @attributes[:remote_server_id]
-    end
-
-    def remote_server_id=(value)
-      @attributes[:remote_server_id] = value
-    end
-
-    # object - Used for internal url management
-    def headers
-      @attributes[:headers]
-    end
-
-    def headers=(value)
-      @attributes[:headers] = value
-    end
-
-    # array(string) - Used for internal url management
-    def socks_ips
-      @attributes[:socks_ips]
-    end
-
-    def socks_ips=(value)
-      @attributes[:socks_ips] = value
-    end
-
-    # string - For use with internal services and should also be with headers and socks_ips
-    def internal_download_uri
-      @attributes[:internal_download_uri]
-    end
-
-    def internal_download_uri=(value)
-      @attributes[:internal_download_uri] = value
-    end
-
     # string - Link to download file. Provided only in response to a download request.
     def download_uri
       @attributes[:download_uri]
@@ -524,15 +470,6 @@ module Files
       @attributes[:mkdir_parents] = value
     end
 
-    # string
-    def bundle_registration_code
-      @attributes[:bundle_registration_code]
-    end
-
-    def bundle_registration_code=(value)
-      @attributes[:bundle_registration_code] = value
-    end
-
     def save
       new_obj = Folder.create(path, @attributes, @options)
       @attributes = new_obj.attributes
@@ -543,8 +480,6 @@ module Files
     #   cursor - string - Send cursor to resume an existing list from the point at which you left off.  Get a cursor from an existing list via the X-Files-Cursor-Next header or the X-Files-Cursor-Prev header.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   path (required) - string - Path to operate on.
-    #   action - string - Action to take.  Can be `count`, `size`, `permissions`, or blank.
-    #   bundle_registration_code - string
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   sort_by - object - Search by field and direction. Valid fields are `path`, `size`, `modified_at_datetime`, `provided_modified_at`.  Valid directions are `asc` and `desc`.  Defaults to `{"path":"asc"}`.
     #   search - string - If specified, will search the folders/files list by name. Ignores text before last `/`. This is the same API used by the search bar in the web UI when running 'Search This Folder'.  Search results are a best effort, not real time, and not guaranteed to perfectly match the latest folder listing.  Results may be truncated if more than 1,000 possible matches exist.  This field should only be used for ad-hoc (human) searching, and not as part of an automated process.
@@ -560,8 +495,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params[:search] and !params[:search].is_a?(String)
@@ -579,13 +512,11 @@ module Files
     #   path (required) - string - Path to operate on.
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
     #   provided_mtime - string - User provided modification time.
-    #   bundle_registration_code - string
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params[:provided_mtime] and !params[:provided_mtime].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: bundle_registration_code must be an String") if params[:bundle_registration_code] and !params[:bundle_registration_code].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
       response, options = Api.send_request("/folders/#{params[:path]}", :post, params, options)

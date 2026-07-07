@@ -74,19 +74,6 @@ Files::Clickwrap.create(
 
 ---
 
-## Create an export CSV of Clickwrap resources
-
-```
-Files::Clickwrap.create_export
-```
-
-### Parameters
-
-* `sort_by` (object): If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
-
-
----
-
 ## Update Clickwrap
 
 ```

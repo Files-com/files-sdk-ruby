@@ -82,14 +82,5 @@ module Files
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
-
-    # Parameters:
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
-    def self.create_export(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-
-      response, options = Api.send_request("/scim_logs/create_export", :post, params, options)
-      Export.new(response.data, options)
-    end
   end
 end

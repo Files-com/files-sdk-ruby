@@ -8,9 +8,7 @@
   "group_id": 1,
   "user_id": 1,
   "admin": true,
-  "username": "example",
-  "name": "example",
-  "id": 1
+  "username": "example"
 }
 ```
 
@@ -19,8 +17,7 @@
 * `user_id` (int64): User ID
 * `admin` (boolean): Is this user an administrator of this group?
 * `username` (string): Username of the user
-* `name` (string): 
-* `id` (int64): 
+* `id` (int64): Group User ID.
 
 
 ---
@@ -59,23 +56,6 @@ Files::GroupUser.create(
 * `group_id` (int64): Required - Group ID to add user to.
 * `user_id` (int64): Required - User ID to add to group.
 * `admin` (boolean): Is the user a group administrator?
-
-
----
-
-## Create an export CSV of Group User resources
-
-```
-Files::GroupUser.create_export(
-  group_id: 1, 
-  user_id: 1
-)
-```
-
-### Parameters
-
-* `group_id` (int64): Group ID.  If provided, will return group_users of this group.
-* `user_id` (int64): User ID.  If provided, will return group_users of this user.
 
 
 ---
