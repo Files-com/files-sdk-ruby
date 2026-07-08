@@ -72,6 +72,15 @@ module Files
       @attributes[:value] = value
     end
 
+    # string - Public URL for this publicly hosted folder when the `Serve Publicly` behavior has a key configured.  When a Custom Domain with `public_hosting` destination is attached to this behavior, the URL uses that domain.  Otherwise it uses the site's `subdomain.hosted-by-files.com` host.
+    def public_hosting_url
+      @attributes[:public_hosting_url]
+    end
+
+    def public_hosting_url=(value)
+      @attributes[:public_hosting_url] = value
+    end
+
     # boolean - If true, the parent folder's behavior will be disabled for this folder and its children.
     def disable_parent_folder_behavior
       @attributes[:disable_parent_folder_behavior]
