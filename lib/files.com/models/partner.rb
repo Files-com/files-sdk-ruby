@@ -117,6 +117,15 @@ module Files
       @attributes[:partner_admin_ids] = value
     end
 
+    # int64 - ID of the Partner Channel Template assigned to this Partner.
+    def partner_channel_template_id
+      @attributes[:partner_channel_template_id]
+    end
+
+    def partner_channel_template_id=(value)
+      @attributes[:partner_channel_template_id] = value
+    end
+
     # string - This site's role in Partner Site relationships for this Partner. Can be `host`, `guest`, `host_and_guest`, or null.
     def partnership_role
       @attributes[:partnership_role]
@@ -180,6 +189,7 @@ module Files
     #   allow_user_creation - boolean - Allow Partner Admins to create users.
     #   cc_emails_to_responsible_party - boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
     #   notes - string - Notes about this Partner.
+    #   partner_channel_template_id - int64 - ID of the Partner Channel Template assigned to this Partner.
     #   responsible_group_id - int64 - ID of the Group responsible for this Partner.
     #   responsible_user_id - int64 - ID of the User responsible for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
@@ -193,6 +203,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if params[:partner_channel_template_id] and !params[:partner_channel_template_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
@@ -274,6 +285,7 @@ module Files
     #   allow_user_creation - boolean - Allow Partner Admins to create users.
     #   cc_emails_to_responsible_party - boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
     #   notes - string - Notes about this Partner.
+    #   partner_channel_template_id - int64 - ID of the Partner Channel Template assigned to this Partner.
     #   responsible_group_id - int64 - ID of the Group responsible for this Partner.
     #   responsible_user_id - int64 - ID of the User responsible for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
@@ -284,6 +296,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if params[:partner_channel_template_id] and !params[:partner_channel_template_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
@@ -306,6 +319,7 @@ module Files
     #   allow_user_creation - boolean - Allow Partner Admins to create users.
     #   cc_emails_to_responsible_party - boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
     #   notes - string - Notes about this Partner.
+    #   partner_channel_template_id - int64 - ID of the Partner Channel Template assigned to this Partner.
     #   responsible_group_id - int64 - ID of the Group responsible for this Partner.
     #   responsible_user_id - int64 - ID of the User responsible for this Partner.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
@@ -318,6 +332,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if params[:partner_channel_template_id] and !params[:partner_channel_template_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
