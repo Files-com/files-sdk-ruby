@@ -176,6 +176,15 @@ module Files
       @attributes[:desktop_configuration_profile_id] = value
     end
 
+    # int64 - Integration Centric Profile ID assigned directly to this user, if any.
+    def integration_centric_profile_id
+      @attributes[:integration_centric_profile_id]
+    end
+
+    def integration_centric_profile_id=(value)
+      @attributes[:integration_centric_profile_id] = value
+    end
+
     # email - User email address
     def email
       @attributes[:email]
@@ -939,6 +948,7 @@ module Files
     #   filesystem_layout - string - File system layout
     #   ftp_permission - boolean - Can the user access with FTP/FTPS?
     #   header_text - string - Text to display to the user in the header of the UI
+    #   integration_centric_profile_id - int64 - Integration Centric Profile ID assigned directly to this user, if any.
     #   language - string - Preferred language
     #   notification_daily_send_time - int64 - Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
     #   name - string - User's full name
@@ -1001,6 +1011,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: default_workspace_id must be an Integer") if params[:default_workspace_id] and !params[:default_workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if params[:filesystem_layout] and !params[:filesystem_layout].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params[:header_text] and !params[:header_text].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if params[:integration_centric_profile_id] and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params[:language] and !params[:language].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params[:notification_daily_send_time] and !params[:notification_daily_send_time].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -1132,6 +1143,7 @@ module Files
     #   filesystem_layout - string - File system layout
     #   ftp_permission - boolean - Can the user access with FTP/FTPS?
     #   header_text - string - Text to display to the user in the header of the UI
+    #   integration_centric_profile_id - int64 - Integration Centric Profile ID assigned directly to this user, if any.
     #   language - string - Preferred language
     #   notification_daily_send_time - int64 - Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
     #   name - string - User's full name
@@ -1188,6 +1200,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: default_workspace_id must be an Integer") if params[:default_workspace_id] and !params[:default_workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if params[:filesystem_layout] and !params[:filesystem_layout].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params[:header_text] and !params[:header_text].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if params[:integration_centric_profile_id] and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params[:language] and !params[:language].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params[:notification_daily_send_time] and !params[:notification_daily_send_time].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -1273,6 +1286,7 @@ module Files
     #   filesystem_layout - string - File system layout
     #   ftp_permission - boolean - Can the user access with FTP/FTPS?
     #   header_text - string - Text to display to the user in the header of the UI
+    #   integration_centric_profile_id - int64 - Integration Centric Profile ID assigned directly to this user, if any.
     #   language - string - Preferred language
     #   notification_daily_send_time - int64 - Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
     #   name - string - User's full name
@@ -1334,6 +1348,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: default_workspace_id must be an Integer") if params[:default_workspace_id] and !params[:default_workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if params[:filesystem_layout] and !params[:filesystem_layout].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: header_text must be an String") if params[:header_text] and !params[:header_text].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if params[:integration_centric_profile_id] and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if params[:language] and !params[:language].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notification_daily_send_time must be an Integer") if params[:notification_daily_send_time] and !params[:notification_daily_send_time].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
