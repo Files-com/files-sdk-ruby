@@ -411,6 +411,11 @@ module Files
       @attributes[:group_admins_can_add_users]
     end
 
+    # boolean - Allow group admins to add or remove existing users in their groups
+    def group_admins_can_manage_group_memberships
+      @attributes[:group_admins_can_manage_group_memberships]
+    end
+
     # boolean - Allow group admins to delete users in their groups
     def group_admins_can_delete_users
       @attributes[:group_admins_can_delete_users]
@@ -1081,6 +1086,7 @@ module Files
     #   revoke_bundle_access_on_disable_or_delete - boolean - Auto-removes bundles for disabled/deleted users and enforces bundle expiry within user access period.
     #   bundle_watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     #   group_admins_can_add_users - boolean - Allow group admins to create users in their groups
+    #   group_admins_can_manage_group_memberships - boolean - Allow group admins to add or remove existing users in their groups
     #   group_admins_can_delete_users - boolean - Allow group admins to delete users in their groups
     #   group_admins_can_enable_disable_users - boolean - Allow group admins to enable or disable users in their groups
     #   group_admins_can_modify_users - boolean - Allow group admins to modify users in their groups
