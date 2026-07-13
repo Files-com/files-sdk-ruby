@@ -72,6 +72,15 @@ module Files
       @attributes[:description] = value
     end
 
+    # object - Automation v2 graph definition.
+    def definition
+      @attributes[:definition]
+    end
+
+    def definition=(value)
+      @attributes[:definition] = value
+    end
+
     # string - If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
     def destination_replace_from
       @attributes[:destination_replace_from]
@@ -214,6 +223,15 @@ module Files
 
     def path_time_zone=(value)
       @attributes[:path_time_zone] = value
+    end
+
+    # int64 - Current Automation v2 definition version.
+    def version
+      @attributes[:version]
+    end
+
+    def version=(value)
+      @attributes[:version] = value
     end
 
     # int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.

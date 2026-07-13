@@ -19,6 +19,11 @@ module Files
       @attributes[:automation_id]
     end
 
+    # int64 - ID of the immutable Automation version pinned by this run.
+    def automation_version_id
+      @attributes[:automation_version_id]
+    end
+
     # int64 - Workspace ID.
     def workspace_id
       @attributes[:workspace_id]
@@ -72,6 +77,16 @@ module Files
     # int64 - Count of failed operations.
     def failed_operations
       @attributes[:failed_operations]
+    end
+
+    # object - Automation definition snapshot pinned by this run. For performance reasons, this is not provided when listing Automation runs.
+    def definition
+      @attributes[:definition]
+    end
+
+    # string - Link to the run journal artifact.
+    def journal_url
+      @attributes[:journal_url]
     end
 
     # string - Link to status messages log file.
