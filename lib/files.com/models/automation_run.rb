@@ -29,6 +29,11 @@ module Files
       @attributes[:workspace_id]
     end
 
+    # date-time - Date/time at which cancellation was requested.
+    def cancel_requested_at
+      @attributes[:cancel_requested_at]
+    end
+
     # date-time - Automation run completion/failure date/time.
     def completed_at
       @attributes[:completed_at]
@@ -64,7 +69,7 @@ module Files
       @attributes[:runtime]
     end
 
-    # string - The success status of the AutomationRun. One of `running`, `success`, `partial_failure`, or `failure`.
+    # string - The status of the AutomationRun. One of `queued`, `running`, `success`, `partial_failure`, `failure`, `skipped`, or `canceled`.
     def status
       @attributes[:status]
     end
@@ -84,6 +89,11 @@ module Files
       @attributes[:definition]
     end
 
+    # object - Status and execution stage for each node in this run. For performance reasons, this is not provided when listing Automation runs.
+    def node_states
+      @attributes[:node_states]
+    end
+
     # string - Link to the run journal artifact.
     def journal_url
       @attributes[:journal_url]
@@ -92,6 +102,17 @@ module Files
     # string - Link to status messages log file.
     def status_messages_url
       @attributes[:status_messages_url]
+    end
+
+    # Cancel Automation Run
+    def cancel(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/automation_runs/#{@attributes[:id]}/cancel", :post, params, @options)
     end
 
     # Parameters:
@@ -133,6 +154,17 @@ module Files
 
     def self.get(id, params = {}, options = {})
       find(id, params, options)
+    end
+
+    # Cancel Automation Run
+    def self.cancel(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      response, options = Api.send_request("/automation_runs/#{params[:id]}/cancel", :post, params, options)
+      AutomationRun.new(response.data, options)
     end
   end
 end
