@@ -64,6 +64,16 @@ module Files
       @attributes[:retry_of_run_id]
     end
 
+    # int64 - ID of the run whose persisted node outputs this run reused.
+    def rerun_of_run_id
+      @attributes[:rerun_of_run_id]
+    end
+
+    # string - Node at which this run resumed execution.
+    def rerun_from_node_id
+      @attributes[:rerun_from_node_id]
+    end
+
     # double - Automation run runtime.
     def runtime
       @attributes[:runtime]
@@ -94,6 +104,11 @@ module Files
       @attributes[:node_states]
     end
 
+    # array(object) - Execution status, timing, and bounded output summaries for each node. For performance reasons, this is not provided when listing Automation runs.
+    def execution_nodes
+      @attributes[:execution_nodes]
+    end
+
     # string - Link to the run journal artifact.
     def journal_url
       @attributes[:journal_url]
@@ -113,6 +128,22 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/automation_runs/#{@attributes[:id]}/cancel", :post, params, @options)
+    end
+
+    # Re-run Automation from Node
+    #
+    # Parameters:
+    #   node_id (required) - string - Node ID at which execution should resume.
+    def rerun(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: node_id must be an String") if params[:node_id] and !params[:node_id].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise MissingParameterError.new("Parameter missing: node_id") unless params[:node_id]
+
+      Api.send_request("/automation_runs/#{@attributes[:id]}/rerun", :post, params, @options)
     end
 
     # Parameters:
@@ -156,6 +187,21 @@ module Files
       find(id, params, options)
     end
 
+    # Parameters:
+    #   id (required) - int64 - Automation Run ID.
+    #   node_id (required) - string - Node ID from the pinned Automation definition.
+    def self.find_node(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: node_id must be an String") if params[:node_id] and !params[:node_id].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise MissingParameterError.new("Parameter missing: node_id") unless params[:node_id]
+
+      response, options = Api.send_request("/automation_runs/#{params[:id]}/node", :get, params, options)
+      AutomationExecutionNode.new(response.data, options)
+    end
+
     # Cancel Automation Run
     def self.cancel(id, params = {}, options = {})
       params ||= {}
@@ -164,6 +210,22 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/automation_runs/#{params[:id]}/cancel", :post, params, options)
+      AutomationRun.new(response.data, options)
+    end
+
+    # Re-run Automation from Node
+    #
+    # Parameters:
+    #   node_id (required) - string - Node ID at which execution should resume.
+    def self.rerun(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: node_id must be an String") if params[:node_id] and !params[:node_id].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise MissingParameterError.new("Parameter missing: node_id") unless params[:node_id]
+
+      response, options = Api.send_request("/automation_runs/#{params[:id]}/rerun", :post, params, options)
       AutomationRun.new(response.data, options)
     end
   end

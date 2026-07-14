@@ -23,5 +23,10 @@ module Files
     def nodes
       @attributes[:nodes]
     end
+
+    # string - Stable public URL for the Automation v2 graph definition JSON Schema.
+    def schema_url
+      @attributes[:schema_url]
+    end
   end
 end

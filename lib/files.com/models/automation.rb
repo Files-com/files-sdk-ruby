@@ -135,6 +135,15 @@ module Files
       @attributes[:import_urls] = value
     end
 
+    # string - If trigger is `email`, this is the address that triggers the Automation.
+    def inbound_email_address
+      @attributes[:inbound_email_address]
+    end
+
+    def inbound_email_address=(value)
+      @attributes[:inbound_email_address] = value
+    end
+
     # boolean - Normally copy and move automations that use globs will implicitly preserve the source folder structure in the destination.  If this flag is `true`, the source folder structure will be flattened in the destination.  This is useful for copying or moving files from multiple folders into a single destination folder.
     def flatten_destination_structure
       @attributes[:flatten_destination_structure]
@@ -396,12 +405,16 @@ module Files
       @attributes[:holiday_region] = value
     end
 
-    # Manually Run Automation
+    # Manually Run Automation. v2 Automations require Site or Workspace Admin permission
+    #
+    # Parameters:
+    #   items - array(object) - Initial items for a v2 manual trigger. Each item contains exactly one `file` path or `data` object.
     def manual_run(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: items must be an Array") if params[:items] and !params[:items].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/automations/#{@attributes[:id]}/manual_run", :post, params, @options)
@@ -620,11 +633,15 @@ module Files
       Automation.new(response.data, options)
     end
 
-    # Manually Run Automation
+    # Manually Run Automation. v2 Automations require Site or Workspace Admin permission
+    #
+    # Parameters:
+    #   items - array(object) - Initial items for a v2 manual trigger. Each item contains exactly one `file` path or `data` object.
     def self.manual_run(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: items must be an Array") if params[:items] and !params[:items].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/automations/#{params[:id]}/manual_run", :post, params, options)
