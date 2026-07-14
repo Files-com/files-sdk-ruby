@@ -14,6 +14,11 @@ module Files
       @attributes[:definition_schema]
     end
 
+    # array(object) - Typed error families accepted by Automation v2 on_error rules.
+    def error_families
+      @attributes[:error_families]
+    end
+
     # array(object) - Active Automation v2 node authoring metadata.
     def nodes
       @attributes[:nodes]
