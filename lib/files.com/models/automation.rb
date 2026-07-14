@@ -546,6 +546,11 @@ module Files
       find(id, params, options)
     end
 
+    def self.get_authoring_schema(params = {}, options = {})
+      response, options = Api.send_request("/automations/authoring_schema", :get, params, options)
+      AutomationAuthoringSchema.new(response.data, options)
+    end
+
     # Parameters:
     #   source - string - Source path/glob.  See Automation docs for exact description, but this is used to filter for files in the `path` to find files to operate on. Supports globs, except on remote mounts.
     #   destinations - array(string) - A list of destination paths. Use a trailing slash for folder destinations and omit it for file destinations.
