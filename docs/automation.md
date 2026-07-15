@@ -270,6 +270,19 @@ Files::Automation.create(
 
 ---
 
+## Upgrade a legacy Automation to Automation v2
+
+```
+Files::Automation.upgrade(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Automation ID.
+
+
+---
+
 ## Manually Run Automation. v2 Automations require Site or Workspace Admin permission
 
 ```
@@ -370,6 +383,21 @@ Files::Automation.update(id,
 
 ```
 Files::Automation.delete(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Automation ID.
+
+
+---
+
+## Upgrade a legacy Automation to Automation v2
+
+```
+automation = Files::Automation.find(id)
+
+automation.upgrade
 ```
 
 ### Parameters

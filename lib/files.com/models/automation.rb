@@ -405,6 +405,17 @@ module Files
       @attributes[:holiday_region] = value
     end
 
+    # Upgrade a legacy Automation to Automation v2
+    def upgrade(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/automations/#{@attributes[:id]}/upgrade", :post, params, @options)
+    end
+
     # Manually Run Automation. v2 Automations require Site or Workspace Admin permission
     #
     # Parameters:
@@ -630,6 +641,17 @@ module Files
       raise MissingParameterError.new("Parameter missing: automation") unless params[:automation]
 
       response, options = Api.send_request("/automations", :post, params, options)
+      Automation.new(response.data, options)
+    end
+
+    # Upgrade a legacy Automation to Automation v2
+    def self.upgrade(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      response, options = Api.send_request("/automations/#{params[:id]}/upgrade", :post, params, options)
       Automation.new(response.data, options)
     end
 
