@@ -917,6 +917,15 @@ module Files
       @attributes[:download_uri] = value
     end
 
+    # DirectConnectionInfo - Optional direct connection information for direct Agent transfer attempts
+    def direct_connection_info
+      @attributes[:direct_connection_info]
+    end
+
+    def direct_connection_info=(value)
+      @attributes[:direct_connection_info] = value
+    end
+
     # string - Bookmark/priority color of file/folder
     def priority_color
       @attributes[:priority_color]
@@ -1043,6 +1052,15 @@ module Files
       @attributes[:buffered_upload] = value
     end
 
+    # boolean - Include optional direct connection information for a direct Agent transfer attempt?
+    def with_direct_connection_info
+      @attributes[:with_direct_connection_info]
+    end
+
+    def with_direct_connection_info=(value)
+      @attributes[:with_direct_connection_info] = value
+    end
+
     # Download File
     #
     # Parameters:
@@ -1050,6 +1068,7 @@ module Files
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
+    #   with_direct_connection_info - boolean - Include optional direct connection information for a direct Agent transfer attempt?
     def download(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
@@ -1248,6 +1267,7 @@ module Files
     #   size - int64 - Total bytes of file being uploaded (include bytes being retained if appending/restarting).
     #   with_rename - boolean - Allow file rename instead of overwrite?
     #   buffered_upload - boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
+    #   with_direct_connection_info - boolean - Include optional direct connection information for a direct Agent transfer attempt?
     def begin_upload(params = {})
       params ||= {}
       params[:path] = @attributes[:path]
@@ -1276,6 +1296,7 @@ module Files
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
+    #   with_direct_connection_info - boolean - Include optional direct connection information for a direct Agent transfer attempt?
     def self.download(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1305,6 +1326,7 @@ module Files
     #   structure - string - If copying folder, copy just the structure?
     #   with_rename - boolean - Allow file rename instead of overwrite?
     #   buffered_upload - boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
+    #   with_direct_connection_info - boolean - Include optional direct connection information for a direct Agent transfer attempt?
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1547,6 +1569,7 @@ module Files
     #   size - int64 - Total bytes of file being uploaded (include bytes being retained if appending/restarting).
     #   with_rename - boolean - Allow file rename instead of overwrite?
     #   buffered_upload - boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
+    #   with_direct_connection_info - boolean - Include optional direct connection information for a direct Agent transfer attempt?
     def self.begin_upload(path, params = {}, options = {})
       params ||= {}
       params[:path] = path

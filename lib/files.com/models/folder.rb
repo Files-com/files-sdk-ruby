@@ -434,6 +434,15 @@ module Files
       @attributes[:download_uri] = value
     end
 
+    # DirectConnectionInfo - Optional direct connection information for direct Agent transfer attempts
+    def direct_connection_info
+      @attributes[:direct_connection_info]
+    end
+
+    def direct_connection_info=(value)
+      @attributes[:direct_connection_info] = value
+    end
+
     # string - Bookmark/priority color of file/folder
     def priority_color
       @attributes[:priority_color]

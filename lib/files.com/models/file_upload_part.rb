@@ -88,5 +88,10 @@ module Files
     def upload_uri
       @attributes[:upload_uri]
     end
+
+    # DirectConnectionInfo - Optional direct connection information for direct Agent transfer attempts
+    def direct_connection_info
+      @attributes[:direct_connection_info]
+    end
   end
 end
