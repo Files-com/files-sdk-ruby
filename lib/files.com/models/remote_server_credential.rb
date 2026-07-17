@@ -144,6 +144,33 @@ module Files
       @attributes[:linode_access_key] = value
     end
 
+    # string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
+    def sharepoint_tenant_id
+      @attributes[:sharepoint_tenant_id]
+    end
+
+    def sharepoint_tenant_id=(value)
+      @attributes[:sharepoint_tenant_id] = value
+    end
+
+    # string - SharePoint: Microsoft Entra application client ID for app-only authentication.
+    def sharepoint_client_id
+      @attributes[:sharepoint_client_id]
+    end
+
+    def sharepoint_client_id=(value)
+      @attributes[:sharepoint_client_id] = value
+    end
+
+    # string - SharePoint: App-only credential type. Either secret or certificate.
+    def sharepoint_app_credential_type
+      @attributes[:sharepoint_app_credential_type]
+    end
+
+    def sharepoint_app_credential_type=(value)
+      @attributes[:sharepoint_app_credential_type] = value
+    end
+
     # string - Remote server username.
     def username
       @attributes[:username]
@@ -297,6 +324,24 @@ module Files
       @attributes[:s3_compatible_secret_key] = value
     end
 
+    # string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    def sharepoint_client_certificate
+      @attributes[:sharepoint_client_certificate]
+    end
+
+    def sharepoint_client_certificate=(value)
+      @attributes[:sharepoint_client_certificate] = value
+    end
+
+    # string - SharePoint: Microsoft Entra application client secret for app-only authentication.
+    def sharepoint_client_secret
+      @attributes[:sharepoint_client_secret]
+    end
+
+    def sharepoint_client_secret=(value)
+      @attributes[:sharepoint_client_secret] = value
+    end
+
     # string - Wasabi: Secret Key
     def wasabi_secret_key
       @attributes[:wasabi_secret_key]
@@ -327,6 +372,8 @@ module Files
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
     #   linode_access_key - string - Linode: Access Key
     #   s3_compatible_access_key - string - S3-compatible: Access Key
+    #   sharepoint_client_id - string - SharePoint: Microsoft Entra application client ID for app-only authentication.
+    #   sharepoint_tenant_id - string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
     #   username - string - Remote server username.
     #   wasabi_access_key - string - Wasabi: Access Key.
     #   password - string - Password, if needed.
@@ -345,6 +392,8 @@ module Files
     #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
     #   linode_secret_key - string - Linode: Secret Key
     #   s3_compatible_secret_key - string - S3-compatible: Secret Key
+    #   sharepoint_client_certificate - string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    #   sharepoint_client_secret - string - SharePoint: Microsoft Entra application client secret for app-only authentication.
     #   wasabi_secret_key - string - Wasabi: Secret Key
     def update(params = {})
       params ||= {}
@@ -362,6 +411,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_id must be an String") if params[:sharepoint_client_id] and !params[:sharepoint_client_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_tenant_id must be an String") if params[:sharepoint_tenant_id] and !params[:sharepoint_tenant_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
@@ -380,6 +431,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_secret_key must be an String") if params[:google_cloud_storage_s3_compatible_secret_key] and !params[:google_cloud_storage_s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_certificate must be an String") if params[:sharepoint_client_certificate] and !params[:sharepoint_client_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_secret must be an String") if params[:sharepoint_client_secret] and !params[:sharepoint_client_secret].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
@@ -462,6 +515,8 @@ module Files
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
     #   linode_access_key - string - Linode: Access Key
     #   s3_compatible_access_key - string - S3-compatible: Access Key
+    #   sharepoint_client_id - string - SharePoint: Microsoft Entra application client ID for app-only authentication.
+    #   sharepoint_tenant_id - string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
     #   username - string - Remote server username.
     #   wasabi_access_key - string - Wasabi: Access Key.
     #   password - string - Password, if needed.
@@ -480,6 +535,8 @@ module Files
     #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
     #   linode_secret_key - string - Linode: Secret Key
     #   s3_compatible_secret_key - string - S3-compatible: Secret Key
+    #   sharepoint_client_certificate - string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    #   sharepoint_client_secret - string - SharePoint: Microsoft Entra application client secret for app-only authentication.
     #   wasabi_secret_key - string - Wasabi: Secret Key
     #   workspace_id - int64 - Workspace ID (0 for default workspace)
     #   copy_values_from_credential_id - int64 - ID of Remote Server Credential to copy omitted values from.
@@ -495,6 +552,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_id must be an String") if params[:sharepoint_client_id] and !params[:sharepoint_client_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_tenant_id must be an String") if params[:sharepoint_tenant_id] and !params[:sharepoint_tenant_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
@@ -513,6 +572,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_secret_key must be an String") if params[:google_cloud_storage_s3_compatible_secret_key] and !params[:google_cloud_storage_s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_certificate must be an String") if params[:sharepoint_client_certificate] and !params[:sharepoint_client_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_secret must be an String") if params[:sharepoint_client_secret] and !params[:sharepoint_client_secret].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: copy_values_from_credential_id must be an Integer") if params[:copy_values_from_credential_id] and !params[:copy_values_from_credential_id].is_a?(Integer)
@@ -533,6 +594,8 @@ module Files
     #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
     #   linode_access_key - string - Linode: Access Key
     #   s3_compatible_access_key - string - S3-compatible: Access Key
+    #   sharepoint_client_id - string - SharePoint: Microsoft Entra application client ID for app-only authentication.
+    #   sharepoint_tenant_id - string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
     #   username - string - Remote server username.
     #   wasabi_access_key - string - Wasabi: Access Key.
     #   password - string - Password, if needed.
@@ -551,6 +614,8 @@ module Files
     #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
     #   linode_secret_key - string - Linode: Secret Key
     #   s3_compatible_secret_key - string - S3-compatible: Secret Key
+    #   sharepoint_client_certificate - string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    #   sharepoint_client_secret - string - SharePoint: Microsoft Entra application client secret for app-only authentication.
     #   wasabi_secret_key - string - Wasabi: Secret Key
     def self.update(id, params = {}, options = {})
       params ||= {}
@@ -567,6 +632,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_access_key must be an String") if params[:google_cloud_storage_s3_compatible_access_key] and !params[:google_cloud_storage_s3_compatible_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: linode_access_key must be an String") if params[:linode_access_key] and !params[:linode_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_access_key must be an String") if params[:s3_compatible_access_key] and !params[:s3_compatible_access_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_id must be an String") if params[:sharepoint_client_id] and !params[:sharepoint_client_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_tenant_id must be an String") if params[:sharepoint_tenant_id] and !params[:sharepoint_tenant_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
@@ -585,6 +652,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_s3_compatible_secret_key must be an String") if params[:google_cloud_storage_s3_compatible_secret_key] and !params[:google_cloud_storage_s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if params[:linode_secret_key] and !params[:linode_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if params[:s3_compatible_secret_key] and !params[:s3_compatible_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_certificate must be an String") if params[:sharepoint_client_certificate] and !params[:sharepoint_client_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_secret must be an String") if params[:sharepoint_client_secret] and !params[:sharepoint_client_secret].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 

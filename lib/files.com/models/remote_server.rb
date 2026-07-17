@@ -369,6 +369,51 @@ module Files
       @attributes[:one_drive_account_type] = value
     end
 
+    # string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
+    def sharepoint_tenant_id
+      @attributes[:sharepoint_tenant_id]
+    end
+
+    def sharepoint_tenant_id=(value)
+      @attributes[:sharepoint_tenant_id] = value
+    end
+
+    # string - SharePoint: Microsoft Entra application client ID for app-only authentication.
+    def sharepoint_client_id
+      @attributes[:sharepoint_client_id]
+    end
+
+    def sharepoint_client_id=(value)
+      @attributes[:sharepoint_client_id] = value
+    end
+
+    # boolean - SharePoint: If true, this remote server uses Microsoft Entra app-only authentication.
+    def sharepoint_app_authentication
+      @attributes[:sharepoint_app_authentication]
+    end
+
+    def sharepoint_app_authentication=(value)
+      @attributes[:sharepoint_app_authentication] = value
+    end
+
+    # string - SharePoint: App-only credential type. Either secret or certificate.
+    def sharepoint_app_credential_type
+      @attributes[:sharepoint_app_credential_type]
+    end
+
+    def sharepoint_app_credential_type=(value)
+      @attributes[:sharepoint_app_credential_type] = value
+    end
+
+    # string - SharePoint: Site URL to scope app-only authentication to a single site. Leave blank to browse all sites.
+    def sharepoint_site_url
+      @attributes[:sharepoint_site_url]
+    end
+
+    def sharepoint_site_url=(value)
+      @attributes[:sharepoint_site_url] = value
+    end
+
     # string - Azure Blob Storage: Account name
     def azure_blob_storage_account
       @attributes[:azure_blob_storage_account]
@@ -702,6 +747,24 @@ module Files
       @attributes[:reset_authentication] = value
     end
 
+    # string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    def sharepoint_client_certificate
+      @attributes[:sharepoint_client_certificate]
+    end
+
+    def sharepoint_client_certificate=(value)
+      @attributes[:sharepoint_client_certificate] = value
+    end
+
+    # string - SharePoint: Microsoft Entra application client secret for app-only authentication.
+    def sharepoint_client_secret
+      @attributes[:sharepoint_client_secret]
+    end
+
+    def sharepoint_client_secret=(value)
+      @attributes[:sharepoint_client_secret] = value
+    end
+
     # string - SSL client certificate.
     def ssl_certificate
       @attributes[:ssl_certificate]
@@ -897,6 +960,8 @@ module Files
     #   private_key - string - Private key, if needed.
     #   private_key_passphrase - string - Passphrase for private key if needed.
     #   reset_authentication - boolean - Reset authenticated account?
+    #   sharepoint_client_certificate - string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    #   sharepoint_client_secret - string - SharePoint: Microsoft Entra application client secret for app-only authentication.
     #   ssl_certificate - string - SSL client certificate.
     #   aws_secret_key - string - AWS: secret key.
     #   azure_blob_storage_access_key - string - Azure Blob Storage: Access Key
@@ -965,6 +1030,9 @@ module Files
     #   server_certificate - string - Remote server certificate
     #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
+    #   sharepoint_client_id - string - SharePoint: Microsoft Entra application client ID for app-only authentication.
+    #   sharepoint_site_url - string - SharePoint: Site URL to scope app-only authentication to a single site. Leave blank to browse all sites.
+    #   sharepoint_tenant_id - string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.
     #   wasabi_access_key - string - Wasabi: Access Key.
@@ -978,6 +1046,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if params[:private_key_passphrase] and !params[:private_key_passphrase].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_certificate must be an String") if params[:sharepoint_client_certificate] and !params[:sharepoint_client_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_secret must be an String") if params[:sharepoint_client_secret] and !params[:sharepoint_client_secret].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if params[:ssl_certificate] and !params[:ssl_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params[:azure_blob_storage_access_key] and !params[:azure_blob_storage_access_key].is_a?(String)
@@ -1040,6 +1110,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_id must be an String") if params[:sharepoint_client_id] and !params[:sharepoint_client_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_site_url must be an String") if params[:sharepoint_site_url] and !params[:sharepoint_site_url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_tenant_id must be an String") if params[:sharepoint_tenant_id] and !params[:sharepoint_tenant_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params[:ssl] and !params[:ssl].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
@@ -1134,6 +1207,8 @@ module Files
     #   private_key - string - Private key, if needed.
     #   private_key_passphrase - string - Passphrase for private key if needed.
     #   reset_authentication - boolean - Reset authenticated account?
+    #   sharepoint_client_certificate - string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    #   sharepoint_client_secret - string - SharePoint: Microsoft Entra application client secret for app-only authentication.
     #   ssl_certificate - string - SSL client certificate.
     #   aws_secret_key - string - AWS: secret key.
     #   azure_blob_storage_access_key - string - Azure Blob Storage: Access Key
@@ -1202,6 +1277,9 @@ module Files
     #   server_certificate - string - Remote server certificate
     #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
+    #   sharepoint_client_id - string - SharePoint: Microsoft Entra application client ID for app-only authentication.
+    #   sharepoint_site_url - string - SharePoint: Site URL to scope app-only authentication to a single site. Leave blank to browse all sites.
+    #   sharepoint_tenant_id - string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.
     #   wasabi_access_key - string - Wasabi: Access Key.
@@ -1213,6 +1291,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if params[:private_key_passphrase] and !params[:private_key_passphrase].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_certificate must be an String") if params[:sharepoint_client_certificate] and !params[:sharepoint_client_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_secret must be an String") if params[:sharepoint_client_secret] and !params[:sharepoint_client_secret].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if params[:ssl_certificate] and !params[:ssl_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params[:azure_blob_storage_access_key] and !params[:azure_blob_storage_access_key].is_a?(String)
@@ -1275,6 +1355,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_id must be an String") if params[:sharepoint_client_id] and !params[:sharepoint_client_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_site_url must be an String") if params[:sharepoint_site_url] and !params[:sharepoint_site_url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_tenant_id must be an String") if params[:sharepoint_tenant_id] and !params[:sharepoint_tenant_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params[:ssl] and !params[:ssl].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
@@ -1337,6 +1420,8 @@ module Files
     #   private_key - string - Private key, if needed.
     #   private_key_passphrase - string - Passphrase for private key if needed.
     #   reset_authentication - boolean - Reset authenticated account?
+    #   sharepoint_client_certificate - string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    #   sharepoint_client_secret - string - SharePoint: Microsoft Entra application client secret for app-only authentication.
     #   ssl_certificate - string - SSL client certificate.
     #   aws_secret_key - string - AWS: secret key.
     #   azure_blob_storage_access_key - string - Azure Blob Storage: Access Key
@@ -1405,6 +1490,9 @@ module Files
     #   server_certificate - string - Remote server certificate
     #   server_host_key - string - Remote server SSH Host Key. If provided, we will require that the server host key matches the provided key. Uses OpenSSH format similar to what would go into ~/.ssh/known_hosts
     #   server_type - string - Remote server type.
+    #   sharepoint_client_id - string - SharePoint: Microsoft Entra application client ID for app-only authentication.
+    #   sharepoint_site_url - string - SharePoint: Site URL to scope app-only authentication to a single site. Leave blank to browse all sites.
+    #   sharepoint_tenant_id - string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
     #   ssl - string - Should we require SSL?
     #   username - string - Remote server username.
     #   wasabi_access_key - string - Wasabi: Access Key.
@@ -1417,6 +1505,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if params[:private_key_passphrase] and !params[:private_key_passphrase].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_certificate must be an String") if params[:sharepoint_client_certificate] and !params[:sharepoint_client_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_secret must be an String") if params[:sharepoint_client_secret] and !params[:sharepoint_client_secret].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if params[:ssl_certificate] and !params[:ssl_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: aws_secret_key must be an String") if params[:aws_secret_key] and !params[:aws_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_access_key must be an String") if params[:azure_blob_storage_access_key] and !params[:azure_blob_storage_access_key].is_a?(String)
@@ -1479,6 +1569,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if params[:server_type] and !params[:server_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_client_id must be an String") if params[:sharepoint_client_id] and !params[:sharepoint_client_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_site_url must be an String") if params[:sharepoint_site_url] and !params[:sharepoint_site_url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sharepoint_tenant_id must be an String") if params[:sharepoint_tenant_id] and !params[:sharepoint_tenant_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl must be an String") if params[:ssl] and !params[:ssl].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_access_key must be an String") if params[:wasabi_access_key] and !params[:wasabi_access_key].is_a?(String)
