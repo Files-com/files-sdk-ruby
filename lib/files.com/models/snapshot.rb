@@ -63,6 +63,15 @@ module Files
       @attributes[:bundle_id] = value
     end
 
+    # int64 - Workspace ID. `0` means the default workspace.
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
     # array(string) - An array of paths to add to the snapshot.
     def paths
       @attributes[:paths]
@@ -162,10 +171,12 @@ module Files
     #   expires_at - string - When the snapshot expires.
     #   name - string - A name for the snapshot.
     #   paths - array(string) - An array of paths to add to the snapshot.
+    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
 
       response, options = Api.send_request("/snapshots", :post, params, options)
       Snapshot.new(response.data, options)
