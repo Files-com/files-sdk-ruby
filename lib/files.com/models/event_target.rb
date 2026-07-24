@@ -63,7 +63,7 @@ module Files
       @attributes[:enabled] = value
     end
 
-    # object - Event Target configuration.
+    # object - Event Target configuration. Folder targets accept path and format (json or csv).
     def config
       @attributes[:config]
     end
@@ -72,7 +72,7 @@ module Files
       @attributes[:config] = value
     end
 
-    # object - Event Target delivery policy. Email targets support batch_interval in seconds, between 600 and 86400.
+    # object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400.
     def delivery_policy
       @attributes[:delivery_policy]
     end
@@ -95,10 +95,9 @@ module Files
     #   name - string - Event Target name.
     #   workspace_id - int64 - Workspace ID. 0 means the default workspace or site-wide.
     #   apply_to_all_workspaces - boolean - If true, this default-workspace target can receive events from all workspaces.
-    #   target_type - string - Event Target type.
     #   enabled - boolean - Whether this Event Target can receive events.
-    #   config - object - Event Target configuration.
-    #   delivery_policy - object - Event Target delivery policy. Email targets support batch_interval in seconds, between 600 and 86400.
+    #   config - object - Event Target configuration. Folder targets accept path and format (json or csv).
+    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -106,7 +105,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: target_type must be an String") if params[:target_type] and !params[:target_type].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/event_targets/#{@attributes[:id]}", :patch, params, @options)
@@ -178,19 +176,19 @@ module Files
     #   name (required) - string - Event Target name.
     #   workspace_id - int64 - Workspace ID. 0 means the default workspace or site-wide.
     #   apply_to_all_workspaces - boolean - If true, this default-workspace target can receive events from all workspaces.
-    #   target_type (required) - string - Event Target type.
     #   enabled - boolean - Whether this Event Target can receive events.
-    #   config (required) - object - Event Target configuration.
-    #   delivery_policy - object - Event Target delivery policy. Email targets support batch_interval in seconds, between 600 and 86400.
+    #   config (required) - object - Event Target configuration. Folder targets accept path and format (json or csv).
+    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400.
+    #   target_type (required) - string - Event Target type.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: target_type must be an String") if params[:target_type] and !params[:target_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: config must be an Hash") if params[:config] and !params[:config].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: delivery_policy must be an Hash") if params[:delivery_policy] and !params[:delivery_policy].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: target_type must be an String") if params[:target_type] and !params[:target_type].is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
-      raise MissingParameterError.new("Parameter missing: target_type") unless params[:target_type]
       raise MissingParameterError.new("Parameter missing: config") unless params[:config]
+      raise MissingParameterError.new("Parameter missing: target_type") unless params[:target_type]
 
       response, options = Api.send_request("/event_targets", :post, params, options)
       EventTarget.new(response.data, options)
@@ -200,17 +198,15 @@ module Files
     #   name - string - Event Target name.
     #   workspace_id - int64 - Workspace ID. 0 means the default workspace or site-wide.
     #   apply_to_all_workspaces - boolean - If true, this default-workspace target can receive events from all workspaces.
-    #   target_type - string - Event Target type.
     #   enabled - boolean - Whether this Event Target can receive events.
-    #   config - object - Event Target configuration.
-    #   delivery_policy - object - Event Target delivery policy. Email targets support batch_interval in seconds, between 600 and 86400.
+    #   config - object - Event Target configuration. Folder targets accept path and format (json or csv).
+    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: target_type must be an String") if params[:target_type] and !params[:target_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: config must be an Hash") if params[:config] and !params[:config].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: delivery_policy must be an Hash") if params[:delivery_policy] and !params[:delivery_policy].is_a?(Hash)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
