@@ -63,13 +63,31 @@ module Files
       @attributes[:applied_child_site_ids] = value
     end
 
-    # array(int64) - IDs of child sites that this policy has been exempted from. If `skip_child_site_ids` is empty, the policy will be applied to all child sites. To apply a policy to a child site that has been exempted, remove it from `skip_child_site_ids` or set it to an empty array (`[]`).
+    # array(int64) - IDs of child sites excluded from this default policy.
     def skip_child_site_ids
       @attributes[:skip_child_site_ids]
     end
 
     def skip_child_site_ids=(value)
       @attributes[:skip_child_site_ids] = value
+    end
+
+    # array(int64) - IDs of child sites explicitly assigned to this non-default policy.
+    def child_site_ids
+      @attributes[:child_site_ids]
+    end
+
+    def child_site_ids=(value)
+      @attributes[:child_site_ids] = value
+    end
+
+    # boolean - Whether this policy applies to child sites not explicitly assigned to another policy.
+    def default_policy
+      @attributes[:default_policy]
+    end
+
+    def default_policy=(value)
+      @attributes[:default_policy] = value
     end
 
     # date-time - When this policy was created.
@@ -84,7 +102,9 @@ module Files
 
     # Parameters:
     #   value - object - Policy configuration data. Attributes differ by policy type. For more information, refer to the Value Hash section of the developer documentation.
-    #   skip_child_site_ids - array(int64) - IDs of child sites that this policy has been exempted from. If `skip_child_site_ids` is empty, the policy will be applied to all child sites. To apply a policy to a child site that has been exempted, remove it from `skip_child_site_ids` or set it to an empty array (`[]`).
+    #   skip_child_site_ids - array(int64) - IDs of child sites excluded from this default policy.
+    #   child_site_ids - array(int64) - IDs of child sites explicitly assigned to this non-default policy.
+    #   default_policy - boolean - Whether this policy applies to child sites not explicitly assigned to another policy.
     #   policy_type - string - Type of policy.  Valid values: `settings`.
     #   name - string - Name for this policy.
     #   description - string - Description for this policy.
@@ -94,6 +114,7 @@ module Files
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: skip_child_site_ids must be an Array") if params[:skip_child_site_ids] and !params[:skip_child_site_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: child_site_ids must be an Array") if params[:child_site_ids] and !params[:child_site_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: policy_type must be an String") if params[:policy_type] and !params[:policy_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
@@ -162,13 +183,16 @@ module Files
 
     # Parameters:
     #   value - object - Policy configuration data. Attributes differ by policy type. For more information, refer to the Value Hash section of the developer documentation.
-    #   skip_child_site_ids - array(int64) - IDs of child sites that this policy has been exempted from. If `skip_child_site_ids` is empty, the policy will be applied to all child sites. To apply a policy to a child site that has been exempted, remove it from `skip_child_site_ids` or set it to an empty array (`[]`).
+    #   skip_child_site_ids - array(int64) - IDs of child sites excluded from this default policy.
+    #   child_site_ids - array(int64) - IDs of child sites explicitly assigned to this non-default policy.
+    #   default_policy - boolean - Whether this policy applies to child sites not explicitly assigned to another policy.
     #   policy_type (required) - string - Type of policy.  Valid values: `settings`.
     #   name - string - Name for this policy.
     #   description - string - Description for this policy.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: skip_child_site_ids must be an Array") if params[:skip_child_site_ids] and !params[:skip_child_site_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: child_site_ids must be an Array") if params[:child_site_ids] and !params[:child_site_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: policy_type must be an String") if params[:policy_type] and !params[:policy_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
@@ -180,7 +204,9 @@ module Files
 
     # Parameters:
     #   value - object - Policy configuration data. Attributes differ by policy type. For more information, refer to the Value Hash section of the developer documentation.
-    #   skip_child_site_ids - array(int64) - IDs of child sites that this policy has been exempted from. If `skip_child_site_ids` is empty, the policy will be applied to all child sites. To apply a policy to a child site that has been exempted, remove it from `skip_child_site_ids` or set it to an empty array (`[]`).
+    #   skip_child_site_ids - array(int64) - IDs of child sites excluded from this default policy.
+    #   child_site_ids - array(int64) - IDs of child sites explicitly assigned to this non-default policy.
+    #   default_policy - boolean - Whether this policy applies to child sites not explicitly assigned to another policy.
     #   policy_type - string - Type of policy.  Valid values: `settings`.
     #   name - string - Name for this policy.
     #   description - string - Description for this policy.
@@ -190,6 +216,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: skip_child_site_ids must be an Array") if params[:skip_child_site_ids] and !params[:skip_child_site_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: child_site_ids must be an Array") if params[:child_site_ids] and !params[:child_site_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: policy_type must be an String") if params[:policy_type] and !params[:policy_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
