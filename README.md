@@ -593,6 +593,8 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`ReauthenticationNeededActionError`|  `NotAuthorizedError` |
 |`RecaptchaFailedError`|  `NotAuthorizedError` |
 |`RemoteDesktopDebugLoggingDisabledError`|  `NotAuthorizedError` |
+|`RootFolderBehaviorSiteAdminRequiredError`|  `NotAuthorizedError` |
+|`RootFolderBehaviorSkipSiteAdminRequiredError`|  `NotAuthorizedError` |
 |`SelfManagedRequiredError`|  `NotAuthorizedError` |
 |`SiteAdminOrPartnerAdminPermissionRequiredError`|  `NotAuthorizedError` |
 |`SiteAdminOrWorkspaceAdminOrFolderAdminPermissionRequiredError`|  `NotAuthorizedError` |

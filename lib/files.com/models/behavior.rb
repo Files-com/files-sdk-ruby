@@ -99,6 +99,33 @@ module Files
       @attributes[:recursive] = value
     end
 
+    # boolean - If true, this behavior is inherited from a higher scope rather than owned by the requested workspace.
+    define_method(:inherited) do
+      @attributes[:inherited]
+    end
+
+    def inherited=(value)
+      @attributes[:inherited] = value
+    end
+
+    # boolean - If true, this behavior is controlled by a parent-site policy and cannot be modified locally.
+    def managed
+      @attributes[:managed]
+    end
+
+    def managed=(value)
+      @attributes[:managed] = value
+    end
+
+    # boolean - If true, this behavior may only be modified by a site admin because it is at the site root or disables a root behavior.
+    def root_behavior_site_admin_only
+      @attributes[:root_behavior_site_admin_only]
+    end
+
+    def root_behavior_site_admin_only=(value)
+      @attributes[:root_behavior_site_admin_only] = value
+    end
+
     # file - Certain behaviors may require a file, for instance, the `watermark` behavior requires a watermark image. Attach that file here.
     def attachment_file
       @attributes[:attachment_file]

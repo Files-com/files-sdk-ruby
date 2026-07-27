@@ -154,6 +154,8 @@ module Files
   class ReauthenticationNeededActionError < NotAuthorizedError; end
   class RecaptchaFailedError < NotAuthorizedError; end
   class RemoteDesktopDebugLoggingDisabledError < NotAuthorizedError; end
+  class RootFolderBehaviorSiteAdminRequiredError < NotAuthorizedError; end
+  class RootFolderBehaviorSkipSiteAdminRequiredError < NotAuthorizedError; end
   class SelfManagedRequiredError < NotAuthorizedError; end
   class SiteAdminOrPartnerAdminPermissionRequiredError < NotAuthorizedError; end
   class SiteAdminOrWorkspaceAdminOrFolderAdminPermissionRequiredError < NotAuthorizedError; end
