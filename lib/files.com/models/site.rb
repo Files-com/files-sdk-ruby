@@ -381,6 +381,11 @@ module Files
       @attributes[:email]
     end
 
+    # boolean - Are FedRAMP security restrictions enabled for this site?
+    def fedramp
+      @attributes[:fedramp]
+    end
+
     # boolean - Is FTP enabled?
     def ftp_enabled
       @attributes[:ftp_enabled]
@@ -1039,6 +1044,7 @@ module Files
     #   sftp_insecure_ciphers - boolean - If true, we will allow weak and known insecure ciphers to be used for SFTP connections.  Enabling this setting severely weakens the security of your site and it is not recommend, except as a last resort for compatibility.
     #   sftp_insecure_diffie_hellman - boolean - If true, we will allow weak Diffie Hellman parameters to be used within ciphers for SFTP that are otherwise on our secure list.  This has the effect of making the cipher weaker than our normal threshold for security, but is required to support certain legacy or broken SSH and MFT clients.  Enabling this weakens security, but not nearly as much as enabling the full `sftp_insecure_ciphers` option.
     #   disable_files_certificate_generation - boolean - If set, Files.com will not set the CAA records required to generate future SSL certificates for this domain.
+    #   fedramp - boolean - Are FedRAMP security restrictions enabled for this site?
     #   user_lockout - boolean - Will users be locked out after incorrect login attempts?
     #   user_lockout_tries - int64 - Number of login tries within `user_lockout_within` hours before users are locked out
     #   user_lockout_within - int64 - Number of hours for user lockout window
