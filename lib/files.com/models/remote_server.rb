@@ -594,6 +594,15 @@ module Files
       @attributes[:files_agent_supports_push_updates] = value
     end
 
+    # boolean - Whether the Files Agent Proxy recently validated a direct transfer connection. `true` means a direct connection was recently validated (actual availability can vary by client network), `false` means direct transfers are enabled but not currently available, and `null` means direct transfers are disabled or unsupported. Only provided for a connected Files Agent when showing a single Remote Server.
+    def direct_transfer_available
+      @attributes[:direct_transfer_available]
+    end
+
+    def direct_transfer_available=(value)
+      @attributes[:direct_transfer_available] = value
+    end
+
     # int64 - Route traffic to outbound on a files-agent
     def outbound_agent_id
       @attributes[:outbound_agent_id]
