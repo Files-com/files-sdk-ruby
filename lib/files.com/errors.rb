@@ -81,6 +81,7 @@ module Files
   class MethodNotAllowedError < BadRequestError; end
   class MultipleSortParamsNotAllowedError < BadRequestError; end
   class NoValidInputParamsError < BadRequestError; end
+  class OffsetUploadNotAllowedWithMalwareScanningError < BadRequestError; end
   class PartNumberTooLargeError < BadRequestError; end
   class PathCannotHaveTrailingWhitespaceError < BadRequestError; end
   class ReauthenticationNeededFieldsError < BadRequestError; end

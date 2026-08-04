@@ -525,6 +525,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`MethodNotAllowedError`|  `BadRequestError` |
 |`MultipleSortParamsNotAllowedError`|  `BadRequestError` |
 |`NoValidInputParamsError`|  `BadRequestError` |
+|`OffsetUploadNotAllowedWithMalwareScanningError`|  `BadRequestError` |
 |`PartNumberTooLargeError`|  `BadRequestError` |
 |`PathCannotHaveTrailingWhitespaceError`|  `BadRequestError` |
 |`ReauthenticationNeededFieldsError`|  `BadRequestError` |
