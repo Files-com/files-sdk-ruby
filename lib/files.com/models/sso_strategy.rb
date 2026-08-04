@@ -34,6 +34,11 @@ module Files
       @attributes[:id]
     end
 
+    # boolean - Is strategy enabled?  This may become automatically set to `false` after a high number and duration of failures.
+    def enabled
+      @attributes[:enabled]
+    end
+
     # int64 - Count of users with this SSO Strategy
     def user_count
       @attributes[:user_count]
@@ -212,11 +217,6 @@ module Files
     # string - Domain name that will be appended to LDAP usernames
     def ldap_domain
       @attributes[:ldap_domain]
-    end
-
-    # boolean - Is strategy enabled?  This may become automatically set to `false` after a high number and duration of failures.
-    def enabled
-      @attributes[:enabled]
     end
 
     # boolean - Should this strategy be displayed on the login page?
