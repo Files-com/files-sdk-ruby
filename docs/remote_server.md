@@ -223,6 +223,19 @@ Files::RemoteServer.find(id)
 
 ---
 
+## List Files.com Agent nodes
+
+```
+Files::RemoteServer.agent_nodes(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Remote Server ID.
+
+
+---
+
 ## Download configuration file (required for some Remote Server integrations, such as the Files.com Agent)
 
 ```
@@ -606,6 +619,21 @@ Files::RemoteServer.update(id,
 
 ```
 Files::RemoteServer.delete(id)
+```
+
+### Parameters
+
+* `id` (int64): Required - Remote Server ID.
+
+
+---
+
+## List Files.com Agent nodes
+
+```
+remote_server = Files::RemoteServer.find(id)
+
+remote_server.agent_nodes
 ```
 
 ### Parameters

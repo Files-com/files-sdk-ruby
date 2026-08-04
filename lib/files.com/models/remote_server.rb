@@ -918,6 +918,17 @@ module Files
       @attributes[:files_api_key] = value
     end
 
+    # List Files.com Agent nodes
+    def agent_nodes(params = {})
+      params ||= {}
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      Api.send_request("/remote_servers/#{@attributes[:id]}/agent_nodes", :get, params, @options)
+    end
+
     # Push update to Files Agent
     def agent_push_update(params = {})
       params ||= {}
@@ -1196,6 +1207,17 @@ module Files
 
     def self.get(id, params = {}, options = {})
       find(id, params, options)
+    end
+
+    # List Files.com Agent nodes
+    def self.agent_nodes(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+
+      response, options = Api.send_request("/remote_servers/#{params[:id]}/agent_nodes", :get, params, options)
+      AgentNode.new(response.data, options)
     end
 
     # Parameters:

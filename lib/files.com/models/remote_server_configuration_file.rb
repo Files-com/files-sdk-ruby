@@ -34,6 +34,11 @@ module Files
       @attributes[:root]
     end
 
+    # string - Optional customer-facing name for this Agent installation
+    def node_name
+      @attributes[:node_name]
+    end
+
     # boolean - Follow symlinks when traversing directories
     def follow_links
       @attributes[:follow_links]
