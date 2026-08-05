@@ -283,7 +283,7 @@ Files::Automation.upgrade(id)
 
 ---
 
-## Manually Run Automation. v2 Automations require Site or Workspace Admin permission
+## Manually Run Automation
 
 ```
 Files::Automation.manual_run(id, 
@@ -407,7 +407,7 @@ automation.upgrade
 
 ---
 
-## Manually Run Automation. v2 Automations require Site or Workspace Admin permission
+## Manually Run Automation
 
 ```
 automation = Files::Automation.find(id)

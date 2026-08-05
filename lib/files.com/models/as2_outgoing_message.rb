@@ -69,6 +69,11 @@ module Files
       @attributes[:as2_from]
     end
 
+    # string - AS2 Subject
+    def as2_subject
+      @attributes[:as2_subject]
+    end
+
     # string - Date Header
     def date
       @attributes[:date]
