@@ -117,6 +117,15 @@ module Files
       @attributes[:recurring_day] = value
     end
 
+    # int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
+    def schedule_id
+      @attributes[:schedule_id]
+    end
+
+    def schedule_id=(value)
+      @attributes[:schedule_id] = value
+    end
+
     # array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     def schedule_days_of_week
       @attributes[:schedule_days_of_week]
@@ -126,7 +135,7 @@ module Files
       @attributes[:schedule_days_of_week] = value
     end
 
-    # array(string) - Times of day in HH:MM format for schedule-driven expectations.
+    # array(string) - Times of day in HH:MM format for the Expectation schedule.
     def schedule_times_of_day
       @attributes[:schedule_times_of_day]
     end
@@ -135,7 +144,7 @@ module Files
       @attributes[:schedule_times_of_day] = value
     end
 
-    # string - Time zone used by the expectation schedule.
+    # string - Time zone used by the Expectation schedule.
     def schedule_time_zone
       @attributes[:schedule_time_zone]
     end
@@ -144,7 +153,7 @@ module Files
       @attributes[:schedule_time_zone] = value
     end
 
-    # string - Optional holiday region used by schedule-driven expectations.
+    # string - Optional holiday region used by the Expectation schedule.
     def holiday_region
       @attributes[:holiday_region]
     end
@@ -265,10 +274,11 @@ module Files
     #   trigger - string - How this expectation opens windows.
     #   interval - string - If trigger is `daily`, this specifies how often to run the expectation.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for schedule-driven expectations.
-    #   schedule_time_zone - string - Time zone used by the expectation schedule.
-    #   holiday_region - string - Optional holiday region used by schedule-driven expectations.
+    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the Expectation schedule.
+    #   schedule_time_zone - string - Time zone used by the Expectation schedule.
+    #   holiday_region - string - Optional holiday region used by the Expectation schedule.
     #   lookback_interval - int64 - How many seconds before the due boundary the window starts.
     #   late_acceptance_interval - int64 - How many seconds a schedule-driven window may remain eligible to close as late.
     #   inactivity_interval - int64 - How many quiet seconds are required before final closure.
@@ -288,6 +298,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
@@ -374,10 +385,11 @@ module Files
     #   trigger - string - How this expectation opens windows.
     #   interval - string - If trigger is `daily`, this specifies how often to run the expectation.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for schedule-driven expectations.
-    #   schedule_time_zone - string - Time zone used by the expectation schedule.
-    #   holiday_region - string - Optional holiday region used by schedule-driven expectations.
+    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the Expectation schedule.
+    #   schedule_time_zone - string - Time zone used by the Expectation schedule.
+    #   holiday_region - string - Optional holiday region used by the Expectation schedule.
     #   lookback_interval - int64 - How many seconds before the due boundary the window starts.
     #   late_acceptance_interval - int64 - How many seconds a schedule-driven window may remain eligible to close as late.
     #   inactivity_interval - int64 - How many quiet seconds are required before final closure.
@@ -393,6 +405,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
@@ -429,10 +442,11 @@ module Files
     #   trigger - string - How this expectation opens windows.
     #   interval - string - If trigger is `daily`, this specifies how often to run the expectation.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for schedule-driven expectations.
-    #   schedule_time_zone - string - Time zone used by the expectation schedule.
-    #   holiday_region - string - Optional holiday region used by schedule-driven expectations.
+    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the Expectation schedule.
+    #   schedule_time_zone - string - Time zone used by the Expectation schedule.
+    #   holiday_region - string - Optional holiday region used by the Expectation schedule.
     #   lookback_interval - int64 - How many seconds before the due boundary the window starts.
     #   late_acceptance_interval - int64 - How many seconds a schedule-driven window may remain eligible to close as late.
     #   inactivity_interval - int64 - How many quiet seconds are required before final closure.
@@ -451,6 +465,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)

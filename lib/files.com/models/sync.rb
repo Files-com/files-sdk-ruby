@@ -235,6 +235,15 @@ module Files
       @attributes[:recurring_day] = value
     end
 
+    # int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
+    def schedule_id
+      @attributes[:schedule_id]
+    end
+
+    def schedule_id=(value)
+      @attributes[:schedule_id] = value
+    end
+
     # array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
     def schedule_days_of_week
       @attributes[:schedule_days_of_week]
@@ -253,7 +262,7 @@ module Files
       @attributes[:schedule_times_of_day] = value
     end
 
-    # string - Time zone for scheduled times. If not set, times are interpreted as UTC.
+    # string - Time zone for the schedule. If not set, times are interpreted as UTC.
     def schedule_time_zone
       @attributes[:schedule_time_zone]
     end
@@ -262,7 +271,7 @@ module Files
       @attributes[:schedule_time_zone] = value
     end
 
-    # string - Skip sync if there is a formal, observed holiday for this region.
+    # string - Skip the sync if there is a formal, observed holiday for this region.
     def holiday_region
       @attributes[:holiday_region]
     end
@@ -309,14 +318,15 @@ module Files
     #   dest_remote_server_id - int64 - Remote server ID for the destination (if remote)
     #   disabled - boolean - Is this sync disabled?
     #   exclude_patterns - array(string) - Array of glob patterns to exclude
-    #   holiday_region - string - Skip sync if there is a formal, observed holiday for this region.
+    #   holiday_region - string - Skip the sync if there is a formal, observed holiday for this region.
     #   include_patterns - array(string) - Array of glob patterns to include
     #   interval - string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
     #   keep_after_copy - boolean - Keep files after copying?
     #   name - string - Name for this sync job
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
-    #   schedule_time_zone - string - Time zone for scheduled times. If not set, times are interpreted as UTC.
+    #   schedule_time_zone - string - Time zone for the schedule. If not set, times are interpreted as UTC.
     #   schedule_times_of_day - array(string) - Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
     #   src_path - string - Absolute source path for the sync
     #   src_remote_server_id - int64 - Remote server ID for the source (if remote)
@@ -338,6 +348,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
@@ -420,14 +431,15 @@ module Files
     #   dest_remote_server_id - int64 - Remote server ID for the destination (if remote)
     #   disabled - boolean - Is this sync disabled?
     #   exclude_patterns - array(string) - Array of glob patterns to exclude
-    #   holiday_region - string - Skip sync if there is a formal, observed holiday for this region.
+    #   holiday_region - string - Skip the sync if there is a formal, observed holiday for this region.
     #   include_patterns - array(string) - Array of glob patterns to include
     #   interval - string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
     #   keep_after_copy - boolean - Keep files after copying?
     #   name - string - Name for this sync job
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
-    #   schedule_time_zone - string - Time zone for scheduled times. If not set, times are interpreted as UTC.
+    #   schedule_time_zone - string - Time zone for the schedule. If not set, times are interpreted as UTC.
     #   schedule_times_of_day - array(string) - Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
     #   src_path - string - Absolute source path for the sync
     #   src_remote_server_id - int64 - Remote server ID for the source (if remote)
@@ -446,6 +458,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
@@ -489,14 +502,15 @@ module Files
     #   dest_remote_server_id - int64 - Remote server ID for the destination (if remote)
     #   disabled - boolean - Is this sync disabled?
     #   exclude_patterns - array(string) - Array of glob patterns to exclude
-    #   holiday_region - string - Skip sync if there is a formal, observed holiday for this region.
+    #   holiday_region - string - Skip the sync if there is a formal, observed holiday for this region.
     #   include_patterns - array(string) - Array of glob patterns to include
     #   interval - string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
     #   keep_after_copy - boolean - Keep files after copying?
     #   name - string - Name for this sync job
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
-    #   schedule_time_zone - string - Time zone for scheduled times. If not set, times are interpreted as UTC.
+    #   schedule_time_zone - string - Time zone for the schedule. If not set, times are interpreted as UTC.
     #   schedule_times_of_day - array(string) - Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
     #   src_path - string - Absolute source path for the sync
     #   src_remote_server_id - int64 - Remote server ID for the source (if remote)
@@ -517,6 +531,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)

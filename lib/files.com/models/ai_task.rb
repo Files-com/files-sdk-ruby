@@ -126,6 +126,15 @@ module Files
       @attributes[:recurring_day] = value
     end
 
+    # int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
+    def schedule_id
+      @attributes[:schedule_id]
+    end
+
+    def schedule_id=(value)
+      @attributes[:schedule_id] = value
+    end
+
     # array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     def schedule_days_of_week
       @attributes[:schedule_days_of_week]
@@ -135,7 +144,7 @@ module Files
       @attributes[:schedule_days_of_week] = value
     end
 
-    # array(string) - Times of day in HH:MM format for scheduled AI Tasks.
+    # array(string) - Times of day in HH:MM format for the AI Task schedule.
     def schedule_times_of_day
       @attributes[:schedule_times_of_day]
     end
@@ -153,7 +162,7 @@ module Files
       @attributes[:schedule_time_zone] = value
     end
 
-    # string - Optional holiday region used by scheduled AI Tasks.
+    # string - Optional holiday region used by the AI Task schedule.
     def holiday_region
       @attributes[:holiday_region]
     end
@@ -213,16 +222,17 @@ module Files
     # Parameters:
     #   description - string - AI Task description.
     #   disabled - boolean - If true, this AI Task will not run.
-    #   holiday_region - string - Optional holiday region used by scheduled AI Tasks.
+    #   holiday_region - string - Optional holiday region used by the AI Task schedule.
     #   interval - string - If trigger is `daily`, this specifies how often to run the AI Task.
     #   name - string - AI Task name.
     #   path - string - Path scope used for action-triggered AI Tasks.
     #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
     #   prompt - string - Prompt sent when this AI Task is invoked.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     #   schedule_time_zone - string - Time zone used by the AI Task schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for scheduled AI Tasks.
+    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the AI Task schedule.
     #   source - string - Source glob used with `path` for action-triggered AI Tasks.
     #   trigger - string - How this AI Task is triggered.
     #   trigger_actions - array(string) - If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
@@ -240,6 +250,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prompt must be an String") if params[:prompt] and !params[:prompt].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
@@ -317,16 +328,17 @@ module Files
     # Parameters:
     #   description - string - AI Task description.
     #   disabled - boolean - If true, this AI Task will not run.
-    #   holiday_region - string - Optional holiday region used by scheduled AI Tasks.
+    #   holiday_region - string - Optional holiday region used by the AI Task schedule.
     #   interval - string - If trigger is `daily`, this specifies how often to run the AI Task.
     #   name (required) - string - AI Task name.
     #   path - string - Path scope used for action-triggered AI Tasks.
     #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
     #   prompt (required) - string - Prompt sent when this AI Task is invoked.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     #   schedule_time_zone - string - Time zone used by the AI Task schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for scheduled AI Tasks.
+    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the AI Task schedule.
     #   source - string - Source glob used with `path` for action-triggered AI Tasks.
     #   trigger - string - How this AI Task is triggered.
     #   trigger_actions - array(string) - If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
@@ -340,6 +352,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prompt must be an String") if params[:prompt] and !params[:prompt].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
@@ -368,16 +381,17 @@ module Files
     # Parameters:
     #   description - string - AI Task description.
     #   disabled - boolean - If true, this AI Task will not run.
-    #   holiday_region - string - Optional holiday region used by scheduled AI Tasks.
+    #   holiday_region - string - Optional holiday region used by the AI Task schedule.
     #   interval - string - If trigger is `daily`, this specifies how often to run the AI Task.
     #   name - string - AI Task name.
     #   path - string - Path scope used for action-triggered AI Tasks.
     #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
     #   prompt - string - Prompt sent when this AI Task is invoked.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     #   schedule_time_zone - string - Time zone used by the AI Task schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for scheduled AI Tasks.
+    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the AI Task schedule.
     #   source - string - Source glob used with `path` for action-triggered AI Tasks.
     #   trigger - string - How this AI Task is triggered.
     #   trigger_actions - array(string) - If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
@@ -394,6 +408,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prompt must be an String") if params[:prompt] and !params[:prompt].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
