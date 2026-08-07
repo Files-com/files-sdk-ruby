@@ -29,19 +29,14 @@ module Files
       @attributes[:availability_role]
     end
 
-    # string - Whether this node is currently available for traffic
-    def connection_status
-      @attributes[:connection_status]
+    # string - Whether this node currently has an available Agent instance
+    def status
+      @attributes[:status]
     end
 
     # boolean - Whether this node is the current default route for new unscoped work
     def is_default
       @attributes[:is_default]
-    end
-
-    # string - Agent version reported by this node
-    def agent_version
-      @attributes[:agent_version]
     end
 
     # boolean - Whether the proxy recently validated a direct connection to this Agent node. False means direct transfers are enabled but not currently available; null means disabled or unsupported.
@@ -52,6 +47,11 @@ module Files
     # date-time - Most recent successful node observation
     def last_seen_at
       @attributes[:last_seen_at]
+    end
+
+    # array(object) - Current Agent processes for this node
+    def instances
+      @attributes[:instances]
     end
   end
 end
