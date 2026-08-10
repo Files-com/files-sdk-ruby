@@ -235,6 +235,15 @@ module Files
       @attributes[:recurring_day] = value
     end
 
+    # array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    def recurring_days
+      @attributes[:recurring_days]
+    end
+
+    def recurring_days=(value)
+      @attributes[:recurring_days] = value
+    end
+
     # int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
     def schedule_id
       @attributes[:schedule_id]
@@ -324,6 +333,7 @@ module Files
     #   keep_after_copy - boolean - Keep files after copying?
     #   name - string - Name for this sync job
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
     #   schedule_time_zone - string - Time zone for the schedule. If not set, times are interpreted as UTC.
@@ -348,6 +358,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
@@ -437,6 +448,7 @@ module Files
     #   keep_after_copy - boolean - Keep files after copying?
     #   name - string - Name for this sync job
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
     #   schedule_time_zone - string - Time zone for the schedule. If not set, times are interpreted as UTC.
@@ -458,6 +470,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
@@ -508,6 +521,7 @@ module Files
     #   keep_after_copy - boolean - Keep files after copying?
     #   name - string - Name for this sync job
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
     #   schedule_time_zone - string - Time zone for the schedule. If not set, times are interpreted as UTC.
@@ -531,6 +545,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)

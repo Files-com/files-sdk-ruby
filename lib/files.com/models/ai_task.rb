@@ -126,6 +126,15 @@ module Files
       @attributes[:recurring_day] = value
     end
 
+    # array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    def recurring_days
+      @attributes[:recurring_days]
+    end
+
+    def recurring_days=(value)
+      @attributes[:recurring_days] = value
+    end
+
     # int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
     def schedule_id
       @attributes[:schedule_id]
@@ -229,6 +238,7 @@ module Files
     #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
     #   prompt - string - Prompt sent when this AI Task is invoked.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
     #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     #   schedule_time_zone - string - Time zone used by the AI Task schedule.
@@ -250,6 +260,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prompt must be an String") if params[:prompt] and !params[:prompt].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
@@ -335,6 +346,7 @@ module Files
     #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
     #   prompt (required) - string - Prompt sent when this AI Task is invoked.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
     #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     #   schedule_time_zone - string - Time zone used by the AI Task schedule.
@@ -352,6 +364,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prompt must be an String") if params[:prompt] and !params[:prompt].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
@@ -388,6 +401,7 @@ module Files
     #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
     #   prompt - string - Prompt sent when this AI Task is invoked.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
     #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     #   schedule_time_zone - string - Time zone used by the AI Task schedule.
@@ -408,6 +422,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prompt must be an String") if params[:prompt] and !params[:prompt].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)

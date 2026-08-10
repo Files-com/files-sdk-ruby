@@ -252,6 +252,15 @@ module Files
       @attributes[:recurring_day] = value
     end
 
+    # array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    def recurring_days
+      @attributes[:recurring_days]
+    end
+
+    def recurring_days=(value)
+      @attributes[:recurring_days] = value
+    end
+
     # int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the automation's schedule fields.
     def schedule_id
       @attributes[:schedule_id]
@@ -474,6 +483,7 @@ module Files
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, copy, move, archived_delete, update, read, destroy
     #   value - object - A Hash of attributes specific to the automation type.
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   automation - string - Automation type
     def update(params = {})
       params ||= {}
@@ -505,6 +515,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params[:trigger_actions] and !params[:trigger_actions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params[:automation] and !params[:automation].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
@@ -620,6 +631,7 @@ module Files
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, copy, move, archived_delete, update, read, destroy
     #   value - object - A Hash of attributes specific to the automation type.
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   automation (required) - string - Automation type
     #   workspace_id - int64 - Workspace ID
     def self.create(params = {}, options = {})
@@ -649,6 +661,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params[:trigger_actions] and !params[:trigger_actions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params[:automation] and !params[:automation].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: automation") unless params[:automation]
@@ -717,6 +730,7 @@ module Files
     #   trigger_actions - array(string) - If trigger is `action`, this is the list of action types on which to trigger the automation. Valid actions are create, copy, move, archived_delete, update, read, destroy
     #   value - object - A Hash of attributes specific to the automation type.
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   automation - string - Automation type
     def self.update(id, params = {}, options = {})
       params ||= {}
@@ -748,6 +762,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if params[:trigger_actions] and !params[:trigger_actions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params[:automation] and !params[:automation].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 

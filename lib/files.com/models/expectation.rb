@@ -117,6 +117,15 @@ module Files
       @attributes[:recurring_day] = value
     end
 
+    # array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    def recurring_days
+      @attributes[:recurring_days]
+    end
+
+    def recurring_days=(value)
+      @attributes[:recurring_days] = value
+    end
+
     # int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
     def schedule_id
       @attributes[:schedule_id]
@@ -274,6 +283,7 @@ module Files
     #   trigger - string - How this expectation opens windows.
     #   interval - string - If trigger is `daily`, this specifies how often to run the expectation.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
     #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the Expectation schedule.
@@ -298,6 +308,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
@@ -385,6 +396,7 @@ module Files
     #   trigger - string - How this expectation opens windows.
     #   interval - string - If trigger is `daily`, this specifies how often to run the expectation.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
     #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the Expectation schedule.
@@ -405,6 +417,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
@@ -442,6 +455,7 @@ module Files
     #   trigger - string - How this expectation opens windows.
     #   interval - string - If trigger is `daily`, this specifies how often to run the expectation.
     #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
     #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
     #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
     #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the Expectation schedule.
@@ -465,6 +479,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
