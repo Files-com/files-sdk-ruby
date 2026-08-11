@@ -54,6 +54,24 @@ module Files
       @attributes[:name] = value
     end
 
+    # string - Custom subject line to use for notification emails.
+    def subject
+      @attributes[:subject]
+    end
+
+    def subject=(value)
+      @attributes[:subject] = value
+    end
+
+    # string - Custom message to include in notification emails.
+    def message
+      @attributes[:message]
+    end
+
+    def message=(value)
+      @attributes[:message] = value
+    end
+
     # boolean - Whether this Event Subscription can dispatch events.
     def enabled
       @attributes[:enabled]
@@ -114,6 +132,8 @@ module Files
     #   workspace_id - int64 - Workspace ID. 0 means the default workspace or site-wide.
     #   apply_to_all_workspaces - boolean - If true, this default-workspace subscription applies to events from all workspaces.
     #   name - string - Event Subscription name.
+    #   subject - string - Custom subject line to use for notification emails.
+    #   message - string - Custom message to include in notification emails.
     #   enabled - boolean - Whether this Event Subscription can dispatch events.
     #   event_types - array(string) - Event type strings matched by this subscription. Blank means all event types.
     #   filter - object - Structured event payload filter.
@@ -127,6 +147,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: event_channel_id must be an Integer") if params[:event_channel_id] and !params[:event_channel_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params[:subject] and !params[:subject].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message must be an String") if params[:message] and !params[:message].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: event_types must be an Array") if params[:event_types] and !params[:event_types].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: event_target_ids must be an Array") if params[:event_target_ids] and !params[:event_target_ids].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
@@ -201,6 +223,8 @@ module Files
     #   workspace_id - int64 - Workspace ID. 0 means the default workspace or site-wide.
     #   apply_to_all_workspaces - boolean - If true, this default-workspace subscription applies to events from all workspaces.
     #   name (required) - string - Event Subscription name.
+    #   subject - string - Custom subject line to use for notification emails.
+    #   message - string - Custom message to include in notification emails.
     #   enabled - boolean - Whether this Event Subscription can dispatch events.
     #   event_types - array(string) - Event type strings matched by this subscription. Blank means all event types.
     #   filter - object - Structured event payload filter.
@@ -210,6 +234,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: event_channel_id must be an Integer") if params[:event_channel_id] and !params[:event_channel_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params[:subject] and !params[:subject].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message must be an String") if params[:message] and !params[:message].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: event_types must be an Array") if params[:event_types] and !params[:event_types].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: delivery_policy must be an Hash") if params[:delivery_policy] and !params[:delivery_policy].is_a?(Hash)
@@ -225,6 +251,8 @@ module Files
     #   workspace_id - int64 - Workspace ID. 0 means the default workspace or site-wide.
     #   apply_to_all_workspaces - boolean - If true, this default-workspace subscription applies to events from all workspaces.
     #   name - string - Event Subscription name.
+    #   subject - string - Custom subject line to use for notification emails.
+    #   message - string - Custom message to include in notification emails.
     #   enabled - boolean - Whether this Event Subscription can dispatch events.
     #   event_types - array(string) - Event type strings matched by this subscription. Blank means all event types.
     #   filter - object - Structured event payload filter.
@@ -237,6 +265,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: event_channel_id must be an Integer") if params[:event_channel_id] and !params[:event_channel_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params[:subject] and !params[:subject].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message must be an String") if params[:message] and !params[:message].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: event_types must be an Array") if params[:event_types] and !params[:event_types].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: delivery_policy must be an Hash") if params[:delivery_policy] and !params[:delivery_policy].is_a?(Hash)
