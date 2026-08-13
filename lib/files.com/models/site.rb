@@ -171,6 +171,11 @@ module Files
       @attributes[:bundle_require_share_recipient]
     end
 
+    # boolean - If true, new Share Links must send a one-time password to the recipient when they register. Requires bundle_require_share_recipient and cannot be enabled with bundle_password_required.
+    def bundle_send_one_time_password_to_recipient_at_registration
+      @attributes[:bundle_send_one_time_password_to_recipient_at_registration]
+    end
+
     # boolean - Do Bundles require internal notes?
     def bundle_require_note
       @attributes[:bundle_require_note]
@@ -1074,6 +1079,7 @@ module Files
     #   bundle_password_required - boolean - Do Bundles require password protection?
     #   bundle_require_registration - boolean - Do Bundles require registration?
     #   bundle_require_share_recipient - boolean - Do Bundles require recipients for sharing?
+    #   bundle_send_one_time_password_to_recipient_at_registration - boolean - If true, new Share Links must send a one-time password to the recipient when they register. Requires bundle_require_share_recipient and cannot be enabled with bundle_password_required.
     #   bundle_registration_notifications - string - Do Bundle owners receive registration notification?
     #   bundle_activity_notifications - string - Do Bundle owners receive activity notifications?
     #   bundle_upload_receipt_notifications - string - Do Bundle uploaders receive upload confirmation notifications?
