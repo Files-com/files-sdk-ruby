@@ -9,7 +9,7 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Holiday Calendar ID. Use `custom_<id>` as a scheduled resource's `holiday_region`.
+    # int64 - Holiday Calendar ID. Set a scheduled resource's `holiday_region` to `custom_` followed by this ID to make it skip the days in this calendar.
     def id
       @attributes[:id]
     end
@@ -27,7 +27,7 @@ module Files
       @attributes[:name] = value
     end
 
-    # object - Holiday rules for the calendar. For more information, refer to the Holiday Calendars section of the Files.com documentation.
+    # object - Holiday rules for the calendar.
     def definition
       @attributes[:definition]
     end
@@ -47,6 +47,7 @@ module Files
     end
 
     # Parameters:
+    #   definition - object - Holiday rules for the calendar.
     #   name - string - Holiday Calendar name.
     def update(params = {})
       params ||= {}
@@ -120,9 +121,12 @@ module Files
     end
 
     # Parameters:
+    #   definition (required) - object - Holiday rules for the calendar.
     #   name (required) - string - Holiday Calendar name.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: definition must be an Hash") if params[:definition] and !params[:definition].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: definition") unless params[:definition]
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
       response, options = Api.send_request("/holiday_calendars", :post, params, options)
@@ -130,11 +134,13 @@ module Files
     end
 
     # Parameters:
+    #   definition - object - Holiday rules for the calendar.
     #   name - string - Holiday Calendar name.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: definition must be an Hash") if params[:definition] and !params[:definition].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
