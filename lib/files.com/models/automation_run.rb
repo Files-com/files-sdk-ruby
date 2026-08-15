@@ -24,6 +24,11 @@ module Files
       @attributes[:automation_version_id]
     end
 
+    # int64 - Pinned Automation v2 definition version.
+    def version
+      @attributes[:version]
+    end
+
     # int64 - Workspace ID.
     def workspace_id
       @attributes[:workspace_id]
