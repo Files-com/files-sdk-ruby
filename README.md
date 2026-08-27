@@ -621,6 +621,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`PlanNotFoundError`|  `NotFoundError` |
 |`SiteNotFoundError`|  `NotFoundError` |
 |`UserNotFoundError`|  `NotFoundError` |
+|`AgentPushUpdateBlockedError`|  `ProcessingFailureError` |
 |`AgentUnavailableError`|  `ProcessingFailureError` |
 |`AiTaskCannotBeRunManuallyError`|  `ProcessingFailureError` |
 |`AlreadyCompletedError`|  `ProcessingFailureError` |

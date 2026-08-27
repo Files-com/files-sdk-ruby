@@ -185,6 +185,7 @@ module Files
   class UserNotFoundError < NotFoundError; end
 
   class ProcessingFailureError < APIError; end
+  class AgentPushUpdateBlockedError < ProcessingFailureError; end
   class AgentUnavailableError < ProcessingFailureError; end
   class AiTaskCannotBeRunManuallyError < ProcessingFailureError; end
   class AlreadyCompletedError < ProcessingFailureError; end
