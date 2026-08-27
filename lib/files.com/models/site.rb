@@ -779,6 +779,11 @@ module Files
       @attributes[:active_sftp_host_key_id]
     end
 
+    # array(int64) - Ids of the selected custom SFTP Host Keys
+    def active_sftp_host_key_ids
+      @attributes[:active_sftp_host_key_ids]
+    end
+
     # boolean - If true, we will allow weak and known insecure ciphers to be used for SFTP connections.  Enabling this setting severely weakens the security of your site and it is not recommend, except as a last resort for compatibility.
     def sftp_insecure_ciphers
       @attributes[:sftp_insecure_ciphers]
@@ -1106,6 +1111,7 @@ module Files
     #   show_user_notifications_log_in_link - boolean - Show log in link in user notifications?
     #   sftp_host_key_type - string - Sftp Host Key Type
     #   active_sftp_host_key_id - int64 - Id of the currently selected custom SFTP Host Key
+    #   active_sftp_host_key_ids - array(int64) - Ids of the selected custom SFTP Host Keys
     #   protocol_access_groups_only - boolean - If true, protocol access permissions on users will be ignored, and only protocol access permissions set on Groups will be honored.  Make sure that your current user is a member of a group with API permission when changing this value to avoid locking yourself out of your site.
     #   revoke_bundle_access_on_disable_or_delete - boolean - Auto-removes bundles for disabled/deleted users and enforces bundle expiry within user access period.
     #   bundle_watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
@@ -1223,6 +1229,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: bundle_upload_receipt_notifications must be an String") if params[:bundle_upload_receipt_notifications] and !params[:bundle_upload_receipt_notifications].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sftp_host_key_type must be an String") if params[:sftp_host_key_type] and !params[:sftp_host_key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: active_sftp_host_key_id must be an Integer") if params[:active_sftp_host_key_id] and !params[:active_sftp_host_key_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: active_sftp_host_key_ids must be an Array") if params[:active_sftp_host_key_ids] and !params[:active_sftp_host_key_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: bundle_watermark_value must be an Hash") if params[:bundle_watermark_value] and !params[:bundle_watermark_value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: bundle_recipient_blacklist_domains must be an Array") if params[:bundle_recipient_blacklist_domains] and !params[:bundle_recipient_blacklist_domains].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: require_2fa_user_type must be an String") if params[:require_2fa_user_type] and !params[:require_2fa_user_type].is_a?(String)

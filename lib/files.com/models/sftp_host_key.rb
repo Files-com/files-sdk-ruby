@@ -9,6 +9,15 @@ module Files
       @options = options || {}
     end
 
+    # boolean - If true, use this SFTP Host Key.
+    def active
+      @attributes[:active]
+    end
+
+    def active=(value)
+      @attributes[:active] = value
+    end
+
     # int64 - SFTP Host Key ID
     def id
       @attributes[:id]
@@ -25,6 +34,15 @@ module Files
 
     def name=(value)
       @attributes[:name] = value
+    end
+
+    # string - SSH key type
+    def key_type
+      @attributes[:key_type]
+    end
+
+    def key_type=(value)
+      @attributes[:key_type] = value
     end
 
     # string - MD5 Fingerprint of the public key
@@ -55,6 +73,7 @@ module Files
     end
 
     # Parameters:
+    #   active - boolean - If true, use this SFTP Host Key.
     #   name - string - The friendly name of this SFTP Host Key.
     #   private_key - string - The private key data.
     def update(params = {})
@@ -128,6 +147,7 @@ module Files
     end
 
     # Parameters:
+    #   active - boolean - If true, use this SFTP Host Key.
     #   name - string - The friendly name of this SFTP Host Key.
     #   private_key - string - The private key data.
     def self.create(params = {}, options = {})
@@ -139,6 +159,7 @@ module Files
     end
 
     # Parameters:
+    #   active - boolean - If true, use this SFTP Host Key.
     #   name - string - The friendly name of this SFTP Host Key.
     #   private_key - string - The private key data.
     def self.update(id, params = {}, options = {})
