@@ -27,6 +27,15 @@ module Files
       @attributes[:workspace_id] = value
     end
 
+    # string - Channel directions. `two_way` enables both directions, `to_partner` enables outgoing downloads, and `from_partner` enables incoming uploads.
+    def direction
+      @attributes[:direction]
+    end
+
+    def direction=(value)
+      @attributes[:direction] = value
+    end
+
     # int64 - ID of the Partner this Channel belongs to.
     def partner_id
       @attributes[:partner_id]
@@ -154,6 +163,7 @@ module Files
     end
 
     # Parameters:
+    #   direction - string - Channel directions. `two_way` enables both directions, `to_partner` enables outgoing downloads, and `from_partner` enables incoming uploads.
     #   from_partner_folder_name - string - Optional Channel-level from-Partner folder name override.
     #   from_partner_managed_folder_paths - array(string) - Managed folder paths inside the from-Partner folder.
     #   from_partner_route_path - string - Optional route path for files uploaded by the Partner.
@@ -166,6 +176,7 @@ module Files
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: direction must be an String") if params[:direction] and !params[:direction].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_folder_name must be an String") if params[:from_partner_folder_name] and !params[:from_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_managed_folder_paths must be an Array") if params[:from_partner_managed_folder_paths] and !params[:from_partner_managed_folder_paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: from_partner_route_path must be an String") if params[:from_partner_route_path] and !params[:from_partner_route_path].is_a?(String)
@@ -241,6 +252,7 @@ module Files
     end
 
     # Parameters:
+    #   direction - string - Channel directions. `two_way` enables both directions, `to_partner` enables outgoing downloads, and `from_partner` enables incoming uploads.
     #   from_partner_folder_name - string - Optional Channel-level from-Partner folder name override.
     #   from_partner_managed_folder_paths - array(string) - Managed folder paths inside the from-Partner folder.
     #   from_partner_route_path - string - Optional route path for files uploaded by the Partner.
@@ -251,6 +263,7 @@ module Files
     #   path (required) - string - Channel path relative to the Partner root folder.
     #   workspace_id - int64 - ID of the Workspace associated with this Partner Channel.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: direction must be an String") if params[:direction] and !params[:direction].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_folder_name must be an String") if params[:from_partner_folder_name] and !params[:from_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_managed_folder_paths must be an Array") if params[:from_partner_managed_folder_paths] and !params[:from_partner_managed_folder_paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: from_partner_route_path must be an String") if params[:from_partner_route_path] and !params[:from_partner_route_path].is_a?(String)
@@ -268,6 +281,7 @@ module Files
     end
 
     # Parameters:
+    #   direction - string - Channel directions. `two_way` enables both directions, `to_partner` enables outgoing downloads, and `from_partner` enables incoming uploads.
     #   from_partner_folder_name - string - Optional Channel-level from-Partner folder name override.
     #   from_partner_managed_folder_paths - array(string) - Managed folder paths inside the from-Partner folder.
     #   from_partner_route_path - string - Optional route path for files uploaded by the Partner.
@@ -279,6 +293,7 @@ module Files
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: direction must be an String") if params[:direction] and !params[:direction].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_folder_name must be an String") if params[:from_partner_folder_name] and !params[:from_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_managed_folder_paths must be an Array") if params[:from_partner_managed_folder_paths] and !params[:from_partner_managed_folder_paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: from_partner_route_path must be an String") if params[:from_partner_route_path] and !params[:from_partner_route_path].is_a?(String)
