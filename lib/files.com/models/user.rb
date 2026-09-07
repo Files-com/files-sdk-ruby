@@ -896,7 +896,7 @@ module Files
       @attributes[:clear_2fa] = value
     end
 
-    # boolean - If true, convert this user to a partner user by assigning the partner_id provided.
+    # boolean - Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
     def convert_to_partner_user
       @attributes[:convert_to_partner_user]
     end
@@ -1008,7 +1008,7 @@ module Files
     #   username - string - User's username
     #   workspace_id - int64 - Workspace ID
     #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
-    #   convert_to_partner_user - boolean - If true, convert this user to a partner user by assigning the partner_id provided.
+    #   convert_to_partner_user - boolean - Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -1354,7 +1354,7 @@ module Files
     #   username - string - User's username
     #   workspace_id - int64 - Workspace ID
     #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
-    #   convert_to_partner_user - boolean - If true, convert this user to a partner user by assigning the partner_id provided.
+    #   convert_to_partner_user - boolean - Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
