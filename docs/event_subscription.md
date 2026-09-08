@@ -11,6 +11,7 @@
   "name": "example",
   "subject": "example",
   "message": "example",
+  "message_only": true,
   "enabled": true,
   "event_types": [
     "example"
@@ -32,6 +33,7 @@
 * `name` (string): Event Subscription name.
 * `subject` (string): Custom subject line to use for notification emails.
 * `message` (string): Custom message to include in notification emails.
+* `message_only` (boolean): If true, notification email bodies contain only the custom message, omitting event details and the review button. Requires a custom message, defaults to false, and does not affect non-email targets.
 * `enabled` (boolean): Whether this Event Subscription can dispatch events.
 * `event_types` (array(string)): Event type strings matched by this subscription. Blank means all event types.
 * `filter` (object): Structured event payload filter.
@@ -82,6 +84,7 @@ Files::EventSubscription.create(
   name: "example", 
   subject: "example", 
   message: "example", 
+  message_only: true, 
   enabled: true, 
   event_types: ["example"], 
   delivery_policy: "example", 
@@ -97,6 +100,7 @@ Files::EventSubscription.create(
 * `name` (string): Required - Event Subscription name.
 * `subject` (string): Custom subject line to use for notification emails.
 * `message` (string): Custom message to include in notification emails.
+* `message_only` (boolean): If true, notification email bodies contain only the custom message, omitting event details and the review button. Requires a custom message, defaults to false, and does not affect non-email targets.
 * `enabled` (boolean): Whether this Event Subscription can dispatch events.
 * `event_types` (array(string)): Event type strings matched by this subscription. Blank means all event types.
 * `filter` (object): Structured event payload filter.
@@ -116,6 +120,7 @@ Files::EventSubscription.update(id,
   name: "example", 
   subject: "example", 
   message: "example", 
+  message_only: true, 
   enabled: true, 
   event_types: ["example"], 
   delivery_policy: "example", 
@@ -132,6 +137,7 @@ Files::EventSubscription.update(id,
 * `name` (string): Event Subscription name.
 * `subject` (string): Custom subject line to use for notification emails.
 * `message` (string): Custom message to include in notification emails.
+* `message_only` (boolean): If true, notification email bodies contain only the custom message, omitting event details and the review button. Requires a custom message, defaults to false, and does not affect non-email targets.
 * `enabled` (boolean): Whether this Event Subscription can dispatch events.
 * `event_types` (array(string)): Event type strings matched by this subscription. Blank means all event types.
 * `filter` (object): Structured event payload filter.
@@ -166,6 +172,7 @@ event_subscription.update(
   name: "example",
   subject: "example",
   message: "example",
+  message_only: true,
   enabled: true,
   event_types: ["example"],
   delivery_policy: "example",
@@ -182,6 +189,7 @@ event_subscription.update(
 * `name` (string): Event Subscription name.
 * `subject` (string): Custom subject line to use for notification emails.
 * `message` (string): Custom message to include in notification emails.
+* `message_only` (boolean): If true, notification email bodies contain only the custom message, omitting event details and the review button. Requires a custom message, defaults to false, and does not affect non-email targets.
 * `enabled` (boolean): Whether this Event Subscription can dispatch events.
 * `event_types` (array(string)): Event type strings matched by this subscription. Blank means all event types.
 * `filter` (object): Structured event payload filter.

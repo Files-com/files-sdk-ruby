@@ -72,6 +72,15 @@ module Files
       @attributes[:message] = value
     end
 
+    # boolean - If true, notification email bodies contain only the custom message, omitting event details and the review button. Requires a custom message, defaults to false, and does not affect non-email targets.
+    def message_only
+      @attributes[:message_only]
+    end
+
+    def message_only=(value)
+      @attributes[:message_only] = value
+    end
+
     # boolean - Whether this Event Subscription can dispatch events.
     def enabled
       @attributes[:enabled]
@@ -134,6 +143,7 @@ module Files
     #   name - string - Event Subscription name.
     #   subject - string - Custom subject line to use for notification emails.
     #   message - string - Custom message to include in notification emails.
+    #   message_only - boolean - If true, notification email bodies contain only the custom message, omitting event details and the review button. Requires a custom message, defaults to false, and does not affect non-email targets.
     #   enabled - boolean - Whether this Event Subscription can dispatch events.
     #   event_types - array(string) - Event type strings matched by this subscription. Blank means all event types.
     #   filter - object - Structured event payload filter.
@@ -225,6 +235,7 @@ module Files
     #   name (required) - string - Event Subscription name.
     #   subject - string - Custom subject line to use for notification emails.
     #   message - string - Custom message to include in notification emails.
+    #   message_only - boolean - If true, notification email bodies contain only the custom message, omitting event details and the review button. Requires a custom message, defaults to false, and does not affect non-email targets.
     #   enabled - boolean - Whether this Event Subscription can dispatch events.
     #   event_types - array(string) - Event type strings matched by this subscription. Blank means all event types.
     #   filter - object - Structured event payload filter.
@@ -253,6 +264,7 @@ module Files
     #   name - string - Event Subscription name.
     #   subject - string - Custom subject line to use for notification emails.
     #   message - string - Custom message to include in notification emails.
+    #   message_only - boolean - If true, notification email bodies contain only the custom message, omitting event details and the review button. Requires a custom message, defaults to false, and does not affect non-email targets.
     #   enabled - boolean - Whether this Event Subscription can dispatch events.
     #   event_types - array(string) - Event type strings matched by this subscription. Blank means all event types.
     #   filter - object - Structured event payload filter.
