@@ -29,6 +29,11 @@ module Files
       @attributes[:high_water_user_count]
     end
 
+    # int64 - Total Transformation and AI credits used in this usage period. Updated daily. Does not include credits consumed today.
+    def transformation_credits_usage
+      @attributes[:transformation_credits_usage]
+    end
+
     # int64 - Current total Storage Usage GB as of end date (not necessarily high water mark, which is used for billing)
     def current_storage
       @attributes[:current_storage]

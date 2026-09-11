@@ -34,7 +34,7 @@ module Files
       @attributes[:write_api_usage]
     end
 
-    # int64 - Transformation and AI credits used on this day. Note: initially this tracks GPG encrypt, decrypt, and recrypt usage.
+    # int64 - Transformation and AI credits used on this day. Note: only updated for days before the current day.
     def transformation_credits_usage
       @attributes[:transformation_credits_usage]
     end
