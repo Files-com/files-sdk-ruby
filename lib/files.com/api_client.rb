@@ -95,7 +95,11 @@ module Files
 
     def execute_request(method, path, base_url: nil, api_key: nil, session_id: nil, workspace_id: nil, headers: {}, params: {})
       base_url ||= Files.base_url
-      session_id ||= Files.session_id
+      if api_key.nil?
+        session_id ||= Files.session_id
+      else
+        session_id = nil
+      end
       workspace_id = Files.workspace_id if workspace_id.nil?
 
       if session_id and session_id != ""
