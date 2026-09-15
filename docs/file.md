@@ -140,6 +140,7 @@ Files::File.download(path,
 
 ```
 Files::File.create(path, 
+  custom_metadata: {"key":"value"}, 
   length: 1, 
   mkdir_parents: false, 
   part: 1, 
@@ -158,6 +159,7 @@ Files::File.create(path,
 
 * `path` (string): Required - Path to operate on.
 * `action` (string): The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
+* `custom_metadata` (object): Custom metadata map to save when `action=end` completes the upload.  Replaces existing metadata; an empty map clears it.  No separate metadata-edit permission is required.  Supported on native files and configured remote mounts, excluding remote server automount paths.  Limited to 32 keys, 256 characters per key and 1024 characters per value.
 * `etags[etag]` (array(string)): etag identifier.
 * `etags[part]` (array(int64)): Part number.
 * `length` (int64): Length of file.

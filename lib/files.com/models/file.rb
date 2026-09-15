@@ -1312,6 +1312,7 @@ module Files
     # Parameters:
     #   path (required) - string - Path to operate on.
     #   action - string - The action to perform.  Can be `append`, `attachment`, `end`, `upload`, `put`, or may not exist
+    #   custom_metadata - object - Custom metadata map to save when `action=end` completes the upload.  Replaces existing metadata; an empty map clears it.  No separate metadata-edit permission is required.  Supported on native files and configured remote mounts, excluding remote server automount paths.  Limited to 32 keys, 256 characters per key and 1024 characters per value.
     #   etags[etag] (required) - array(string) - etag identifier.
     #   etags[part] (required) - array(int64) - Part number.
     #   length - int64 - Length of file.
@@ -1332,6 +1333,7 @@ module Files
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: custom_metadata must be an Hash") if params[:custom_metadata] and !params[:custom_metadata].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: length must be an Integer") if params[:length] and !params[:length].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: part must be an Integer") if params[:part] and !params[:part].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if params[:parts] and !params[:parts].is_a?(Integer)
