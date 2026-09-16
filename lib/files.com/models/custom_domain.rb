@@ -72,6 +72,15 @@ module Files
       @attributes[:folder_behavior_id] = value
     end
 
+    # array(string) - Dedicated public IP addresses allocated to this Custom Domain.
+    def ip_addresses
+      @attributes[:ip_addresses]
+    end
+
+    def ip_addresses=(value)
+      @attributes[:ip_addresses] = value
+    end
+
     # date-time - When this Custom Domain was created.
     def created_at
       @attributes[:created_at]
@@ -159,6 +168,21 @@ module Files
 
     def self.get(id, params = {}, options = {})
       find(id, params, options)
+    end
+
+    # Parameters:
+    #   id (required) - int64 - Custom Domain ID.
+    #   count (required) - int64 - Number of dedicated IP addresses to allocate.
+    def self.create_allocate_ip(id, params = {}, options = {})
+      params ||= {}
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: count must be an Integer") if params[:count] and !params[:count].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise MissingParameterError.new("Parameter missing: count") unless params[:count]
+
+      response, options = Api.send_request("/custom_domains/#{params[:id]}/allocate_ips", :post, params, options)
+      CustomDomain.new(response.data, options)
     end
 
     # Parameters:

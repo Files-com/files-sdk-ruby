@@ -18,6 +18,15 @@ module Files
       @attributes[:active] = value
     end
 
+    # int64 - Custom Domain ID. If set, this key is used only for that Custom Domain.
+    def custom_domain_id
+      @attributes[:custom_domain_id]
+    end
+
+    def custom_domain_id=(value)
+      @attributes[:custom_domain_id] = value
+    end
+
     # int64 - SFTP Host Key ID
     def id
       @attributes[:id]
@@ -74,6 +83,7 @@ module Files
 
     # Parameters:
     #   active - boolean - If true, use this SFTP Host Key.
+    #   custom_domain_id - int64 - Custom Domain ID. If set, this key is used only for that Custom Domain.
     #   name - string - The friendly name of this SFTP Host Key.
     #   private_key - string - The private key data.
     def update(params = {})
@@ -81,6 +91,7 @@ module Files
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: custom_domain_id must be an Integer") if params[:custom_domain_id] and !params[:custom_domain_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
@@ -148,9 +159,11 @@ module Files
 
     # Parameters:
     #   active - boolean - If true, use this SFTP Host Key.
+    #   custom_domain_id - int64 - Custom Domain ID. If set, this key is used only for that Custom Domain.
     #   name - string - The friendly name of this SFTP Host Key.
     #   private_key - string - The private key data.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: custom_domain_id must be an Integer") if params[:custom_domain_id] and !params[:custom_domain_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
 
@@ -160,12 +173,14 @@ module Files
 
     # Parameters:
     #   active - boolean - If true, use this SFTP Host Key.
+    #   custom_domain_id - int64 - Custom Domain ID. If set, this key is used only for that Custom Domain.
     #   name - string - The friendly name of this SFTP Host Key.
     #   private_key - string - The private key data.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: custom_domain_id must be an Integer") if params[:custom_domain_id] and !params[:custom_domain_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
