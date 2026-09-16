@@ -84,7 +84,7 @@ module Files
       @attributes[:scim_username]
     end
 
-    # string - SCIM OAuth Access Token.
+    # string - SCIM OAuth Access Token. Only returned when the token is first issued or reset.
     def scim_oauth_access_token
       @attributes[:scim_oauth_access_token]
     end
