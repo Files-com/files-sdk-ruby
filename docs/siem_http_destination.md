@@ -12,7 +12,7 @@
   "file_format": "example",
   "file_interval_minutes": 1,
   "additional_headers": {
-    "key": "example value"
+    "Authorization": "Bearer YOUR_TOKEN"
   },
   "sending_active": true,
   "generic_payload_type": "example",
@@ -162,7 +162,7 @@ Files::SiemHttpDestination.find(id)
 ```
 Files::SiemHttpDestination.create(
   name: "example", 
-  additional_headers: {"key":"example value"}, 
+  additional_headers: {"Authorization":"Bearer YOUR_TOKEN"}, 
   sending_active: true, 
   generic_payload_type: "example", 
   file_destination_path: "example", 
@@ -237,7 +237,7 @@ Files::SiemHttpDestination.send_test_entry(
   destination_type: "example", 
   destination_url: "example", 
   name: "example", 
-  additional_headers: {"key":"example value"}, 
+  additional_headers: {"Authorization":"Bearer YOUR_TOKEN"}, 
   sending_active: true, 
   generic_payload_type: "example", 
   file_destination_path: "example", 
@@ -308,7 +308,7 @@ Files::SiemHttpDestination.send_test_entry(
 ```
 Files::SiemHttpDestination.update(id, 
   name: "example", 
-  additional_headers: {"key":"example value"}, 
+  additional_headers: {"Authorization":"Bearer YOUR_TOKEN"}, 
   sending_active: true, 
   generic_payload_type: "example", 
   file_destination_path: "example", 
@@ -396,7 +396,7 @@ siem_http_destination = Files::SiemHttpDestination.find(id)
 
 siem_http_destination.update(
   name: "example",
-  additional_headers: {"key":"example value"},
+  additional_headers: {"Authorization":"Bearer YOUR_TOKEN"},
   sending_active: true,
   generic_payload_type: "example",
   file_destination_path: "example",

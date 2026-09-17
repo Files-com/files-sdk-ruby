@@ -1114,7 +1114,6 @@ module Files
     #   active_sftp_host_key_ids - array(int64) - Ids of the selected custom SFTP Host Keys
     #   protocol_access_groups_only - boolean - If true, protocol access permissions on users will be ignored, and only protocol access permissions set on Groups will be honored.  Make sure that your current user is a member of a group with API permission when changing this value to avoid locking yourself out of your site.
     #   revoke_bundle_access_on_disable_or_delete - boolean - Auto-removes bundles for disabled/deleted users and enforces bundle expiry within user access period.
-    #   bundle_watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     #   group_admins_can_add_users - boolean - Allow group admins to create users in their groups
     #   group_admins_can_manage_group_memberships - boolean - Allow group admins to add or remove existing users in their groups
     #   group_admins_can_delete_users - boolean - Allow group admins to delete users in their groups
@@ -1170,6 +1169,7 @@ module Files
     #   ldap_group_inclusion - string - Comma or newline separated list of group names (with optional wildcards) to include when syncing.
     #   ldap_base_dn - string - Base DN for looking up users in LDAP server
     #   uploads_via_email_authentication - boolean - Do incoming emails in the Inboxes require checking for SPF/DKIM/DMARC?
+    #   bundle_watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     #   icon16_file - file
     #   icon16_delete - boolean - If true, will delete the file stored in icon16
     #   icon32_file - file
@@ -1230,7 +1230,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sftp_host_key_type must be an String") if params[:sftp_host_key_type] and !params[:sftp_host_key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: active_sftp_host_key_id must be an Integer") if params[:active_sftp_host_key_id] and !params[:active_sftp_host_key_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: active_sftp_host_key_ids must be an Array") if params[:active_sftp_host_key_ids] and !params[:active_sftp_host_key_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: bundle_watermark_value must be an Hash") if params[:bundle_watermark_value] and !params[:bundle_watermark_value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: bundle_recipient_blacklist_domains must be an Array") if params[:bundle_recipient_blacklist_domains] and !params[:bundle_recipient_blacklist_domains].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: require_2fa_user_type must be an String") if params[:require_2fa_user_type] and !params[:require_2fa_user_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: color2_top must be an String") if params[:color2_top] and !params[:color2_top].is_a?(String)
@@ -1263,6 +1262,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ldap_group_exclusion must be an String") if params[:ldap_group_exclusion] and !params[:ldap_group_exclusion].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_group_inclusion must be an String") if params[:ldap_group_inclusion] and !params[:ldap_group_inclusion].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_base_dn must be an String") if params[:ldap_base_dn] and !params[:ldap_base_dn].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: bundle_watermark_value must be an Hash") if params[:bundle_watermark_value] and !params[:bundle_watermark_value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: ldap_password_change must be an String") if params[:ldap_password_change] and !params[:ldap_password_change].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_password_change_confirmation must be an String") if params[:ldap_password_change_confirmation] and !params[:ldap_password_change_confirmation].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_password must be an String") if params[:smtp_password] and !params[:smtp_password].is_a?(String)

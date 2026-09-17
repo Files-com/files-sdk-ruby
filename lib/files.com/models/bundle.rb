@@ -541,6 +541,7 @@ module Files
     #   user_id - int64 - The owning user id. Only site admins can set this.
     #   watermark_attachment_delete - boolean - If true, will delete the file stored in watermark_attachment
     #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
+    #   watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def update(params = {})
       params ||= {}
@@ -678,6 +679,7 @@ module Files
     #   snapshot_id - int64 - ID of the snapshot containing this bundle's contents.
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
+    #   watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
@@ -698,6 +700,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if params[:start_access_on_date] and !params[:start_access_on_date].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: snapshot_id must be an Integer") if params[:snapshot_id] and !params[:snapshot_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: watermark_value must be an Hash") if params[:watermark_value] and !params[:watermark_value].is_a?(Hash)
       raise MissingParameterError.new("Parameter missing: paths") unless params[:paths]
 
       response, options = Api.send_request("/bundles", :post, params, options)
@@ -754,6 +757,7 @@ module Files
     #   user_id - int64 - The owning user id. Only site admins can set this.
     #   watermark_attachment_delete - boolean - If true, will delete the file stored in watermark_attachment
     #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
+    #   watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def self.update(id, params = {}, options = {})
       params ||= {}
@@ -776,6 +780,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if params[:permissions] and !params[:permissions].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if params[:start_access_on_date] and !params[:start_access_on_date].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: watermark_value must be an Hash") if params[:watermark_value] and !params[:watermark_value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
