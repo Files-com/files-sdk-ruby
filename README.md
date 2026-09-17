@@ -545,7 +545,6 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`ApiKeySessionsNotSupportedError`|  `NotAuthenticatedError` |
 |`AuthenticationRequiredError`|  `NotAuthenticatedError` |
 |`BundleRegistrationCodeFailedError`|  `NotAuthenticatedError` |
-|`FilesAgentTokenFailedError`|  `NotAuthenticatedError` |
 |`InboxRegistrationCodeFailedError`|  `NotAuthenticatedError` |
 |`InvalidCredentialsError`|  `NotAuthenticatedError` |
 |`InvalidOauthError`|  `NotAuthenticatedError` |

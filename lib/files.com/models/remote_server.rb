@@ -18,7 +18,7 @@ module Files
       @attributes[:id] = value
     end
 
-    # boolean - If true, this Remote Server has been disabled due to failures.  Make any change or set disabled to false to clear this flag.
+    # boolean - If true, this Remote Server is disabled. Updating it clears this flag, except for retired Agent v1 records, which remain disabled.
     def disabled
       @attributes[:disabled]
     end
@@ -549,15 +549,6 @@ module Files
       @attributes[:files_agent_root] = value
     end
 
-    # string - Files Agent API Token
-    def files_agent_api_token
-      @attributes[:files_agent_api_token]
-    end
-
-    def files_agent_api_token=(value)
-      @attributes[:files_agent_api_token] = value
-    end
-
     # string - Files Agent version
     def files_agent_version
       @attributes[:files_agent_version]
@@ -938,41 +929,6 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       Api.send_request("/remote_servers/#{@attributes[:id]}/agent_push_update", :post, params, @options)
-    end
-
-    # Post local changes, check in, and download configuration file (used by some Remote Server integrations, such as the Files.com Agent)
-    #
-    # Parameters:
-    #   api_token - string - Files Agent API Token
-    #   permission_set - string - The permission set for the agent ['read_write', 'read_only', 'write_only']
-    #   root - string - The root directory for the agent
-    #   hostname - string
-    #   port - int64 - Incoming port for files agent connections
-    #   status - string - either running or shutdown
-    #   config_version - string - agent config version
-    #   private_key - string - The private key for the agent
-    #   public_key - string - public key
-    #   server_host_key - string
-    #   subdomain - string - Files.com subdomain site name
-    def configuration_file(params = {})
-      params ||= {}
-      params[:id] = @attributes[:id]
-      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: api_token must be an String") if params[:api_token] and !params[:api_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: root must be an String") if params[:root] and !params[:root].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params[:hostname] and !params[:hostname].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: status must be an String") if params[:status] and !params[:status].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: config_version must be an String") if params[:config_version] and !params[:config_version].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: subdomain must be an String") if params[:subdomain] and !params[:subdomain].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-
-      Api.send_request("/remote_servers/#{@attributes[:id]}/configuration_file", :post, params, @options)
     end
 
     # Parameters:
@@ -1409,41 +1365,6 @@ module Files
 
       response, options = Api.send_request("/remote_servers/#{params[:id]}/agent_push_update", :post, params, options)
       AgentPushUpdate.new(response.data, options)
-    end
-
-    # Post local changes, check in, and download configuration file (used by some Remote Server integrations, such as the Files.com Agent)
-    #
-    # Parameters:
-    #   api_token - string - Files Agent API Token
-    #   permission_set - string - The permission set for the agent ['read_write', 'read_only', 'write_only']
-    #   root - string - The root directory for the agent
-    #   hostname - string
-    #   port - int64 - Incoming port for files agent connections
-    #   status - string - either running or shutdown
-    #   config_version - string - agent config version
-    #   private_key - string - The private key for the agent
-    #   public_key - string - public key
-    #   server_host_key - string
-    #   subdomain - string - Files.com subdomain site name
-    def self.configuration_file(id, params = {}, options = {})
-      params ||= {}
-      params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: api_token must be an String") if params[:api_token] and !params[:api_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: root must be an String") if params[:root] and !params[:root].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: hostname must be an String") if params[:hostname] and !params[:hostname].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: port must be an Integer") if params[:port] and !params[:port].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: status must be an String") if params[:status] and !params[:status].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: config_version must be an String") if params[:config_version] and !params[:config_version].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: public_key must be an String") if params[:public_key] and !params[:public_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: subdomain must be an String") if params[:subdomain] and !params[:subdomain].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-
-      response, options = Api.send_request("/remote_servers/#{params[:id]}/configuration_file", :post, params, options)
-      RemoteServerConfigurationFile.new(response.data, options)
     end
 
     # Parameters:

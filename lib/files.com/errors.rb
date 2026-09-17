@@ -103,7 +103,6 @@ module Files
   class ApiKeySessionsNotSupportedError < NotAuthenticatedError; end
   class AuthenticationRequiredError < NotAuthenticatedError; end
   class BundleRegistrationCodeFailedError < NotAuthenticatedError; end
-  class FilesAgentTokenFailedError < NotAuthenticatedError; end
   class InboxRegistrationCodeFailedError < NotAuthenticatedError; end
   class InvalidCredentialsError < NotAuthenticatedError; end
   class InvalidOauthError < NotAuthenticatedError; end
