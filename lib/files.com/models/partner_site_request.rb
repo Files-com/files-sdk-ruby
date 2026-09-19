@@ -154,8 +154,10 @@ module Files
 
     # Parameters:
     #   pairing_key (required) - string - Pairing key for the partner site request
+    #   partner_id - int64 - ID of an existing Partner on this site, with the host role, that represents the requesting organization. The connection binds to that Partner and makes it host_and_guest. When omitted, a guest Partner named after the host site is created.
     def self.approve(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: pairing_key must be an String") if params[:pairing_key] and !params[:pairing_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: pairing_key") unless params[:pairing_key]
 
       Api.send_request("/partner_site_requests/approve", :post, params, options)

@@ -126,7 +126,7 @@ module Files
       @attributes[:partner_channel_template_id] = value
     end
 
-    # string - This site's role in Partner Site relationships for this Partner. Can be `host`, `guest`, `host_and_guest`, or null.
+    # string - This site's role for this Partner in Connected Sites relationships. `host` is a Partner this site configured. `guest` is a Partner created by approving another site's connection request; it has no root folder and cannot hold users, permissions, or Partner Channels, or host a connection. `host_and_guest` is a configured Partner that is also the guest side of a connection. Promote a `guest` Partner by setting this to `host_and_guest` together with a `root_folder`.
     def partnership_role
       @attributes[:partnership_role]
     end
@@ -204,6 +204,7 @@ module Files
     #   show_partner_channel_home_page - boolean - Show Partner users a simplified home page built from this Partner's Channels.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   name - string - The name of the Partner.
+    #   partnership_role - string - This site's role for this Partner in Connected Sites relationships. `host` is a Partner this site configured. `guest` is a Partner created by approving another site's connection request; it has no root folder and cannot hold users, permissions, or Partner Channels, or host a connection. `host_and_guest` is a configured Partner that is also the guest side of a connection. Promote a `guest` Partner by setting this to `host_and_guest` together with a `root_folder`.
     #   root_folder - string - The root folder path for this Partner.
     def update(params = {})
       params ||= {}
@@ -218,6 +219,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partnership_role must be an String") if params[:partnership_role] and !params[:partnership_role].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
@@ -336,6 +338,7 @@ module Files
     #   show_partner_channel_home_page - boolean - Show Partner users a simplified home page built from this Partner's Channels.
     #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   name - string - The name of the Partner.
+    #   partnership_role - string - This site's role for this Partner in Connected Sites relationships. `host` is a Partner this site configured. `guest` is a Partner created by approving another site's connection request; it has no root folder and cannot hold users, permissions, or Partner Channels, or host a connection. `host_and_guest` is a configured Partner that is also the guest side of a connection. Promote a `guest` Partner by setting this to `host_and_guest` together with a `root_folder`.
     #   root_folder - string - The root folder path for this Partner.
     def self.update(id, params = {}, options = {})
       params ||= {}
@@ -349,6 +352,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partnership_role must be an String") if params[:partnership_role] and !params[:partnership_role].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
