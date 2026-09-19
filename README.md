@@ -559,6 +559,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`ApiKeyIsDisabledError`|  `NotAuthorizedError` |
 |`ApiKeyIsPathRestrictedError`|  `NotAuthorizedError` |
 |`ApiKeyOnlyForDesktopAppError`|  `NotAuthorizedError` |
+|`ApiKeyOnlyForFileOperationsError`|  `NotAuthorizedError` |
 |`ApiKeyOnlyForMobileAppError`|  `NotAuthorizedError` |
 |`ApiKeyOnlyForOfficeIntegrationError`|  `NotAuthorizedError` |
 |`BillingInformationHiddenError`|  `NotAuthorizedError` |
