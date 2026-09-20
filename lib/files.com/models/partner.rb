@@ -63,6 +63,15 @@ module Files
       @attributes[:cc_emails_to_responsible_party] = value
     end
 
+    # array(object) - Approved Connected Sites relationships for this Partner, in both directions. Empty when this Partner has no connections. Read-only.
+    def connections
+      @attributes[:connections]
+    end
+
+    def connections=(value)
+      @attributes[:connections] = value
+    end
+
     # int64 - The unique ID of the Partner.
     def id
       @attributes[:id]
