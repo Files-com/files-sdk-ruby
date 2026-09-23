@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require "json"
+
 module Files
   module PathUtil
-    TRANSLIT_MAP = "ÀA,ÁA,ÂA,ÃA,ÄA,ÅA,ÆAE,ÇC,ÈE,ÉE,ÊE,ËE,ÌI,ÍI,ÎI,ÏI,ÐD,ÑN,ÒO,ÓO,ÔO,ÕO,ÖO,ØO,ÙU,ÚU,ÛU,ÜU,ÝY,ßss,àa,áa,âa,ãa,äa,åa,æae,çc,èe,ée,êe,ëe,ìi,íi,îi,ïi,ðd,ñn,òo,óo,ôo,õo,öo,øo,ùu,úu,ûu,üu,ýy,ÿy,ĀA,āa,ĂA,ăa,ĄA,ąa,ĆC,ćc,ĈC,ĉc,ĊC,ċc,ČC,čc,ĎD,ďd,ĐD,đd,ĒE,ēe,ĔE,ĕe,ĖE,ėe,ĘE,ęe,ĚE,ěe,ĜG,ĝg,ĞG,ğg,ĠG,ġg,ĢG,ģg,ĤH,ĥh,ĦH,ħh,ĨI,ĩi,ĪI,īi,ĬI,ĭi,ĮI,įi,İI,ĲIJ,ĳij,ĴJ,ĵj,ĶK,ķk,ĹL,ĺl,ĻL,ļl,ĽL,ľl,ŁL,łl,ŃN,ńn,ŅN,ņn,ŇN,ňn,ŉ'n,ŌO,ōo,ŎO,ŏo,ŐO,őo,ŒOE,œoe,ŔR,ŕr,ŖR,ŗr,ŘR,řr,ŚS,śs,ŜS,ŝs,ŞS,şs,ŠS,šs,ŢT,ţt,ŤT,ťt,ŨU,ũu,ŪU,ūu,ŬU,ŭu,ŮU,ůu,ŰU,űu,ŲU,ųu,ŴW,ŵw,ŶY,ŷy,ŸY,ŹZ,źz,ŻZ,żz,ŽZ,žz".split(",").to_h { |val| [ val[0], val[1..2] ] }.freeze
+    COMPARISON_MAP = JSON.parse(File.read(File.expand_path("../../shared/path_comparison.json", __dir__))).fetch("mapping").to_h { |hex, value| [ hex.to_i(16).chr(Encoding::UTF_8), value.freeze ] }.freeze
 
     def self.normalize_for_comparison(*args)
-      unicode_normalize_and_transliterate(normalize(*args).to_s).downcase.rstrip
+      normalize(*args).gsub(/[^ -@\[-~]/) { |character| COMPARISON_MAP.fetch(character, character) }
     end
 
     def self.same?(a, b)
@@ -37,15 +39,6 @@ module Files
         new_string
       else
         new_string.force_encoding("ISO-8859-1").encode("UTF-8")
-      end
-    end
-
-    private_class_method def self.unicode_normalize_and_transliterate(string)
-      # convert multi-code-point characters into single-code-point characters
-      normalized_string = string.unicode_normalize(:nfkc)
-
-      normalized_string.gsub(/[^\x00-\x7f]/u) do |char|
-        TRANSLIT_MAP[char] || char
       end
     end
   end

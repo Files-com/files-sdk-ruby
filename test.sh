@@ -2,7 +2,7 @@
 require "bundler"
 Bundler.with_unbundled_env do
   Dir.chdir("generated/ruby") do
-    system "bundle install" if ARGV[0] == "true"
-    system "bundle exec rspec"
+    exit 1 if ARGV[0] == "true" && !system("bundle install")
+    exit(system("bundle exec rspec") ? 0 : 1)
   end
 end
