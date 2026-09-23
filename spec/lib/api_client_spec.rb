@@ -3,6 +3,67 @@ require "spec_helper"
 RSpec.describe Files::ApiClient do
   let(:subject) { described_class.new }
 
+  describe "signed transfer privacy" do
+    it "keeps API error types without echoing a transfer URL" do
+      url = "https://transfer.example.test/private-part?signature=secret"
+      output = StringIO.new
+      original_logger = Files.logger
+      Files.logger = Logger.new(output, level: Logger::INFO)
+      connection = Faraday.new do |builder|
+        builder.response :raise_error
+        builder.adapter :test do |stub|
+          stub.put(url) { [ 404, {}, { type: "not-found", error: url }.to_json ] }
+        end
+      end
+
+      expect { described_class.new(connection).remote_request(:put, url, {}, "part") }.to raise_error(Files::NotFoundError) { |error|
+        expect(error.http_status).to eq(404)
+        expect(error.full_message).not_to include(url, "private-part", "secret")
+      }
+      expect(output.string).not_to include(url, "private-part", "secret")
+    ensure
+      Files.logger = original_logger
+    end
+
+    it "keeps the URL out of normal logs and errors while retaining retries and debug details" do
+      url = "https://transfer.example.test/private-part?X-Amz-Credential=credential&X-Amz-Signature=signature"
+      original_logger = Files.logger
+      original_retries = Files.max_network_retries
+      original_delay = Files.initial_network_retry_delay
+      Files.max_network_retries = 1
+      Files.initial_network_retry_delay = 0
+
+      [ Logger::INFO, Logger::DEBUG ].each do |level|
+        output = StringIO.new
+        Files.logger = Logger.new(output, level: level)
+        attempts = 0
+        connection = Faraday.new do |builder|
+          builder.adapter :test do |stub|
+            stub.put(url) do
+              attempts += 1
+              raise Faraday::ConnectionFailed, "connection reset for #{url}"
+            end
+          end
+        end
+
+        expect { described_class.new(connection).remote_request(:put, url, {}, "part") }.to raise_error(Faraday::ConnectionFailed) { |error|
+          expect(error.full_message).not_to include(url, "private-part", "credential", "signature")
+        }
+        expect(attempts).to eq(2)
+        if level == Logger::INFO
+          expect(output.string).to include("Request", "Error")
+          expect(output.string).not_to include(url, "private-part", "credential", "signature")
+        else
+          expect(output.string).to include(url, "connection reset")
+        end
+      end
+    ensure
+      Files.logger = original_logger
+      Files.max_network_retries = original_retries
+      Files.initial_network_retry_delay = original_delay
+    end
+  end
+
   describe "#execute_request_with_rescues" do
     let(:context) { double('context', method: 'some method', path: 'some path') }
 

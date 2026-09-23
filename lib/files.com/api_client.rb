@@ -150,9 +150,10 @@ module Files
     def remote_request(method, url, headers = {}, body = nil)
       context = RequestLogContext.new
       context.method       = method
-      context.path         = url
+      context.path         = "[transfer]"
+      Util.log_debug("Transfer request", method: method, url: url)
 
-      execute_request_with_rescues(Files.base_url, context, skip_body_logging: true) do
+      execute_request_with_rescues(Files.base_url, context, skip_body_logging: true, is_transfer: true) do
         conn.run_request(method, url, body, headers) do |req|
           req.options.open_timeout = Files.open_timeout
           req.options.timeout = Files.read_timeout
@@ -215,7 +216,7 @@ module Files
       raise AuthenticationError, "The provided Session ID is invalid (it contains whitespace)"
     end
 
-    def execute_request_with_rescues(base_url, context, skip_body_logging: false)
+    def execute_request_with_rescues(base_url, context, skip_body_logging: false, is_transfer: false)
       num_retries = 0
       begin
         request_start = Time.now
@@ -240,14 +241,18 @@ module Files
           retry
         end
 
+        Util.log_debug("Transfer error details", error_message: e.message) if is_transfer
+
         case e
         when Faraday::ClientError, Faraday::ServerError
           if e.response and has_error_type?(e)
-            handle_error_response(e.response, error_context)
+            handle_error_response(e.response, error_context, is_transfer: is_transfer)
           else
-            handle_network_error(e, error_context, num_retries, base_url)
+            handle_network_error(e, error_context, num_retries, base_url, is_transfer: is_transfer)
           end
         else
+          raise e.exception("Transfer request failed (#{e.class})"), cause: nil if is_transfer
+
           raise
         end
       end
@@ -266,7 +271,7 @@ module Files
       str
     end
 
-    private def handle_error_response(http_resp, context)
+    private def handle_error_response(http_resp, context, is_transfer: false)
       begin
         resp = Response.from_faraday_hash(http_resp)
         error_data = resp.data[:error] || resp.data[:errors]
@@ -275,17 +280,22 @@ module Files
 
         raise Error, "Unknown error" unless error_data
       rescue JSON::ParserError, Error
+        raise APIError.new("Transfer request failed", http_status: http_resp[:status]), cause: nil if is_transfer
+
         raise general_api_error(http_resp[:status], http_resp[:body])
       end
 
-      error = specific_api_error(resp, error_data, context)
+      error = specific_api_error(resp, error_data, context, is_transfer: is_transfer)
 
       error.response = resp
-      raise(error)
+      raise error, cause: nil if is_transfer
+
+      raise error
     end
 
-    private def specific_api_error(resp, error_data, _context)
-      Util.log_error("API error", status: resp.http_status, error_message: error_data[:message])
+    private def specific_api_error(resp, error_data, _context, is_transfer: false)
+      message = is_transfer ? "Transfer request failed" : error_data[:message]
+      Util.log_error("API error", status: resp.http_status, error_message: message)
 
       opts = {
         http_body: resp.http_body,
@@ -295,27 +305,33 @@ module Files
         code: error_data[:code] || resp.http_status,
       }
 
-      return APIError.new(error_data[:message], **opts) unless resp&.data&.dig(:type)
+      return APIError.new(message, **opts) unless resp&.data&.dig(:type)
 
       begin
         error_type = resp.data[:type].split("/").last
         error_class_name = "#{error_type.split("-").map(&:capitalize).join}Error"
         error_class = Files.const_get(error_class_name)
-        error_class.new(error_data[:message], **opts)
+        error_class.new(message, **opts)
       rescue NameError
-        APIError.new(error_data[:message], **opts)
+        APIError.new(message, **opts)
       end
     end
 
-    private def handle_network_error(error, _context, num_retries, base_url = nil)
+    private def handle_network_error(error, _context, num_retries, base_url = nil, is_transfer: false)
       base_url ||= Files.base_url
 
-      error_message = error.message.empty? ? error.response[:body] : error.message
+      error_message = if is_transfer
+                        error.class.name
+                      else
+                        error.message.empty? ? error.response[:body] : error.message
+                      end
 
       Util.log_error("Network error", error_message: error_message)
       message = "Could not connect to Files.com at URL #{base_url}. Please check your internet connection and try again. If this problem persists, you should check Files.com's service status at https://status.files.com, or contact your primary account representative."
       message += " Request was retried #{num_retries} times." if num_retries > 0
       message += "\n\n(Network error: #{error_message})"
+
+      raise APIConnectionError, message, cause: nil if is_transfer
 
       raise APIConnectionError, message
     end
@@ -372,7 +388,8 @@ module Files
     end
 
     private def log_response_error(context, request_start, error)
-      Util.log_error("Error", elapsed: Time.now - request_start, error_message: error.message, method: context.method, path: context.path)
+      Util.log_error("Error", elapsed: Time.now - request_start, error_type: error.class, method: context.method, path: context.path)
+      Util.log_debug("Error details", error_message: error.message)
     end
 
     class RequestLogContext
