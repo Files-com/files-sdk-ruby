@@ -18,6 +18,15 @@ module Files
       @attributes[:id] = value
     end
 
+    # int64 - Workspace whose logs are exported. Set to `0` for the default workspace. A null value means a site-wide export.
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
     # string - Version of the underlying records for the export.
     def export_version
       @attributes[:export_version]
@@ -164,6 +173,7 @@ module Files
 
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    #   workspace_id - int64 - Workspace whose logs are exported. Set to `0` for the default workspace. A null value means a site-wide export.
     #   start_at - string - Start date/time of export range.
     #   end_at - string - End date/time of export range.
     #   query_message - string - Error message associated with the request, if any.
@@ -175,6 +185,7 @@ module Files
     #   query_folder - string - Return notifications that were triggered by actions in this folder.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params[:end_at] and !params[:end_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_message must be an String") if params[:query_message] and !params[:query_message].is_a?(String)
