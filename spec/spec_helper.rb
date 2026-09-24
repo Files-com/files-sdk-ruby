@@ -30,6 +30,7 @@ RSpec.configure do |config|
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
+  config.fail_if_no_examples = true
   config.disable_monkey_patching!
   config.order = :random
   Kernel.srand config.seed

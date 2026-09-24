@@ -41,7 +41,7 @@ module Files
       @type = kwargs.dig(:json_body, :type)
       @data = kwargs.dig(:json_body, :data)
 
-      super
+      super(message, **kwargs)
     end
   end
 
