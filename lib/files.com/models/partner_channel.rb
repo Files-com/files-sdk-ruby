@@ -36,6 +36,15 @@ module Files
       @attributes[:direction] = value
     end
 
+    # boolean - Use the Channel folder directly for a one-way exchange. Defaults to false. Cannot be changed after creation. Folder name overrides must be blank when enabled, and the Channel must remain one-way.
+    def use_channel_root
+      @attributes[:use_channel_root]
+    end
+
+    def use_channel_root=(value)
+      @attributes[:use_channel_root] = value
+    end
+
     # int64 - ID of the Partner this Channel belongs to.
     def partner_id
       @attributes[:partner_id]
@@ -117,7 +126,7 @@ module Files
       @attributes[:from_partner_managed_folder_paths] = value
     end
 
-    # string - Resolved to-Partner folder name after Channel override and default.
+    # string - Resolved to-Partner subfolder name. Null when the direction is disabled or uses the Channel folder directly.
     def effective_to_partner_folder_name
       @attributes[:effective_to_partner_folder_name]
     end
@@ -126,7 +135,7 @@ module Files
       @attributes[:effective_to_partner_folder_name] = value
     end
 
-    # string - Resolved from-Partner folder name after Channel override and default.
+    # string - Resolved from-Partner subfolder name. Null when the direction is disabled or uses the Channel folder directly.
     def effective_from_partner_folder_name
       @attributes[:effective_from_partner_folder_name]
     end
@@ -164,6 +173,7 @@ module Files
 
     # Parameters:
     #   direction - string - Channel directions. `two_way` enables both directions, `to_partner` enables outgoing downloads, and `from_partner` enables incoming uploads.
+    #   use_channel_root - boolean - Use the Channel folder directly for a one-way exchange. Defaults to false. Cannot be changed after creation. Folder name overrides must be blank when enabled, and the Channel must remain one-way.
     #   from_partner_folder_name - string - Optional Channel-level from-Partner folder name override.
     #   from_partner_managed_folder_paths - array(string) - Managed folder paths inside the from-Partner folder.
     #   from_partner_route_path - string - Optional route path for files uploaded by the Partner.
@@ -253,6 +263,7 @@ module Files
 
     # Parameters:
     #   direction - string - Channel directions. `two_way` enables both directions, `to_partner` enables outgoing downloads, and `from_partner` enables incoming uploads.
+    #   use_channel_root - boolean - Use the Channel folder directly for a one-way exchange. Defaults to false. Cannot be changed after creation. Folder name overrides must be blank when enabled, and the Channel must remain one-way.
     #   from_partner_folder_name - string - Optional Channel-level from-Partner folder name override.
     #   from_partner_managed_folder_paths - array(string) - Managed folder paths inside the from-Partner folder.
     #   from_partner_route_path - string - Optional route path for files uploaded by the Partner.
@@ -282,6 +293,7 @@ module Files
 
     # Parameters:
     #   direction - string - Channel directions. `two_way` enables both directions, `to_partner` enables outgoing downloads, and `from_partner` enables incoming uploads.
+    #   use_channel_root - boolean - Use the Channel folder directly for a one-way exchange. Defaults to false. Cannot be changed after creation. Folder name overrides must be blank when enabled, and the Channel must remain one-way.
     #   from_partner_folder_name - string - Optional Channel-level from-Partner folder name override.
     #   from_partner_managed_folder_paths - array(string) - Managed folder paths inside the from-Partner folder.
     #   from_partner_route_path - string - Optional route path for files uploaded by the Partner.
