@@ -551,6 +551,11 @@ module Files
       @attributes[:ldap_secure]
     end
 
+    # string - How to validate the LDAP server certificate. `require_match` validates the certificate chain and hostname; `allow_any` disables certificate validation.
+    def ldap_server_certificate
+      @attributes[:ldap_server_certificate]
+    end
+
     # string - LDAP type
     def ldap_type
       @attributes[:ldap_type]
@@ -1159,6 +1164,7 @@ module Files
     #   ldap_host_3 - string - LDAP backup host
     #   ldap_port - int64 - LDAP port
     #   ldap_secure - boolean - Use secure LDAP?
+    #   ldap_server_certificate - string - How to validate the LDAP server certificate. `require_match` validates the certificate chain and hostname; `allow_any` disables certificate validation.
     #   ldap_username - string - Username for signing in to LDAP server.
     #   ldap_username_field - string - LDAP username field
     #   ldap_domain - string - Domain name that will be appended to usernames
@@ -1253,6 +1259,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ldap_host_2 must be an String") if params[:ldap_host_2] and !params[:ldap_host_2].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_host_3 must be an String") if params[:ldap_host_3] and !params[:ldap_host_3].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_port must be an Integer") if params[:ldap_port] and !params[:ldap_port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ldap_server_certificate must be an String") if params[:ldap_server_certificate] and !params[:ldap_server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_username must be an String") if params[:ldap_username] and !params[:ldap_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_username_field must be an String") if params[:ldap_username_field] and !params[:ldap_username_field].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_domain must be an String") if params[:ldap_domain] and !params[:ldap_domain].is_a?(String)

@@ -254,6 +254,11 @@ module Files
       @attributes[:ldap_secure]
     end
 
+    # string - How to validate the LDAP server certificate. `require_match` validates the certificate chain and hostname; `allow_any` disables certificate validation.
+    def ldap_server_certificate
+      @attributes[:ldap_server_certificate]
+    end
+
     # string - LDAP server type
     def ldap_type
       @attributes[:ldap_type]
