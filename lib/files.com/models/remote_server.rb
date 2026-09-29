@@ -531,6 +531,24 @@ module Files
       @attributes[:enable_dedicated_ips] = value
     end
 
+    # int64 - Custom Domain ID whose dedicated IP addresses are selected when this Remote Server uses dedicated IPs. Must be available to this Remote Server's workspace. Requires enable_dedicated_ips and cannot be combined with an outbound Agent. Set to null to use the site's default dedicated IPs.
+    def custom_domain_id
+      @attributes[:custom_domain_id]
+    end
+
+    def custom_domain_id=(value)
+      @attributes[:custom_domain_id] = value
+    end
+
+    # array(string) - Current eligible public IP addresses for the selected Custom Domain. Any address in this list may originate a connection. Empty when no domain is selected or its configuration is unavailable. Only included in responses for a single Remote Server.
+    def outbound_ip_addresses
+      @attributes[:outbound_ip_addresses]
+    end
+
+    def outbound_ip_addresses=(value)
+      @attributes[:outbound_ip_addresses] = value
+    end
+
     # string - Local permissions for files agent. read_only, write_only, or read_write
     def files_agent_permission_set
       @attributes[:files_agent_permission_set]
@@ -978,6 +996,7 @@ module Files
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
     #   outbound_agent_id - int64 - Route traffic to outbound on a files-agent
+    #   custom_domain_id - int64 - Custom Domain ID whose dedicated IP addresses are selected when this Remote Server uses dedicated IPs. Must be available to this Remote Server's workspace. Requires enable_dedicated_ips and cannot be combined with an outbound Agent. Set to null to use the site's default dedicated IPs.
     #   google_cloud_storage_authentication_method - string - Google Cloud Storage: Authentication method. Can be json, hmac, or oauth.
     #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
     #   google_cloud_storage_oauth_scope - string - Google Cloud Storage: OAuth scope. Can be https://www.googleapis.com/auth/devstorage.read_only or https://www.googleapis.com/auth/devstorage.read_write.
@@ -1060,6 +1079,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: outbound_agent_id must be an Integer") if params[:outbound_agent_id] and !params[:outbound_agent_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: custom_domain_id must be an Integer") if params[:custom_domain_id] and !params[:custom_domain_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_authentication_method must be an String") if params[:google_cloud_storage_authentication_method] and !params[:google_cloud_storage_authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_oauth_scope must be an String") if params[:google_cloud_storage_oauth_scope] and !params[:google_cloud_storage_oauth_scope].is_a?(String)
@@ -1236,6 +1256,7 @@ module Files
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
     #   outbound_agent_id - int64 - Route traffic to outbound on a files-agent
+    #   custom_domain_id - int64 - Custom Domain ID whose dedicated IP addresses are selected when this Remote Server uses dedicated IPs. Must be available to this Remote Server's workspace. Requires enable_dedicated_ips and cannot be combined with an outbound Agent. Set to null to use the site's default dedicated IPs.
     #   google_cloud_storage_authentication_method - string - Google Cloud Storage: Authentication method. Can be json, hmac, or oauth.
     #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
     #   google_cloud_storage_oauth_scope - string - Google Cloud Storage: OAuth scope. Can be https://www.googleapis.com/auth/devstorage.read_only or https://www.googleapis.com/auth/devstorage.read_write.
@@ -1316,6 +1337,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: outbound_agent_id must be an Integer") if params[:outbound_agent_id] and !params[:outbound_agent_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: custom_domain_id must be an Integer") if params[:custom_domain_id] and !params[:custom_domain_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_authentication_method must be an String") if params[:google_cloud_storage_authentication_method] and !params[:google_cloud_storage_authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_oauth_scope must be an String") if params[:google_cloud_storage_oauth_scope] and !params[:google_cloud_storage_oauth_scope].is_a?(String)
@@ -1414,6 +1436,7 @@ module Files
     #   files_agent_root - string - Agent local root path
     #   files_agent_version - string - Files Agent version
     #   outbound_agent_id - int64 - Route traffic to outbound on a files-agent
+    #   custom_domain_id - int64 - Custom Domain ID whose dedicated IP addresses are selected when this Remote Server uses dedicated IPs. Must be available to this Remote Server's workspace. Requires enable_dedicated_ips and cannot be combined with an outbound Agent. Set to null to use the site's default dedicated IPs.
     #   google_cloud_storage_authentication_method - string - Google Cloud Storage: Authentication method. Can be json, hmac, or oauth.
     #   google_cloud_storage_bucket - string - Google Cloud Storage: Bucket Name
     #   google_cloud_storage_oauth_scope - string - Google Cloud Storage: OAuth scope. Can be https://www.googleapis.com/auth/devstorage.read_only or https://www.googleapis.com/auth/devstorage.read_write.
@@ -1495,6 +1518,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: files_agent_root must be an String") if params[:files_agent_root] and !params[:files_agent_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_agent_version must be an String") if params[:files_agent_version] and !params[:files_agent_version].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: outbound_agent_id must be an Integer") if params[:outbound_agent_id] and !params[:outbound_agent_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: custom_domain_id must be an Integer") if params[:custom_domain_id] and !params[:custom_domain_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_authentication_method must be an String") if params[:google_cloud_storage_authentication_method] and !params[:google_cloud_storage_authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_bucket must be an String") if params[:google_cloud_storage_bucket] and !params[:google_cloud_storage_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: google_cloud_storage_oauth_scope must be an String") if params[:google_cloud_storage_oauth_scope] and !params[:google_cloud_storage_oauth_scope].is_a?(String)

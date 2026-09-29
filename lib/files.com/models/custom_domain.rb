@@ -18,6 +18,33 @@ module Files
       @attributes[:id] = value
     end
 
+    # int64 - Workspace ID (0 for the default workspace).
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
+    # boolean - Allow all workspaces to use this default-workspace Custom Domain.
+    def available_to_all_workspaces
+      @attributes[:available_to_all_workspaces]
+    end
+
+    def available_to_all_workspaces=(value)
+      @attributes[:available_to_all_workspaces] = value
+    end
+
+    # array(string) - Eligible public IP addresses for Remote Server outbound connections. Empty when this Custom Domain is not eligible for outbound selection.
+    def outbound_ip_addresses
+      @attributes[:outbound_ip_addresses]
+    end
+
+    def outbound_ip_addresses=(value)
+      @attributes[:outbound_ip_addresses] = value
+    end
+
     # string - Customer-owned domain name.
     def domain
       @attributes[:domain]
@@ -92,6 +119,8 @@ module Files
     end
 
     # Parameters:
+    #   available_to_all_workspaces - boolean - Allow all workspaces to use this default-workspace Custom Domain.
+    #   workspace_id - int64 - Workspace ID (0 for the default workspace).
     #   destination - string - Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, or `unassigned` (not routing traffic). Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
     #   folder_behavior_id - int64 - Public Hosting behavior ID when this domain routes to a specific Public Hosting behavior.  Preserved as historical context when `destination` becomes `unassigned`.
     #   ssl_certificate_id - int64 - Current SSL certificate ID.
@@ -101,6 +130,7 @@ module Files
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: folder_behavior_id must be an Integer") if params[:folder_behavior_id] and !params[:folder_behavior_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate_id must be an Integer") if params[:ssl_certificate_id] and !params[:ssl_certificate_id].is_a?(Integer)
@@ -139,11 +169,13 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `id`.
+    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `id` or `available_to_all_workspaces`.
+    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
       List.new(CustomDomain, params) do
         Api.send_request("/custom_domains", :get, params, options)
@@ -186,11 +218,14 @@ module Files
     end
 
     # Parameters:
+    #   available_to_all_workspaces - boolean - Allow all workspaces to use this default-workspace Custom Domain.
+    #   workspace_id - int64 - Workspace ID (0 for the default workspace).
     #   destination - string - Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, or `unassigned` (not routing traffic). Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
     #   folder_behavior_id - int64 - Public Hosting behavior ID when this domain routes to a specific Public Hosting behavior.  Preserved as historical context when `destination` becomes `unassigned`.
     #   ssl_certificate_id - int64 - Current SSL certificate ID.
     #   domain (required) - string - Customer-owned domain name.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: folder_behavior_id must be an Integer") if params[:folder_behavior_id] and !params[:folder_behavior_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate_id must be an Integer") if params[:ssl_certificate_id] and !params[:ssl_certificate_id].is_a?(Integer)
@@ -202,6 +237,8 @@ module Files
     end
 
     # Parameters:
+    #   available_to_all_workspaces - boolean - Allow all workspaces to use this default-workspace Custom Domain.
+    #   workspace_id - int64 - Workspace ID (0 for the default workspace).
     #   destination - string - Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, or `unassigned` (not routing traffic). Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
     #   folder_behavior_id - int64 - Public Hosting behavior ID when this domain routes to a specific Public Hosting behavior.  Preserved as historical context when `destination` becomes `unassigned`.
     #   ssl_certificate_id - int64 - Current SSL certificate ID.
@@ -210,6 +247,7 @@ module Files
       params ||= {}
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: folder_behavior_id must be an Integer") if params[:folder_behavior_id] and !params[:folder_behavior_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate_id must be an Integer") if params[:ssl_certificate_id] and !params[:ssl_certificate_id].is_a?(Integer)
