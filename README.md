@@ -684,6 +684,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`TooManySharesError`|  `RateLimitedError` |
 |`AutomationsUnavailableError`|  `ServiceUnavailableError` |
 |`MigrationInProgressError`|  `ServiceUnavailableError` |
+|`SearchUnavailableError`|  `ServiceUnavailableError` |
 |`SiteDisabledError`|  `ServiceUnavailableError` |
 |`UploadsUnavailableError`|  `ServiceUnavailableError` |
 |`AccountAlreadyExistsError`|  `SiteConfigurationError` |

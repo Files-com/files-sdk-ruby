@@ -257,6 +257,7 @@ module Files
   class ServiceUnavailableError < APIError; end
   class AutomationsUnavailableError < ServiceUnavailableError; end
   class MigrationInProgressError < ServiceUnavailableError; end
+  class SearchUnavailableError < ServiceUnavailableError; end
   class SiteDisabledError < ServiceUnavailableError; end
   class UploadsUnavailableError < ServiceUnavailableError; end
 
