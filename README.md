@@ -561,6 +561,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`BillingPermissionRequiredError`|  `NotAuthorizedError` |
 |`BundleMaximumUsesReachedError`|  `NotAuthorizedError` |
 |`BundlePermissionRequiredError`|  `NotAuthorizedError` |
+|`CannotAdministerHigherLevelUserError`|  `NotAuthorizedError` |
 |`CannotLoginWhileUsingKeyError`|  `NotAuthorizedError` |
 |`CantActForOtherUserError`|  `NotAuthorizedError` |
 |`ContactAdminForPasswordChangeHelpError`|  `NotAuthorizedError` |
@@ -662,6 +663,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`MultipleProcessingErrorsError`|  `ProcessingFailureError` |
 |`PathTooLongError`|  `ProcessingFailureError` |
 |`RecipientAlreadySharedError`|  `ProcessingFailureError` |
+|`RemoteEntryReadOnlyError`|  `ProcessingFailureError` |
 |`RemoteServerErrorError`|  `ProcessingFailureError` |
 |`ResourceBelongsToParentSiteError`|  `ProcessingFailureError` |
 |`ResourceLockedError`|  `ProcessingFailureError` |

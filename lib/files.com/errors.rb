@@ -126,6 +126,7 @@ module Files
   class BillingPermissionRequiredError < NotAuthorizedError; end
   class BundleMaximumUsesReachedError < NotAuthorizedError; end
   class BundlePermissionRequiredError < NotAuthorizedError; end
+  class CannotAdministerHigherLevelUserError < NotAuthorizedError; end
   class CannotLoginWhileUsingKeyError < NotAuthorizedError; end
   class CantActForOtherUserError < NotAuthorizedError; end
   class ContactAdminForPasswordChangeHelpError < NotAuthorizedError; end
@@ -231,6 +232,7 @@ module Files
   class MultipleProcessingErrorsError < ProcessingFailureError; end
   class PathTooLongError < ProcessingFailureError; end
   class RecipientAlreadySharedError < ProcessingFailureError; end
+  class RemoteEntryReadOnlyError < ProcessingFailureError; end
   class RemoteServerErrorError < ProcessingFailureError; end
   class ResourceBelongsToParentSiteError < ProcessingFailureError; end
   class ResourceLockedError < ProcessingFailureError; end
