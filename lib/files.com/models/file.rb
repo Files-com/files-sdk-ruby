@@ -34,8 +34,17 @@ module Files
     end
 
     def self.download_file(path, local_path = nil)
-      local_path ||= File.basename(path)
+      local_path ||= default_local_path(path)
       new(path).download_file(local_path)
+    end
+
+    private_class_method def self.default_local_path(path)
+      name = PathUtil.normalize(path).split("/").last.to_s
+      # On Windows a colon makes the name a drive-relative path or an NTFS
+      # stream, which can write outside the working directory or onto another file.
+      raise InvalidParameterError.new("Bad parameter: local_path is required because #{name.inspect} is not a valid local file name") if Gem.win_platform? && name.include?(":")
+
+      name
     end
 
     private_class_method def self.underscore_destination_path(root, id, relative_path = nil)
