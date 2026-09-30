@@ -162,7 +162,7 @@ module Files
       @attributes[:human_readable_schedule] = value
     end
 
-    # date-time - Most recent scheduled run time.
+    # date-time - Most recent scheduled attempt time, including attempts that failed validation.
     def last_run_at
       @attributes[:last_run_at]
     end
@@ -178,6 +178,15 @@ module Files
 
     def last_export_id=(value)
       @attributes[:last_export_id] = value
+    end
+
+    # string - Validation error from the most recent scheduled attempt. The schedule remains enabled and retries at its next scheduled time. Cleared when an export is successfully created; does not describe errors during export generation.
+    def last_error
+      @attributes[:last_error]
+    end
+
+    def last_error=(value)
+      @attributes[:last_error] = value
     end
 
     # date-time - Creation time.
