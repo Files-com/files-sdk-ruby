@@ -864,6 +864,11 @@ module Files
       @attributes[:smtp_port]
     end
 
+    # string - Custom SMTP encryption mode: if_available (default) uses STARTTLS when offered and otherwise sends credentials and messages unencrypted; require requires STARTTLS before authentication; require_implicit uses TLS from connection start; never disables TLS. TLS verifies the server certificate against smtp_address.
+    def smtp_ssl
+      @attributes[:smtp_ssl]
+    end
+
     # string - SMTP server username
     def smtp_username
       @attributes[:smtp_username]
@@ -1163,6 +1168,7 @@ module Files
     #   smtp_from - string - From address to use when mailing through custom SMTP
     #   smtp_username - string - SMTP server username
     #   smtp_port - int64 - SMTP server port
+    #   smtp_ssl - string - Custom SMTP encryption mode: if_available (default) uses STARTTLS when offered and otherwise sends credentials and messages unencrypted; require requires STARTTLS before authentication; require_implicit uses TLS from connection start; never disables TLS. TLS verifies the server certificate against smtp_address.
     #   ldap_enabled - boolean - Main LDAP setting: is LDAP enabled?
     #   ldap_type - string - LDAP type
     #   ldap_host - string - LDAP host
@@ -1260,6 +1266,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: smtp_from must be an String") if params[:smtp_from] and !params[:smtp_from].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_username must be an String") if params[:smtp_username] and !params[:smtp_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_port must be an Integer") if params[:smtp_port] and !params[:smtp_port].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: smtp_ssl must be an String") if params[:smtp_ssl] and !params[:smtp_ssl].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_type must be an String") if params[:ldap_type] and !params[:ldap_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_host must be an String") if params[:ldap_host] and !params[:ldap_host].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ldap_host_2 must be an String") if params[:ldap_host_2] and !params[:ldap_host_2].is_a?(String)
