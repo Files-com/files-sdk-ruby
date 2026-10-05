@@ -45,7 +45,7 @@ module Files
       @attributes[:recursive] = value
     end
 
-    # string - Owner of the lock.  This can be any arbitrary string.
+    # string - Arbitrary descriptive label for the lock. Does not change the lock creator or permissions.
     def owner
       @attributes[:owner]
     end
@@ -117,6 +117,15 @@ module Files
       @attributes[:username] = value
     end
 
+    # string - Require this existing, unexpired token before refreshing or replacing a lock. Set token to the same value to refresh, or a different value to replace.
+    def expected_token
+      @attributes[:expected_token]
+    end
+
+    def expected_token=(value)
+      @attributes[:expected_token] = value
+    end
+
     # Parameters:
     #   token (required) - string - Lock token
     def delete(params = {})
@@ -162,14 +171,20 @@ module Files
 
     # Parameters:
     #   path (required) - string - Path
+    #   token - string - Lock token. With expected_token, use the same value to refresh or a different value to replace the existing token.
+    #   expected_token - string - Require this existing, unexpired token before refreshing or replacing a lock. Set token to the same value to refresh, or a different value to replace.
     #   allow_access_by_any_user - boolean - Can lock be modified by users other than its creator?
     #   exclusive - boolean - Is lock exclusive?
     #   recursive - boolean - Does lock apply to subfolders?
+    #   owner - string - Arbitrary descriptive label for the lock. Does not change the lock creator or permissions.
     #   timeout - int64 - Lock timeout in seconds
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: token must be an String") if params[:token] and !params[:token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: expected_token must be an String") if params[:expected_token] and !params[:expected_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: owner must be an String") if params[:owner] and !params[:owner].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params[:timeout] and !params[:timeout].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 

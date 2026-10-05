@@ -9,6 +9,15 @@ module Files
       @options = options || {}
     end
 
+    # int64 - Workspace of the export. 0 represents the default workspace. A null value means a site-wide export.
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
     # int64 - History Export ID
     def id
       @attributes[:id]

@@ -18,7 +18,7 @@ module Files
       @attributes[:id] = value
     end
 
-    # string - Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # string - Folder path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
     def path
       @attributes[:path]
     end
@@ -63,7 +63,7 @@ module Files
       @attributes[:group_name] = value
     end
 
-    # array(int64) - Group IDs when this permission requires multiple groups
+    # array(int64) - Group IDs when this Permission requires membership in every listed group.
     def group_ids
       @attributes[:group_ids]
     end
@@ -108,7 +108,7 @@ module Files
       @attributes[:permission] = value
     end
 
-    # boolean - Recursive: does this permission apply to subfolders?
+    # boolean - Whether this Permission applies to subfolders. Must be true for `admin` Permissions.
     def recursive
       @attributes[:recursive]
     end
@@ -186,9 +186,9 @@ module Files
     # Parameters:
     #   path (required) - string - Folder path
     #   group_id - int64 - Group ID. Provide `group_name` or `group_id`
-    #   group_ids - string - Group IDs when the permission requires multiple groups. If sent as a string, it should be comma-delimited.
+    #   group_ids - string - Group IDs when the Permission requires membership in every listed group. If sent as a string, it should be comma-delimited.
     #   permission - string - Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
-    #   recursive - boolean - Apply to subfolders recursively?
+    #   recursive - boolean - Apply to subfolders recursively? Must be true for `admin` Permissions.
     #   partner_id - int64 - Partner ID if this Permission belongs to a partner.
     #   user_id - int64 - User ID.  Provide `username` or `user_id`
     #   username - string - User username.  Provide `username` or `user_id`

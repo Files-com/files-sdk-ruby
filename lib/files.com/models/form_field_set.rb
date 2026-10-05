@@ -36,7 +36,7 @@ module Files
       @attributes[:form_layout] = value
     end
 
-    # array(object) - Associated form fields
+    # array(object) - Associated form field definitions; authenticated form field set responses include historical definitions, while form_layout identifies current fields
     def form_fields
       @attributes[:form_fields]
     end
