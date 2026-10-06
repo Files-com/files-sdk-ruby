@@ -191,7 +191,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/groups/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/groups/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Group") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -211,12 +213,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = Group.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -236,8 +238,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: ids must be an String") if params[:ids] and !params[:ids].is_a?(String)
 
-      List.new(Group, params) do
-        Api.send_request("/groups", :get, params, options)
+      List.new(Group, params) do |page_params, &check_page|
+        Api.send_request("/groups", :get, page_params, options, &check_page)
       end
     end
 
@@ -253,7 +255,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/groups/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/groups/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Group") }
       Group.new(response.data, options)
     end
 
@@ -288,7 +290,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
-      response, options = Api.send_request("/groups", :post, params, options)
+      response, options = Api.send_request("/groups", :post, params, options) { |reply| reply.require_object("Group") }
       Group.new(response.data, options)
     end
 
@@ -320,7 +322,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/groups/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/groups/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Group") }
       Group.new(response.data, options)
     end
 

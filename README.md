@@ -410,9 +410,9 @@ A user's or group's `workspace_id` identifies the Workspace the account belongs 
 | Default Workspace user | Create an `admin` Permission for the user on a Custom Workspace's root folder. | Each Custom Workspace with a root grant. |
 | Default Workspace group | Create an `admin` Permission for the group on a Custom Workspace's root folder. | Every member inherits administration of each Workspace with a root grant. |
 
-`workspace_admin` is not a summary of a user's effective administrative access. A Default Workspace user can administer a Custom Workspace through a direct or group root grant while their `workspace_admin` remains `false`. Groups have no `workspace_admin` field. See [Users](/ruby/resources/user-accounts/users) and [Groups](/ruby/resources/user-accounts/groups) for account fields.
+`workspace_admin` is not a summary of a user's effective administrative access. A Default Workspace user can administer a Custom Workspace through a direct or group root grant while their `workspace_admin` remains `false`. Groups have no `workspace_admin` field. See [Users](https://developers.files.com/ruby/resources/user-accounts/users) and [Groups](https://developers.files.com/ruby/resources/user-accounts/groups) for account fields.
 
-An `admin` grant on the **Custom Workspace root** provides full Workspace Administrator authority over its files, users, groups, Partners, workflows, and integrations. An `admin` grant on a subfolder provides Folder Admin authority over that folder and its descendants; it does not provide Workspace administration. Other permission levels provide their corresponding folder access without Workspace administration. [Permissions](/ruby/resources/user-accounts/permissions) defines the levels.
+An `admin` grant on the **Custom Workspace root** provides full Workspace Administrator authority over its files, users, groups, Partners, workflows, and integrations. An `admin` grant on a subfolder provides Folder Admin authority over that folder and its descendants; it does not provide Workspace administration. Other permission levels provide their corresponding folder access without Workspace administration. [Permissions](https://developers.files.com/ruby/resources/user-accounts/permissions) defines the levels.
 
 Site Administrators manage cross-Workspace assignments to Default Workspace accounts. Workspace Administrators manage accounts and permissions within their own scope. Site Administrators retain access to every Workspace; adding a Workspace grant does not narrow Site Administrator authority. The [product documentation](https://www.files.com/docs/workspaces/workspace-administrators) explains the administrator's operational scope and site-wide controls.
 
@@ -424,7 +424,7 @@ A resource's `workspace_id` request field describes the resource's Workspace mem
 
 Selecting another Workspace with an API key requires a **Full Access key created in the Default Workspace**. A user key follows that user's current access, including group permissions. A site-wide Full Access key created in the Default Workspace has Site Administrator authority in every Workspace. A Files Only key stays in its creation Workspace, even if its user has cross-Workspace access. Any key created in a Custom Workspace stays within that Workspace. Selecting another context with these confined keys is rejected with `bad-request/invalid-workspace-id-header`.
 
-An account belonging to a Custom Workspace is scoped there when it authenticates normally. For a Default Workspace user, explicitly select the intended Workspace for an integration rather than relying on an interactive login preference. [API Keys](/ruby/resources/developers/api-keys) and [Authentication](/ruby/overview/authentication) cover credentials.
+An account belonging to a Custom Workspace is scoped there when it authenticates normally. For a Default Workspace user, explicitly select the intended Workspace for an integration rather than relying on an interactive login preference. [API Keys](https://developers.files.com/ruby/resources/developers/api-keys) and [Authentication](https://developers.files.com/ruby/overview/authentication) cover credentials.
 
 The Files.com Ruby SDK supports workspace scoping by using the `Files.workspace_id` configuration attribute. Scope a single request by passing `workspace_id` in the request options.
 
@@ -442,13 +442,13 @@ Files::Folder.list_for("", {}, workspace_id: 456)
 
 An operations team already represented by a Default Workspace group can administer a Custom Workspace through one root Permission. The group and its members stay in the Default Workspace, so the same team can receive different access in other Workspaces.
 
-First retrieve the target [Workspace](/ruby/resources/settings/workspaces) and [Group](/ruby/resources/user-accounts/groups) IDs as a Site Administrator in Workspace `0`. The examples use Workspace `123`, group `456`, and member user `789`; replace them with your own IDs. Confirm that the group belongs to Workspace `0` and that the intended user is a member.
+First retrieve the target [Workspace](https://developers.files.com/ruby/resources/settings/workspaces) and [Group](https://developers.files.com/ruby/resources/user-accounts/groups) IDs as a Site Administrator in Workspace `0`. The examples use Workspace `123`, group `456`, and member user `789`; replace them with your own IDs. Confirm that the group belongs to Workspace `0` and that the intended user is a member.
 
 Create the Permission using a Default Workspace Full Access site-wide key or a Full Access user key belonging to a Site Administrator. Keep the request context at `0` and use the qualified root path `_/Workspaces/123`. Set `group_id` to the group's ID, `permission` to `admin`, and `recursive` to `true`. Save the returned Permission `id` for later removal. For an individual Default Workspace user, use `user_id` instead of `group_id`.
 
 For a Default Workspace group, a Site Administrator can also select Workspace `123` and use an empty `path` to grant access to its root. The qualified path in Workspace `0` works for both Default Workspace users and groups and keeps the account scope and target Workspace explicit. Appending a subfolder to the path would grant Folder Admin access instead of Workspace Administrator authority.
 
-After the grant, run the request-context example above with the member's own credential and Workspace `123` selected. That member can work with the Workspace's files and perform Workspace Administrator operations, such as managing its users, Partners, and integrations. A Site Administrator's successful request does not establish that the member has the intended access.
+After the grant, make a request as the member, using their own credential with Workspace `123` selected, such as listing that Workspace's root folder. That member can work with the Workspace's files and perform Workspace Administrator operations, such as managing its users, Partners, and integrations. A Site Administrator's successful request does not establish that the member has the intended access.
 
 ```ruby title="Grant group administration"
 require 'files.com'
@@ -461,6 +461,12 @@ grant = Files::Permission.create({
   recursive: true
 }, workspace_id: 0)
 puts grant.id
+```
+
+```ruby title="Request as the group member"
+Files::Folder.list_for("", {}, api_key: "YOUR_MEMBER_API_KEY", workspace_id: 123).each do |entry|
+  puts entry.path
+end
 ```
 
 ### Permission Inspection and Removal
@@ -476,7 +482,7 @@ Group membership maintained through SCIM follows the same rule. A Group Admin al
 Delete the Permission by its returned `id` as the Site Administrator in Workspace `0`. The removal examples use Permission ID `9001`; replace it with the ID returned by your create request. Permissions are created and deleted, rather than updated in place. If narrower folder access is still needed, assign it explicitly; deleting a broad grant does not restore narrower grants it previously replaced.
 
 ```ruby title="Inspect member grants and remove the group grant"
-Files::Permission.list({user_id: "789", include_groups: true}, workspace_id: 0).each do |item|
+Files::Permission.list({user_id: "789", include_groups: true}, workspace_id: 0).auto_paging_each do |item|
   puts [item.path, item.permission, item.group_id].inspect
 end
 Files::Permission.delete(9001, {}, workspace_id: 0)
@@ -772,7 +778,13 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 Certain API operations return lists of objects. When the number of objects in the list is large,
 the API will paginate the results.
 
-The Files.com Ruby SDK automatically paginates through lists of objects by default.
+The Files.com Ruby SDK provides multiple ways to paginate through lists of objects.
+
+### Automatic Pagination
+
+The `auto_paging_each` method iterates through every object on every page, requesting each page
+only when iteration reaches it. Without a block it returns a lazy enumerator, so methods such as
+`first(10)` request only the pages they need.
 
 ```ruby title="Example Request" hasDataFormatSelector
 begin
@@ -781,6 +793,34 @@ begin
   )
   files.auto_paging_each do |file|
     # Operate on file
+  end
+rescue Files::NotAuthenticatedError => e
+  puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message
+rescue Files::Error => e
+  puts "Unknown Error Occurred (#{e.class.to_s}): " + e.message
+end
+```
+
+### Manual Pagination
+
+A list operation returns its first page. `each`, and every other `Enumerable` method, covers the
+objects on that page. `has_next_page?` reports whether another page follows, and `next_page`
+requests it. After the last page, `next_page` returns an empty page without making a request.
+
+All pages of a list share one position for `next_page`, so calling it again on an earlier page
+continues after the newest page. `auto_paging_each` keeps its own position: it starts at the page
+you call it on and does not move `next_page`.
+
+```ruby title="Example Request"
+begin
+  page = Files::Folder.list_for(path, per_page: 100)
+  loop do
+    page.each do |file|
+      # Operate on file
+    end
+    break unless page.has_next_page?
+
+    page = page.next_page
   end
 rescue Files::NotAuthenticatedError => e
   puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message

@@ -137,7 +137,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: domain must be an String") if params[:domain] and !params[:domain].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/custom_domains/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/custom_domains/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("CustomDomain") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -157,12 +159,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = CustomDomain.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -177,8 +179,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
-      List.new(CustomDomain, params) do
-        Api.send_request("/custom_domains", :get, params, options)
+      List.new(CustomDomain, params) do |page_params, &check_page|
+        Api.send_request("/custom_domains", :get, page_params, options, &check_page)
       end
     end
 
@@ -194,7 +196,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/custom_domains/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/custom_domains/#{params[:id]}", :get, params, options) { |reply| reply.require_object("CustomDomain") }
       CustomDomain.new(response.data, options)
     end
 
@@ -213,7 +215,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
       raise MissingParameterError.new("Parameter missing: count") unless params[:count]
 
-      response, options = Api.send_request("/custom_domains/#{params[:id]}/allocate_ips", :post, params, options)
+      response, options = Api.send_request("/custom_domains/#{params[:id]}/allocate_ips", :post, params, options) { |reply| reply.require_object("CustomDomain") }
       CustomDomain.new(response.data, options)
     end
 
@@ -232,7 +234,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: domain must be an String") if params[:domain] and !params[:domain].is_a?(String)
       raise MissingParameterError.new("Parameter missing: domain") unless params[:domain]
 
-      response, options = Api.send_request("/custom_domains", :post, params, options)
+      response, options = Api.send_request("/custom_domains", :post, params, options) { |reply| reply.require_object("CustomDomain") }
       CustomDomain.new(response.data, options)
     end
 
@@ -254,7 +256,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: domain must be an String") if params[:domain] and !params[:domain].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/custom_domains/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/custom_domains/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("CustomDomain") }
       CustomDomain.new(response.data, options)
     end
 

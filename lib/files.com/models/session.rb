@@ -90,9 +90,9 @@ module Files
         raise NotImplementedError.new("The Session object doesn't support updates.")
       else
         new_obj = Session.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -107,7 +107,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: otp must be an String") if params[:otp] and !params[:otp].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partial_session_id must be an String") if params[:partial_session_id] and !params[:partial_session_id].is_a?(String)
 
-      response, options = Api.send_request("/sessions", :post, params, options)
+      response, options = Api.send_request("/sessions", :post, params, options) { |reply| reply.require_object("Session") }
       Session.new(response.data, options)
     end
 

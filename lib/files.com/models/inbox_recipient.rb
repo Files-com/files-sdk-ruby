@@ -77,9 +77,9 @@ module Files
         raise NotImplementedError.new("The InboxRecipient object doesn't support updates.")
       else
         new_obj = InboxRecipient.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -97,8 +97,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: inbox_id") unless params[:inbox_id]
 
-      List.new(InboxRecipient, params) do
-        Api.send_request("/inbox_recipients", :get, params, options)
+      List.new(InboxRecipient, params) do |page_params, &check_page|
+        Api.send_request("/inbox_recipients", :get, page_params, options, &check_page)
       end
     end
 
@@ -122,7 +122,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: inbox_id") unless params[:inbox_id]
       raise MissingParameterError.new("Parameter missing: recipient") unless params[:recipient]
 
-      response, options = Api.send_request("/inbox_recipients", :post, params, options)
+      response, options = Api.send_request("/inbox_recipients", :post, params, options) { |reply| reply.require_object("InboxRecipient") }
       InboxRecipient.new(response.data, options)
     end
   end

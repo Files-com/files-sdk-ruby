@@ -149,9 +149,9 @@ module Files
         raise NotImplementedError.new("The ActionNotificationExport object doesn't support updates.")
       else
         new_obj = ActionNotificationExport.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -163,7 +163,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/action_notification_exports/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/action_notification_exports/#{params[:id]}", :get, params, options) { |reply| reply.require_object("ActionNotificationExport") }
       ActionNotificationExport.new(response.data, options)
     end
 
@@ -195,7 +195,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: query_path must be an String") if params[:query_path] and !params[:query_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_folder must be an String") if params[:query_folder] and !params[:query_folder].is_a?(String)
 
-      response, options = Api.send_request("/action_notification_exports", :post, params, options)
+      response, options = Api.send_request("/action_notification_exports", :post, params, options) { |reply| reply.require_object("ActionNotificationExport") }
       ActionNotificationExport.new(response.data, options)
     end
   end

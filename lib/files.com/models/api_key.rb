@@ -190,7 +190,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/api_keys/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/api_keys/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("ApiKey") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -210,12 +212,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = ApiKey.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -240,8 +242,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
 
-      List.new(ApiKey, params) do
-        Api.send_request("/api_keys", :get, params, options)
+      List.new(ApiKey, params) do |page_params, &check_page|
+        Api.send_request("/api_keys", :get, page_params, options, &check_page)
       end
     end
 
@@ -250,7 +252,7 @@ module Files
     end
 
     def self.find_current(params = {}, options = {})
-      response, options = Api.send_request("/api_key", :get, params, options)
+      response, options = Api.send_request("/api_key", :get, params, options) { |reply| reply.require_object("ApiKey") }
       ApiKey.new(response.data, options)
     end
 
@@ -262,7 +264,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/api_keys/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/api_keys/#{params[:id]}", :get, params, options) { |reply| reply.require_object("ApiKey") }
       ApiKey.new(response.data, options)
     end
 
@@ -289,7 +291,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
-      response, options = Api.send_request("/api_keys", :post, params, options)
+      response, options = Api.send_request("/api_keys", :post, params, options) { |reply| reply.require_object("ApiKey") }
       ApiKey.new(response.data, options)
     end
 
@@ -302,7 +304,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if params[:permission_set] and !params[:permission_set].is_a?(String)
 
-      response, options = Api.send_request("/api_key", :patch, params, options)
+      response, options = Api.send_request("/api_key", :patch, params, options) { |reply| reply.require_object("ApiKey") }
       ApiKey.new(response.data, options)
     end
 
@@ -319,7 +321,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/api_keys/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/api_keys/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("ApiKey") }
       ApiKey.new(response.data, options)
     end
 

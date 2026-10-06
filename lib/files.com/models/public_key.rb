@@ -187,7 +187,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
       raise MissingParameterError.new("Parameter missing: title") unless params[:title]
 
-      Api.send_request("/public_keys/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/public_keys/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("PublicKey") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -207,12 +209,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = PublicKey.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -237,8 +239,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
 
-      List.new(PublicKey, params) do
-        Api.send_request("/public_keys", :get, params, options)
+      List.new(PublicKey, params) do |page_params, &check_page|
+        Api.send_request("/public_keys", :get, page_params, options, &check_page)
       end
     end
 
@@ -254,7 +256,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/public_keys/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/public_keys/#{params[:id]}", :get, params, options) { |reply| reply.require_object("PublicKey") }
       PublicKey.new(response.data, options)
     end
 
@@ -279,7 +281,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: generate_length must be an Integer") if params[:generate_length] and !params[:generate_length].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: title") unless params[:title]
 
-      response, options = Api.send_request("/public_keys", :post, params, options)
+      response, options = Api.send_request("/public_keys", :post, params, options) { |reply| reply.require_object("PublicKey") }
       PublicKey.new(response.data, options)
     end
 
@@ -293,7 +295,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
       raise MissingParameterError.new("Parameter missing: title") unless params[:title]
 
-      response, options = Api.send_request("/public_keys/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/public_keys/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("PublicKey") }
       PublicKey.new(response.data, options)
     end
 

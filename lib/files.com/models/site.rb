@@ -1010,12 +1010,12 @@ module Files
     end
 
     def self.get(params = {}, options = {})
-      response, options = Api.send_request("/site", :get, params, options)
+      response, options = Api.send_request("/site", :get, params, options) { |reply| reply.require_object("Site") }
       Site.new(response.data, options)
     end
 
     def self.get_usage(params = {}, options = {})
-      response, options = Api.send_request("/site/usage", :get, params, options)
+      response, options = Api.send_request("/site/usage", :get, params, options) { |reply| reply.require_object("UsageSnapshot") }
       UsageSnapshot.new(response.data, options)
     end
 
@@ -1293,7 +1293,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ldap_password_change_confirmation must be an String") if params[:ldap_password_change_confirmation] and !params[:ldap_password_change_confirmation].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_password must be an String") if params[:smtp_password] and !params[:smtp_password].is_a?(String)
 
-      response, options = Api.send_request("/site", :patch, params, options)
+      response, options = Api.send_request("/site", :patch, params, options) { |reply| reply.require_object("Site") }
       Site.new(response.data, options)
     end
   end

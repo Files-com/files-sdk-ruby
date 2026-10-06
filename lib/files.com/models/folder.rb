@@ -512,8 +512,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: modified_at_datetime must be an String") if params[:modified_at_datetime] and !params[:modified_at_datetime].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      List.new(File, params) do
-        Api.send_request("/folders/#{params[:path]}", :get, params, options)
+      List.new(File, params) do |page_params, &check_page|
+        Api.send_request("/folders/#{page_params[:path]}", :get, page_params, options, &check_page)
       end
     end
 
@@ -528,7 +528,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params[:provided_mtime] and !params[:provided_mtime].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/folders/#{params[:path]}", :post, params, options)
+      response, options = Api.send_request("/folders/#{params[:path]}", :post, params, options) { |reply| reply.require_object("File") }
       File.new(response.data, options)
     end
   end

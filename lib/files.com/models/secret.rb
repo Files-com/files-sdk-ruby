@@ -97,7 +97,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: secret_type must be an String") if params[:secret_type] and !params[:secret_type].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/secrets/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/secrets/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Secret") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -117,12 +119,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = Secret.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -139,8 +141,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
 
-      List.new(Secret, params) do
-        Api.send_request("/secrets", :get, params, options)
+      List.new(Secret, params) do |page_params, &check_page|
+        Api.send_request("/secrets", :get, page_params, options, &check_page)
       end
     end
 
@@ -156,7 +158,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/secrets/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/secrets/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Secret") }
       Secret.new(response.data, options)
     end
 
@@ -179,7 +181,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
       raise MissingParameterError.new("Parameter missing: secret_type") unless params[:secret_type]
 
-      response, options = Api.send_request("/secrets", :post, params, options)
+      response, options = Api.send_request("/secrets", :post, params, options) { |reply| reply.require_object("Secret") }
       Secret.new(response.data, options)
     end
 
@@ -198,7 +200,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: metadata must be an Hash") if params[:metadata] and !params[:metadata].is_a?(Hash)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/secrets/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/secrets/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Secret") }
       Secret.new(response.data, options)
     end
 

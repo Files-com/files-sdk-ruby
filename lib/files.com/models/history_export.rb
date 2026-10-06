@@ -257,9 +257,9 @@ module Files
         raise NotImplementedError.new("The HistoryExport object doesn't support updates.")
       else
         new_obj = HistoryExport.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -271,7 +271,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/history_exports/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/history_exports/#{params[:id]}", :get, params, options) { |reply| reply.require_object("HistoryExport") }
       HistoryExport.new(response.data, options)
     end
 
@@ -326,7 +326,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: query_target_platform must be an String") if params[:query_target_platform] and !params[:query_target_platform].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_target_permission_set must be an String") if params[:query_target_permission_set] and !params[:query_target_permission_set].is_a?(String)
 
-      response, options = Api.send_request("/history_exports", :post, params, options)
+      response, options = Api.send_request("/history_exports", :post, params, options) { |reply| reply.require_object("HistoryExport") }
       HistoryExport.new(response.data, options)
     end
   end

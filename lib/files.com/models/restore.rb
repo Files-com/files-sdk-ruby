@@ -212,9 +212,9 @@ module Files
         raise NotImplementedError.new("The Restore object doesn't support updates.")
       else
         new_obj = Restore.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -229,8 +229,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
-      List.new(Restore, params) do
-        Api.send_request("/restores", :get, params, options)
+      List.new(Restore, params) do |page_params, &check_page|
+        Api.send_request("/restores", :get, page_params, options, &check_page)
       end
     end
 
@@ -253,7 +253,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: earliest_date") unless params[:earliest_date]
 
-      response, options = Api.send_request("/restores", :post, params, options)
+      response, options = Api.send_request("/restores", :post, params, options) { |reply| reply.require_object("Restore") }
       Restore.new(response.data, options)
     end
   end

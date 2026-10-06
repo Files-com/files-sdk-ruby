@@ -140,7 +140,7 @@ module Files
       begin
         resp = Response.from_faraday_response(http_resp)
       rescue JSON::ParserError
-        raise general_api_error(http_resp.status, http_resp.body)
+        raise unreadable_response_error(http_resp), cause: nil
       end
 
       @last_response = resp
@@ -164,27 +164,91 @@ module Files
 
     def stream_download(uri, io, range)
       if conn.adapter == Faraday::Adapter::NetHttp
-        uri = URI(uri)
-        Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-          request = Net::HTTP::Get.new uri
-          request["RANGE"] = "bytes=#{range[0]}-#{range[1]}" unless range.empty?
-          http.request request do |response|
-            io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
-            response.read_body do |chunk|
-              response.error! if response.code.to_i >= 300
-              io.ready! if io.respond_to?(:ready!)
-              io << chunk
-            rescue StandardError => e
-              io.do_set_error(e) if io.respond_to?(:do_set_error)
-              io.close
-            end
-          end
-        end
+        stream_download_with_net_http(URI(uri), io, range)
       else
         response = remote_request(:get, uri)
         io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
         io.write(response.body)
       end
+    end
+
+    # Writes the body of a signed transfer URL to io as it arrives.
+    #
+    # Any failure while the response is open is raised only after Net::HTTP has
+    # let go of the connection. The Net::HTTP bundled with Ruby 3.0 retries a GET
+    # when an IOError or EOFError escapes the response block, which would write
+    # the body into io a second time.
+    private def stream_download_with_net_http(uri, io, range)
+      request = Net::HTTP::Get.new(uri)
+      request["Range"] = "bytes=#{range[0]}-#{range[1]}" unless range.empty?
+
+      failure = nil
+      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+        http.request(request) do |response|
+          write_download_body(response, io)
+        rescue StandardError => e
+          failure = e
+          break
+        end
+      end
+      raise failure if failure
+    end
+
+    private def write_download_body(response, io)
+      reject_unsuccessful_download(response, io)
+      io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
+
+      expected_bytes = expected_download_bytes(response)
+      received_bytes = 0
+      response.read_body do |chunk|
+        io.ready! if io.respond_to?(:ready!)
+        write_download_chunk(io, chunk)
+        received_bytes += chunk.bytesize
+      end
+      return if expected_bytes.nil? || received_bytes == expected_bytes
+
+      raise EOFError, "Transfer response ended after #{received_bytes} of #{expected_bytes} bytes"
+    end
+
+    # How many bytes read_body must yield, when the response says. Content-Length
+    # counts bytes on the wire, which read_body yields unchanged unless the body is
+    # chunked or Net::HTTP decompresses it. Net::HTTP quietly accepts a
+    # fixed-length body that stops short, and the version bundled with Ruby 3.0
+    # has no ignore_eof= to change that, so write_download_body counts the bytes.
+    private def expected_download_bytes(response)
+      response.content_length unless response.chunked? || decompressed_by_net_http?(response)
+    end
+
+    # Net::HTTP decompresses a gzip or deflate body as it reads it, but never a
+    # range. Ask before reading: decompressing removes the Content-Encoding.
+    private def decompressed_by_net_http?(response)
+      response.decode_content && !response.key?("content-range") &&
+      %w[gzip x-gzip deflate].include?(response["content-encoding"]&.downcase)
+    end
+
+    private def reject_unsuccessful_download(response, io)
+      response.error! unless response.is_a?(Net::HTTPSuccess)
+    rescue Net::HTTPExceptions => e
+      close_destination_after_failure(io, e)
+      raise
+    end
+
+    private def write_download_chunk(io, chunk)
+      io << chunk
+    rescue StandardError => e
+      close_destination_after_failure(io, e)
+      raise
+    end
+
+    # A refused transfer or a failing destination closes the destination, as it
+    # always has. Connection failures and short bodies leave it open so the caller
+    # can retry. Pipe readers learn why the download failed before the pipe
+    # closes, and a failure to close never replaces the download's own error.
+    private def close_destination_after_failure(io, failure)
+      io.do_set_error(failure) if io.respond_to?(:do_set_error)
+      io.close
+    rescue StandardError => e
+      Util.log_debug("Download destination close error", error_type: e.class, error_message: e.message)
     end
 
     def cursor
@@ -245,8 +309,8 @@ module Files
 
         case e
         when Faraday::ClientError, Faraday::ServerError
-          if e.response and has_error_type?(e)
-            handle_error_response(e.response, error_context, is_transfer: is_transfer)
+          if (error_response = api_error_response(e.response))
+            handle_error_response(error_response, error_context, is_transfer: is_transfer)
           else
             handle_network_error(e, error_context, num_retries, base_url, is_transfer: is_transfer)
           end
@@ -260,8 +324,13 @@ module Files
       resp
     end
 
-    private def general_api_error(status, body)
-      APIError.new("Unexpected response object from API: #{body.inspect} (HTTP response code was #{status})", http_status: status, http_body: body)
+    # A successful response whose body is not JSON gave the SDK no usable
+    # answer. The body stays available as http_body but is left out of the
+    # message, and the parser error, which quotes it, is not kept as the cause.
+    private def unreadable_response_error(http_resp)
+      APIConnectionError.new("The Files.com API returned a response that is not valid JSON (HTTP response code was #{http_resp.status})",
+        http_status: http_resp.status, http_headers: http_resp.headers, http_body: http_resp.body
+      )
     end
 
     private def format_app_info(info)
@@ -271,21 +340,21 @@ module Files
       str
     end
 
-    private def handle_error_response(http_resp, context, is_transfer: false)
-      begin
-        resp = Response.from_faraday_hash(http_resp)
-        error_data = resp.data[:error] || resp.data[:errors]
-        error_data = error_data.first if error_data.is_a?(Array)
-        error_data = { message: error_data } if error_data.is_a?(String)
+    # A failed response carrying a Files.com error object: a JSON object with an
+    # error message or type. Any other body, JSON or not, is not an answer the
+    # SDK can use.
+    private def api_error_response(http_resp)
+      return unless http_resp
 
-        raise Error, "Unknown error" unless error_data
-      rescue JSON::ParserError, Error
-        raise APIError.new("Transfer request failed", http_status: http_resp[:status]), cause: nil if is_transfer
+      resp = Response.from_faraday_hash(http_resp)
+      error_object = resp.data
+      resp if error_object.is_a?(Hash) && (error_object[:error] || error_object[:errors] || error_object[:type])
+    rescue JSON::ParserError
+      nil
+    end
 
-        raise general_api_error(http_resp[:status], http_resp[:body])
-      end
-
-      error = specific_api_error(resp, error_data, context, is_transfer: is_transfer)
+    private def handle_error_response(resp, context, is_transfer: false)
+      error = specific_api_error(resp, context, is_transfer: is_transfer)
 
       error.response = resp
       raise error, cause: nil if is_transfer
@@ -293,28 +362,91 @@ module Files
       raise error
     end
 
-    private def specific_api_error(resp, error_data, _context, is_transfer: false)
-      message = is_transfer ? "Transfer request failed" : error_data[:message]
+    private def specific_api_error(resp, _context, is_transfer: false)
+      error_data = error_details(resp.data)
+      message = if is_transfer
+                  "Transfer request failed"
+                elsif error_data[:message].is_a?(String)
+                  without_url_credentials(error_data[:message])
+                else
+                  "The Files.com API returned an error without a message (HTTP response code was #{resp.http_status})"
+                end
       Util.log_error("API error", status: resp.http_status, error_message: message)
 
-      opts = {
+      api_error_class(resp.data[:type]).new(message,
         http_body: resp.http_body,
         http_headers: resp.http_headers,
         http_status: resp.http_status,
         json_body: resp.data,
-        code: error_data[:code] || resp.http_status,
-      }
+        code: error_data[:code] || resp.http_status
+      )
+    end
 
-      return APIError.new(message, **opts) unless resp&.data&.dig(:type)
+    # Where a scheme-qualified URL starts. A scheme begins at the first letter of
+    # a run of scheme characters, and only a run's first character can start
+    # one, so each run is read a bounded number of times however long it is.
+    URL_START = /(?<![a-z0-9+.-])[0-9+.-]*+[a-z][a-z0-9+.-]*+:\/\//i
+    private_constant :URL_START
 
-      begin
-        error_type = resp.data[:type].split("/").last
-        error_class_name = "#{error_type.split("-").map(&:capitalize).join}Error"
-        error_class = Files.const_get(error_class_name)
-        error_class.new(message, **opts)
-      rescue NameError
-        APIError.new(message, **opts)
+    # A URL in server text, with the apostrophe that opens it if it is quoted.
+    # Before its query or fragment, a URL ends at whitespace, a character that
+    # cannot appear in a URL, or where the next URL starts, so each URL in a
+    # list is redacted on its own. Apostrophes can appear in a URL, so they stay
+    # part of it. A query or fragment runs to the end of the text around it.
+    URL_IN_TEXT = /(?<opening>'?)(?<url>#{URL_START}(?:(?!'?#{URL_START})[^\s"<>?#])*+(?:[?#][^\s"<>]*)?)/i
+    private_constant :URL_IN_TEXT
+
+    # Server text can quote a URL whose user info, query or fragment is a
+    # credential, such as a signed transfer URL. Error messages and logs below
+    # DEBUG keep where the URL points and drop those parts; the raw response
+    # fields keep them.
+    private def without_url_credentials(text)
+      text.gsub(URL_IN_TEXT) do
+        opening, url = Regexp.last_match.captures
+        closing = opening.empty? ? "" : closing_quote(url)
+        "#{opening}#{without_credentials(url.delete_suffix(closing))}#{closing}"
       end
+    end
+
+    # The apostrophe that closes a URL quoted with apostrophes, with any
+    # punctuation after it, or "" when the URL does not end that way.
+    private def closing_quote(url)
+      quote = url.rindex("'")
+      quote && url[quote..].match?(/\A'[.,;:!?)]*\z/) ? url[quote..] : ""
+    end
+
+    # The authority, which may be empty, ends at the first "/", "?" or "#";
+    # only an "@" inside it marks user info.
+    private def without_credentials(url)
+      scheme, _, rest = url.partition("://")
+      authority, separator, path = rest.partition(/[\/?#]/)
+      authority = "[redacted]@#{authority.rpartition('@').last}" if authority.include?("@")
+      path = "#{separator}#{path}"
+      credentials_at = path.index(/[?#]/)
+      path = "#{path[0...credentials_at]}?[redacted]" if credentials_at
+      "#{scheme}://#{authority}#{path}"
+    end
+
+    # The message and code in an error object's "error" or "errors" field, which
+    # holds a message, an object with a message and code, or a list of either.
+    private def error_details(error_object)
+      details = error_object[:error] || error_object[:errors]
+      details = details.first if details.is_a?(Array)
+      details = { message: details } if details.is_a?(String)
+      details.is_a?(Hash) ? details : {}
+    end
+
+    # The APIError subclass an error type names, such as NotFoundError for
+    # "not-found" or LockoutRegionMismatchError for
+    # "not-authenticated/lockout-region-mismatch". Any other type is an APIError.
+    private def api_error_class(type)
+      return APIError unless type.is_a?(String)
+
+      name = type.split("/").last.to_s.split("-").map(&:capitalize).join
+      error_class = Files.const_get("#{name}Error", false)
+      error_class.is_a?(Class) && error_class < APIError ? error_class : APIError
+    rescue NameError
+      APIError
     end
 
     private def handle_network_error(error, _context, num_retries, base_url = nil, is_transfer: false)
@@ -369,12 +501,6 @@ module Files
       end
 
       headers
-    end
-
-    private def has_error_type?(e)
-      Response.from_faraday_hash(e.response).data&.dig(:type) ? true : false
-    rescue JSON::ParserError, Error
-      false
     end
 
     private def log_request(context, num_retries, no_body: false)

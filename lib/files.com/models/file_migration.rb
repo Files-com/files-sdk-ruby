@@ -67,7 +67,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/file_migrations/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/file_migrations/#{params[:id]}", :get, params, options) { |reply| reply.require_object("FileMigration") }
       FileMigration.new(response.data, options)
     end
 

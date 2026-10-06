@@ -167,8 +167,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: automation_id must be an Integer") if params[:automation_id] and !params[:automation_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: automation_id") unless params[:automation_id]
 
-      List.new(AutomationRun, params) do
-        Api.send_request("/automation_runs", :get, params, options)
+      List.new(AutomationRun, params) do |page_params, &check_page|
+        Api.send_request("/automation_runs", :get, page_params, options, &check_page)
       end
     end
 
@@ -184,7 +184,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/automation_runs/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/automation_runs/#{params[:id]}", :get, params, options) { |reply| reply.require_object("AutomationRun") }
       AutomationRun.new(response.data, options)
     end
 
@@ -203,7 +203,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
       raise MissingParameterError.new("Parameter missing: node_id") unless params[:node_id]
 
-      response, options = Api.send_request("/automation_runs/#{params[:id]}/node", :get, params, options)
+      response, options = Api.send_request("/automation_runs/#{params[:id]}/node", :get, params, options) { |reply| reply.require_object("AutomationExecutionNode") }
       AutomationExecutionNode.new(response.data, options)
     end
 
@@ -214,7 +214,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/automation_runs/#{params[:id]}/cancel", :post, params, options)
+      response, options = Api.send_request("/automation_runs/#{params[:id]}/cancel", :post, params, options) { |reply| reply.require_object("AutomationRun") }
       AutomationRun.new(response.data, options)
     end
 
@@ -230,7 +230,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
       raise MissingParameterError.new("Parameter missing: node_id") unless params[:node_id]
 
-      response, options = Api.send_request("/automation_runs/#{params[:id]}/rerun", :post, params, options)
+      response, options = Api.send_request("/automation_runs/#{params[:id]}/rerun", :post, params, options) { |reply| reply.require_object("AutomationRun") }
       AutomationRun.new(response.data, options)
     end
   end

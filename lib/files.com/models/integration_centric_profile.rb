@@ -69,7 +69,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: expected_remote_servers must be an Array") if params[:expected_remote_servers] and !params[:expected_remote_servers].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/integration_centric_profiles/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/integration_centric_profiles/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("IntegrationCentricProfile") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -89,12 +91,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = IntegrationCentricProfile.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -109,8 +111,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
-      List.new(IntegrationCentricProfile, params) do
-        Api.send_request("/integration_centric_profiles", :get, params, options)
+      List.new(IntegrationCentricProfile, params) do |page_params, &check_page|
+        Api.send_request("/integration_centric_profiles", :get, page_params, options, &check_page)
       end
     end
 
@@ -126,7 +128,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/integration_centric_profiles/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/integration_centric_profiles/#{params[:id]}", :get, params, options) { |reply| reply.require_object("IntegrationCentricProfile") }
       IntegrationCentricProfile.new(response.data, options)
     end
 
@@ -146,7 +148,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
       raise MissingParameterError.new("Parameter missing: expected_remote_servers") unless params[:expected_remote_servers]
 
-      response, options = Api.send_request("/integration_centric_profiles", :post, params, options)
+      response, options = Api.send_request("/integration_centric_profiles", :post, params, options) { |reply| reply.require_object("IntegrationCentricProfile") }
       IntegrationCentricProfile.new(response.data, options)
     end
 
@@ -164,7 +166,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: expected_remote_servers must be an Array") if params[:expected_remote_servers] and !params[:expected_remote_servers].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/integration_centric_profiles/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/integration_centric_profiles/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("IntegrationCentricProfile") }
       IntegrationCentricProfile.new(response.data, options)
     end
 

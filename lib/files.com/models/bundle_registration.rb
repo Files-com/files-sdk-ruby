@@ -92,8 +92,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
 
-      List.new(BundleRegistration, params) do
-        Api.send_request("/bundle_registrations", :get, params, options)
+      List.new(BundleRegistration, params) do |page_params, &check_page|
+        Api.send_request("/bundle_registrations", :get, page_params, options, &check_page)
       end
     end
 

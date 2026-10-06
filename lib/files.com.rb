@@ -7,6 +7,7 @@ require "json"
 require "logger"
 require "openssl"
 require "rbconfig"
+require "rbconfig/sizeof"
 require "securerandom"
 require "set"
 require "socket"
@@ -201,7 +202,8 @@ module Files
   @read_timeout = 60
 
   class << self
-    attr_accessor :api_key, :base_url, :default_headers, :initial_network_retry_delay, :language, :max_network_retry_delay, :open_timeout, :read_timeout, :proxy, :session_id, :workspace_id
+    attr_accessor :api_key, :base_url, :default_headers, :initial_network_retry_delay, :language, :max_network_retry_delay, :proxy, :session_id, :workspace_id
+    attr_reader :open_timeout, :read_timeout
   end
 
   # map to the same values as the standard library's logger
@@ -257,6 +259,26 @@ module Files
 
   def self.max_network_retries=(val)
     @max_network_retries = val.to_i
+  end
+
+  # Net::HTTP hands each timeout to Ruby to wait on. CRuby converts it to the
+  # platform's time_t and raises RangeError for more seconds than that holds,
+  # partway through a request it may already have sent. JRuby takes any number.
+  MAX_TIMEOUT = RUBY_PLATFORM == "java" ? Float::INFINITY : (2**((8 * RbConfig::SIZEOF["time_t"]) - 1)) - 1
+  private_constant :MAX_TIMEOUT
+
+  def self.open_timeout=(seconds)
+    @open_timeout = checked_timeout("open_timeout", seconds)
+  end
+
+  def self.read_timeout=(seconds)
+    @read_timeout = checked_timeout("read_timeout", seconds)
+  end
+
+  private_class_method def self.checked_timeout(name, seconds)
+    return seconds if seconds.nil? || (seconds.is_a?(Numeric) && seconds.real? && seconds >= 0 && seconds <= MAX_TIMEOUT)
+
+    raise ArgumentError, "#{name} should be nil or a number of seconds from 0 to #{MAX_TIMEOUT}"
   end
 
   def self.session=(session)

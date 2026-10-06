@@ -36,8 +36,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
 
-      List.new(DnsRecord, params) do
-        Api.send_request("/dns_records", :get, params, options)
+      List.new(DnsRecord, params) do |page_params, &check_page|
+        Api.send_request("/dns_records", :get, page_params, options, &check_page)
       end
     end
 

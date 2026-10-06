@@ -273,7 +273,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/notifications/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/notifications/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Notification") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -293,12 +295,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = Notification.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -320,8 +322,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_id must be an String") if params[:group_id] and !params[:group_id].is_a?(String)
 
-      List.new(Notification, params) do
-        Api.send_request("/notifications", :get, params, options)
+      List.new(Notification, params) do |page_params, &check_page|
+        Api.send_request("/notifications", :get, page_params, options, &check_page)
       end
     end
 
@@ -337,7 +339,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/notifications/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/notifications/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Notification") }
       Notification.new(response.data, options)
     end
 
@@ -380,7 +382,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
 
-      response, options = Api.send_request("/notifications", :post, params, options)
+      response, options = Api.send_request("/notifications", :post, params, options) { |reply| reply.require_object("Notification") }
       Notification.new(response.data, options)
     end
 
@@ -413,7 +415,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/notifications/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/notifications/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Notification") }
       Notification.new(response.data, options)
     end
 

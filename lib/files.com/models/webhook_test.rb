@@ -149,9 +149,9 @@ module Files
         raise NotImplementedError.new("The WebhookTest object doesn't support updates.")
       else
         new_obj = WebhookTest.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -177,7 +177,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
       raise MissingParameterError.new("Parameter missing: url") unless params[:url]
 
-      response, options = Api.send_request("/webhook_tests", :post, params, options)
+      response, options = Api.send_request("/webhook_tests", :post, params, options) { |reply| reply.require_object("WebhookTest") }
       WebhookTest.new(response.data, options)
     end
   end

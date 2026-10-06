@@ -78,7 +78,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: group_id") unless params[:group_id]
       raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
 
-      Api.send_request("/group_users/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/group_users/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("GroupUser") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     # Parameters:
@@ -105,12 +107,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = GroupUser.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -125,8 +127,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
 
-      List.new(GroupUser, params) do
-        Api.send_request("/group_users", :get, params, options)
+      List.new(GroupUser, params) do |page_params, &check_page|
+        Api.send_request("/group_users", :get, page_params, options, &check_page)
       end
     end
 
@@ -144,7 +146,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: group_id") unless params[:group_id]
       raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
 
-      response, options = Api.send_request("/group_users", :post, params, options)
+      response, options = Api.send_request("/group_users", :post, params, options) { |reply| reply.require_object("GroupUser") }
       GroupUser.new(response.data, options)
     end
 
@@ -162,7 +164,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: group_id") unless params[:group_id]
       raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
 
-      response, options = Api.send_request("/group_users/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/group_users/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("GroupUser") }
       GroupUser.new(response.data, options)
     end
 

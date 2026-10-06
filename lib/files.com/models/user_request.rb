@@ -74,9 +74,9 @@ module Files
         raise NotImplementedError.new("The UserRequest object doesn't support updates.")
       else
         new_obj = UserRequest.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -87,8 +87,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
 
-      List.new(UserRequest, params) do
-        Api.send_request("/user_requests", :get, params, options)
+      List.new(UserRequest, params) do |page_params, &check_page|
+        Api.send_request("/user_requests", :get, page_params, options, &check_page)
       end
     end
 
@@ -104,7 +104,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/user_requests/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/user_requests/#{params[:id]}", :get, params, options) { |reply| reply.require_object("UserRequest") }
       UserRequest.new(response.data, options)
     end
 
@@ -126,7 +126,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: email") unless params[:email]
       raise MissingParameterError.new("Parameter missing: details") unless params[:details]
 
-      response, options = Api.send_request("/user_requests", :post, params, options)
+      response, options = Api.send_request("/user_requests", :post, params, options) { |reply| reply.require_object("UserRequest") }
       UserRequest.new(response.data, options)
     end
 

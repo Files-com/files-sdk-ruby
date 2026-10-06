@@ -174,7 +174,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/user_lifecycle_rules/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/user_lifecycle_rules/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("UserLifecycleRule") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -194,12 +196,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = UserLifecycleRule.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -214,8 +216,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
-      List.new(UserLifecycleRule, params) do
-        Api.send_request("/user_lifecycle_rules", :get, params, options)
+      List.new(UserLifecycleRule, params) do |page_params, &check_page|
+        Api.send_request("/user_lifecycle_rules", :get, page_params, options, &check_page)
       end
     end
 
@@ -231,7 +233,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/user_lifecycle_rules/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/user_lifecycle_rules/#{params[:id]}", :get, params, options) { |reply| reply.require_object("UserLifecycleRule") }
       UserLifecycleRule.new(response.data, options)
     end
 
@@ -264,7 +266,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_tag must be an String") if params[:user_tag] and !params[:user_tag].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
 
-      response, options = Api.send_request("/user_lifecycle_rules", :post, params, options)
+      response, options = Api.send_request("/user_lifecycle_rules", :post, params, options) { |reply| reply.require_object("UserLifecycleRule") }
       UserLifecycleRule.new(response.data, options)
     end
 
@@ -297,7 +299,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/user_lifecycle_rules/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/user_lifecycle_rules/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("UserLifecycleRule") }
       UserLifecycleRule.new(response.data, options)
     end
 

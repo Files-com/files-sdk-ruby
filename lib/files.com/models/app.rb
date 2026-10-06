@@ -127,8 +127,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
 
-      List.new(App, params) do
-        Api.send_request("/apps", :get, params, options)
+      List.new(App, params) do |page_params, &check_page|
+        Api.send_request("/apps", :get, page_params, options, &check_page)
       end
     end
 

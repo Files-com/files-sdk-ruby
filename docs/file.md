@@ -3,6 +3,43 @@
 The Files::File object emulates a Ruby File object and can be used in
 may places where a Ruby File object can be used.
 
+## Downloads
+
+`download_file(local_path)`, `download_content(io)` and `read_io` stream a
+file's content without holding all of it in memory. When the SDK can tell that
+a download did not finish, it raises instead of returning part of the file:
+
+* A transfer the server refuses raises the `Net::HTTP` error for its status,
+  for example `Net::HTTPClientException` with the message `403 "Forbidden"`.
+  The error's response has no readable body, because the SDK stops before
+  reading it.
+* A body that stops short of its `Content-Length`, or a chunked body that
+  stops before its last chunk, raises `EOFError`. A lost connection raises its
+  own error, such as `Errno::ECONNRESET`.
+* An error writing to the IO given to `download_content` is raised unchanged.
+
+Two kinds of incomplete body cannot be detected. A body sent with neither a
+`Content-Length` nor chunked encoding ends when the connection closes, so it
+has no expected length. A gzip or deflate body that Net::HTTP decompresses has
+a `Content-Length` that counts compressed bytes, so a decompressed body framed
+only by `Content-Length` is not checked. Chunked bodies and ranges are checked
+whatever their encoding.
+
+When a download raises, whatever arrived before the failure has already been
+written: `download_file` can leave a partial file behind, and the IO given to
+`download_content` holds the partial content. `download_content` leaves that
+IO open, except that it closes the IO when the server refuses the transfer or
+writing to the IO fails.
+
+`read_io` returns a pipe that fills as the download proceeds. `read`, `gets`,
+`readline`, `readpartial`, `each_line`, `each` and `eof?` raise a download
+failure no later than they reach the end of the data. Other reads, such as
+`getbyte` or `IO.copy_stream`, see an ordinary end of file, so check the
+download by closing the pipe: `close` always releases it, and then raises a
+failure that no read has raised yet, unless another exception is already
+propagating. `Files::File#read`, `#gets`, `#readline`, `#readpartial` and
+`#each_line` read from `read_io` and raise the same way.
+
 ## Example File Object
 
 ```

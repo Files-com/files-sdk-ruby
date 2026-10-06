@@ -164,8 +164,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      List.new(Lock, params) do
-        Api.send_request("/locks/#{params[:path]}", :get, params, options)
+      List.new(Lock, params) do |page_params, &check_page|
+        Api.send_request("/locks/#{page_params[:path]}", :get, page_params, options, &check_page)
       end
     end
 
@@ -188,7 +188,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params[:timeout] and !params[:timeout].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/locks/#{params[:path]}", :post, params, options)
+      response, options = Api.send_request("/locks/#{params[:path]}", :post, params, options) { |reply| reply.require_object("Lock") }
       Lock.new(response.data, options)
     end
 

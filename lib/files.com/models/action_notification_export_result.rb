@@ -71,8 +71,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: action_notification_export_id must be an Integer") if params[:action_notification_export_id] and !params[:action_notification_export_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: action_notification_export_id") unless params[:action_notification_export_id]
 
-      List.new(ActionNotificationExportResult, params) do
-        Api.send_request("/action_notification_export_results", :get, params, options)
+      List.new(ActionNotificationExportResult, params) do |page_params, &check_page|
+        Api.send_request("/action_notification_export_results", :get, page_params, options, &check_page)
       end
     end
 

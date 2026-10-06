@@ -133,8 +133,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
 
-      List.new(ApiRequestLog, params) do
-        Api.send_request("/api_request_logs", :get, params, options)
+      List.new(ApiRequestLog, params) do |page_params, &check_page|
+        Api.send_request("/api_request_logs", :get, page_params, options, &check_page)
       end
     end
 

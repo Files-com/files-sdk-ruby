@@ -64,9 +64,9 @@ module Files
         raise NotImplementedError.new("The ExternalEvent object doesn't support updates.")
       else
         new_obj = ExternalEvent.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -89,8 +89,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
 
-      List.new(ExternalEvent, params) do
-        Api.send_request("/external_events", :get, params, options)
+      List.new(ExternalEvent, params) do |page_params, &check_page|
+        Api.send_request("/external_events", :get, page_params, options, &check_page)
       end
     end
 
@@ -106,7 +106,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/external_events/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/external_events/#{params[:id]}", :get, params, options) { |reply| reply.require_object("ExternalEvent") }
       ExternalEvent.new(response.data, options)
     end
 
@@ -123,7 +123,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: status") unless params[:status]
       raise MissingParameterError.new("Parameter missing: body") unless params[:body]
 
-      response, options = Api.send_request("/external_events", :post, params, options)
+      response, options = Api.send_request("/external_events", :post, params, options) { |reply| reply.require_object("ExternalEvent") }
       ExternalEvent.new(response.data, options)
     end
   end

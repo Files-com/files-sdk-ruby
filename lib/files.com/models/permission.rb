@@ -146,9 +146,9 @@ module Files
         raise NotImplementedError.new("The Permission object doesn't support updates.")
       else
         new_obj = Permission.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -174,8 +174,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: partner_id must be an String") if params[:partner_id] and !params[:partner_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_id must be an String") if params[:user_id] and !params[:user_id].is_a?(String)
 
-      List.new(Permission, params) do
-        Api.send_request("/permissions", :get, params, options)
+      List.new(Permission, params) do |page_params, &check_page|
+        Api.send_request("/permissions", :get, page_params, options, &check_page)
       end
     end
 
@@ -206,7 +206,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: site_id must be an Integer") if params[:site_id] and !params[:site_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/permissions", :post, params, options)
+      response, options = Api.send_request("/permissions", :post, params, options) { |reply| reply.require_object("Permission") }
       Permission.new(response.data, options)
     end
 

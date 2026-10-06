@@ -188,8 +188,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
 
-      List.new(As2OutgoingMessage, params) do
-        Api.send_request("/as2_outgoing_messages", :get, params, options)
+      List.new(As2OutgoingMessage, params) do |page_params, &check_page|
+        Api.send_request("/as2_outgoing_messages", :get, page_params, options, &check_page)
       end
     end
 

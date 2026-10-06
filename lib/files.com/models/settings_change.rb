@@ -55,8 +55,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
-      List.new(SettingsChange, params) do
-        Api.send_request("/settings_changes", :get, params, options)
+      List.new(SettingsChange, params) do |page_params, &check_page|
+        Api.send_request("/settings_changes", :get, page_params, options, &check_page)
       end
     end
 

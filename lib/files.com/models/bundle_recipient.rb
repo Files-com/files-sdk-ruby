@@ -95,9 +95,9 @@ module Files
         raise NotImplementedError.new("The BundleRecipient object doesn't support updates.")
       else
         new_obj = BundleRecipient.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -117,8 +117,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: bundle_id") unless params[:bundle_id]
 
-      List.new(BundleRecipient, params) do
-        Api.send_request("/bundle_recipients", :get, params, options)
+      List.new(BundleRecipient, params) do |page_params, &check_page|
+        Api.send_request("/bundle_recipients", :get, page_params, options, &check_page)
       end
     end
 
@@ -144,7 +144,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: bundle_id") unless params[:bundle_id]
       raise MissingParameterError.new("Parameter missing: recipient") unless params[:recipient]
 
-      response, options = Api.send_request("/bundle_recipients", :post, params, options)
+      response, options = Api.send_request("/bundle_recipients", :post, params, options) { |reply| reply.require_object("BundleRecipient") }
       BundleRecipient.new(response.data, options)
     end
   end

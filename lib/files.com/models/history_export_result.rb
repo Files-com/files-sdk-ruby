@@ -151,8 +151,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: history_export_id must be an Integer") if params[:history_export_id] and !params[:history_export_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: history_export_id") unless params[:history_export_id]
 
-      List.new(HistoryExportResult, params) do
-        Api.send_request("/history_export_results", :get, params, options)
+      List.new(HistoryExportResult, params) do |page_params, &check_page|
+        Api.send_request("/history_export_results", :get, page_params, options, &check_page)
       end
     end
 

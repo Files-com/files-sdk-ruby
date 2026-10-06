@@ -1064,7 +1064,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/users/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/users/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("User") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     # Parameters:
@@ -1087,12 +1089,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = User.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -1122,8 +1124,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: ids must be an String") if params[:ids] and !params[:ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: search must be an String") if params[:search] and !params[:search].is_a?(String)
 
-      List.new(User, params) do
-        Api.send_request("/users", :get, params, options)
+      List.new(User, params) do |page_params, &check_page|
+        Api.send_request("/users", :get, page_params, options, &check_page)
       end
     end
 
@@ -1139,7 +1141,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/users/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/users/#{params[:id]}", :get, params, options) { |reply| reply.require_object("User") }
       User.new(response.data, options)
     end
 
@@ -1258,7 +1260,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: username") unless params[:username]
 
-      response, options = Api.send_request("/users", :post, params, options)
+      response, options = Api.send_request("/users", :post, params, options) { |reply| reply.require_object("User") }
       User.new(response.data, options)
     end
 
@@ -1411,7 +1413,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/users/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/users/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("User") }
       User.new(response.data, options)
     end
 

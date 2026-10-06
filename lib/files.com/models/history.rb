@@ -99,8 +99,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      List.new(Action, params) do
-        Api.send_request("/history/files/#{params[:path]}", :get, params, options)
+      List.new(Action, params) do |page_params, &check_page|
+        Api.send_request("/history/files/#{page_params[:path]}", :get, page_params, options, &check_page)
       end
     end
 
@@ -124,8 +124,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      List.new(Action, params) do
-        Api.send_request("/history/folders/#{params[:path]}", :get, params, options)
+      List.new(Action, params) do |page_params, &check_page|
+        Api.send_request("/history/folders/#{page_params[:path]}", :get, page_params, options, &check_page)
       end
     end
 
@@ -149,8 +149,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
 
-      List.new(Action, params) do
-        Api.send_request("/history/users/#{params[:user_id]}", :get, params, options)
+      List.new(Action, params) do |page_params, &check_page|
+        Api.send_request("/history/users/#{page_params[:user_id]}", :get, page_params, options, &check_page)
       end
     end
 
@@ -169,8 +169,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
 
-      List.new(Action, params) do
-        Api.send_request("/history/login", :get, params, options)
+      List.new(Action, params) do |page_params, &check_page|
+        Api.send_request("/history/login", :get, page_params, options, &check_page)
       end
     end
 
@@ -193,8 +193,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
 
-      List.new(Action, params) do
-        Api.send_request("/history", :get, params, options)
+      List.new(Action, params) do |page_params, &check_page|
+        Api.send_request("/history", :get, page_params, options, &check_page)
       end
     end
 

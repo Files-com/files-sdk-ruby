@@ -60,8 +60,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
 
-      List.new(ChatSession, params) do
-        Api.send_request("/chat_sessions", :get, params, options)
+      List.new(ChatSession, params) do |page_params, &check_page|
+        Api.send_request("/chat_sessions", :get, page_params, options, &check_page)
       end
     end
 
@@ -77,7 +77,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an String") if params[:id] and !params[:id].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/chat_sessions/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/chat_sessions/#{params[:id]}", :get, params, options) { |reply| reply.require_object("ChatSession") }
       ChatSession.new(response.data, options)
     end
 

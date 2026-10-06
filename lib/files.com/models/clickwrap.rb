@@ -81,7 +81,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: use_with_users must be an String") if params[:use_with_users] and !params[:use_with_users].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/clickwraps/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/clickwraps/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Clickwrap") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -101,12 +103,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = Clickwrap.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -119,8 +121,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
 
-      List.new(Clickwrap, params) do
-        Api.send_request("/clickwraps", :get, params, options)
+      List.new(Clickwrap, params) do |page_params, &check_page|
+        Api.send_request("/clickwraps", :get, page_params, options, &check_page)
       end
     end
 
@@ -136,7 +138,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/clickwraps/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/clickwraps/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Clickwrap") }
       Clickwrap.new(response.data, options)
     end
 
@@ -157,7 +159,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: use_with_inboxes must be an String") if params[:use_with_inboxes] and !params[:use_with_inboxes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: use_with_users must be an String") if params[:use_with_users] and !params[:use_with_users].is_a?(String)
 
-      response, options = Api.send_request("/clickwraps", :post, params, options)
+      response, options = Api.send_request("/clickwraps", :post, params, options) { |reply| reply.require_object("Clickwrap") }
       Clickwrap.new(response.data, options)
     end
 
@@ -178,7 +180,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: use_with_users must be an String") if params[:use_with_users] and !params[:use_with_users].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/clickwraps/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/clickwraps/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Clickwrap") }
       Clickwrap.new(response.data, options)
     end
 

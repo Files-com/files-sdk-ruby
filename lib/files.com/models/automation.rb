@@ -509,7 +509,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params[:automation] and !params[:automation].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/automations/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/automations/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Automation") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -529,12 +531,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = Automation.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -557,8 +559,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
 
-      List.new(Automation, params) do
-        Api.send_request("/automations", :get, params, options)
+      List.new(Automation, params) do |page_params, &check_page|
+        Api.send_request("/automations", :get, page_params, options, &check_page)
       end
     end
 
@@ -574,7 +576,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/automations/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/automations/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Automation") }
       Automation.new(response.data, options)
     end
 
@@ -583,7 +585,7 @@ module Files
     end
 
     def self.get_authoring_schema(params = {}, options = {})
-      response, options = Api.send_request("/automations/authoring_schema", :get, params, options)
+      response, options = Api.send_request("/automations/authoring_schema", :get, params, options) { |reply| reply.require_object("AutomationAuthoringSchema") }
       AutomationAuthoringSchema.new(response.data, options)
     end
 
@@ -656,7 +658,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: automation") unless params[:automation]
 
-      response, options = Api.send_request("/automations", :post, params, options)
+      response, options = Api.send_request("/automations", :post, params, options) { |reply| reply.require_object("Automation") }
       Automation.new(response.data, options)
     end
 
@@ -667,7 +669,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/automations/#{params[:id]}/upgrade", :post, params, options)
+      response, options = Api.send_request("/automations/#{params[:id]}/upgrade", :post, params, options) { |reply| reply.require_object("Automation") }
       Automation.new(response.data, options)
     end
 
@@ -756,7 +758,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if params[:automation] and !params[:automation].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/automations/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/automations/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Automation") }
       Automation.new(response.data, options)
     end
 

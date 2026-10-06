@@ -99,8 +99,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: bundle_registration_id must be an Integer") if params[:bundle_registration_id] and !params[:bundle_registration_id].is_a?(Integer)
 
-      List.new(BundleAction, params) do
-        Api.send_request("/bundle_actions", :get, params, options)
+      List.new(BundleAction, params) do |page_params, &check_page|
+        Api.send_request("/bundle_actions", :get, page_params, options, &check_page)
       end
     end
 

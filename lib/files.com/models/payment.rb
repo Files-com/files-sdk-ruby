@@ -89,8 +89,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
 
-      List.new(AccountLineItem, params) do
-        Api.send_request("/payments", :get, params, options)
+      List.new(AccountLineItem, params) do |page_params, &check_page|
+        Api.send_request("/payments", :get, page_params, options, &check_page)
       end
     end
 
@@ -106,7 +106,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/payments/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/payments/#{params[:id]}", :get, params, options) { |reply| reply.require_object("AccountLineItem") }
       AccountLineItem.new(response.data, options)
     end
 

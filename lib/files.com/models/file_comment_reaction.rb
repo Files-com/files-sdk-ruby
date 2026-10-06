@@ -65,9 +65,9 @@ module Files
         raise NotImplementedError.new("The FileCommentReaction object doesn't support updates.")
       else
         new_obj = FileCommentReaction.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -82,7 +82,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: file_comment_id") unless params[:file_comment_id]
       raise MissingParameterError.new("Parameter missing: emoji") unless params[:emoji]
 
-      response, options = Api.send_request("/file_comment_reactions", :post, params, options)
+      response, options = Api.send_request("/file_comment_reactions", :post, params, options) { |reply| reply.require_object("FileCommentReaction") }
       FileCommentReaction.new(response.data, options)
     end
 

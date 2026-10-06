@@ -116,7 +116,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params[:form_fields] and !params[:form_fields].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/form_field_sets/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/form_field_sets/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("FormFieldSet") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -136,12 +138,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = FormFieldSet.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -154,8 +156,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
 
-      List.new(FormFieldSet, params) do
-        Api.send_request("/form_field_sets", :get, params, options)
+      List.new(FormFieldSet, params) do |page_params, &check_page|
+        Api.send_request("/form_field_sets", :get, page_params, options, &check_page)
       end
     end
 
@@ -171,7 +173,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/form_field_sets/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/form_field_sets/#{params[:id]}", :get, params, options) { |reply| reply.require_object("FormFieldSet") }
       FormFieldSet.new(response.data, options)
     end
 
@@ -193,7 +195,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params[:form_fields] and !params[:form_fields].is_a?(Array)
 
-      response, options = Api.send_request("/form_field_sets", :post, params, options)
+      response, options = Api.send_request("/form_field_sets", :post, params, options) { |reply| reply.require_object("FormFieldSet") }
       FormFieldSet.new(response.data, options)
     end
 
@@ -213,7 +215,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: form_fields must be an Array") if params[:form_fields] and !params[:form_fields].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/form_field_sets/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/form_field_sets/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("FormFieldSet") }
       FormFieldSet.new(response.data, options)
     end
 

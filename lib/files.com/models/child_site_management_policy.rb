@@ -120,7 +120,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/child_site_management_policies/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/child_site_management_policies/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("ChildSiteManagementPolicy") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -140,12 +142,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = ChildSiteManagementPolicy.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -156,8 +158,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
 
-      List.new(ChildSiteManagementPolicy, params) do
-        Api.send_request("/child_site_management_policies", :get, params, options)
+      List.new(ChildSiteManagementPolicy, params) do |page_params, &check_page|
+        Api.send_request("/child_site_management_policies", :get, page_params, options, &check_page)
       end
     end
 
@@ -173,7 +175,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/child_site_management_policies/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/child_site_management_policies/#{params[:id]}", :get, params, options) { |reply| reply.require_object("ChildSiteManagementPolicy") }
       ChildSiteManagementPolicy.new(response.data, options)
     end
 
@@ -198,7 +200,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise MissingParameterError.new("Parameter missing: policy_type") unless params[:policy_type]
 
-      response, options = Api.send_request("/child_site_management_policies", :post, params, options)
+      response, options = Api.send_request("/child_site_management_policies", :post, params, options) { |reply| reply.require_object("ChildSiteManagementPolicy") }
       ChildSiteManagementPolicy.new(response.data, options)
     end
 
@@ -222,7 +224,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/child_site_management_policies/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/child_site_management_policies/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("ChildSiteManagementPolicy") }
       ChildSiteManagementPolicy.new(response.data, options)
     end
 

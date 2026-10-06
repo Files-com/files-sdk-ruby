@@ -233,7 +233,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if params[:holiday_region] and !params[:holiday_region].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/scheduled_exports/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/scheduled_exports/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("ScheduledExport") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -253,12 +255,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = ScheduledExport.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -275,8 +277,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
 
-      List.new(ScheduledExport, params) do
-        Api.send_request("/scheduled_exports", :get, params, options)
+      List.new(ScheduledExport, params) do |page_params, &check_page|
+        Api.send_request("/scheduled_exports", :get, page_params, options, &check_page)
       end
     end
 
@@ -292,7 +294,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/scheduled_exports/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/scheduled_exports/#{params[:id]}", :get, params, options) { |reply| reply.require_object("ScheduledExport") }
       ScheduledExport.new(response.data, options)
     end
 
@@ -332,7 +334,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
       raise MissingParameterError.new("Parameter missing: export_type") unless params[:export_type]
 
-      response, options = Api.send_request("/scheduled_exports", :post, params, options)
+      response, options = Api.send_request("/scheduled_exports", :post, params, options) { |reply| reply.require_object("ScheduledExport") }
       ScheduledExport.new(response.data, options)
     end
 
@@ -370,7 +372,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if params[:holiday_region] and !params[:holiday_region].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/scheduled_exports/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/scheduled_exports/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("ScheduledExport") }
       ScheduledExport.new(response.data, options)
     end
 

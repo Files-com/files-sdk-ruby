@@ -436,7 +436,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/remote_server_credentials/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/remote_server_credentials/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("RemoteServerCredential") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -456,12 +458,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = RemoteServerCredential.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -478,8 +480,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
 
-      List.new(RemoteServerCredential, params) do
-        Api.send_request("/remote_server_credentials", :get, params, options)
+      List.new(RemoteServerCredential, params) do |page_params, &check_page|
+        Api.send_request("/remote_server_credentials", :get, page_params, options, &check_page)
       end
     end
 
@@ -495,7 +497,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/remote_server_credentials/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/remote_server_credentials/#{params[:id]}", :get, params, options) { |reply| reply.require_object("RemoteServerCredential") }
       RemoteServerCredential.new(response.data, options)
     end
 
@@ -578,7 +580,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: copy_values_from_credential_id must be an Integer") if params[:copy_values_from_credential_id] and !params[:copy_values_from_credential_id].is_a?(Integer)
 
-      response, options = Api.send_request("/remote_server_credentials", :post, params, options)
+      response, options = Api.send_request("/remote_server_credentials", :post, params, options) { |reply| reply.require_object("RemoteServerCredential") }
       RemoteServerCredential.new(response.data, options)
     end
 
@@ -657,7 +659,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if params[:wasabi_secret_key] and !params[:wasabi_secret_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/remote_server_credentials/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/remote_server_credentials/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("RemoteServerCredential") }
       RemoteServerCredential.new(response.data, options)
     end
 

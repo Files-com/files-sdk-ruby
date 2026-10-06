@@ -63,8 +63,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
 
-      List.new(UserSecurityEvent, params) do
-        Api.send_request("/user_security_events", :get, params, options)
+      List.new(UserSecurityEvent, params) do |page_params, &check_page|
+        Api.send_request("/user_security_events", :get, page_params, options, &check_page)
       end
     end
 
@@ -80,7 +80,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/user_security_events/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/user_security_events/#{params[:id]}", :get, params, options) { |reply| reply.require_object("UserSecurityEvent") }
       UserSecurityEvent.new(response.data, options)
     end
 

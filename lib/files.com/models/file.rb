@@ -218,7 +218,7 @@ module Files
 
       create(destination, params, options)
     ensure
-      local_file.close
+      local_file&.close
     end
 
     def self.write(*_args)
@@ -455,10 +455,16 @@ module Files
         r, w = SizableIO.pipe
         Thread.new do
           download_content(w, **options)
+        rescue StandardError => e
+          # The reader raises this instead of seeing a clean end of file, even when the download never started.
+          w.do_set_error(e)
         ensure
           w.close
         end
         r.wait!(5)
+      rescue StandardError
+        r&.close
+        raise
       end
     end
 
@@ -1103,7 +1109,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if params[:priority_color] and !params[:priority_color].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      Api.send_request("/files/#{@attributes[:path]}", :patch, params, @options)
+      response, options = Api.send_request("/files/#{@attributes[:path]}", :patch, params, @options) { |reply| reply.require_object("File") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     # Parameters:
@@ -1314,7 +1322,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/files/#{params[:path]}", :get, params, options)
+      response, options = Api.send_request("/files/#{params[:path]}", :get, params, options) { |reply| reply.require_object("File") }
       File.new(response.data, options)
     end
 
@@ -1353,7 +1361,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: structure must be an String") if params[:structure] and !params[:structure].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/files/#{params[:path]}", :post, params, options)
+      response, options = Api.send_request("/files/#{params[:path]}", :post, params, options) { |reply| reply.require_object("File") }
       File.new(response.data, options)
     end
 
@@ -1370,7 +1378,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if params[:priority_color] and !params[:priority_color].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/files/#{params[:path]}", :patch, params, options)
+      response, options = Api.send_request("/files/#{params[:path]}", :patch, params, options) { |reply| reply.require_object("File") }
       File.new(response.data, options)
     end
 
@@ -1403,7 +1411,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/file_actions/metadata/#{params[:path]}", :get, params, options)
+      response, options = Api.send_request("/file_actions/metadata/#{params[:path]}", :get, params, options) { |reply| reply.require_object("File") }
       File.new(response.data, options)
     end
 
@@ -1418,7 +1426,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/file_actions/zip_list/#{params[:path]}", :get, params, options)
+      response, options = Api.send_request("/file_actions/zip_list/#{params[:path]}", :get, params, options) { |reply| reply.require_list("ZipListEntry") }
       response.data.map do |entity_data|
         ZipListEntry.new(entity_data, options)
       end
@@ -1439,7 +1447,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
-      response, options = Api.send_request("/file_actions/copy/#{params[:path]}", :post, params, options)
+      response, options = Api.send_request("/file_actions/copy/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
@@ -1456,7 +1464,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
-      response, options = Api.send_request("/file_actions/move/#{params[:path]}", :post, params, options)
+      response, options = Api.send_request("/file_actions/move/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
@@ -1485,7 +1493,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: transform_type") unless params[:transform_type]
       raise MissingParameterError.new("Parameter missing: target_format") unless params[:target_format]
 
-      response, options = Api.send_request("/file_actions/transform/#{params[:path]}", :post, params, options)
+      response, options = Api.send_request("/file_actions/transform/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
@@ -1508,7 +1516,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
-      response, options = Api.send_request("/file_actions/gpg_decrypt/#{params[:path]}", :post, params, options)
+      response, options = Api.send_request("/file_actions/gpg_decrypt/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
@@ -1532,7 +1540,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
-      response, options = Api.send_request("/file_actions/gpg_encrypt/#{params[:path]}", :post, params, options)
+      response, options = Api.send_request("/file_actions/gpg_encrypt/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
@@ -1551,7 +1559,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
-      response, options = Api.send_request("/file_actions/unzip", :post, params, options)
+      response, options = Api.send_request("/file_actions/unzip", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
@@ -1565,7 +1573,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: paths") unless params[:paths]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
-      response, options = Api.send_request("/file_actions/zip", :post, params, options)
+      response, options = Api.send_request("/file_actions/zip", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
@@ -1592,7 +1600,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: size must be an Integer") if params[:size] and !params[:size].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/file_actions/begin_upload/#{params[:path]}", :post, params, options)
+      response, options = Api.send_request("/file_actions/begin_upload/#{params[:path]}", :post, params, options) { |reply| reply.require_list("FileUploadPart") }
       response.data.map do |entity_data|
         FileUploadPart.new(entity_data, options)
       end

@@ -198,7 +198,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      Api.send_request("/gpg_keys/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/gpg_keys/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("GpgKey") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -218,12 +220,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = GpgKey.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -248,8 +250,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
 
-      List.new(GpgKey, params) do
-        Api.send_request("/gpg_keys", :get, params, options)
+      List.new(GpgKey, params) do |page_params, &check_page|
+        Api.send_request("/gpg_keys", :get, page_params, options, &check_page)
       end
     end
 
@@ -265,7 +267,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/gpg_keys/#{params[:id]}", :get, params, options)
+      response, options = Api.send_request("/gpg_keys/#{params[:id]}", :get, params, options) { |reply| reply.require_object("GpgKey") }
       GpgKey.new(response.data, options)
     end
 
@@ -298,7 +300,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: generate_email must be an String") if params[:generate_email] and !params[:generate_email].is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
 
-      response, options = Api.send_request("/gpg_keys", :post, params, options)
+      response, options = Api.send_request("/gpg_keys", :post, params, options) { |reply| reply.require_object("GpgKey") }
       GpgKey.new(response.data, options)
     end
 
@@ -319,7 +321,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
-      response, options = Api.send_request("/gpg_keys/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/gpg_keys/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("GpgKey") }
       GpgKey.new(response.data, options)
     end
 

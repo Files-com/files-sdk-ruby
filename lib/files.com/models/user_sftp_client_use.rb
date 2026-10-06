@@ -45,8 +45,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
 
-      List.new(UserSftpClientUse, params) do
-        Api.send_request("/user_sftp_client_uses", :get, params, options)
+      List.new(UserSftpClientUse, params) do |page_params, &check_page|
+        Api.send_request("/user_sftp_client_uses", :get, page_params, options, &check_page)
       end
     end
 

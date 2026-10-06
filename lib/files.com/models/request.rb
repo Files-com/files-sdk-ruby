@@ -101,9 +101,9 @@ module Files
         raise NotImplementedError.new("The Request object doesn't support updates.")
       else
         new_obj = Request.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -119,8 +119,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
 
-      List.new(Request, params) do
-        Api.send_request("/requests", :get, params, options)
+      List.new(Request, params) do |page_params, &check_page|
+        Api.send_request("/requests", :get, page_params, options, &check_page)
       end
     end
 
@@ -143,8 +143,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      List.new(Request, params) do
-        Api.send_request("/requests/folders/#{params[:path]}", :get, params, options)
+      List.new(Request, params) do |page_params, &check_page|
+        Api.send_request("/requests/folders/#{page_params[:path]}", :get, page_params, options, &check_page)
       end
     end
 
@@ -161,7 +161,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
       raise MissingParameterError.new("Parameter missing: destination") unless params[:destination]
 
-      response, options = Api.send_request("/requests", :post, params, options)
+      response, options = Api.send_request("/requests", :post, params, options) { |reply| reply.require_object("Request") }
       Request.new(response.data, options)
     end
 

@@ -56,7 +56,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
       raise MissingParameterError.new("Parameter missing: body") unless params[:body]
 
-      Api.send_request("/file_comments/#{@attributes[:id]}", :patch, params, @options)
+      response, options = Api.send_request("/file_comments/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("FileComment") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -76,12 +78,12 @@ module Files
 
     def save
       if @attributes[:id]
-        new_obj = update(@attributes)
+        update(@attributes)
       else
         new_obj = FileComment.create(@attributes, @options)
+        @attributes = new_obj.attributes
       end
 
-      @attributes = new_obj.attributes
       true
     end
 
@@ -97,8 +99,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      List.new(FileComment, params) do
-        Api.send_request("/file_comments/files/#{params[:path]}", :get, params, options)
+      List.new(FileComment, params) do |page_params, &check_page|
+        Api.send_request("/file_comments/files/#{page_params[:path]}", :get, page_params, options, &check_page)
       end
     end
 
@@ -111,7 +113,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: body") unless params[:body]
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/file_comments", :post, params, options)
+      response, options = Api.send_request("/file_comments", :post, params, options) { |reply| reply.require_object("FileComment") }
       FileComment.new(response.data, options)
     end
 
@@ -125,7 +127,7 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
       raise MissingParameterError.new("Parameter missing: body") unless params[:body]
 
-      response, options = Api.send_request("/file_comments/#{params[:id]}", :patch, params, options)
+      response, options = Api.send_request("/file_comments/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("FileComment") }
       FileComment.new(response.data, options)
     end
 

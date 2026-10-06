@@ -74,7 +74,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: logo_click_href must be an String") if params[:logo_click_href] and !params[:logo_click_href].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      Api.send_request("/styles/#{@attributes[:path]}", :patch, params, @options)
+      response, options = Api.send_request("/styles/#{@attributes[:path]}", :patch, params, @options) { |reply| reply.require_object("Style") }
+      @attributes = response.data
+      [ response, options ]
     end
 
     def delete(params = {})
@@ -93,8 +95,7 @@ module Files
     end
 
     def save
-      new_obj = update(@attributes)
-      @attributes = new_obj.attributes
+      update(@attributes)
       true
     end
 
@@ -106,7 +107,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/styles/#{params[:path]}", :get, params, options)
+      response, options = Api.send_request("/styles/#{params[:path]}", :get, params, options) { |reply| reply.require_object("Style") }
       Style.new(response.data, options)
     end
 
@@ -124,7 +125,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: logo_click_href must be an String") if params[:logo_click_href] and !params[:logo_click_href].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") unless params[:path]
 
-      response, options = Api.send_request("/styles/#{params[:path]}", :patch, params, options)
+      response, options = Api.send_request("/styles/#{params[:path]}", :patch, params, options) { |reply| reply.require_object("Style") }
       Style.new(response.data, options)
     end
 
