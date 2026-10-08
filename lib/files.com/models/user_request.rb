@@ -83,6 +83,11 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::UserRequest objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -98,6 +103,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - User Request ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::UserRequest.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -117,6 +127,11 @@ module Files
     #   email (required) - string - Email of user requested
     #   details (required) - string - Details of the user request
     #   company - string - Company of the user requested
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::UserRequest.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: email must be an String") if params[:email] and !params[:email].is_a?(String)
@@ -130,6 +145,10 @@ module Files
       UserRequest.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

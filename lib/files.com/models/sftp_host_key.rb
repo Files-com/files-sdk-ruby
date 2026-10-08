@@ -130,6 +130,11 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::SftpHostKey objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -145,6 +150,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Sftp Host Key ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::SftpHostKey.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -164,6 +174,11 @@ module Files
     #   custom_domain_id - int64 - Custom Domain ID. If set, this key is used only for that Custom Domain.
     #   name - string - The friendly name of this SFTP Host Key.
     #   private_key - string - The private key data.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::SftpHostKey.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: custom_domain_id must be an Integer") if params[:custom_domain_id] and !params[:custom_domain_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -178,6 +193,11 @@ module Files
     #   custom_domain_id - int64 - Custom Domain ID. If set, this key is used only for that Custom Domain.
     #   name - string - The friendly name of this SFTP Host Key.
     #   private_key - string - The private key data.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::SftpHostKey.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -191,6 +211,10 @@ module Files
       SftpHostKey.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

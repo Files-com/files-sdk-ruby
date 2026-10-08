@@ -1314,6 +1314,11 @@ module Files
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
     #   with_direct_connection_info - boolean - Include optional direct connection information for a direct Agent transfer attempt?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::File.
     def self.download(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1345,6 +1350,11 @@ module Files
     #   with_rename - boolean - Allow file rename instead of overwrite?
     #   buffered_upload - boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
     #   with_direct_connection_info - boolean - Include optional direct connection information for a direct Agent transfer attempt?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::File.
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1369,6 +1379,11 @@ module Files
     #   custom_metadata - object - Custom metadata map of keys and values. Limited to 32 keys, 256 characters per key and 1024 characters per value.
     #   provided_mtime - string - Modified time of file.
     #   priority_color - string - Priority/Bookmark color of file.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::File.
     def self.update(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1384,6 +1399,11 @@ module Files
 
     # Parameters:
     #   recursive - boolean - If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1404,6 +1424,11 @@ module Files
     #   preview_size - string - Request a preview size.  Can be `small` (default), `large`, `xlarge`, or `pdf`.
     #   with_previews - boolean - Include file preview information?
     #   with_priority_color - boolean - Include file priority color information?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::File.
     def self.find(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1420,6 +1445,11 @@ module Files
     end
 
     # List the contents of a ZIP file
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns an Array of Files::ZipListEntry objects.
     def self.zip_list_contents(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1439,6 +1469,11 @@ module Files
     #   copy_behaviors - boolean - If copying a folder, also copy supported behaviors, email notification subscriptions, and per-folder branding to the destination folder tree?
     #   structure - boolean - Copy structure only?
     #   overwrite - boolean - Overwrite existing file(s) in the destination?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::FileAction.
     def self.copy(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1456,6 +1491,11 @@ module Files
     # Parameters:
     #   destination (required) - string - Move destination path.
     #   overwrite - boolean - Overwrite existing file(s) in the destination?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::FileAction.
     def self.move(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1478,6 +1518,11 @@ module Files
     #   width - int64 - Maximum output width for image_convert.
     #   height - int64 - Maximum output height for image_convert.
     #   overwrite - boolean - Overwrite existing file in the destination?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::FileAction.
     def self.transform(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1506,6 +1551,11 @@ module Files
     #   use_all_private_keys - boolean - Use every accessible private GPG key in the source workspace for decryption.
     #   ignore_mdc_error - boolean - Ignore errors from the MDC (modification detection code) check.
     #   overwrite - boolean - Overwrite existing file in the destination?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::FileAction.
     def self.gpg_decrypt(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1529,6 +1579,11 @@ module Files
     #   signing_key_id - int64 - Optional GPG Key ID to sign with.
     #   armor - boolean - Output ASCII-armored encrypted data.
     #   overwrite - boolean - Overwrite existing file in the destination?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::FileAction.
     def self.gpg_encrypt(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1550,6 +1605,11 @@ module Files
     #   destination (required) - string - Destination folder path for extracted files.
     #   filename - string - Optional single entry filename to extract.
     #   overwrite - boolean - Overwrite existing files in the destination?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::FileAction.
     def self.unzip(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -1567,6 +1627,11 @@ module Files
     #   paths (required) - array(string) - Paths to include in the ZIP.
     #   destination (required) - string - Destination file path for the ZIP.
     #   overwrite - boolean - Overwrite existing file in the destination?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::FileAction.
     def self.zip(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
@@ -1589,6 +1654,11 @@ module Files
     #   with_rename - boolean - Allow file rename instead of overwrite?
     #   buffered_upload - boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
     #   with_direct_connection_info - boolean - Include optional direct connection information for a direct Agent transfer attempt?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns an Array of Files::FileUploadPart objects.
     def self.begin_upload(path, params = {}, options = {})
       params ||= {}
       params[:path] = path

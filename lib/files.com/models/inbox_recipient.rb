@@ -89,6 +89,11 @@ module Files
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `has_registrations`.
     #   inbox_id (required) - int64 - List recipients for the inbox with this ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::InboxRecipient objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -113,6 +118,11 @@ module Files
     #   company - string - Company of recipient.
     #   note - string - Note to include in email.
     #   share_after_create - boolean - Set to true to share the link with the recipient upon creation.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::InboxRecipient.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if params[:inbox_id] and !params[:inbox_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: recipient must be an String") if params[:recipient] and !params[:recipient].is_a?(String)

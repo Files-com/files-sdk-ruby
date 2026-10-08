@@ -1111,6 +1111,11 @@ module Files
     #   ids - string - comma-separated list of User IDs
     #   include_parent_site_users - boolean - Include users from the parent site.
     #   search - string - Searches for partial matches of name, username, or email.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::User objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -1135,6 +1140,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - User ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::User.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -1219,6 +1229,11 @@ module Files
     #   workspace_admin - boolean - Whether the user is an administrator of their own Custom Workspace. Does not reflect administration granted through Permissions.
     #   username (required) - string - User's username
     #   workspace_id - int64 - ID of the Workspace the user belongs to. 0 is the Default Workspace.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::User.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: change_password must be an String") if params[:change_password] and !params[:change_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if params[:change_password_confirmation] and !params[:change_password_confirmation].is_a?(String)
@@ -1265,6 +1280,11 @@ module Files
     end
 
     # Unlock user who has been locked out due to failed logins
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.unlock(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -1276,6 +1296,11 @@ module Files
     end
 
     # Resend user welcome email
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.resend_welcome_email(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -1287,6 +1312,11 @@ module Files
     end
 
     # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.user_2fa_reset(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -1369,6 +1399,11 @@ module Files
     #   workspace_id - int64 - Workspace ID. Only Site Administrators can change this field. Values supplied by Workspace Administrators, Group Administrators, or other non-Site Administrators using `/user` are ignored.
     #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
     #   convert_to_partner_user - boolean - Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::User.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -1419,6 +1454,11 @@ module Files
 
     # Parameters:
     #   new_owner_id - int64 - Provide a User ID here to transfer ownership of certain resources such as Automations and Share Links (Bundles) to that new user.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

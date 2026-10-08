@@ -101,6 +101,11 @@ module Files
     #   password - string - Password for sign in
     #   otp - string - If this user has a 2FA device, provide its OTP or code here.
     #   partial_session_id - string - Identifier for a partially-completed login
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Session.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
@@ -111,6 +116,10 @@ module Files
       Session.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(params = {}, options = {})
       Api.send_request("/sessions", :delete, params, options)
       nil

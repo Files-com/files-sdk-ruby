@@ -61,6 +61,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - File Migration ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::FileMigration.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

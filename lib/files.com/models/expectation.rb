@@ -357,6 +357,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `name` or `disabled`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `disabled` and `workspace_id`. Valid field combinations are `[ workspace_id, disabled ]`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Expectation objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -374,6 +379,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Expectation ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Expectation.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -410,6 +420,11 @@ module Files
     #   max_open_interval - int64 - Hard-stop duration in seconds for unscheduled expectations.
     #   criteria - object - Versioned success criteria definition for the expectation, including optional Files Transform Script content validation in criteria v2.
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Expectation.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
@@ -437,6 +452,11 @@ module Files
     end
 
     # Manually open an Expectation window
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ExpectationEvaluation.
     def self.trigger_evaluation(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -469,6 +489,11 @@ module Files
     #   max_open_interval - int64 - Hard-stop duration in seconds for unscheduled expectations.
     #   criteria - object - Versioned success criteria definition for the expectation, including optional Files Transform Script content validation in criteria v2.
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Expectation.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -499,6 +524,10 @@ module Files
       Expectation.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

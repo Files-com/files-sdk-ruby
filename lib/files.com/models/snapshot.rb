@@ -140,6 +140,11 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Snapshot objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -155,6 +160,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Snapshot ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Snapshot.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -174,6 +184,11 @@ module Files
     #   name - string - A name for the snapshot.
     #   paths - array(string) - An array of paths to add to the snapshot.
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Snapshot.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if params[:expires_at] and !params[:expires_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -185,6 +200,11 @@ module Files
     end
 
     # Finalize Snapshot
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.finalize(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -199,6 +219,11 @@ module Files
     #   expires_at - string - When the snapshot expires.
     #   name - string - A name for the snapshot.
     #   paths - array(string) - An array of paths to add to the snapshot.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Snapshot.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -212,6 +237,10 @@ module Files
       Snapshot.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

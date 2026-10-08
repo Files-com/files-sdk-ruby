@@ -244,6 +244,11 @@ module Files
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `remote_server_mount_id`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::RemoteMountBackend objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -260,6 +265,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Remote Mount Backend ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::RemoteMountBackend.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -288,6 +298,11 @@ module Files
     #   canary_file_path (required) - string - Path to the canary file used for health checks.
     #   remote_server_mount_id (required) - int64 - The mount ID of the Remote Server Mount that this backend is associated with.
     #   remote_server_id (required) - int64 - The remote server that this backend is associated with.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::RemoteMountBackend.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if params[:fall] and !params[:fall].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if params[:health_check_type] and !params[:health_check_type].is_a?(String)
@@ -309,6 +324,11 @@ module Files
     end
 
     # Reset backend status to healthy
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.reset_status(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -332,6 +352,11 @@ module Files
     #   rise - int64 - Number of consecutive successes before considering the backend healthy.
     #   canary_file_path - string - Path to the canary file used for health checks.
     #   remote_server_id - int64 - The remote server that this backend is associated with.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::RemoteMountBackend.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -352,6 +377,10 @@ module Files
       RemoteMountBackend.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

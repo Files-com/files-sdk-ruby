@@ -265,6 +265,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - History Export ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::HistoryExport.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -302,6 +307,11 @@ module Files
     #   query_target_username - string - If searching for Histories about API keys, this parameter restricts results to API keys created by/for this username.
     #   query_target_platform - string - If searching for Histories about API keys, this parameter restricts results to API keys associated with this platform.
     #   query_target_permission_set - string - If searching for Histories about API keys, this parameter restricts results to API keys with this permission set.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::HistoryExport.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)

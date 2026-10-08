@@ -113,6 +113,11 @@ module Files
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
     #   mine - boolean - Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
     #   path - string - Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Request objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -134,6 +139,11 @@ module Files
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
     #   mine - boolean - Only show requests of the current user?  (Defaults to true if current user is not a site admin.)
     #   path (required) - string - Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Request objects.
     def self.get_folder(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -153,6 +163,11 @@ module Files
     #   destination (required) - string - Destination filename (without extension) to request.
     #   user_ids - string - A list of user IDs to request the file from. If sent as a string, it should be comma-delimited.
     #   group_ids - string - A list of group IDs to request the file from. If sent as a string, it should be comma-delimited.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Request.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if params[:destination] and !params[:destination].is_a?(String)
@@ -165,6 +180,10 @@ module Files
       Request.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

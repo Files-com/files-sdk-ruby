@@ -199,6 +199,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`, `enabled`, `event_channel_id` or `workspace_id`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `enabled`, `event_channel_id` or `workspace_id`. Valid field combinations are `[ enabled, event_channel_id ]`, `[ workspace_id, enabled ]` or `[ workspace_id, enabled, event_channel_id ]`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::EventSubscription objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -216,6 +221,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Event Subscription ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::EventSubscription.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -243,6 +253,11 @@ module Files
     #   filter - object - Structured event payload filter.
     #   delivery_policy - object - Event Subscription delivery policy.
     #   event_target_ids - array(int64) - Event Target IDs this subscription sends to.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::EventSubscription.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: event_channel_id must be an Integer") if params[:event_channel_id] and !params[:event_channel_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
@@ -272,6 +287,11 @@ module Files
     #   filter - object - Structured event payload filter.
     #   delivery_policy - object - Event Subscription delivery policy.
     #   event_target_ids - array(int64) - Event Target IDs this subscription sends to.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::EventSubscription.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -291,6 +311,10 @@ module Files
       EventSubscription.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

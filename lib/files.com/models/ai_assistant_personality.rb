@@ -125,6 +125,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `id`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::AiAssistantPersonality objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -142,6 +147,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Ai Assistant Personality ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::AiAssistantPersonality.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -162,6 +172,11 @@ module Files
     #   system_prompt (required) - string - System prompt injected into the in-app AI Assistant.
     #   use_by_default - boolean - Whether this personality is the default personality for the Workspace.
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::AiAssistantPersonality.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: system_prompt must be an String") if params[:system_prompt] and !params[:system_prompt].is_a?(String)
@@ -179,6 +194,11 @@ module Files
     #   system_prompt - string - System prompt injected into the in-app AI Assistant.
     #   use_by_default - boolean - Whether this personality is the default personality for the Workspace.
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::AiAssistantPersonality.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -192,6 +212,10 @@ module Files
       AiAssistantPersonality.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

@@ -498,6 +498,11 @@ module Files
     #   with_priority_color - boolean - Include file priority color information?
     #   type - string - Type of objects to return.  Can be `folder` or `file`.
     #   modified_at_datetime - string - If provided, will only return files/folders modified after this time. Can be used only in combination with `type` filter.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::File objects.
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -521,6 +526,11 @@ module Files
     #   path (required) - string - Path to operate on.
     #   mkdir_parents - boolean - Create parent directories if they do not exist?
     #   provided_mtime - string - User provided modification time.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::File.
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path

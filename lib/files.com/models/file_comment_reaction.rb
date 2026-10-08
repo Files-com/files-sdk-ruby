@@ -75,6 +75,11 @@ module Files
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   file_comment_id (required) - int64 - ID of file comment to attach reaction to.
     #   emoji (required) - string - Emoji to react with.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::FileCommentReaction.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: file_comment_id must be an Integer") if params[:file_comment_id] and !params[:file_comment_id].is_a?(Integer)
@@ -86,6 +91,10 @@ module Files
       FileCommentReaction.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

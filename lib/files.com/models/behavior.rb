@@ -197,6 +197,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `behavior`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `clickwrap_id`, `form_field_set_id`, `impacts_ui`, `remote_server_id` or `behavior`. Valid field combinations are `[ impacts_ui, behavior ]` and `[ behavior, remote_server_id ]`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Behavior objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -214,6 +219,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Behavior ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Behavior.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -235,6 +245,11 @@ module Files
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `impacts_ui` and `behavior`. Valid field combinations are `[ impacts_ui, behavior ]`.
     #   path (required) - string - Path to operate on.
     #   ancestor_behaviors - boolean - If `true`, behaviors above this path are shown.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Behavior objects.
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -259,6 +274,11 @@ module Files
     #   description - string - Description for this behavior.
     #   path (required) - string - Path where this behavior should apply.
     #   behavior (required) - string - Behavior type.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Behavior.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
@@ -279,6 +299,11 @@ module Files
     #   headers - object - Additional request headers to send via HTTP.
     #   body - object - Additional body parameters to include in the webhook payload.
     #   action - string - Action for test body.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.webhook_test(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: url must be an String") if params[:url] and !params[:url].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: method must be an String") if params[:method] and !params[:method].is_a?(String)
@@ -300,6 +325,11 @@ module Files
     #   name - string - Name for this behavior.
     #   description - string - Description for this behavior.
     #   attachment_delete - boolean - If `true`, delete the file stored in `attachment`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Behavior.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -314,6 +344,10 @@ module Files
       Behavior.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

@@ -158,6 +158,11 @@ module Files
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `automation_id`, `created_at` or `status`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `status`, `workspace_id` or `automation_id`. Valid field combinations are `[ workspace_id, status ]`, `[ automation_id, status ]`, `[ workspace_id, automation_id ]` or `[ workspace_id, automation_id, status ]`.
     #   automation_id (required) - int64 - ID of the associated Automation.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::AutomationRun objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
@@ -178,6 +183,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Automation Run ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::AutomationRun.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -195,6 +205,11 @@ module Files
     # Parameters:
     #   id (required) - int64 - Automation Run ID.
     #   node_id (required) - string - Node ID from the pinned Automation definition.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::AutomationExecutionNode.
     def self.find_node(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -208,6 +223,11 @@ module Files
     end
 
     # Cancel Automation Run
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::AutomationRun.
     def self.cancel(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -222,6 +242,11 @@ module Files
     #
     # Parameters:
     #   node_id (required) - string - Node ID at which execution should resume.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::AutomationRun.
     def self.rerun(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

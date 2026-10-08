@@ -121,6 +121,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   group_id - int64 - Group ID. If provided, returns memberships of this group. Requires a Site Administrator, a Read-only Administrator, a Workspace Administrator for the group's workspace, or a Group Administrator of this group.
     #   user_id - int64 - User ID.  If provided, will return group_users of this user.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::GroupUser objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -140,6 +145,11 @@ module Files
     #   group_id (required) - int64 - Group ID to add user to.
     #   user_id (required) - int64 - User ID to add to group.
     #   admin - boolean - Is the user a group administrator?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::GroupUser.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
@@ -154,6 +164,11 @@ module Files
     #   group_id (required) - int64 - Group ID to add user to.
     #   user_id (required) - int64 - User ID to add to group.
     #   admin - boolean - Is the user a group administrator?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::GroupUser.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -171,6 +186,11 @@ module Files
     # Parameters:
     #   group_id (required) - int64 - Group ID from which to remove user.
     #   user_id (required) - int64 - User ID to remove from group.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

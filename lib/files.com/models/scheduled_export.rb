@@ -270,6 +270,11 @@ module Files
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`, `export_type` or `disabled`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `disabled` and `export_type`.
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `export_type`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::ScheduledExport objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -288,6 +293,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Scheduled Export ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ScheduledExport.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -317,6 +327,11 @@ module Files
     #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the scheduled export schedule.
     #   schedule_time_zone - string - Time zone used by the scheduled export schedule.
     #   holiday_region - string - Optional holiday region used by the scheduled export schedule.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ScheduledExport.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: export_type must be an String") if params[:export_type] and !params[:export_type].is_a?(String)
@@ -353,6 +368,11 @@ module Files
     #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the scheduled export schedule.
     #   schedule_time_zone - string - Time zone used by the scheduled export schedule.
     #   holiday_region - string - Optional holiday region used by the scheduled export schedule.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ScheduledExport.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -376,6 +396,10 @@ module Files
       ScheduledExport.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

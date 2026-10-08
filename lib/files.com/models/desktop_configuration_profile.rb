@@ -114,6 +114,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::DesktopConfigurationProfile objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -131,6 +136,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Desktop Configuration Profile ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::DesktopConfigurationProfile.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -151,6 +161,11 @@ module Files
     #   workspace_id - int64 - Workspace ID
     #   use_for_all_users - boolean - Whether this profile applies to all users in the Workspace by default
     #   disable_drive_mounting - boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::DesktopConfigurationProfile.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: mount_mappings must be an Hash") if params[:mount_mappings] and !params[:mount_mappings].is_a?(Hash)
@@ -168,6 +183,11 @@ module Files
     #   mount_mappings - object - Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
     #   use_for_all_users - boolean - Whether this profile applies to all users in the Workspace by default
     #   disable_drive_mounting - boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::DesktopConfigurationProfile.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -181,6 +201,10 @@ module Files
       DesktopConfigurationProfile.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

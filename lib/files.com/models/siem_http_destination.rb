@@ -661,6 +661,11 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::SiemHttpDestination objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -676,6 +681,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Siem Http Destination ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::SiemHttpDestination.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -724,6 +734,11 @@ module Files
     #   settings_change_send_enabled - boolean - Whether or not sending is enabled for settings_change logs.
     #   destination_type (required) - string - Destination Type
     #   destination_url - string - Destination Url
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::SiemHttpDestination.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if params[:additional_headers] and !params[:additional_headers].is_a?(Hash)
@@ -786,6 +801,11 @@ module Files
     #   email_send_enabled - boolean - Whether or not sending is enabled for email logs.
     #   exavault_api_request_send_enabled - boolean - Whether or not sending is enabled for exavault_api_request logs.
     #   settings_change_send_enabled - boolean - Whether or not sending is enabled for settings_change logs.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.send_test_entry(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: siem_http_destination_id must be an Integer") if params[:siem_http_destination_id] and !params[:siem_http_destination_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if params[:destination_type] and !params[:destination_type].is_a?(String)
@@ -847,6 +867,11 @@ module Files
     #   settings_change_send_enabled - boolean - Whether or not sending is enabled for settings_change logs.
     #   destination_type - string - Destination Type
     #   destination_url - string - Destination Url
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::SiemHttpDestination.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -877,6 +902,10 @@ module Files
       SiemHttpDestination.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

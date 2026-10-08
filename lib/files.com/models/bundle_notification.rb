@@ -129,6 +129,11 @@ module Files
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `bundle_id`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `bundle_id`.
     #   bundle_id - int64 - Bundle ID
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::BundleNotification objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
@@ -148,6 +153,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Bundle Notification ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::BundleNotification.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -168,6 +178,11 @@ module Files
     #   notify_user_id - int64 - The id of the user to notify.
     #   notify_on_registration - boolean - Triggers bundle notification when a registration action occurs for it.
     #   notify_on_upload - boolean - Triggers bundle notification when a upload action occurs for it.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::BundleNotification.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
@@ -181,6 +196,11 @@ module Files
     # Parameters:
     #   notify_on_registration - boolean - Triggers bundle notification when a registration action occurs for it.
     #   notify_on_upload - boolean - Triggers bundle notification when a upload action occurs for it.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::BundleNotification.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -191,6 +211,10 @@ module Files
       BundleNotification.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

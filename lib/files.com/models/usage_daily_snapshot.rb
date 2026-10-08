@@ -78,6 +78,11 @@ module Files
     #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `date`.
     #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `date`.
     #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `date`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::UsageDailySnapshot objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)

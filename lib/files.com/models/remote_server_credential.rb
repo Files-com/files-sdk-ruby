@@ -473,6 +473,11 @@ module Files
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id` and `name`. Valid field combinations are `[ workspace_id, name ]`.
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::RemoteServerCredential objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -491,6 +496,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Remote Server Credential ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::RemoteServerCredential.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -542,6 +552,11 @@ module Files
     #   wasabi_secret_key - string - Wasabi: Secret Key
     #   workspace_id - int64 - Workspace ID (0 for default workspace)
     #   copy_values_from_credential_id - int64 - ID of Remote Server Credential to copy omitted values from.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::RemoteServerCredential.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
@@ -619,6 +634,11 @@ module Files
     #   sharepoint_client_certificate - string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
     #   sharepoint_client_secret - string - SharePoint: Microsoft Entra application client secret for app-only authentication.
     #   wasabi_secret_key - string - Wasabi: Secret Key
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::RemoteServerCredential.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -663,6 +683,10 @@ module Files
       RemoteServerCredential.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

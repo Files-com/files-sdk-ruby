@@ -156,6 +156,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   path (required) - string - Path to operate on.
     #   include_children - boolean - Include locks from children objects?
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Lock objects.
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -178,6 +183,11 @@ module Files
     #   recursive - boolean - Does lock apply to subfolders?
     #   owner - string - Arbitrary descriptive label for the lock. Does not change the lock creator or permissions.
     #   timeout - int64 - Lock timeout in seconds
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Lock.
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -194,6 +204,11 @@ module Files
 
     # Parameters:
     #   token (required) - string - Lock token
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path

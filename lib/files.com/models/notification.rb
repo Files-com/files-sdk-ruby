@@ -313,6 +313,11 @@ module Files
     #   path - string - Show notifications for this Path.
     #   include_ancestors - boolean - If `include_ancestors` is `true` and `path` is specified, include notifications for any parent paths. Ignored if `path` is not specified.
     #   group_id - string
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Notification objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -333,6 +338,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Notification ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Notification.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -368,6 +378,11 @@ module Files
     #   group_ids - string - Group IDs when the notification requires multiple groups. If sent as a string, it should be comma-delimited.
     #   path - string - Path
     #   username - string - The username of the user to notify.  Provide `user_id`, `username` or `group_id`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Notification.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if params[:send_interval] and !params[:send_interval].is_a?(String)
@@ -402,6 +417,11 @@ module Files
     #   triggering_user_ids - array(int64) - If set, will only notify on actions made one of the specified users
     #   trigger_by_share_recipients - boolean - Notify when actions are performed by a share recipient?
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Notification.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -419,6 +439,10 @@ module Files
       Notification.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

@@ -262,6 +262,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `as2_station_id` or `name`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `as2_station_id` and `workspace_id`. Valid field combinations are `[ workspace_id, as2_station_id ]`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::As2Partner objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -279,6 +284,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - As2 Partner ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::As2Partner.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -306,6 +316,11 @@ module Files
     #   name (required) - string - The partner's formal AS2 name.
     #   uri (required) - string - Public URI where we will send the AS2 messages (via HTTP/HTTPS).
     #   public_certificate (required) - string - Public certificate for AS2 Partner.  Note: This is the certificate for AS2 message security, not a certificate used for HTTPS authentication.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::As2Partner.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if params[:http_auth_username] and !params[:http_auth_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if params[:http_auth_password] and !params[:http_auth_password].is_a?(String)
@@ -339,6 +354,11 @@ module Files
     #   name - string - The partner's formal AS2 name.
     #   uri - string - Public URI where we will send the AS2 messages (via HTTP/HTTPS).
     #   public_certificate - string - Public certificate for AS2 Partner.  Note: This is the certificate for AS2 message security, not a certificate used for HTTPS authentication.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::As2Partner.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -359,6 +379,10 @@ module Files
       As2Partner.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

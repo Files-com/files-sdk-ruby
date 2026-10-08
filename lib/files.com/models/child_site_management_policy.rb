@@ -154,6 +154,11 @@ module Files
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::ChildSiteManagementPolicy objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -169,6 +174,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Child Site Management Policy ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ChildSiteManagementPolicy.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -191,6 +201,11 @@ module Files
     #   policy_type (required) - string - Type of policy.  Valid values: `settings`.
     #   name - string - Name for this policy.
     #   description - string - Description for this policy.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ChildSiteManagementPolicy.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: skip_child_site_ids must be an Array") if params[:skip_child_site_ids] and !params[:skip_child_site_ids].is_a?(Array)
@@ -212,6 +227,11 @@ module Files
     #   policy_type - string - Type of policy.  Valid values: `settings`.
     #   name - string - Name for this policy.
     #   description - string - Description for this policy.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ChildSiteManagementPolicy.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -228,6 +248,10 @@ module Files
       ChildSiteManagementPolicy.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

@@ -79,6 +79,11 @@ module Files
     #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at`.
     #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
     #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::ExternalEvent objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -100,6 +105,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - External Event ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ExternalEvent.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -117,6 +127,11 @@ module Files
     # Parameters:
     #   status (required) - string - Status of event.
     #   body (required) - string - Event body
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ExternalEvent.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: status must be an String") if params[:status] and !params[:status].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)

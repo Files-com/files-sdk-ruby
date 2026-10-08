@@ -157,6 +157,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Action Notification Export ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ActionNotificationExport.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -183,6 +188,11 @@ module Files
     #   query_success - boolean - true if the webhook request succeeded (i.e. returned a 200 or 204 response status). false otherwise.
     #   query_path - string - Return notifications that were triggered by actions on this specific path.
     #   query_folder - string - Return notifications that were triggered by actions in this folder.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::ActionNotificationExport.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)

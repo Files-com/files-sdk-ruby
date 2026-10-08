@@ -135,6 +135,11 @@ module Files
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Schedule objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -151,6 +156,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Schedule ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Schedule.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -171,6 +181,11 @@ module Files
     #   schedule_times_of_day (required) - array(string) - Times of day in HH:MM format (24-hour).
     #   schedule_time_zone - string - Time zone for scheduled times. If not set, times are interpreted as UTC.
     #   holiday_region - string - Optional holiday region on which linked resources do not run.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Schedule.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
@@ -191,6 +206,11 @@ module Files
     #   schedule_times_of_day - array(string) - Times of day in HH:MM format (24-hour).
     #   schedule_time_zone - string - Time zone for scheduled times. If not set, times are interpreted as UTC.
     #   holiday_region - string - Optional holiday region on which linked resources do not run.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Schedule.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -206,6 +226,10 @@ module Files
       Schedule.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

@@ -223,6 +223,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `restoration_type`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Restore objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -246,6 +251,11 @@ module Files
     #   restore_in_place - boolean - If true, we will restore the files in place (into their original paths). If false, we will create a new restoration folder in the root and restore files there.
     #   update_timestamps - boolean - If true, we will update the last modified timestamp of restored files to today's date. If false, we might trigger File Expiration to delete the file again.
     #   workspace_id - int64 - Workspace ID for a workspace-scoped restore. `0` means the default site-wide scope.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Restore.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: earliest_date must be an String") if params[:earliest_date] and !params[:earliest_date].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prefix must be an String") if params[:prefix] and !params[:prefix].is_a?(String)

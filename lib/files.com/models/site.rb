@@ -1009,11 +1009,19 @@ module Files
       @attributes[:windows_mode_ftp]
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Site.
     def self.get(params = {}, options = {})
       response, options = Api.send_request("/site", :get, params, options) { |reply| reply.require_object("Site") }
       Site.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::UsageSnapshot.
     def self.get_usage(params = {}, options = {})
       response, options = Api.send_request("/site/usage", :get, params, options) { |reply| reply.require_object("UsageSnapshot") }
       UsageSnapshot.new(response.data, options)
@@ -1213,6 +1221,11 @@ module Files
     #   ldap_password_change_confirmation - string - Confirm new LDAP password.
     #   redirect_old_subdomain - boolean - If true, and if changing the site subdomain, then create a redirect from the previous Files.com subdomain to the new Files.com subdomain.
     #   smtp_password - string - Password for SMTP server.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Site.
     def self.update(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subdomain must be an String") if params[:subdomain] and !params[:subdomain].is_a?(String)

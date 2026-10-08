@@ -620,6 +620,11 @@ module Files
     #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `created_at` and `expires_at`.
     #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at` and `expires_at`.
     #   deleted - boolean - If true, only list deleted Share Links.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Bundle objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
@@ -644,6 +649,11 @@ module Files
     # Parameters:
     #   id (required) - int64 - Bundle ID.
     #   deleted - boolean - If true, show a deleted Share Link.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Bundle.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -691,6 +701,11 @@ module Files
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
     #   watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Bundle.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if params[:paths] and !params[:paths].is_a?(Array)
@@ -724,6 +739,11 @@ module Files
     #   to - array(string) - A list of email addresses to share this bundle with. Required unless `recipients` is used.
     #   note - string - Note to include in email.
     #   recipients - array(object) - A list of recipients to share this bundle with. Required unless `to` is used.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.share(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -770,6 +790,11 @@ module Files
     #   watermark_attachment_file - file - Preview watermark image applied to all bundle items.
     #   watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Bundle.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -799,6 +824,10 @@ module Files
       Bundle.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

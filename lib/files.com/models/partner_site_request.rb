@@ -104,6 +104,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `host_partner_id`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `host_partner_id`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::PartnerSiteRequest objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -121,6 +126,11 @@ module Files
 
     # Parameters:
     #   pairing_key (required) - string - Pairing key for the partner site request
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.find_by_pairing_key(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: pairing_key must be an String") if params[:pairing_key] and !params[:pairing_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: pairing_key") unless params[:pairing_key]
@@ -132,6 +142,11 @@ module Files
     # Parameters:
     #   host_partner_id (required) - int64 - Host Partner ID to link with
     #   guest_site_url (required) - string - Guest Site URL to link to
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::PartnerSiteRequest.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: host_partner_id must be an Integer") if params[:host_partner_id] and !params[:host_partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: guest_site_url must be an String") if params[:guest_site_url] and !params[:guest_site_url].is_a?(String)
@@ -144,6 +159,11 @@ module Files
 
     # Parameters:
     #   pairing_key (required) - string - Pairing key for the partner site request
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.reject(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: pairing_key must be an String") if params[:pairing_key] and !params[:pairing_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: pairing_key") unless params[:pairing_key]
@@ -155,6 +175,11 @@ module Files
     # Parameters:
     #   pairing_key (required) - string - Pairing key for the partner site request
     #   partner_id - int64 - ID of an existing Partner on this site, with the host role, that represents the requesting organization. The connection binds to that Partner and makes it host_and_guest. When omitted, a guest Partner named after the host site is created.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.approve(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: pairing_key must be an String") if params[:pairing_key] and !params[:pairing_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
@@ -164,6 +189,10 @@ module Files
       nil
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

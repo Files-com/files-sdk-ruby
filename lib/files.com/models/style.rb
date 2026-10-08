@@ -101,6 +101,11 @@ module Files
 
     # Parameters:
     #   path (required) - string - Style path.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Style.
     def self.find(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -118,6 +123,11 @@ module Files
     # Parameters:
     #   file - file - Logo for custom branding. Required when creating a new style.
     #   logo_click_href - string - URL to open when a public visitor clicks the logo.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Style.
     def self.update(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
@@ -129,6 +139,10 @@ module Files
       Style.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path

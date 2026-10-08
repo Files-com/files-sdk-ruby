@@ -549,6 +549,11 @@ module Files
     #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `last_modified_at`.
     #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `last_modified_at`.
     #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `last_modified_at`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Automation objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -570,6 +575,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Automation ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Automation.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -584,6 +594,10 @@ module Files
       find(id, params, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::AutomationAuthoringSchema.
     def self.get_authoring_schema(params = {}, options = {})
       response, options = Api.send_request("/automations/authoring_schema", :get, params, options) { |reply| reply.require_object("AutomationAuthoringSchema") }
       AutomationAuthoringSchema.new(response.data, options)
@@ -626,6 +640,11 @@ module Files
     #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   automation (required) - string - Automation type
     #   workspace_id - int64 - Workspace ID
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Automation.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: source must be an String") if params[:source] and !params[:source].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destinations must be an Array") if params[:destinations] and !params[:destinations].is_a?(Array)
@@ -663,6 +682,11 @@ module Files
     end
 
     # Upgrade a legacy Automation to Automation v2
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Automation.
     def self.upgrade(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -677,6 +701,11 @@ module Files
     #
     # Parameters:
     #   items - array(object) - Initial items for a v2 manual trigger. Each item contains exactly one `file` path or `data` object.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.manual_run(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -724,6 +753,11 @@ module Files
     #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   automation - string - Automation type
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Automation.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -762,6 +796,10 @@ module Files
       Automation.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

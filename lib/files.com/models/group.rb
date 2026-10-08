@@ -230,6 +230,11 @@ module Files
     #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
     #   ids - string - Comma-separated list of group ids to include in results.
     #   include_parent_site_groups - boolean - Include groups from the parent site.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::Group objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -249,6 +254,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Group ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Group.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -278,6 +288,11 @@ module Files
     #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
     #   name (required) - string - Group name.
     #   workspace_id - int64 - Workspace ID
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Group.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
@@ -308,6 +323,11 @@ module Files
     #   integration_centric_profile_id - int64 - Integration Centric Profile ID assigned to this Group, if any. Users in the Group inherit it unless a direct per-user assignment overrides it.
     #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
     #   name - string - Group name.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::Group.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -326,6 +346,10 @@ module Files
       Group.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id

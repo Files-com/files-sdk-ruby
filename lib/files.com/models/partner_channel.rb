@@ -232,6 +232,11 @@ module Files
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
     #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `path` or `partner_id`.
     #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `partner_id` and `workspace_id`. Valid field combinations are `[ workspace_id, partner_id ]`.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::List of Files::PartnerChannel objects.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
@@ -249,6 +254,11 @@ module Files
 
     # Parameters:
     #   id (required) - int64 - Partner Channel ID.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::PartnerChannel.
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -275,6 +285,11 @@ module Files
     #   partner_id (required) - int64 - ID of the Partner this Channel belongs to.
     #   path (required) - string - Channel path relative to the Partner root folder.
     #   workspace_id - int64 - ID of the Workspace associated with this Partner Channel.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::PartnerChannel.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: direction must be an String") if params[:direction] and !params[:direction].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_folder_name must be an String") if params[:from_partner_folder_name] and !params[:from_partner_folder_name].is_a?(String)
@@ -303,6 +318,11 @@ module Files
     #   to_partner_managed_folder_paths - array(string) - Managed folder paths inside the to-Partner folder.
     #   to_partner_route_path - string - Optional route path for files delivered to the Partner.
     #   path - string - Channel path relative to the Partner root folder.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::PartnerChannel.
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
@@ -321,6 +341,10 @@ module Files
       PartnerChannel.new(response.data, options)
     end
 
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns nil.
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
