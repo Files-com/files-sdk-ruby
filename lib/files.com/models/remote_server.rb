@@ -162,6 +162,15 @@ module Files
       @attributes[:s3_region] = value
     end
 
+    # string - ARN of the AWS KMS key that encrypts files written to the bucket (SSE-KMS). Leave blank unless your bucket requires a specific key.
+    def s3_kms_key_id
+      @attributes[:s3_kms_key_id]
+    end
+
+    def s3_kms_key_id=(value)
+      @attributes[:s3_kms_key_id] = value
+    end
+
     # string - AWS Access Key.
     def aws_access_key
       @attributes[:aws_access_key]
@@ -1021,6 +1030,7 @@ module Files
     #   s3_compatible_endpoint - string - S3-compatible: endpoint
     #   s3_compatible_region - string - S3-compatible: region
     #   s3_compatible_virtual_hosted_style - boolean - S3-compatible: If true, use virtual-hosted-style URLs instead of path-style URLs
+    #   s3_kms_key_id - string - ARN of the AWS KMS key that encrypts files written to the bucket (SSE-KMS). Leave blank unless your bucket requires a specific key.
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
     #   server_host_key - string - Pinned SSH host key or OpenSSH host certificate for SFTP. If omitted, Files.com detects and stores a host key, preferring plain keys over certificates. With `server_certificate=require_match` (the default), the server must present the exact pinned key or certificate and prove it holds the matching private key. A pinned certificate is compared in full, so renewal can require updating `server_host_key` even when its underlying key is unchanged. Files.com does not check certificate CA signatures, principals, or validity periods. Certificate expiration alone does not end the pin. Update `server_host_key` to replace the pin.
@@ -1102,6 +1112,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params[:s3_compatible_region] and !params[:s3_compatible_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_kms_key_id must be an String") if params[:s3_kms_key_id] and !params[:s3_kms_key_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params[:s3_region] and !params[:s3_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
@@ -1303,6 +1314,7 @@ module Files
     #   s3_compatible_endpoint - string - S3-compatible: endpoint
     #   s3_compatible_region - string - S3-compatible: region
     #   s3_compatible_virtual_hosted_style - boolean - S3-compatible: If true, use virtual-hosted-style URLs instead of path-style URLs
+    #   s3_kms_key_id - string - ARN of the AWS KMS key that encrypts files written to the bucket (SSE-KMS). Leave blank unless your bucket requires a specific key.
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
     #   server_host_key - string - Pinned SSH host key or OpenSSH host certificate for SFTP. If omitted, Files.com detects and stores a host key, preferring plain keys over certificates. With `server_certificate=require_match` (the default), the server must present the exact pinned key or certificate and prove it holds the matching private key. A pinned certificate is compared in full, so renewal can require updating `server_host_key` even when its underlying key is unchanged. Files.com does not check certificate CA signatures, principals, or validity periods. Certificate expiration alone does not end the pin. Update `server_host_key` to replace the pin.
@@ -1387,6 +1399,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params[:s3_compatible_region] and !params[:s3_compatible_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_kms_key_id must be an String") if params[:s3_kms_key_id] and !params[:s3_kms_key_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params[:s3_region] and !params[:s3_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
@@ -1493,6 +1506,7 @@ module Files
     #   s3_compatible_endpoint - string - S3-compatible: endpoint
     #   s3_compatible_region - string - S3-compatible: region
     #   s3_compatible_virtual_hosted_style - boolean - S3-compatible: If true, use virtual-hosted-style URLs instead of path-style URLs
+    #   s3_kms_key_id - string - ARN of the AWS KMS key that encrypts files written to the bucket (SSE-KMS). Leave blank unless your bucket requires a specific key.
     #   s3_region - string - S3 region
     #   server_certificate - string - Remote server certificate
     #   server_host_key - string - Pinned SSH host key or OpenSSH host certificate for SFTP. If omitted, Files.com detects and stores a host key, preferring plain keys over certificates. With `server_certificate=require_match` (the default), the server must present the exact pinned key or certificate and prove it holds the matching private key. A pinned certificate is compared in full, so renewal can require updating `server_host_key` even when its underlying key is unchanged. Files.com does not check certificate CA signatures, principals, or validity periods. Certificate expiration alone does not end the pin. Update `server_host_key` to replace the pin.
@@ -1578,6 +1592,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if params[:s3_compatible_bucket] and !params[:s3_compatible_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if params[:s3_compatible_endpoint] and !params[:s3_compatible_endpoint].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if params[:s3_compatible_region] and !params[:s3_compatible_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_kms_key_id must be an String") if params[:s3_kms_key_id] and !params[:s3_kms_key_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if params[:s3_region] and !params[:s3_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if params[:server_host_key] and !params[:server_host_key].is_a?(String)
