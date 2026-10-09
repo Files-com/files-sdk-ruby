@@ -198,6 +198,24 @@ module Files
       @attributes[:http_auth_password] = value
     end
 
+    # string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the partner's public certificate. Provide this instead of public_certificate. Any private key in the file is discarded. A public-only file must contain exactly one certificate.
+    def pkcs12
+      @attributes[:pkcs12]
+    end
+
+    def pkcs12=(value)
+      @attributes[:pkcs12] = value
+    end
+
+    # string - Password for pkcs12. The file and password are used only for import; the extracted public certificate is stored as PEM.
+    def pkcs12_password
+      @attributes[:pkcs12_password]
+    end
+
+    def pkcs12_password=(value)
+      @attributes[:pkcs12_password] = value
+    end
+
     # Parameters:
     #   enable_dedicated_ips - boolean - If `true`, we will use your site's dedicated IPs for all outbound connections to this AS2 Partner.
     #   http_auth_username - string - Username to send to server for HTTP Authentication.
@@ -210,6 +228,8 @@ module Files
     #   name - string - The partner's formal AS2 name.
     #   uri - string - Public URI where we will send the AS2 messages (via HTTP/HTTPS).
     #   public_certificate - string - Public certificate for AS2 Partner.  Note: This is the certificate for AS2 message security, not a certificate used for HTTPS authentication.
+    #   pkcs12 - string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the partner's public certificate. Provide this instead of public_certificate. Any private key in the file is discarded. A public-only file must contain exactly one certificate.
+    #   pkcs12_password - string - Password for pkcs12. The file and password are used only for import; the extracted public certificate is stored as PEM.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -224,6 +244,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uri must be an String") if params[:uri] and !params[:uri].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if params[:pkcs12] and !params[:pkcs12].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if params[:pkcs12_password] and !params[:pkcs12_password].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/as2_partners/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("As2Partner") }
@@ -317,7 +339,9 @@ module Files
     #   as2_station_id (required) - int64 - ID of the AS2 Station associated with this partner.
     #   name (required) - string - The partner's formal AS2 name.
     #   uri (required) - string - Public URI where we will send the AS2 messages (via HTTP/HTTPS).
-    #   public_certificate (required) - string - Public certificate for AS2 Partner.  Note: This is the certificate for AS2 message security, not a certificate used for HTTPS authentication.
+    #   public_certificate - string - Public certificate for AS2 Partner.  Note: This is the certificate for AS2 message security, not a certificate used for HTTPS authentication.
+    #   pkcs12 - string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the partner's public certificate. Provide this instead of public_certificate. Any private key in the file is discarded. A public-only file must contain exactly one certificate.
+    #   pkcs12_password - string - Password for pkcs12. The file and password are used only for import; the extracted public certificate is stored as PEM.
     #
     # params:: Hash of API operation parameter values.
     # options:: Hash of optional request configuration passed to Files::Api.send_request.
@@ -335,10 +359,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uri must be an String") if params[:uri] and !params[:uri].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if params[:pkcs12] and !params[:pkcs12].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if params[:pkcs12_password] and !params[:pkcs12_password].is_a?(String)
       raise MissingParameterError.new("Parameter missing: as2_station_id") unless params[:as2_station_id]
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
       raise MissingParameterError.new("Parameter missing: uri") unless params[:uri]
-      raise MissingParameterError.new("Parameter missing: public_certificate") unless params[:public_certificate]
 
       response, options = Api.send_request("/as2_partners", :post, params, options) { |reply| reply.require_object("As2Partner") }
       As2Partner.new(response.data, options)
@@ -356,6 +381,8 @@ module Files
     #   name - string - The partner's formal AS2 name.
     #   uri - string - Public URI where we will send the AS2 messages (via HTTP/HTTPS).
     #   public_certificate - string - Public certificate for AS2 Partner.  Note: This is the certificate for AS2 message security, not a certificate used for HTTPS authentication.
+    #   pkcs12 - string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the partner's public certificate. Provide this instead of public_certificate. Any private key in the file is discarded. A public-only file must contain exactly one certificate.
+    #   pkcs12_password - string - Password for pkcs12. The file and password are used only for import; the extracted public certificate is stored as PEM.
     #
     # params:: Hash of API operation parameter values.
     # options:: Hash of optional request configuration passed to Files::Api.send_request.
@@ -375,6 +402,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uri must be an String") if params[:uri] and !params[:uri].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if params[:pkcs12] and !params[:pkcs12].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if params[:pkcs12_password] and !params[:pkcs12_password].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/as2_partners/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("As2Partner") }

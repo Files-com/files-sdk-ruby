@@ -144,7 +144,7 @@ module Files
       @attributes[:private_key_password_md5] = value
     end
 
-    # string
+    # string - PEM-encoded private key matching public_certificate.
     def private_key
       @attributes[:private_key]
     end
@@ -153,7 +153,7 @@ module Files
       @attributes[:private_key] = value
     end
 
-    # string
+    # string - Password for the PEM-encoded private key.
     def private_key_password
       @attributes[:private_key_password]
     end
@@ -162,11 +162,31 @@ module Files
       @attributes[:private_key_password] = value
     end
 
+    # string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's certificate and private key. Provide this instead of public_certificate and private_key.
+    def pkcs12
+      @attributes[:pkcs12]
+    end
+
+    def pkcs12=(value)
+      @attributes[:pkcs12] = value
+    end
+
+    # string - Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
+    def pkcs12_password
+      @attributes[:pkcs12_password]
+    end
+
+    def pkcs12_password=(value)
+      @attributes[:pkcs12_password] = value
+    end
+
     # Parameters:
     #   name - string - The station's formal AS2 name.
-    #   public_certificate - string
-    #   private_key - string
-    #   private_key_password - string
+    #   public_certificate - string - Public certificate used for message security.
+    #   private_key - string - PEM-encoded private key matching public_certificate.
+    #   private_key_password - string - Password for the PEM-encoded private key.
+    #   pkcs12 - string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's replacement certificate and private key. Provide this instead of public_certificate and private_key.
+    #   pkcs12_password - string - Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -176,6 +196,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if params[:pkcs12] and !params[:pkcs12].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if params[:pkcs12_password] and !params[:pkcs12_password].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/as2_stations/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("As2Station") }
@@ -260,9 +282,11 @@ module Files
     # Parameters:
     #   name (required) - string - The station's formal AS2 name.
     #   workspace_id - int64 - ID of the Workspace associated with this AS2 Station.
-    #   public_certificate (required) - string
-    #   private_key (required) - string
-    #   private_key_password - string
+    #   public_certificate - string - Public certificate used for message security.
+    #   private_key - string - PEM-encoded private key matching public_certificate.
+    #   private_key_password - string - Password for the PEM-encoded private key.
+    #   pkcs12 - string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's certificate and private key. Provide this instead of public_certificate and private_key.
+    #   pkcs12_password - string - Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
     #
     # params:: Hash of API operation parameter values.
     # options:: Hash of optional request configuration passed to Files::Api.send_request.
@@ -274,9 +298,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if params[:pkcs12] and !params[:pkcs12].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if params[:pkcs12_password] and !params[:pkcs12_password].is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") unless params[:name]
-      raise MissingParameterError.new("Parameter missing: public_certificate") unless params[:public_certificate]
-      raise MissingParameterError.new("Parameter missing: private_key") unless params[:private_key]
 
       response, options = Api.send_request("/as2_stations", :post, params, options) { |reply| reply.require_object("As2Station") }
       As2Station.new(response.data, options)
@@ -284,9 +308,11 @@ module Files
 
     # Parameters:
     #   name - string - The station's formal AS2 name.
-    #   public_certificate - string
-    #   private_key - string
-    #   private_key_password - string
+    #   public_certificate - string - Public certificate used for message security.
+    #   private_key - string - PEM-encoded private key matching public_certificate.
+    #   private_key_password - string - Password for the PEM-encoded private key.
+    #   pkcs12 - string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's replacement certificate and private key. Provide this instead of public_certificate and private_key.
+    #   pkcs12_password - string - Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
     #
     # params:: Hash of API operation parameter values.
     # options:: Hash of optional request configuration passed to Files::Api.send_request.
@@ -300,6 +326,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if params[:private_key] and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_password must be an String") if params[:private_key_password] and !params[:private_key_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if params[:pkcs12] and !params[:pkcs12].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if params[:pkcs12_password] and !params[:pkcs12_password].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") unless params[:id]
 
       response, options = Api.send_request("/as2_stations/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("As2Station") }
