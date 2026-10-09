@@ -125,6 +125,7 @@ module Files
       nil
     end
 
+    # Alias for ::delete. Returns nil.
     def self.destroy(params = {}, options = {})
       delete(params, options)
       nil

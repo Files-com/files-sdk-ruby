@@ -915,6 +915,8 @@ module Files
     end
 
     # Unlock user who has been locked out due to failed logins
+    #
+    # Returns the [response, options] pair from Files::Api.send_request.
     def unlock(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -926,6 +928,8 @@ module Files
     end
 
     # Resend user welcome email
+    #
+    # Returns the [response, options] pair from Files::Api.send_request.
     def resend_welcome_email(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -937,6 +941,8 @@ module Files
     end
 
     # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
+    #
+    # Returns the [response, options] pair from Files::Api.send_request.
     def user_2fa_reset(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -1071,6 +1077,8 @@ module Files
 
     # Parameters:
     #   new_owner_id - int64 - Provide a User ID here to transfer ownership of certain resources such as Automations and Share Links (Bundles) to that new user.
+    #
+    # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -1082,6 +1090,7 @@ module Files
       Api.send_request("/users/#{@attributes[:id]}", :delete, params, @options)
     end
 
+    # Alias for #delete. Returns nil.
     def destroy(params = {})
       delete(params)
       nil
@@ -1470,6 +1479,7 @@ module Files
       nil
     end
 
+    # Alias for ::delete. Returns nil.
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

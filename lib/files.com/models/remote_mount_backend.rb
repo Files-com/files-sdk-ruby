@@ -171,6 +171,8 @@ module Files
     end
 
     # Reset backend status to healthy
+    #
+    # Returns the [response, options] pair from Files::Api.send_request.
     def reset_status(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -214,6 +216,7 @@ module Files
       [ response, options ]
     end
 
+    # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -224,6 +227,7 @@ module Files
       Api.send_request("/remote_mount_backends/#{@attributes[:id]}", :delete, params, @options)
     end
 
+    # Alias for #delete. Returns nil.
     def destroy(params = {})
       delete(params)
       nil
@@ -391,6 +395,7 @@ module Files
       nil
     end
 
+    # Alias for ::delete. Returns nil.
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

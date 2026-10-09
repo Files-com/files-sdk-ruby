@@ -94,6 +94,7 @@ module Files
       [ response, options ]
     end
 
+    # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -104,6 +105,7 @@ module Files
       Api.send_request("/ai_assistant_personalities/#{@attributes[:id]}", :delete, params, @options)
     end
 
+    # Alias for #delete. Returns nil.
     def destroy(params = {})
       delete(params)
       nil
@@ -226,6 +228,7 @@ module Files
       nil
     end
 
+    # Alias for ::delete. Returns nil.
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

@@ -275,6 +275,8 @@ module Files
     end
 
     # Synchronize provisioning data with the SSO remote server
+    #
+    # Returns the [response, options] pair from Files::Api.send_request.
     def sync(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
