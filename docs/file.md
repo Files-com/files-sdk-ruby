@@ -284,6 +284,22 @@ Files::File.zip_list_contents(path)
 
 ---
 
+## Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
+
+```
+Files::File.begin_delete(path, 
+  recursive: false
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `recursive` (boolean): If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
+
+
+---
+
 ## Copy File/Folder
 
 ```
@@ -546,6 +562,24 @@ file.zip_list_contents
 ### Parameters
 
 * `path` (string): Required - Path to operate on.
+
+
+---
+
+## Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
+
+```
+file = Files::File.find(path)
+
+file.begin_delete(
+  recursive: false
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `recursive` (boolean): If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
 
 
 ---

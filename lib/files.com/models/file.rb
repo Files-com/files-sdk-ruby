@@ -1145,6 +1145,20 @@ module Files
       Api.send_request("/file_actions/zip_list/#{@attributes[:path]}", :get, params, @options)
     end
 
+    # Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
+    #
+    # Parameters:
+    #   recursive - boolean - If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
+    def begin_delete(params = {})
+      params ||= {}
+      params[:path] = @attributes[:path]
+      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+
+      Api.send_request("/file_actions/delete/#{@attributes[:path]}", :post, params, @options)
+    end
+
     # Copy File/Folder
     #
     # Parameters:
@@ -1464,6 +1478,25 @@ module Files
       response.data.map do |entity_data|
         ZipListEntry.new(entity_data, options)
       end
+    end
+
+    # Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
+    #
+    # Parameters:
+    #   recursive - boolean - If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::FileAction.
+    def self.begin_delete(path, params = {}, options = {})
+      params ||= {}
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+
+      response, options = Api.send_request("/file_actions/delete/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
+      FileAction.new(response.data, options)
     end
 
     # Copy File/Folder
