@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::PublicIpAddress is the Ruby SDK's representation of Files.com API PublicIpAddress objects.
+  # Each instance keeps its API field values in +attributes+.
   class PublicIpAddress
     attr_reader :options, :attributes
 

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::UserRequest is the Ruby SDK's representation of Files.com API UserRequest objects.
+  # Each instance keeps its API field values in +attributes+.
   class UserRequest
     attr_reader :options, :attributes
 
@@ -59,8 +61,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/user_requests/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -91,8 +93,8 @@ module Files
     #
     # Returns a Files::List of Files::UserRequest objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
 
       List.new(UserRequest, params) do |page_params, &check_page|
         Api.send_request("/user_requests", :get, page_params, options, &check_page)
@@ -113,8 +115,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/user_requests/#{params[:id]}", :get, params, options) { |reply| reply.require_object("UserRequest") }
       UserRequest.new(response.data, options)
@@ -135,13 +137,13 @@ module Files
     #
     # Returns a Files::UserRequest.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: email must be an String") if params[:email] and !params[:email].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: details must be an String") if params[:details] and !params[:details].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: company must be an String") if params[:company] and !params[:company].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: name") unless params[:name]
-      raise MissingParameterError.new("Parameter missing: email") unless params[:email]
-      raise MissingParameterError.new("Parameter missing: details") unless params[:details]
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: email must be an String") if !params[:email].nil? and !params[:email].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: details must be an String") if !params[:details].nil? and !params[:details].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: company must be an String") if !params[:company].nil? and !params[:company].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: name") if params[:name].nil?
+      raise MissingParameterError.new("Parameter missing: email") if params[:email].nil?
+      raise MissingParameterError.new("Parameter missing: details") if params[:details].nil?
 
       response, options = Api.send_request("/user_requests", :post, params, options) { |reply| reply.require_object("UserRequest") }
       UserRequest.new(response.data, options)
@@ -154,8 +156,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/user_requests/#{params[:id]}", :delete, params, options)
       nil

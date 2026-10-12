@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::WebhookTest is the Ruby SDK's representation of Files.com API WebhookTest objects.
+  # Each instance keeps its API field values in +attributes+.
   class WebhookTest
     attr_reader :options, :attributes
 
@@ -172,15 +174,15 @@ module Files
     #
     # Returns a Files::WebhookTest.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: url must be an String") if params[:url] and !params[:url].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: method must be an String") if params[:method] and !params[:method].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: encoding must be an String") if params[:encoding] and !params[:encoding].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if params[:headers] and !params[:headers].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: body must be an Hash") if params[:body] and !params[:body].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: raw_body must be an String") if params[:raw_body] and !params[:raw_body].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_form_field must be an String") if params[:file_form_field] and !params[:file_form_field].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: url") unless params[:url]
+      raise InvalidParameterError.new("Bad parameter: url must be an String") if !params[:url].nil? and !params[:url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: method must be an String") if !params[:method].nil? and !params[:method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: encoding must be an String") if !params[:encoding].nil? and !params[:encoding].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if !params[:headers].nil? and !params[:headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: body must be an Hash") if !params[:body].nil? and !params[:body].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: raw_body must be an String") if !params[:raw_body].nil? and !params[:raw_body].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_form_field must be an String") if !params[:file_form_field].nil? and !params[:file_form_field].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if !params[:action].nil? and !params[:action].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: url") if params[:url].nil?
 
       response, options = Api.send_request("/webhook_tests", :post, params, options) { |reply| reply.require_object("WebhookTest") }
       WebhookTest.new(response.data, options)

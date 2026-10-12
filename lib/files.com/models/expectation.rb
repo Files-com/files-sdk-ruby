@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Expectation is the Ruby SDK's representation of Files.com API Expectation objects.
+  # Each instance keeps its API field values in +attributes+.
   class Expectation
     attr_reader :options, :attributes
 
@@ -267,8 +269,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/expectations/#{@attributes[:id]}/trigger_evaluation", :post, params, @options)
     end
@@ -299,27 +301,27 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: source must be an String") if params[:source] and !params[:source].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if params[:exclude_pattern] and !params[:exclude_pattern].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if params[:holiday_region] and !params[:holiday_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: lookback_interval must be an Integer") if params[:lookback_interval] and !params[:lookback_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: late_acceptance_interval must be an Integer") if params[:late_acceptance_interval] and !params[:late_acceptance_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: inactivity_interval must be an Integer") if params[:inactivity_interval] and !params[:inactivity_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: max_open_interval must be an Integer") if params[:max_open_interval] and !params[:max_open_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: source must be an String") if !params[:source].nil? and !params[:source].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if !params[:exclude_pattern].nil? and !params[:exclude_pattern].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: trigger must be an String") if !params[:trigger].nil? and !params[:trigger].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: interval must be an String") if !params[:interval].nil? and !params[:interval].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if !params[:recurring_day].nil? and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if !params[:recurring_days].nil? and !params[:recurring_days].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: lookback_interval must be an Integer") if !params[:lookback_interval].nil? and !params[:lookback_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: late_acceptance_interval must be an Integer") if !params[:late_acceptance_interval].nil? and !params[:late_acceptance_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: inactivity_interval must be an Integer") if !params[:inactivity_interval].nil? and !params[:inactivity_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: max_open_interval must be an Integer") if !params[:max_open_interval].nil? and !params[:max_open_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/expectations/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Expectation") }
       @attributes = response.data
@@ -331,8 +333,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/expectations/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -365,10 +367,10 @@ module Files
     #
     # Returns a Files::List of Files::Expectation objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
       List.new(Expectation, params) do |page_params, &check_page|
         Api.send_request("/expectations", :get, page_params, options, &check_page)
@@ -389,8 +391,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/expectations/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Expectation") }
       Expectation.new(response.data, options)
@@ -428,26 +430,26 @@ module Files
     #
     # Returns a Files::Expectation.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: source must be an String") if params[:source] and !params[:source].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if params[:exclude_pattern] and !params[:exclude_pattern].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if params[:holiday_region] and !params[:holiday_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: lookback_interval must be an Integer") if params[:lookback_interval] and !params[:lookback_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: late_acceptance_interval must be an Integer") if params[:late_acceptance_interval] and !params[:late_acceptance_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: inactivity_interval must be an Integer") if params[:inactivity_interval] and !params[:inactivity_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: max_open_interval must be an Integer") if params[:max_open_interval] and !params[:max_open_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: criteria must be an Hash") if params[:criteria] and !params[:criteria].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: source must be an String") if !params[:source].nil? and !params[:source].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if !params[:exclude_pattern].nil? and !params[:exclude_pattern].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: trigger must be an String") if !params[:trigger].nil? and !params[:trigger].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: interval must be an String") if !params[:interval].nil? and !params[:interval].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if !params[:recurring_day].nil? and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if !params[:recurring_days].nil? and !params[:recurring_days].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: lookback_interval must be an Integer") if !params[:lookback_interval].nil? and !params[:lookback_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: late_acceptance_interval must be an Integer") if !params[:late_acceptance_interval].nil? and !params[:late_acceptance_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: inactivity_interval must be an Integer") if !params[:inactivity_interval].nil? and !params[:inactivity_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: max_open_interval must be an Integer") if !params[:max_open_interval].nil? and !params[:max_open_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: criteria must be an Hash") if !params[:criteria].nil? and !params[:criteria].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
 
       response, options = Api.send_request("/expectations", :post, params, options) { |reply| reply.require_object("Expectation") }
       Expectation.new(response.data, options)
@@ -462,8 +464,8 @@ module Files
     def self.trigger_evaluation(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/expectations/#{params[:id]}/trigger_evaluation", :post, params, options) { |reply| reply.require_object("ExpectationEvaluation") }
       ExpectationEvaluation.new(response.data, options)
@@ -499,28 +501,28 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: source must be an String") if params[:source] and !params[:source].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if params[:exclude_pattern] and !params[:exclude_pattern].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: trigger must be an String") if params[:trigger] and !params[:trigger].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: interval must be an String") if params[:interval] and !params[:interval].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if params[:recurring_day] and !params[:recurring_day].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if params[:recurring_days] and !params[:recurring_days].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if params[:schedule_id] and !params[:schedule_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if params[:schedule_days_of_week] and !params[:schedule_days_of_week].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if params[:schedule_times_of_day] and !params[:schedule_times_of_day].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if params[:schedule_time_zone] and !params[:schedule_time_zone].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if params[:holiday_region] and !params[:holiday_region].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: lookback_interval must be an Integer") if params[:lookback_interval] and !params[:lookback_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: late_acceptance_interval must be an Integer") if params[:late_acceptance_interval] and !params[:late_acceptance_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: inactivity_interval must be an Integer") if params[:inactivity_interval] and !params[:inactivity_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: max_open_interval must be an Integer") if params[:max_open_interval] and !params[:max_open_interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: criteria must be an Hash") if params[:criteria] and !params[:criteria].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: source must be an String") if !params[:source].nil? and !params[:source].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if !params[:exclude_pattern].nil? and !params[:exclude_pattern].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: trigger must be an String") if !params[:trigger].nil? and !params[:trigger].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: interval must be an String") if !params[:interval].nil? and !params[:interval].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if !params[:recurring_day].nil? and !params[:recurring_day].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if !params[:recurring_days].nil? and !params[:recurring_days].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: lookback_interval must be an Integer") if !params[:lookback_interval].nil? and !params[:lookback_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: late_acceptance_interval must be an Integer") if !params[:late_acceptance_interval].nil? and !params[:late_acceptance_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: inactivity_interval must be an Integer") if !params[:inactivity_interval].nil? and !params[:inactivity_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: max_open_interval must be an Integer") if !params[:max_open_interval].nil? and !params[:max_open_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: criteria must be an Hash") if !params[:criteria].nil? and !params[:criteria].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/expectations/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Expectation") }
       Expectation.new(response.data, options)
@@ -533,8 +535,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/expectations/#{params[:id]}", :delete, params, options)
       nil

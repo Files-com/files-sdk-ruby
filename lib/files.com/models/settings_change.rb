@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::SettingsChange is the Ruby SDK's representation of Files.com API SettingsChange objects.
+  # Each instance keeps its API field values in +attributes+.
   class SettingsChange
     attr_reader :options, :attributes
 
@@ -55,10 +57,10 @@ module Files
     #
     # Returns a Files::List of Files::SettingsChange objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
       List.new(SettingsChange, params) do |page_params, &check_page|
         Api.send_request("/settings_changes", :get, page_params, options, &check_page)

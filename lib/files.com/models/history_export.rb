@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::HistoryExport is the Ruby SDK's representation of Files.com API HistoryExport objects.
+  # Each instance keeps its API field values in +attributes+.
   class HistoryExport
     attr_reader :options, :attributes
 
@@ -273,8 +275,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/history_exports/#{params[:id]}", :get, params, options) { |reply| reply.require_object("HistoryExport") }
       HistoryExport.new(response.data, options)
@@ -313,28 +315,28 @@ module Files
     #
     # Returns a Files::HistoryExport.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params[:end_at] and !params[:end_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_action must be an String") if params[:query_action] and !params[:query_action].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_interface must be an String") if params[:query_interface] and !params[:query_interface].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_user_id must be an String") if params[:query_user_id] and !params[:query_user_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_file_id must be an String") if params[:query_file_id] and !params[:query_file_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_parent_id must be an String") if params[:query_parent_id] and !params[:query_parent_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_path must be an String") if params[:query_path] and !params[:query_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_folder must be an String") if params[:query_folder] and !params[:query_folder].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_src must be an String") if params[:query_src] and !params[:query_src].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_destination must be an String") if params[:query_destination] and !params[:query_destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_ip must be an String") if params[:query_ip] and !params[:query_ip].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_username must be an String") if params[:query_username] and !params[:query_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_failure_type must be an String") if params[:query_failure_type] and !params[:query_failure_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_target_id must be an String") if params[:query_target_id] and !params[:query_target_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_target_name must be an String") if params[:query_target_name] and !params[:query_target_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_target_permission must be an String") if params[:query_target_permission] and !params[:query_target_permission].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_target_user_id must be an String") if params[:query_target_user_id] and !params[:query_target_user_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_target_username must be an String") if params[:query_target_username] and !params[:query_target_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_target_platform must be an String") if params[:query_target_platform] and !params[:query_target_platform].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_target_permission_set must be an String") if params[:query_target_permission_set] and !params[:query_target_permission_set].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_action must be an String") if !params[:query_action].nil? and !params[:query_action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_interface must be an String") if !params[:query_interface].nil? and !params[:query_interface].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_user_id must be an String") if !params[:query_user_id].nil? and !params[:query_user_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_file_id must be an String") if !params[:query_file_id].nil? and !params[:query_file_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_parent_id must be an String") if !params[:query_parent_id].nil? and !params[:query_parent_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_path must be an String") if !params[:query_path].nil? and !params[:query_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_folder must be an String") if !params[:query_folder].nil? and !params[:query_folder].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_src must be an String") if !params[:query_src].nil? and !params[:query_src].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_destination must be an String") if !params[:query_destination].nil? and !params[:query_destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_ip must be an String") if !params[:query_ip].nil? and !params[:query_ip].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_username must be an String") if !params[:query_username].nil? and !params[:query_username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_failure_type must be an String") if !params[:query_failure_type].nil? and !params[:query_failure_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_target_id must be an String") if !params[:query_target_id].nil? and !params[:query_target_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_target_name must be an String") if !params[:query_target_name].nil? and !params[:query_target_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_target_permission must be an String") if !params[:query_target_permission].nil? and !params[:query_target_permission].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_target_user_id must be an String") if !params[:query_target_user_id].nil? and !params[:query_target_user_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_target_username must be an String") if !params[:query_target_username].nil? and !params[:query_target_username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_target_platform must be an String") if !params[:query_target_platform].nil? and !params[:query_target_platform].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_target_permission_set must be an String") if !params[:query_target_permission_set].nil? and !params[:query_target_permission_set].is_a?(String)
 
       response, options = Api.send_request("/history_exports", :post, params, options) { |reply| reply.require_object("HistoryExport") }
       HistoryExport.new(response.data, options)

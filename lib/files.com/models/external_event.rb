@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::ExternalEvent is the Ruby SDK's representation of Files.com API ExternalEvent objects.
+  # Each instance keeps its API field values in +attributes+.
   class ExternalEvent
     attr_reader :options, :attributes
 
@@ -85,14 +87,14 @@ module Files
     #
     # Returns a Files::List of Files::ExternalEvent objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if params[:filter_gt] and !params[:filter_gt].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if params[:filter_gteq] and !params[:filter_gteq].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if params[:filter_lt] and !params[:filter_lt].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if params[:filter_lteq] and !params[:filter_lteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gt must be an Hash") if !params[:filter_gt].nil? and !params[:filter_gt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_gteq must be an Hash") if !params[:filter_gteq].nil? and !params[:filter_gteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if !params[:filter_lt].nil? and !params[:filter_lt].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if !params[:filter_lteq].nil? and !params[:filter_lteq].is_a?(Hash)
 
       List.new(ExternalEvent, params) do |page_params, &check_page|
         Api.send_request("/external_events", :get, page_params, options, &check_page)
@@ -113,8 +115,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/external_events/#{params[:id]}", :get, params, options) { |reply| reply.require_object("ExternalEvent") }
       ExternalEvent.new(response.data, options)
@@ -133,10 +135,10 @@ module Files
     #
     # Returns a Files::ExternalEvent.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: status must be an String") if params[:status] and !params[:status].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: status") unless params[:status]
-      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
+      raise InvalidParameterError.new("Bad parameter: status must be an String") if !params[:status].nil? and !params[:status].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if !params[:body].nil? and !params[:body].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: status") if params[:status].nil?
+      raise MissingParameterError.new("Parameter missing: body") if params[:body].nil?
 
       response, options = Api.send_request("/external_events", :post, params, options) { |reply| reply.require_object("ExternalEvent") }
       ExternalEvent.new(response.data, options)

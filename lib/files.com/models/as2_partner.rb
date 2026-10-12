@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::As2Partner is the Ruby SDK's representation of Files.com API As2Partner objects.
+  # Each instance keeps its API field values in +attributes+.
   class As2Partner
     attr_reader :options, :attributes
 
@@ -234,19 +236,19 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if params[:http_auth_username] and !params[:http_auth_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if params[:http_auth_password] and !params[:http_auth_password].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if params[:mdn_validation_level] and !params[:mdn_validation_level].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: signature_validation_level must be an String") if params[:signature_validation_level] and !params[:signature_validation_level].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: default_mime_type must be an String") if params[:default_mime_type] and !params[:default_mime_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: uri must be an String") if params[:uri] and !params[:uri].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if params[:pkcs12] and !params[:pkcs12].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if params[:pkcs12_password] and !params[:pkcs12_password].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if !params[:http_auth_username].nil? and !params[:http_auth_username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if !params[:http_auth_password].nil? and !params[:http_auth_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if !params[:mdn_validation_level].nil? and !params[:mdn_validation_level].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: signature_validation_level must be an String") if !params[:signature_validation_level].nil? and !params[:signature_validation_level].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if !params[:server_certificate].nil? and !params[:server_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: default_mime_type must be an String") if !params[:default_mime_type].nil? and !params[:default_mime_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: uri must be an String") if !params[:uri].nil? and !params[:uri].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if !params[:public_certificate].nil? and !params[:public_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if !params[:pkcs12].nil? and !params[:pkcs12].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if !params[:pkcs12_password].nil? and !params[:pkcs12_password].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/as2_partners/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("As2Partner") }
       @attributes = response.data
@@ -258,8 +260,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/as2_partners/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -292,10 +294,10 @@ module Files
     #
     # Returns a Files::List of Files::As2Partner objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
       List.new(As2Partner, params) do |page_params, &check_page|
         Api.send_request("/as2_partners", :get, page_params, options, &check_page)
@@ -316,8 +318,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/as2_partners/#{params[:id]}", :get, params, options) { |reply| reply.require_object("As2Partner") }
       As2Partner.new(response.data, options)
@@ -348,22 +350,22 @@ module Files
     #
     # Returns a Files::As2Partner.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if params[:http_auth_username] and !params[:http_auth_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if params[:http_auth_password] and !params[:http_auth_password].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if params[:mdn_validation_level] and !params[:mdn_validation_level].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: signature_validation_level must be an String") if params[:signature_validation_level] and !params[:signature_validation_level].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: default_mime_type must be an String") if params[:default_mime_type] and !params[:default_mime_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: additional_http_headers must be an Hash") if params[:additional_http_headers] and !params[:additional_http_headers].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: as2_station_id must be an Integer") if params[:as2_station_id] and !params[:as2_station_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: uri must be an String") if params[:uri] and !params[:uri].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if params[:pkcs12] and !params[:pkcs12].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if params[:pkcs12_password] and !params[:pkcs12_password].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: as2_station_id") unless params[:as2_station_id]
-      raise MissingParameterError.new("Parameter missing: name") unless params[:name]
-      raise MissingParameterError.new("Parameter missing: uri") unless params[:uri]
+      raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if !params[:http_auth_username].nil? and !params[:http_auth_username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if !params[:http_auth_password].nil? and !params[:http_auth_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if !params[:mdn_validation_level].nil? and !params[:mdn_validation_level].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: signature_validation_level must be an String") if !params[:signature_validation_level].nil? and !params[:signature_validation_level].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if !params[:server_certificate].nil? and !params[:server_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: default_mime_type must be an String") if !params[:default_mime_type].nil? and !params[:default_mime_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: additional_http_headers must be an Hash") if !params[:additional_http_headers].nil? and !params[:additional_http_headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: as2_station_id must be an Integer") if !params[:as2_station_id].nil? and !params[:as2_station_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: uri must be an String") if !params[:uri].nil? and !params[:uri].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if !params[:public_certificate].nil? and !params[:public_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if !params[:pkcs12].nil? and !params[:pkcs12].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if !params[:pkcs12_password].nil? and !params[:pkcs12_password].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: as2_station_id") if params[:as2_station_id].nil?
+      raise MissingParameterError.new("Parameter missing: name") if params[:name].nil?
+      raise MissingParameterError.new("Parameter missing: uri") if params[:uri].nil?
 
       response, options = Api.send_request("/as2_partners", :post, params, options) { |reply| reply.require_object("As2Partner") }
       As2Partner.new(response.data, options)
@@ -391,20 +393,20 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if params[:http_auth_username] and !params[:http_auth_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if params[:http_auth_password] and !params[:http_auth_password].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if params[:mdn_validation_level] and !params[:mdn_validation_level].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: signature_validation_level must be an String") if params[:signature_validation_level] and !params[:signature_validation_level].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if params[:server_certificate] and !params[:server_certificate].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: default_mime_type must be an String") if params[:default_mime_type] and !params[:default_mime_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: additional_http_headers must be an Hash") if params[:additional_http_headers] and !params[:additional_http_headers].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: uri must be an String") if params[:uri] and !params[:uri].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if params[:public_certificate] and !params[:public_certificate].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if params[:pkcs12] and !params[:pkcs12].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if params[:pkcs12_password] and !params[:pkcs12_password].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if !params[:http_auth_username].nil? and !params[:http_auth_username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if !params[:http_auth_password].nil? and !params[:http_auth_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if !params[:mdn_validation_level].nil? and !params[:mdn_validation_level].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: signature_validation_level must be an String") if !params[:signature_validation_level].nil? and !params[:signature_validation_level].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if !params[:server_certificate].nil? and !params[:server_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: default_mime_type must be an String") if !params[:default_mime_type].nil? and !params[:default_mime_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: additional_http_headers must be an Hash") if !params[:additional_http_headers].nil? and !params[:additional_http_headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: uri must be an String") if !params[:uri].nil? and !params[:uri].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if !params[:public_certificate].nil? and !params[:public_certificate].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12 must be an String") if !params[:pkcs12].nil? and !params[:pkcs12].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pkcs12_password must be an String") if !params[:pkcs12_password].nil? and !params[:pkcs12_password].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/as2_partners/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("As2Partner") }
       As2Partner.new(response.data, options)
@@ -417,8 +419,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/as2_partners/#{params[:id]}", :delete, params, options)
       nil

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::AutomationRun is the Ruby SDK's representation of Files.com API AutomationRun objects.
+  # Each instance keeps its API field values in +attributes+.
   class AutomationRun
     attr_reader :options, :attributes
 
@@ -129,8 +131,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/automation_runs/#{@attributes[:id]}/cancel", :post, params, @options)
     end
@@ -143,10 +145,10 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: node_id must be an String") if params[:node_id] and !params[:node_id].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: node_id") unless params[:node_id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: node_id must be an String") if !params[:node_id].nil? and !params[:node_id].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: node_id") if params[:node_id].nil?
 
       Api.send_request("/automation_runs/#{@attributes[:id]}/rerun", :post, params, @options)
     end
@@ -164,13 +166,13 @@ module Files
     #
     # Returns a Files::List of Files::AutomationRun objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: automation_id must be an Integer") if params[:automation_id] and !params[:automation_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: automation_id") unless params[:automation_id]
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: automation_id must be an Integer") if !params[:automation_id].nil? and !params[:automation_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: automation_id") if params[:automation_id].nil?
 
       List.new(AutomationRun, params) do |page_params, &check_page|
         Api.send_request("/automation_runs", :get, page_params, options, &check_page)
@@ -191,8 +193,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/automation_runs/#{params[:id]}", :get, params, options) { |reply| reply.require_object("AutomationRun") }
       AutomationRun.new(response.data, options)
@@ -213,10 +215,10 @@ module Files
     def self.find_node(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: node_id must be an String") if params[:node_id] and !params[:node_id].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: node_id") unless params[:node_id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: node_id must be an String") if !params[:node_id].nil? and !params[:node_id].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: node_id") if params[:node_id].nil?
 
       response, options = Api.send_request("/automation_runs/#{params[:id]}/node", :get, params, options) { |reply| reply.require_object("AutomationExecutionNode") }
       AutomationExecutionNode.new(response.data, options)
@@ -231,8 +233,8 @@ module Files
     def self.cancel(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/automation_runs/#{params[:id]}/cancel", :post, params, options) { |reply| reply.require_object("AutomationRun") }
       AutomationRun.new(response.data, options)
@@ -250,10 +252,10 @@ module Files
     def self.rerun(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: node_id must be an String") if params[:node_id] and !params[:node_id].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: node_id") unless params[:node_id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: node_id must be an String") if !params[:node_id].nil? and !params[:node_id].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: node_id") if params[:node_id].nil?
 
       response, options = Api.send_request("/automation_runs/#{params[:id]}/rerun", :post, params, options) { |reply| reply.require_object("AutomationRun") }
       AutomationRun.new(response.data, options)

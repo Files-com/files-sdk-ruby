@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::AutomationAuthoringSchema is the Ruby SDK's representation of Files.com API AutomationAuthoringSchema objects.
+  # Each instance keeps its API field values in +attributes+.
   class AutomationAuthoringSchema
     attr_reader :options, :attributes
 

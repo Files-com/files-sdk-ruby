@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::AgentNode is the Ruby SDK's representation of Files.com API AgentNode objects.
+  # Each instance keeps its API field values in +attributes+.
   class AgentNode
     attr_reader :options, :attributes
 

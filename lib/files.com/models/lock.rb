@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Lock is the Ruby SDK's representation of Files.com API Lock objects.
+  # Each instance keeps its API field values in +attributes+.
   class Lock
     attr_reader :options, :attributes
 
@@ -134,10 +136,10 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: token must be an String") if params[:token] and !params[:token].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
-      raise MissingParameterError.new("Parameter missing: token") unless params[:token]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: token must be an String") if !params[:token].nil? and !params[:token].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+      raise MissingParameterError.new("Parameter missing: token") if params[:token].nil?
 
       Api.send_request("/locks/#{@attributes[:path]}", :delete, params, @options)
     end
@@ -167,10 +169,10 @@ module Files
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       List.new(Lock, params) do |page_params, &check_page|
         Api.send_request("/locks/#{page_params[:path]}", :get, page_params, options, &check_page)
@@ -194,12 +196,12 @@ module Files
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: token must be an String") if params[:token] and !params[:token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: expected_token must be an String") if params[:expected_token] and !params[:expected_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: owner must be an String") if params[:owner] and !params[:owner].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if params[:timeout] and !params[:timeout].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: token must be an String") if !params[:token].nil? and !params[:token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: expected_token must be an String") if !params[:expected_token].nil? and !params[:expected_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: owner must be an String") if !params[:owner].nil? and !params[:owner].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if !params[:timeout].nil? and !params[:timeout].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/locks/#{params[:path]}", :post, params, options) { |reply| reply.require_object("Lock") }
       Lock.new(response.data, options)
@@ -215,10 +217,10 @@ module Files
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: token must be an String") if params[:token] and !params[:token].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
-      raise MissingParameterError.new("Parameter missing: token") unless params[:token]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: token must be an String") if !params[:token].nil? and !params[:token].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+      raise MissingParameterError.new("Parameter missing: token") if params[:token].nil?
 
       Api.send_request("/locks/#{params[:path]}", :delete, params, options)
       nil

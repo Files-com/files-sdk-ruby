@@ -4,6 +4,10 @@ module Files
   class ApiClient
     attr_accessor :conn
 
+    # Methods whose params travel in the query string rather than a request body.
+    QUERY_METHODS = %i[get head delete].freeze
+    private_constant :QUERY_METHODS
+
     def initialize(conn = nil)
       self.conn = conn || self.class.default_conn
       @system_profiler = SystemProfiler.new
@@ -112,7 +116,7 @@ module Files
       body = nil
       query_params = nil
       case method.to_s.downcase.to_sym
-      when :get, :head, :delete
+      when *QUERY_METHODS
         query_params = params
       else
         body = params
@@ -468,14 +472,14 @@ module Files
       raise APIConnectionError, message
     end
 
-    private def request_headers(api_key, session_id, _method, workspace_id)
+    private def request_headers(api_key, session_id, method, workspace_id)
       user_agent = "Files.com Ruby SDK v#{Files::VERSION}"
       user_agent += " #{format_app_info(Files.app_info)}" unless Files.app_info.nil?
 
-      headers = {
-        "User-Agent" => user_agent,
-        "Content-Type" => "application/x-www-form-urlencoded",
-      }
+      headers = { "User-Agent" => user_agent }
+      # A request body gets its Content-Type from the multipart and URL-encoding middleware, which choose
+      # multipart/form-data when the body holds a file part and application/x-www-form-urlencoded otherwise.
+      headers["Content-Type"] = "application/x-www-form-urlencoded" if QUERY_METHODS.include?(method.to_s.downcase.to_sym)
 
       if Files.default_headers.is_a?(Proc)
         proc_headers = Files.default_headers.call

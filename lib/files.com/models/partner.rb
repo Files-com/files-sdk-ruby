@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Partner is the Ruby SDK's representation of Files.com API Partner objects.
+  # Each instance keeps its API field values in +attributes+.
   class Partner
     attr_reader :options, :attributes
 
@@ -219,18 +221,18 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if params[:partner_channel_template_id] and !params[:partner_channel_template_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: partnership_role must be an String") if params[:partnership_role] and !params[:partnership_role].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if !params[:partner_channel_template_id].nil? and !params[:partner_channel_template_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if !params[:responsible_group_id].nil? and !params[:responsible_group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if !params[:responsible_user_id].nil? and !params[:responsible_user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partnership_role must be an String") if !params[:partnership_role].nil? and !params[:partnership_role].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if !params[:root_folder].nil? and !params[:root_folder].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/partners/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Partner") }
       @attributes = response.data
@@ -242,8 +244,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/partners/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -276,10 +278,10 @@ module Files
     #
     # Returns a Files::List of Files::Partner objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
       List.new(Partner, params) do |page_params, &check_page|
         Api.send_request("/partners", :get, page_params, options, &check_page)
@@ -300,8 +302,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/partners/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Partner") }
       Partner.new(response.data, options)
@@ -334,18 +336,18 @@ module Files
     #
     # Returns a Files::Partner.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if params[:partner_channel_template_id] and !params[:partner_channel_template_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: name") unless params[:name]
-      raise MissingParameterError.new("Parameter missing: root_folder") unless params[:root_folder]
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if !params[:partner_channel_template_id].nil? and !params[:partner_channel_template_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if !params[:responsible_group_id].nil? and !params[:responsible_group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if !params[:responsible_user_id].nil? and !params[:responsible_user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if !params[:root_folder].nil? and !params[:root_folder].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: name") if params[:name].nil?
+      raise MissingParameterError.new("Parameter missing: root_folder") if params[:root_folder].nil?
 
       response, options = Api.send_request("/partners", :post, params, options) { |reply| reply.require_object("Partner") }
       Partner.new(response.data, options)
@@ -376,18 +378,18 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if params[:partner_channel_template_id] and !params[:partner_channel_template_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if params[:responsible_group_id] and !params[:responsible_group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if params[:responsible_user_id] and !params[:responsible_user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: tags must be an String") if params[:tags] and !params[:tags].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: partnership_role must be an String") if params[:partnership_role] and !params[:partnership_role].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if params[:root_folder] and !params[:root_folder].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if !params[:partner_channel_template_id].nil? and !params[:partner_channel_template_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if !params[:responsible_group_id].nil? and !params[:responsible_group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if !params[:responsible_user_id].nil? and !params[:responsible_user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partnership_role must be an String") if !params[:partnership_role].nil? and !params[:partnership_role].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if !params[:root_folder].nil? and !params[:root_folder].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/partners/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Partner") }
       Partner.new(response.data, options)
@@ -400,8 +402,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/partners/#{params[:id]}", :delete, params, options)
       nil

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Group is the Ruby SDK's representation of Files.com API Group objects.
+  # Each instance keeps its API field values in +attributes+.
   class Group
     attr_reader :options, :attributes
 
@@ -180,16 +182,16 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if params[:admin_ids] and !params[:admin_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if params[:desktop_configuration_profile_id] and !params[:desktop_configuration_profile_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if params[:integration_centric_profile_id] and !params[:integration_centric_profile_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if !params[:user_ids].nil? and !params[:user_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if !params[:admin_ids].nil? and !params[:admin_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/groups/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Group") }
       @attributes = response.data
@@ -201,8 +203,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/groups/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -238,12 +240,12 @@ module Files
     #
     # Returns a Files::List of Files::Group objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: ids must be an String") if params[:ids] and !params[:ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if !params[:filter_prefix].nil? and !params[:filter_prefix].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: ids must be an String") if !params[:ids].nil? and !params[:ids].is_a?(String)
 
       List.new(Group, params) do |page_params, &check_page|
         Api.send_request("/groups", :get, page_params, options, &check_page)
@@ -264,8 +266,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/groups/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Group") }
       Group.new(response.data, options)
@@ -296,16 +298,16 @@ module Files
     #
     # Returns a Files::Group.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if params[:admin_ids] and !params[:admin_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if params[:desktop_configuration_profile_id] and !params[:desktop_configuration_profile_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if params[:integration_centric_profile_id] and !params[:integration_centric_profile_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: name") unless params[:name]
+      raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if !params[:user_ids].nil? and !params[:user_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if !params[:admin_ids].nil? and !params[:admin_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: name") if params[:name].nil?
 
       response, options = Api.send_request("/groups", :post, params, options) { |reply| reply.require_object("Group") }
       Group.new(response.data, options)
@@ -333,16 +335,16 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: notes must be an String") if params[:notes] and !params[:notes].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if params[:user_ids] and !params[:user_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if params[:admin_ids] and !params[:admin_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if params[:ai_assistant_personality_id] and !params[:ai_assistant_personality_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if params[:desktop_configuration_profile_id] and !params[:desktop_configuration_profile_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if params[:integration_centric_profile_id] and !params[:integration_centric_profile_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if params[:allowed_ips] and !params[:allowed_ips].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if !params[:user_ids].nil? and !params[:user_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if !params[:admin_ids].nil? and !params[:admin_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/groups/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Group") }
       Group.new(response.data, options)
@@ -355,8 +357,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/groups/#{params[:id]}", :delete, params, options)
       nil

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::SiemHttpDestination is the Ruby SDK's representation of Files.com API SiemHttpDestination objects.
+  # Each instance keeps its API field values in +attributes+.
   class SiemHttpDestination
     attr_reader :options, :attributes
 
@@ -605,27 +607,27 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if params[:generic_payload_type] and !params[:generic_payload_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if params[:file_destination_path] and !params[:file_destination_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if params[:crowdstrike_token] and !params[:crowdstrike_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if params[:azure_oauth_client_credentials_tenant_id] and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_id must be an String") if params[:azure_oauth_client_credentials_client_id] and !params[:azure_oauth_client_credentials_client_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_secret must be an String") if params[:azure_oauth_client_credentials_client_secret] and !params[:azure_oauth_client_credentials_client_secret].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: qradar_username must be an String") if params[:qradar_username] and !params[:qradar_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: qradar_password must be an String") if params[:qradar_password] and !params[:qradar_password].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if params[:solar_winds_token] and !params[:solar_winds_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if params[:new_relic_api_key] and !params[:new_relic_api_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if params[:datadog_api_key] and !params[:datadog_api_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if params[:destination_type] and !params[:destination_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if params[:destination_url] and !params[:destination_url].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if !params[:generic_payload_type].nil? and !params[:generic_payload_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if !params[:file_destination_path].nil? and !params[:file_destination_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if !params[:file_format].nil? and !params[:file_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if !params[:file_interval_minutes].nil? and !params[:file_interval_minutes].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if !params[:splunk_token].nil? and !params[:splunk_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if !params[:crowdstrike_token].nil? and !params[:crowdstrike_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if !params[:azure_dcr_immutable_id].nil? and !params[:azure_dcr_immutable_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if !params[:azure_stream_name].nil? and !params[:azure_stream_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if !params[:azure_oauth_client_credentials_tenant_id].nil? and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_id must be an String") if !params[:azure_oauth_client_credentials_client_id].nil? and !params[:azure_oauth_client_credentials_client_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_secret must be an String") if !params[:azure_oauth_client_credentials_client_secret].nil? and !params[:azure_oauth_client_credentials_client_secret].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: qradar_username must be an String") if !params[:qradar_username].nil? and !params[:qradar_username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: qradar_password must be an String") if !params[:qradar_password].nil? and !params[:qradar_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if !params[:solar_winds_token].nil? and !params[:solar_winds_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if !params[:new_relic_api_key].nil? and !params[:new_relic_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if !params[:datadog_api_key].nil? and !params[:datadog_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if !params[:destination_type].nil? and !params[:destination_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if !params[:destination_url].nil? and !params[:destination_url].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/siem_http_destinations/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("SiemHttpDestination") }
       @attributes = response.data
@@ -637,8 +639,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/siem_http_destinations/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -669,8 +671,8 @@ module Files
     #
     # Returns a Files::List of Files::SiemHttpDestination objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
 
       List.new(SiemHttpDestination, params) do |page_params, &check_page|
         Api.send_request("/siem_http_destinations", :get, page_params, options, &check_page)
@@ -691,8 +693,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/siem_http_destinations/#{params[:id]}", :get, params, options) { |reply| reply.require_object("SiemHttpDestination") }
       SiemHttpDestination.new(response.data, options)
@@ -742,27 +744,27 @@ module Files
     #
     # Returns a Files::SiemHttpDestination.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if params[:additional_headers] and !params[:additional_headers].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if params[:generic_payload_type] and !params[:generic_payload_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if params[:file_destination_path] and !params[:file_destination_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if params[:crowdstrike_token] and !params[:crowdstrike_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if params[:azure_oauth_client_credentials_tenant_id] and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_id must be an String") if params[:azure_oauth_client_credentials_client_id] and !params[:azure_oauth_client_credentials_client_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_secret must be an String") if params[:azure_oauth_client_credentials_client_secret] and !params[:azure_oauth_client_credentials_client_secret].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: qradar_username must be an String") if params[:qradar_username] and !params[:qradar_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: qradar_password must be an String") if params[:qradar_password] and !params[:qradar_password].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if params[:solar_winds_token] and !params[:solar_winds_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if params[:new_relic_api_key] and !params[:new_relic_api_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if params[:datadog_api_key] and !params[:datadog_api_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if params[:destination_type] and !params[:destination_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if params[:destination_url] and !params[:destination_url].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: destination_type") unless params[:destination_type]
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if !params[:additional_headers].nil? and !params[:additional_headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if !params[:generic_payload_type].nil? and !params[:generic_payload_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if !params[:file_destination_path].nil? and !params[:file_destination_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if !params[:file_format].nil? and !params[:file_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if !params[:file_interval_minutes].nil? and !params[:file_interval_minutes].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if !params[:splunk_token].nil? and !params[:splunk_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if !params[:crowdstrike_token].nil? and !params[:crowdstrike_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if !params[:azure_dcr_immutable_id].nil? and !params[:azure_dcr_immutable_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if !params[:azure_stream_name].nil? and !params[:azure_stream_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if !params[:azure_oauth_client_credentials_tenant_id].nil? and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_id must be an String") if !params[:azure_oauth_client_credentials_client_id].nil? and !params[:azure_oauth_client_credentials_client_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_secret must be an String") if !params[:azure_oauth_client_credentials_client_secret].nil? and !params[:azure_oauth_client_credentials_client_secret].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: qradar_username must be an String") if !params[:qradar_username].nil? and !params[:qradar_username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: qradar_password must be an String") if !params[:qradar_password].nil? and !params[:qradar_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if !params[:solar_winds_token].nil? and !params[:solar_winds_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if !params[:new_relic_api_key].nil? and !params[:new_relic_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if !params[:datadog_api_key].nil? and !params[:datadog_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if !params[:destination_type].nil? and !params[:destination_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if !params[:destination_url].nil? and !params[:destination_url].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: destination_type") if params[:destination_type].nil?
 
       response, options = Api.send_request("/siem_http_destinations", :post, params, options) { |reply| reply.require_object("SiemHttpDestination") }
       SiemHttpDestination.new(response.data, options)
@@ -809,27 +811,27 @@ module Files
     #
     # Returns nil.
     def self.send_test_entry(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: siem_http_destination_id must be an Integer") if params[:siem_http_destination_id] and !params[:siem_http_destination_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if params[:destination_type] and !params[:destination_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if params[:destination_url] and !params[:destination_url].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if params[:additional_headers] and !params[:additional_headers].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if params[:generic_payload_type] and !params[:generic_payload_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if params[:file_destination_path] and !params[:file_destination_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if params[:crowdstrike_token] and !params[:crowdstrike_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if params[:azure_oauth_client_credentials_tenant_id] and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_id must be an String") if params[:azure_oauth_client_credentials_client_id] and !params[:azure_oauth_client_credentials_client_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_secret must be an String") if params[:azure_oauth_client_credentials_client_secret] and !params[:azure_oauth_client_credentials_client_secret].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: qradar_username must be an String") if params[:qradar_username] and !params[:qradar_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: qradar_password must be an String") if params[:qradar_password] and !params[:qradar_password].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if params[:solar_winds_token] and !params[:solar_winds_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if params[:new_relic_api_key] and !params[:new_relic_api_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if params[:datadog_api_key] and !params[:datadog_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: siem_http_destination_id must be an Integer") if !params[:siem_http_destination_id].nil? and !params[:siem_http_destination_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if !params[:destination_type].nil? and !params[:destination_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if !params[:destination_url].nil? and !params[:destination_url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if !params[:additional_headers].nil? and !params[:additional_headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if !params[:generic_payload_type].nil? and !params[:generic_payload_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if !params[:file_destination_path].nil? and !params[:file_destination_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if !params[:file_format].nil? and !params[:file_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if !params[:file_interval_minutes].nil? and !params[:file_interval_minutes].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if !params[:splunk_token].nil? and !params[:splunk_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if !params[:crowdstrike_token].nil? and !params[:crowdstrike_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if !params[:azure_dcr_immutable_id].nil? and !params[:azure_dcr_immutable_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if !params[:azure_stream_name].nil? and !params[:azure_stream_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if !params[:azure_oauth_client_credentials_tenant_id].nil? and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_id must be an String") if !params[:azure_oauth_client_credentials_client_id].nil? and !params[:azure_oauth_client_credentials_client_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_secret must be an String") if !params[:azure_oauth_client_credentials_client_secret].nil? and !params[:azure_oauth_client_credentials_client_secret].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: qradar_username must be an String") if !params[:qradar_username].nil? and !params[:qradar_username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: qradar_password must be an String") if !params[:qradar_password].nil? and !params[:qradar_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if !params[:solar_winds_token].nil? and !params[:solar_winds_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if !params[:new_relic_api_key].nil? and !params[:new_relic_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if !params[:datadog_api_key].nil? and !params[:datadog_api_key].is_a?(String)
 
       Api.send_request("/siem_http_destinations/send_test_entry", :post, params, options)
       nil
@@ -877,28 +879,28 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if params[:additional_headers] and !params[:additional_headers].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if params[:generic_payload_type] and !params[:generic_payload_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if params[:file_destination_path] and !params[:file_destination_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if params[:file_format] and !params[:file_format].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if params[:file_interval_minutes] and !params[:file_interval_minutes].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if params[:splunk_token] and !params[:splunk_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if params[:crowdstrike_token] and !params[:crowdstrike_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if params[:azure_dcr_immutable_id] and !params[:azure_dcr_immutable_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if params[:azure_stream_name] and !params[:azure_stream_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if params[:azure_oauth_client_credentials_tenant_id] and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_id must be an String") if params[:azure_oauth_client_credentials_client_id] and !params[:azure_oauth_client_credentials_client_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_secret must be an String") if params[:azure_oauth_client_credentials_client_secret] and !params[:azure_oauth_client_credentials_client_secret].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: qradar_username must be an String") if params[:qradar_username] and !params[:qradar_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: qradar_password must be an String") if params[:qradar_password] and !params[:qradar_password].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if params[:solar_winds_token] and !params[:solar_winds_token].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if params[:new_relic_api_key] and !params[:new_relic_api_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if params[:datadog_api_key] and !params[:datadog_api_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if params[:destination_type] and !params[:destination_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if params[:destination_url] and !params[:destination_url].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if !params[:additional_headers].nil? and !params[:additional_headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if !params[:generic_payload_type].nil? and !params[:generic_payload_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if !params[:file_destination_path].nil? and !params[:file_destination_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_format must be an String") if !params[:file_format].nil? and !params[:file_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_interval_minutes must be an Integer") if !params[:file_interval_minutes].nil? and !params[:file_interval_minutes].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: splunk_token must be an String") if !params[:splunk_token].nil? and !params[:splunk_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: crowdstrike_token must be an String") if !params[:crowdstrike_token].nil? and !params[:crowdstrike_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_dcr_immutable_id must be an String") if !params[:azure_dcr_immutable_id].nil? and !params[:azure_dcr_immutable_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_stream_name must be an String") if !params[:azure_stream_name].nil? and !params[:azure_stream_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_tenant_id must be an String") if !params[:azure_oauth_client_credentials_tenant_id].nil? and !params[:azure_oauth_client_credentials_tenant_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_id must be an String") if !params[:azure_oauth_client_credentials_client_id].nil? and !params[:azure_oauth_client_credentials_client_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_oauth_client_credentials_client_secret must be an String") if !params[:azure_oauth_client_credentials_client_secret].nil? and !params[:azure_oauth_client_credentials_client_secret].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: qradar_username must be an String") if !params[:qradar_username].nil? and !params[:qradar_username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: qradar_password must be an String") if !params[:qradar_password].nil? and !params[:qradar_password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if !params[:solar_winds_token].nil? and !params[:solar_winds_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if !params[:new_relic_api_key].nil? and !params[:new_relic_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if !params[:datadog_api_key].nil? and !params[:datadog_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if !params[:destination_type].nil? and !params[:destination_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if !params[:destination_url].nil? and !params[:destination_url].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/siem_http_destinations/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("SiemHttpDestination") }
       SiemHttpDestination.new(response.data, options)
@@ -911,8 +913,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/siem_http_destinations/#{params[:id]}", :delete, params, options)
       nil

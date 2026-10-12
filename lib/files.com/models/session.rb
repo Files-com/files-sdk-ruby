@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Session is the Ruby SDK's representation of Files.com API Session objects.
+  # Each instance keeps its API field values in +attributes+.
   class Session
     attr_reader :options, :attributes
 
@@ -107,10 +109,10 @@ module Files
     #
     # Returns a Files::Session.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: password must be an String") if params[:password] and !params[:password].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: otp must be an String") if params[:otp] and !params[:otp].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: partial_session_id must be an String") if params[:partial_session_id] and !params[:partial_session_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: username must be an String") if !params[:username].nil? and !params[:username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: password must be an String") if !params[:password].nil? and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: otp must be an String") if !params[:otp].nil? and !params[:otp].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partial_session_id must be an String") if !params[:partial_session_id].nil? and !params[:partial_session_id].is_a?(String)
 
       response, options = Api.send_request("/sessions", :post, params, options) { |reply| reply.require_object("Session") }
       Session.new(response.data, options)

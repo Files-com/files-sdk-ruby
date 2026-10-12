@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::BundleRecipient is the Ruby SDK's representation of Files.com API BundleRecipient objects.
+  # Each instance keeps its API field values in +attributes+.
   class BundleRecipient
     attr_reader :options, :attributes
 
@@ -114,13 +116,13 @@ module Files
     #
     # Returns a Files::List of Files::BundleRecipient objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: bundle_id") unless params[:bundle_id]
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if !params[:bundle_id].nil? and !params[:bundle_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: bundle_id") if params[:bundle_id].nil?
 
       List.new(BundleRecipient, params) do |page_params, &check_page|
         Api.send_request("/bundle_recipients", :get, page_params, options, &check_page)
@@ -145,14 +147,14 @@ module Files
     #
     # Returns a Files::BundleRecipient.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if params[:bundle_id] and !params[:bundle_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: recipient must be an String") if params[:recipient] and !params[:recipient].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: company must be an String") if params[:company] and !params[:company].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: note must be an String") if params[:note] and !params[:note].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: bundle_id") unless params[:bundle_id]
-      raise MissingParameterError.new("Parameter missing: recipient") unless params[:recipient]
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if !params[:bundle_id].nil? and !params[:bundle_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: recipient must be an String") if !params[:recipient].nil? and !params[:recipient].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: company must be an String") if !params[:company].nil? and !params[:company].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: note must be an String") if !params[:note].nil? and !params[:note].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: bundle_id") if params[:bundle_id].nil?
+      raise MissingParameterError.new("Parameter missing: recipient") if params[:recipient].nil?
 
       response, options = Api.send_request("/bundle_recipients", :post, params, options) { |reply| reply.require_object("BundleRecipient") }
       BundleRecipient.new(response.data, options)

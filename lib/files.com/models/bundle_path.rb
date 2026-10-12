@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::BundlePath is the Ruby SDK's representation of Files.com API BundlePath objects.
+  # Each instance keeps its API field values in +attributes+.
   class BundlePath
     attr_reader :options, :attributes
 

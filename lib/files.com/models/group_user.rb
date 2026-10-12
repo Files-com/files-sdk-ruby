@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::GroupUser is the Ruby SDK's representation of Files.com API GroupUser objects.
+  # Each instance keeps its API field values in +attributes+.
   class GroupUser
     attr_reader :options, :attributes
 
@@ -71,12 +73,12 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: group_id") unless params[:group_id]
-      raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: group_id") if params[:group_id].nil?
+      raise MissingParameterError.new("Parameter missing: user_id") if params[:user_id].nil?
 
       response, options = Api.send_request("/group_users/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("GroupUser") }
       @attributes = response.data
@@ -92,12 +94,12 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: group_id") unless params[:group_id]
-      raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: group_id") if params[:group_id].nil?
+      raise MissingParameterError.new("Parameter missing: user_id") if params[:user_id].nil?
 
       Api.send_request("/group_users/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -130,10 +132,10 @@ module Files
     #
     # Returns a Files::List of Files::GroupUser objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
 
       List.new(GroupUser, params) do |page_params, &check_page|
         Api.send_request("/group_users", :get, page_params, options, &check_page)
@@ -154,10 +156,10 @@ module Files
     #
     # Returns a Files::GroupUser.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: group_id") unless params[:group_id]
-      raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: group_id") if params[:group_id].nil?
+      raise MissingParameterError.new("Parameter missing: user_id") if params[:user_id].nil?
 
       response, options = Api.send_request("/group_users", :post, params, options) { |reply| reply.require_object("GroupUser") }
       GroupUser.new(response.data, options)
@@ -175,12 +177,12 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: group_id") unless params[:group_id]
-      raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: group_id") if params[:group_id].nil?
+      raise MissingParameterError.new("Parameter missing: user_id") if params[:user_id].nil?
 
       response, options = Api.send_request("/group_users/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("GroupUser") }
       GroupUser.new(response.data, options)
@@ -197,12 +199,12 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: group_id") unless params[:group_id]
-      raise MissingParameterError.new("Parameter missing: user_id") unless params[:user_id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: group_id") if params[:group_id].nil?
+      raise MissingParameterError.new("Parameter missing: user_id") if params[:user_id].nil?
 
       Api.send_request("/group_users/#{params[:id]}", :delete, params, options)
       nil

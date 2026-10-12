@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Notification is the Ruby SDK's representation of Files.com API Notification objects.
+  # Each instance keeps its API field values in +attributes+.
   class Notification
     attr_reader :options, :attributes
 
@@ -263,15 +265,15 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if params[:send_interval] and !params[:send_interval].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params[:subject] and !params[:subject].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: message must be an String") if params[:message] and !params[:message].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: triggering_filenames must be an Array") if params[:triggering_filenames] and !params[:triggering_filenames].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: triggering_group_ids must be an Array") if params[:triggering_group_ids] and !params[:triggering_group_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: triggering_user_ids must be an Array") if params[:triggering_user_ids] and !params[:triggering_user_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if !params[:send_interval].nil? and !params[:send_interval].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: subject must be an String") if !params[:subject].nil? and !params[:subject].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message must be an String") if !params[:message].nil? and !params[:message].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: triggering_filenames must be an Array") if !params[:triggering_filenames].nil? and !params[:triggering_filenames].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: triggering_group_ids must be an Array") if !params[:triggering_group_ids].nil? and !params[:triggering_group_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: triggering_user_ids must be an Array") if !params[:triggering_user_ids].nil? and !params[:triggering_user_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/notifications/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Notification") }
       @attributes = response.data
@@ -283,8 +285,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/notifications/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -321,13 +323,13 @@ module Files
     #
     # Returns a Files::List of Files::Notification objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an String") if params[:group_id] and !params[:group_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if !params[:filter_prefix].nil? and !params[:filter_prefix].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an String") if !params[:group_id].nil? and !params[:group_id].is_a?(String)
 
       List.new(Notification, params) do |page_params, &check_page|
         Api.send_request("/notifications", :get, page_params, options, &check_page)
@@ -348,8 +350,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/notifications/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Notification") }
       Notification.new(response.data, options)
@@ -386,18 +388,18 @@ module Files
     #
     # Returns a Files::Notification.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if params[:send_interval] and !params[:send_interval].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params[:subject] and !params[:subject].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: message must be an String") if params[:message] and !params[:message].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: triggering_filenames must be an Array") if params[:triggering_filenames] and !params[:triggering_filenames].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: triggering_group_ids must be an Array") if params[:triggering_group_ids] and !params[:triggering_group_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: triggering_user_ids must be an Array") if params[:triggering_user_ids] and !params[:triggering_user_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params[:group_ids] and !params[:group_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if !params[:send_interval].nil? and !params[:send_interval].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: subject must be an String") if !params[:subject].nil? and !params[:subject].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message must be an String") if !params[:message].nil? and !params[:message].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: triggering_filenames must be an Array") if !params[:triggering_filenames].nil? and !params[:triggering_filenames].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: triggering_group_ids must be an Array") if !params[:triggering_group_ids].nil? and !params[:triggering_group_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: triggering_user_ids must be an Array") if !params[:triggering_user_ids].nil? and !params[:triggering_user_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if !params[:group_ids].nil? and !params[:group_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: username must be an String") if !params[:username].nil? and !params[:username].is_a?(String)
 
       response, options = Api.send_request("/notifications", :post, params, options) { |reply| reply.require_object("Notification") }
       Notification.new(response.data, options)
@@ -427,15 +429,15 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if params[:send_interval] and !params[:send_interval].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: subject must be an String") if params[:subject] and !params[:subject].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: message must be an String") if params[:message] and !params[:message].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: triggering_filenames must be an Array") if params[:triggering_filenames] and !params[:triggering_filenames].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: triggering_group_ids must be an Array") if params[:triggering_group_ids] and !params[:triggering_group_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: triggering_user_ids must be an Array") if params[:triggering_user_ids] and !params[:triggering_user_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if !params[:send_interval].nil? and !params[:send_interval].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: subject must be an String") if !params[:subject].nil? and !params[:subject].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message must be an String") if !params[:message].nil? and !params[:message].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: triggering_filenames must be an Array") if !params[:triggering_filenames].nil? and !params[:triggering_filenames].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: triggering_group_ids must be an Array") if !params[:triggering_group_ids].nil? and !params[:triggering_group_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: triggering_user_ids must be an Array") if !params[:triggering_user_ids].nil? and !params[:triggering_user_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/notifications/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Notification") }
       Notification.new(response.data, options)
@@ -448,8 +450,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/notifications/#{params[:id]}", :delete, params, options)
       nil

@@ -3,6 +3,8 @@
 require "bigdecimal"
 
 module Files
+  # Files::RemoteMountBackend is the Ruby SDK's representation of Files.com API RemoteMountBackend objects.
+  # Each instance keeps its API field values in +attributes+.
   class RemoteMountBackend
     attr_reader :options, :attributes
 
@@ -177,8 +179,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/remote_mount_backends/#{@attributes[:id]}/reset_status", :post, params, @options)
     end
@@ -200,16 +202,16 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if params[:fall] and !params[:fall].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if params[:health_check_type] and !params[:health_check_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if params[:interval] and !params[:interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: priority must be an Integer") if params[:priority] and !params[:priority].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: remote_path must be an String") if params[:remote_path] and !params[:remote_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rise must be an Integer") if params[:rise] and !params[:rise].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if params[:canary_file_path] and !params[:canary_file_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if params[:remote_server_id] and !params[:remote_server_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if !params[:fall].nil? and !params[:fall].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if !params[:health_check_type].nil? and !params[:health_check_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if !params[:interval].nil? and !params[:interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: priority must be an Integer") if !params[:priority].nil? and !params[:priority].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: remote_path must be an String") if !params[:remote_path].nil? and !params[:remote_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rise must be an Integer") if !params[:rise].nil? and !params[:rise].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if !params[:canary_file_path].nil? and !params[:canary_file_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if !params[:remote_server_id].nil? and !params[:remote_server_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/remote_mount_backends/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("RemoteMountBackend") }
       @attributes = response.data
@@ -221,8 +223,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/remote_mount_backends/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -254,9 +256,9 @@ module Files
     #
     # Returns a Files::List of Files::RemoteMountBackend objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
       List.new(RemoteMountBackend, params) do |page_params, &check_page|
         Api.send_request("/remote_mount_backends", :get, page_params, options, &check_page)
@@ -277,8 +279,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/remote_mount_backends/#{params[:id]}", :get, params, options) { |reply| reply.require_object("RemoteMountBackend") }
       RemoteMountBackend.new(response.data, options)
@@ -308,20 +310,20 @@ module Files
     #
     # Returns a Files::RemoteMountBackend.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if params[:fall] and !params[:fall].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if params[:health_check_type] and !params[:health_check_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if params[:interval] and !params[:interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: min_free_cpu must be an Float") if params[:min_free_cpu] and !params[:min_free_cpu].is_a?(Float)
-      raise InvalidParameterError.new("Bad parameter: min_free_mem must be an Float") if params[:min_free_mem] and !params[:min_free_mem].is_a?(Float)
-      raise InvalidParameterError.new("Bad parameter: priority must be an Integer") if params[:priority] and !params[:priority].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: remote_path must be an String") if params[:remote_path] and !params[:remote_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rise must be an Integer") if params[:rise] and !params[:rise].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if params[:canary_file_path] and !params[:canary_file_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: remote_server_mount_id must be an Integer") if params[:remote_server_mount_id] and !params[:remote_server_mount_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if params[:remote_server_id] and !params[:remote_server_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: canary_file_path") unless params[:canary_file_path]
-      raise MissingParameterError.new("Parameter missing: remote_server_mount_id") unless params[:remote_server_mount_id]
-      raise MissingParameterError.new("Parameter missing: remote_server_id") unless params[:remote_server_id]
+      raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if !params[:fall].nil? and !params[:fall].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if !params[:health_check_type].nil? and !params[:health_check_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if !params[:interval].nil? and !params[:interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: min_free_cpu must be an Float") if !params[:min_free_cpu].nil? and !params[:min_free_cpu].is_a?(Float)
+      raise InvalidParameterError.new("Bad parameter: min_free_mem must be an Float") if !params[:min_free_mem].nil? and !params[:min_free_mem].is_a?(Float)
+      raise InvalidParameterError.new("Bad parameter: priority must be an Integer") if !params[:priority].nil? and !params[:priority].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: remote_path must be an String") if !params[:remote_path].nil? and !params[:remote_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rise must be an Integer") if !params[:rise].nil? and !params[:rise].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if !params[:canary_file_path].nil? and !params[:canary_file_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: remote_server_mount_id must be an Integer") if !params[:remote_server_mount_id].nil? and !params[:remote_server_mount_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if !params[:remote_server_id].nil? and !params[:remote_server_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: canary_file_path") if params[:canary_file_path].nil?
+      raise MissingParameterError.new("Parameter missing: remote_server_mount_id") if params[:remote_server_mount_id].nil?
+      raise MissingParameterError.new("Parameter missing: remote_server_id") if params[:remote_server_id].nil?
 
       response, options = Api.send_request("/remote_mount_backends", :post, params, options) { |reply| reply.require_object("RemoteMountBackend") }
       RemoteMountBackend.new(response.data, options)
@@ -336,8 +338,8 @@ module Files
     def self.reset_status(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/remote_mount_backends/#{params[:id]}/reset_status", :post, params, options)
       nil
@@ -364,18 +366,18 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if params[:fall] and !params[:fall].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if params[:health_check_type] and !params[:health_check_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if params[:interval] and !params[:interval].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: min_free_cpu must be an Float") if params[:min_free_cpu] and !params[:min_free_cpu].is_a?(Float)
-      raise InvalidParameterError.new("Bad parameter: min_free_mem must be an Float") if params[:min_free_mem] and !params[:min_free_mem].is_a?(Float)
-      raise InvalidParameterError.new("Bad parameter: priority must be an Integer") if params[:priority] and !params[:priority].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: remote_path must be an String") if params[:remote_path] and !params[:remote_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: rise must be an Integer") if params[:rise] and !params[:rise].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if params[:canary_file_path] and !params[:canary_file_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if params[:remote_server_id] and !params[:remote_server_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if !params[:fall].nil? and !params[:fall].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if !params[:health_check_type].nil? and !params[:health_check_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if !params[:interval].nil? and !params[:interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: min_free_cpu must be an Float") if !params[:min_free_cpu].nil? and !params[:min_free_cpu].is_a?(Float)
+      raise InvalidParameterError.new("Bad parameter: min_free_mem must be an Float") if !params[:min_free_mem].nil? and !params[:min_free_mem].is_a?(Float)
+      raise InvalidParameterError.new("Bad parameter: priority must be an Integer") if !params[:priority].nil? and !params[:priority].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: remote_path must be an String") if !params[:remote_path].nil? and !params[:remote_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: rise must be an Integer") if !params[:rise].nil? and !params[:rise].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: canary_file_path must be an String") if !params[:canary_file_path].nil? and !params[:canary_file_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: remote_server_id must be an Integer") if !params[:remote_server_id].nil? and !params[:remote_server_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/remote_mount_backends/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("RemoteMountBackend") }
       RemoteMountBackend.new(response.data, options)
@@ -388,8 +390,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/remote_mount_backends/#{params[:id]}", :delete, params, options)
       nil

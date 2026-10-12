@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Action is the Ruby SDK's representation of Files.com API Action objects.
+  # Each instance keeps its API field values in +attributes+.
   class Action
     attr_reader :options, :attributes
 

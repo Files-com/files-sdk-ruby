@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::UsageByTopLevelDir is the Ruby SDK's representation of Files.com API UsageByTopLevelDir objects.
+  # Each instance keeps its API field values in +attributes+.
   class UsageByTopLevelDir
     attr_reader :options, :attributes
 

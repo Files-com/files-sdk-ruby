@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Behavior is the Ruby SDK's representation of Files.com API Behavior objects.
+  # Each instance keeps its API field values in +attributes+.
   class Behavior
     attr_reader :options, :attributes
 
@@ -156,10 +158,10 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/behaviors/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Behavior") }
       @attributes = response.data
@@ -171,8 +173,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/behaviors/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -205,10 +207,10 @@ module Files
     #
     # Returns a Files::List of Files::Behavior objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
       List.new(Behavior, params) do |page_params, &check_page|
         Api.send_request("/behaviors", :get, page_params, options, &check_page)
@@ -229,8 +231,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/behaviors/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Behavior") }
       Behavior.new(response.data, options)
@@ -255,12 +257,12 @@ module Files
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       List.new(Behavior, params) do |page_params, &check_page|
         Api.send_request("/behaviors/folders/#{page_params[:path]}", :get, page_params, options, &check_page)
@@ -282,13 +284,13 @@ module Files
     #
     # Returns a Files::Behavior.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if params[:behavior] and !params[:behavior].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
-      raise MissingParameterError.new("Parameter missing: behavior") unless params[:behavior]
+      raise InvalidParameterError.new("Bad parameter: value must be an Hash") if !params[:value].nil? and !params[:value].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: behavior must be an String") if !params[:behavior].nil? and !params[:behavior].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+      raise MissingParameterError.new("Parameter missing: behavior") if params[:behavior].nil?
 
       response, options = Api.send_request("/behaviors", :post, params, options) { |reply| reply.require_object("Behavior") }
       Behavior.new(response.data, options)
@@ -307,13 +309,13 @@ module Files
     #
     # Returns nil.
     def self.webhook_test(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: url must be an String") if params[:url] and !params[:url].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: method must be an String") if params[:method] and !params[:method].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: encoding must be an String") if params[:encoding] and !params[:encoding].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if params[:headers] and !params[:headers].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: body must be an Hash") if params[:body] and !params[:body].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: action must be an String") if params[:action] and !params[:action].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: url") unless params[:url]
+      raise InvalidParameterError.new("Bad parameter: url must be an String") if !params[:url].nil? and !params[:url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: method must be an String") if !params[:method].nil? and !params[:method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: encoding must be an String") if !params[:encoding].nil? and !params[:encoding].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if !params[:headers].nil? and !params[:headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: body must be an Hash") if !params[:body].nil? and !params[:body].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: action must be an String") if !params[:action].nil? and !params[:action].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: url") if params[:url].nil?
 
       Api.send_request("/behaviors/webhook/test", :post, params, options)
       nil
@@ -335,12 +337,12 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be one of Hash, String, Integer") if params[:id] and [ Hash, String, Integer ].none? { |klass| params[:id].is_a?(klass) }
-      raise InvalidParameterError.new("Bad parameter: value must be an Hash") if params[:value] and !params[:value].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: name must be an String") if params[:name] and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: description must be an String") if params[:description] and !params[:description].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: attachment_delete must be one of Hash, String, Integer") if params[:attachment_delete] and [ Hash, String, Integer ].none? { |klass| params[:attachment_delete].is_a?(klass) }
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be one of Hash, String, Integer") if !params[:id].nil? and [ Hash, String, Integer ].none? { |klass| params[:id].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: value must be an Hash") if !params[:value].nil? and !params[:value].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: attachment_delete must be one of Hash, String, Integer") if !params[:attachment_delete].nil? and [ Hash, String, Integer ].none? { |klass| params[:attachment_delete].is_a?(klass) }
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/behaviors/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Behavior") }
       Behavior.new(response.data, options)
@@ -353,8 +355,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/behaviors/#{params[:id]}", :delete, params, options)
       nil

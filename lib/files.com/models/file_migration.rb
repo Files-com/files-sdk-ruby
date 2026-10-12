@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::FileMigration is the Ruby SDK's representation of Files.com API FileMigration objects.
+  # Each instance keeps its API field values in +attributes+.
   class FileMigration
     attr_reader :options, :attributes
 
@@ -69,8 +71,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/file_migrations/#{params[:id]}", :get, params, options) { |reply| reply.require_object("FileMigration") }
       FileMigration.new(response.data, options)

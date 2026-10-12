@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::ActionNotificationExport is the Ruby SDK's representation of Files.com API ActionNotificationExport objects.
+  # Each instance keeps its API field values in +attributes+.
   class ActionNotificationExport
     attr_reader :options, :attributes
 
@@ -165,8 +167,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/action_notification_exports/#{params[:id]}", :get, params, options) { |reply| reply.require_object("ActionNotificationExport") }
       ActionNotificationExport.new(response.data, options)
@@ -194,16 +196,16 @@ module Files
     #
     # Returns a Files::ActionNotificationExport.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if params[:start_at] and !params[:start_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if params[:end_at] and !params[:end_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_message must be an String") if params[:query_message] and !params[:query_message].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_request_method must be an String") if params[:query_request_method] and !params[:query_request_method].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_request_url must be an String") if params[:query_request_url] and !params[:query_request_url].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_status must be an String") if params[:query_status] and !params[:query_status].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_path must be an String") if params[:query_path] and !params[:query_path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: query_folder must be an String") if params[:query_folder] and !params[:query_folder].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_message must be an String") if !params[:query_message].nil? and !params[:query_message].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_request_method must be an String") if !params[:query_request_method].nil? and !params[:query_request_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_request_url must be an String") if !params[:query_request_url].nil? and !params[:query_request_url].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_status must be an String") if !params[:query_status].nil? and !params[:query_status].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_path must be an String") if !params[:query_path].nil? and !params[:query_path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_folder must be an String") if !params[:query_folder].nil? and !params[:query_folder].is_a?(String)
 
       response, options = Api.send_request("/action_notification_exports", :post, params, options) { |reply| reply.require_object("ActionNotificationExport") }
       ActionNotificationExport.new(response.data, options)

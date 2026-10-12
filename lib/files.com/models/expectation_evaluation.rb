@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::ExpectationEvaluation is the Ruby SDK's representation of Files.com API ExpectationEvaluation objects.
+  # Each instance keeps its API field values in +attributes+.
   class ExpectationEvaluation
     attr_reader :options, :attributes
 
@@ -110,10 +112,10 @@ module Files
     #
     # Returns a Files::List of Files::ExpectationEvaluation objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
       List.new(ExpectationEvaluation, params) do |page_params, &check_page|
         Api.send_request("/expectation_evaluations", :get, page_params, options, &check_page)
@@ -134,8 +136,8 @@ module Files
     def self.find(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/expectation_evaluations/#{params[:id]}", :get, params, options) { |reply| reply.require_object("ExpectationEvaluation") }
       ExpectationEvaluation.new(response.data, options)

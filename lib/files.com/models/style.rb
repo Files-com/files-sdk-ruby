@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Style is the Ruby SDK's representation of Files.com API Style objects.
+  # Each instance keeps its API field values in +attributes+.
   class Style
     attr_reader :options, :attributes
 
@@ -70,9 +72,9 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: logo_click_href must be an String") if params[:logo_click_href] and !params[:logo_click_href].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: logo_click_href must be an String") if !params[:logo_click_href].nil? and !params[:logo_click_href].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/styles/#{@attributes[:path]}", :patch, params, @options) { |reply| reply.require_object("Style") }
       @attributes = response.data
@@ -84,8 +86,8 @@ module Files
       params ||= {}
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       Api.send_request("/styles/#{@attributes[:path]}", :delete, params, @options)
     end
@@ -111,8 +113,8 @@ module Files
     def self.find(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/styles/#{params[:path]}", :get, params, options) { |reply| reply.require_object("Style") }
       Style.new(response.data, options)
@@ -133,9 +135,9 @@ module Files
     def self.update(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: logo_click_href must be an String") if params[:logo_click_href] and !params[:logo_click_href].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: logo_click_href must be an String") if !params[:logo_click_href].nil? and !params[:logo_click_href].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/styles/#{params[:path]}", :patch, params, options) { |reply| reply.require_object("Style") }
       Style.new(response.data, options)
@@ -148,8 +150,8 @@ module Files
     def self.delete(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       Api.send_request("/styles/#{params[:path]}", :delete, params, options)
       nil

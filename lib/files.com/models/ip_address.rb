@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::IpAddress is the Ruby SDK's representation of Files.com API IpAddress objects.
+  # Each instance keeps its API field values in +attributes+.
   class IpAddress
     attr_reader :options, :attributes
 
@@ -38,8 +40,8 @@ module Files
     #
     # Returns a Files::List of Files::IpAddress objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
 
       List.new(IpAddress, params) do |page_params, &check_page|
         Api.send_request("/ip_addresses", :get, page_params, options, &check_page)
@@ -59,8 +61,8 @@ module Files
     #
     # Returns a Files::List of Files::PublicIpAddress objects.
     def self.get_smartfile_reserved(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
 
       List.new(PublicIpAddress, params) do |page_params, &check_page|
         Api.send_request("/ip_addresses/smartfile-reserved", :get, page_params, options, &check_page)
@@ -76,8 +78,8 @@ module Files
     #
     # Returns a Files::List of Files::PublicIpAddress objects.
     def self.get_exavault_reserved(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
 
       List.new(PublicIpAddress, params) do |page_params, &check_page|
         Api.send_request("/ip_addresses/exavault-reserved", :get, page_params, options, &check_page)
@@ -93,8 +95,8 @@ module Files
     #
     # Returns a Files::List of Files::PublicIpAddress objects.
     def self.get_reserved(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
 
       List.new(PublicIpAddress, params) do |page_params, &check_page|
         Api.send_request("/ip_addresses/reserved", :get, page_params, options, &check_page)

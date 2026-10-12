@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::ActionNotificationExportResult is the Ruby SDK's representation of Files.com API ActionNotificationExportResult objects.
+  # Each instance keeps its API field values in +attributes+.
   class ActionNotificationExportResult
     attr_reader :options, :attributes
 
@@ -70,11 +72,11 @@ module Files
     #
     # Returns a Files::List of Files::ActionNotificationExportResult objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: action_notification_export_id must be an Integer") if params[:action_notification_export_id] and !params[:action_notification_export_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: action_notification_export_id") unless params[:action_notification_export_id]
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: action_notification_export_id must be an Integer") if !params[:action_notification_export_id].nil? and !params[:action_notification_export_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: action_notification_export_id") if params[:action_notification_export_id].nil?
 
       List.new(ActionNotificationExportResult, params) do |page_params, &check_page|
         Api.send_request("/action_notification_export_results", :get, page_params, options, &check_page)

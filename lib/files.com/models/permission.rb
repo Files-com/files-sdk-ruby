@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Permission is the Ruby SDK's representation of Files.com API Permission objects.
+  # Each instance keeps its API field values in +attributes+.
   class Permission
     attr_reader :options, :attributes
 
@@ -131,8 +133,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/permissions/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -171,15 +173,15 @@ module Files
     #
     # Returns a Files::List of Files::Permission objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if params[:filter_prefix] and !params[:filter_prefix].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an String") if params[:group_id] and !params[:group_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: partner_id must be an String") if params[:partner_id] and !params[:partner_id].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an String") if params[:user_id] and !params[:user_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if !params[:filter_prefix].nil? and !params[:filter_prefix].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an String") if !params[:group_id].nil? and !params[:group_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an String") if !params[:partner_id].nil? and !params[:partner_id].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an String") if !params[:user_id].nil? and !params[:user_id].is_a?(String)
 
       List.new(Permission, params) do |page_params, &check_page|
         Api.send_request("/permissions", :get, page_params, options, &check_page)
@@ -207,16 +209,16 @@ module Files
     #
     # Returns a Files::Permission.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if params[:group_id] and !params[:group_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if params[:group_ids] and !params[:group_ids].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: permission must be an String") if params[:permission] and !params[:permission].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if params[:partner_id] and !params[:partner_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if params[:user_id] and !params[:user_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: username must be an String") if params[:username] and !params[:username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: group_name must be an String") if params[:group_name] and !params[:group_name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: site_id must be an Integer") if params[:site_id] and !params[:site_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if !params[:group_ids].nil? and !params[:group_ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: permission must be an String") if !params[:permission].nil? and !params[:permission].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if !params[:partner_id].nil? and !params[:partner_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: username must be an String") if !params[:username].nil? and !params[:username].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: group_name must be an String") if !params[:group_name].nil? and !params[:group_name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: site_id must be an Integer") if !params[:site_id].nil? and !params[:site_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/permissions", :post, params, options) { |reply| reply.require_object("Permission") }
       Permission.new(response.data, options)
@@ -229,8 +231,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/permissions/#{params[:id]}", :delete, params, options)
       nil

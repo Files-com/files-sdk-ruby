@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::FileComment is the Ruby SDK's representation of Files.com API FileComment objects.
+  # Each instance keeps its API field values in +attributes+.
   class FileComment
     attr_reader :options, :attributes
 
@@ -51,10 +53,10 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if !params[:body].nil? and !params[:body].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: body") if params[:body].nil?
 
       response, options = Api.send_request("/file_comments/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("FileComment") }
       @attributes = response.data
@@ -66,8 +68,8 @@ module Files
       params ||= {}
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/file_comments/#{@attributes[:id]}", :delete, params, @options)
     end
@@ -101,10 +103,10 @@ module Files
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       List.new(FileComment, params) do |page_params, &check_page|
         Api.send_request("/file_comments/files/#{page_params[:path]}", :get, page_params, options, &check_page)
@@ -120,10 +122,10 @@ module Files
     #
     # Returns a Files::FileComment.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if !params[:body].nil? and !params[:body].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: body") if params[:body].nil?
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/file_comments", :post, params, options) { |reply| reply.require_object("FileComment") }
       FileComment.new(response.data, options)
@@ -139,10 +141,10 @@ module Files
     def self.update(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: body must be an String") if params[:body] and !params[:body].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
-      raise MissingParameterError.new("Parameter missing: body") unless params[:body]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: body must be an String") if !params[:body].nil? and !params[:body].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: body") if params[:body].nil?
 
       response, options = Api.send_request("/file_comments/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("FileComment") }
       FileComment.new(response.data, options)
@@ -155,8 +157,8 @@ module Files
     def self.delete(id, params = {}, options = {})
       params ||= {}
       params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if params[:id] and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") unless params[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/file_comments/#{params[:id]}", :delete, params, options)
       nil

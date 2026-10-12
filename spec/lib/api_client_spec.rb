@@ -316,6 +316,34 @@ RSpec.describe Files::ApiClient do
     end
   end
 
+  describe "request bodies" do
+    it "sends a file part as multipart form data and other parameters as a URL-encoded form" do
+      requests = []
+      connection = described_class.build_default_conn
+      connection.builder.adapter(:test) do |stub|
+        stub.patch("/api/rest/v1/bundles/7") do |env|
+          body = env.body.respond_to?(:read) ? env.body.read : env.body
+          requests << { content_type: env.request_headers["Content-Type"], body: body.b }
+          [ 200, { "Content-Type" => "application/json" }, '{"id":7}' ]
+        end
+      end
+      client = described_class.new(connection)
+      file = StringIO.new("\x00\xFFbin".b)
+      attachment = Faraday::Multipart::FilePart.new(file, "application/octet-stream", "fixture.bin")
+
+      client.execute_request(:patch, "/bundles/7", api_key: "key", params: { description: "plain", watermark_attachment_file: attachment })
+      client.execute_request(:patch, "/bundles/7", api_key: "key", params: { description: "plain", paths: [ "a.txt", "b.txt" ] })
+
+      multipart, form = requests
+      expect(multipart[:content_type]).to start_with("multipart/form-data; boundary=")
+      expect(multipart[:body]).to include('name="watermark_attachment_file"; filename="fixture.bin"', "Content-Type: application/octet-stream", "\r\n\r\n\x00\xFFbin\r\n".b)
+      expect(multipart[:body]).not_to include("UploadIO")
+      expect(file).not_to be_closed
+      expect(form[:content_type]).to eq("application/x-www-form-urlencoded")
+      expect(Faraday::Utils.parse_nested_query(form[:body])).to eq("description" => "plain", "paths" => [ "a.txt", "b.txt" ])
+    end
+  end
+
   describe "network timeouts" do
     around do |example|
       original = [ Files.open_timeout, Files.read_timeout ]

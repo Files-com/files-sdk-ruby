@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Folder is the Ruby SDK's representation of Files.com API Folder objects.
+  # Each instance keeps its API field values in +attributes+.
   class Folder
     attr_reader :options, :attributes
 
@@ -506,16 +508,16 @@ module Files
     def self.list_for(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if params[:preview_size] and !params[:preview_size].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: search must be an String") if params[:search] and !params[:search].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: search_custom_metadata_key must be an String") if params[:search_custom_metadata_key] and !params[:search_custom_metadata_key].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: type must be an String") if params[:type] and !params[:type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: modified_at_datetime must be an String") if params[:modified_at_datetime] and !params[:modified_at_datetime].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if !params[:preview_size].nil? and !params[:preview_size].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: search must be an String") if !params[:search].nil? and !params[:search].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: search_custom_metadata_key must be an String") if !params[:search_custom_metadata_key].nil? and !params[:search_custom_metadata_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: type must be an String") if !params[:type].nil? and !params[:type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: modified_at_datetime must be an String") if !params[:modified_at_datetime].nil? and !params[:modified_at_datetime].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       List.new(File, params) do |page_params, &check_page|
         Api.send_request("/folders/#{page_params[:path]}", :get, page_params, options, &check_page)
@@ -534,9 +536,9 @@ module Files
     def self.create(path, params = {}, options = {})
       params ||= {}
       params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if params[:path] and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if params[:provided_mtime] and !params[:provided_mtime].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") unless params[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if !params[:provided_mtime].nil? and !params[:provided_mtime].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/folders/#{params[:path]}", :post, params, options) { |reply| reply.require_object("File") }
       File.new(response.data, options)

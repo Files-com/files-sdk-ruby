@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::DirectConnectionInfo is the Ruby SDK's representation of Files.com API DirectConnectionInfo objects.
+  # Each instance keeps its API field values in +attributes+.
   class DirectConnectionInfo
     attr_reader :options, :attributes
 

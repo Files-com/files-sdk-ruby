@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::UsageSnapshot is the Ruby SDK's representation of Files.com API UsageSnapshot objects.
+  # Each instance keeps its API field values in +attributes+.
   class UsageSnapshot
     attr_reader :options, :attributes
 
@@ -98,8 +100,8 @@ module Files
     #
     # Returns a Files::List of Files::UsageSnapshot objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
 
       List.new(UsageSnapshot, params) do |page_params, &check_page|
         Api.send_request("/usage_snapshots", :get, page_params, options, &check_page)

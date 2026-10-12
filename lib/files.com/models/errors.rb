@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Errors is the Ruby SDK's representation of Files.com API Errors objects.
+  # Each instance keeps its API field values in +attributes+.
   class Errors
     attr_reader :options, :attributes
 

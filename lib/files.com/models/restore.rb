@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Files
+  # Files::Restore is the Ruby SDK's representation of Files.com API Restore objects.
+  # Each instance keeps its API field values in +attributes+.
   class Restore
     attr_reader :options, :attributes
 
@@ -229,10 +231,10 @@ module Files
     #
     # Returns a Files::List of Files::Restore objects.
     def self.list(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if params[:cursor] and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if params[:per_page] and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if params[:sort_by] and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if params[:filter] and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
       List.new(Restore, params) do |page_params, &check_page|
         Api.send_request("/restores", :get, page_params, options, &check_page)
@@ -257,11 +259,11 @@ module Files
     #
     # Returns a Files::Restore.
     def self.create(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: earliest_date must be an String") if params[:earliest_date] and !params[:earliest_date].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: prefix must be an String") if params[:prefix] and !params[:prefix].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: restoration_type must be an String") if params[:restoration_type] and !params[:restoration_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if params[:workspace_id] and !params[:workspace_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: earliest_date") unless params[:earliest_date]
+      raise InvalidParameterError.new("Bad parameter: earliest_date must be an String") if !params[:earliest_date].nil? and !params[:earliest_date].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: prefix must be an String") if !params[:prefix].nil? and !params[:prefix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: restoration_type must be an String") if !params[:restoration_type].nil? and !params[:restoration_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: earliest_date") if params[:earliest_date].nil?
 
       response, options = Api.send_request("/restores", :post, params, options) { |reply| reply.require_object("Restore") }
       Restore.new(response.data, options)
