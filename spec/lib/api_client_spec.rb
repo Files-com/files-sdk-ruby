@@ -344,6 +344,64 @@ RSpec.describe Files::ApiClient do
     end
   end
 
+  describe "client loggers" do
+    around do |example|
+      original = [ Files.logger, Files.log_level, Files.max_network_retries ]
+      Files.max_network_retries = 0
+      example.run
+    ensure
+      Files.logger, Files.log_level, Files.max_network_retries = original
+    end
+
+    it "logs each client's requests to its own logger without changing the library-wide settings" do
+      connection = Faraday.new do |builder|
+        builder.response :raise_error
+        builder.adapter :test do |stub|
+          (1..5).each do |id|
+            stub.get("/api/rest/v1/workspaces/#{id}") { [ 200, { "Content-Type" => "application/json" }, { id: id }.to_json ] }
+          end
+          stub.get("/api/rest/v1/workspaces/6") { [ 404, { "Content-Type" => "application/json" }, { error: "Not Found", type: "not-found" }.to_json ] }
+        end
+      end
+      global_output = StringIO.new
+      global_logger = Logger.new(global_output, level: Logger::INFO)
+      Files.logger = global_logger
+      Files.log_level = Files::LEVEL_INFO
+      a_output = StringIO.new
+      a_logger = Logger.new(a_output, level: Logger::INFO)
+      b_output = StringIO.new
+      b_logger = Logger.new(b_output, level: Logger::ERROR)
+      client_a = described_class.new(connection, logger: a_logger)
+      client_b = described_class.new(connection, logger: b_logger, log_level: Files::LEVEL_DEBUG)
+
+      Files::Workspace.find(1, {}, api_key: "key", client: client_a)
+      Files::Workspace.find(2, {}, api_key: "key", client: client_b)
+      Files::Workspace.find(3, {}, api_key: "key", client: client_a)
+
+      expect(a_output.string).to include("message=Request method=get num_retries=0 path=/workspaces/1", "message=Request method=get num_retries=0 path=/workspaces/3")
+      expect(a_output.string.scan(/message=Response .*status=200/).size).to eq(2)
+      expect(a_output.string).not_to include("/workspaces/2")
+      expect(b_output.string).to be_empty
+      expect(global_output.string).to be_empty
+      expect([ a_logger.level, b_logger.level ]).to eq([ Logger::INFO, Logger::ERROR ])
+      expect(Files.logger).to equal(global_logger)
+      expect(Files.log_level).to eq(Files::LEVEL_INFO)
+
+      expect { Files::Workspace.find(6, {}, api_key: "key", client: client_b) }.to raise_error(Files::NotFoundError)
+      expect(b_output.string).to include("message=API error status=404")
+      expect(a_output.string).not_to include("API error")
+      expect(global_output.string).to be_empty
+      expect([ a_logger.level, b_logger.level ]).to eq([ Logger::INFO, Logger::ERROR ])
+
+      Files::Workspace.find(4, {}, api_key: "key", client: described_class.new(connection))
+      expect(global_output.string).to include("message=Request method=get num_retries=0 path=/workspaces/4")
+
+      quiet_client = described_class.new(connection, logger: nil, log_level: nil)
+      expect { Files::Workspace.find(5, {}, api_key: "key", client: quiet_client) }.not_to output.to_stdout
+      expect(global_output.string).not_to include("/workspaces/5")
+    end
+  end
+
   describe "network timeouts" do
     around do |example|
       original = [ Files.open_timeout, Files.read_timeout ]

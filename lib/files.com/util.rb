@@ -34,29 +34,48 @@ module Files
       end
     end
 
-    def self.log_error(message, data = {})
-      if !Files.logger.nil? ||
-         (!Files.log_level.nil? && Files.log_level <= Files::LEVEL_ERROR)
+    # Where log messages go: to +logger+ when there is one, which then filters by its own level, and otherwise to
+    # standard output or error at +log_level+ and above. A nil +log_level+ without a logger logs nothing.
+    LogSettings = Struct.new(:logger, :log_level)
+
+    # The library-wide Files.logger and Files.log_level, read when each message is logged.
+    def self.global_log_settings
+      LogSettings.new(Files.logger, Files.log_level)
+    end
+
+    # The same values Files.log_level= accepts: nil, a level constant, or "debug" or "info".
+    def self.normalize_log_level(val)
+      val = { "debug" => LEVEL_DEBUG, "info" => LEVEL_INFO }.fetch(val, val)
+      if !val.nil? && ![ LEVEL_DEBUG, LEVEL_ERROR, LEVEL_INFO ].include?(val)
+        raise ArgumentError,
+              "log_level should only be set to `nil`, `debug` or `info`"
+      end
+      val
+    end
+
+    def self.log_error(message, data = {}, settings = global_log_settings)
+      if !settings.logger.nil? ||
+         (!settings.log_level.nil? && settings.log_level <= Files::LEVEL_ERROR)
         log_internal(message, data, color: :cyan, level: Files::LEVEL_ERROR,
-                                    logger: Files.logger, out: $stderr
+                                    logger: settings.logger, out: $stderr
         )
       end
     end
 
-    def self.log_info(message, data = {})
-      if !Files.logger.nil? ||
-         (!Files.log_level.nil? && Files.log_level <= Files::LEVEL_INFO)
+    def self.log_info(message, data = {}, settings = global_log_settings)
+      if !settings.logger.nil? ||
+         (!settings.log_level.nil? && settings.log_level <= Files::LEVEL_INFO)
         log_internal(message, data, color: :cyan, level: Files::LEVEL_INFO,
-                                    logger: Files.logger, out: $stdout
+                                    logger: settings.logger, out: $stdout
         )
       end
     end
 
-    def self.log_debug(message, data = {})
-      if !Files.logger.nil? ||
-         (!Files.log_level.nil? && Files.log_level <= Files::LEVEL_DEBUG)
+    def self.log_debug(message, data = {}, settings = global_log_settings)
+      if !settings.logger.nil? ||
+         (!settings.log_level.nil? && settings.log_level <= Files::LEVEL_DEBUG)
         log_internal(message, data, color: :blue, level: Files::LEVEL_DEBUG,
-                                    logger: Files.logger, out: $stdout
+                                    logger: settings.logger, out: $stdout
         )
       end
     end

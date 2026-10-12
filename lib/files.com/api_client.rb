@@ -8,8 +8,29 @@ module Files
     QUERY_METHODS = %i[get head delete].freeze
     private_constant :QUERY_METHODS
 
-    def initialize(conn = nil)
+    # The default for a logging option this client does not set itself.
+    USE_GLOBAL = Object.new.freeze
+    private_constant :USE_GLOBAL
+
+    # Creates a client that sends requests through +conn+, or through a new default connection when +conn+ is nil.
+    #
+    # By default the client logs its ordinary API requests, responses and errors through the library-wide Files.logger and
+    # Files.log_level, read as each message is logged. Pass either option to give this client its own setting
+    # instead, without changing the library-wide one or any other client:
+    #
+    # logger:: A Logger, or any object with the same +log+ method, that receives this client's ordinary API messages. Its own
+    #          level decides which are written, and the client never changes it. Pass nil for no logger even when
+    #          Files.logger is set.
+    # log_level:: Without a logger, the lowest level written to standard output and error: nil, Files::LEVEL_DEBUG,
+    #             Files::LEVEL_INFO or Files::LEVEL_ERROR, or "debug" or "info", as Files.log_level= accepts. It
+    #             is ignored when the client has a logger. Pass nil to write nothing there even when
+    #             Files.log_level is set.
+    #
+    # A client created with logger: nil, log_level: nil logs no ordinary API messages.
+    def initialize(conn = nil, logger: USE_GLOBAL, log_level: USE_GLOBAL)
       self.conn = conn || self.class.default_conn
+      @logger = logger
+      @log_level = log_level.equal?(USE_GLOBAL) ? log_level : Util.normalize_log_level(log_level)
       @system_profiler = SystemProfiler.new
       @last_request_metrics = nil
     end
@@ -375,7 +396,7 @@ module Files
                 else
                   "The Files.com API returned an error without a message (HTTP response code was #{resp.http_status})"
                 end
-      Util.log_error("API error", status: resp.http_status, error_message: message)
+      Util.log_error("API error", { status: resp.http_status, error_message: message }, log_settings)
 
       api_error_class(resp.data[:type]).new(message,
         http_body: resp.http_body,
@@ -462,7 +483,7 @@ module Files
                         error.message.empty? ? error.response[:body] : error.message
                       end
 
-      Util.log_error("Network error", error_message: error_message)
+      Util.log_error("Network error", { error_message: error_message }, log_settings)
       message = "Could not connect to Files.com at URL #{base_url}. Please check your internet connection and try again. If this problem persists, you should check Files.com's service status at https://status.files.com, or contact your primary account representative."
       message += " Request was retried #{num_retries} times." if num_retries > 0
       message += "\n\n(Network error: #{error_message})"
@@ -508,18 +529,25 @@ module Files
     end
 
     private def log_request(context, num_retries, no_body: false)
-      Util.log_info("Request", method: context.method, num_retries: num_retries, path: context.path)
-      Util.log_debug("Request details", body: context.body, query_params: context.query_params) unless no_body
+      Util.log_info("Request", { method: context.method, num_retries: num_retries, path: context.path }, log_settings)
+      Util.log_debug("Request details", { body: context.body, query_params: context.query_params }, log_settings) unless no_body
     end
 
     private def log_response(context, request_start, status, body, no_body: false)
-      Util.log_info("Response", elapsed: Time.now - request_start, method: context.method, path: context.path, status: status)
-      Util.log_debug("Response details", body: body) unless no_body
+      Util.log_info("Response", { elapsed: Time.now - request_start, method: context.method, path: context.path, status: status }, log_settings)
+      Util.log_debug("Response details", { body: body }, log_settings) unless no_body
     end
 
     private def log_response_error(context, request_start, error)
-      Util.log_error("Error", elapsed: Time.now - request_start, error_type: error.class, method: context.method, path: context.path)
-      Util.log_debug("Error details", error_message: error.message)
+      Util.log_error("Error", { elapsed: Time.now - request_start, error_type: error.class, method: context.method, path: context.path }, log_settings)
+      Util.log_debug("Error details", { error_message: error.message }, log_settings)
+    end
+
+    # This client's own logger and level where it set them, and the library-wide ones otherwise.
+    private def log_settings
+      Util::LogSettings.new(@logger.equal?(USE_GLOBAL) ? Files.logger : @logger,
+                            @log_level.equal?(USE_GLOBAL) ? Files.log_level : @log_level
+                           )
     end
 
     class RequestLogContext
