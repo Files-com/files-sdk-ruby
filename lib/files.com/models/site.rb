@@ -611,7 +611,7 @@ module Files
       @attributes[:max_prior_passwords]
     end
 
-    # object - List of site settings managed by the parent site
+    # object - Site settings managed by the parent site. Each key identifies a managed setting, with a null value. Non-secret effective values are returned in their own Site settings fields.
     def managed_site_settings
       @attributes[:managed_site_settings]
     end
