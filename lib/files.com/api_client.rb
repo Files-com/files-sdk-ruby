@@ -8,7 +8,7 @@ module Files
     QUERY_METHODS = %i[get head delete].freeze
     private_constant :QUERY_METHODS
 
-    # The default for a logging option this client does not set itself.
+    # The default for an option this client does not set itself.
     USE_GLOBAL = Object.new.freeze
     private_constant :USE_GLOBAL
 
@@ -27,10 +27,16 @@ module Files
     #             Files.log_level is set.
     #
     # A client created with logger: nil, log_level: nil logs no ordinary API messages.
-    def initialize(conn = nil, logger: USE_GLOBAL, log_level: USE_GLOBAL)
+    #
+    # Its API requests likewise name the library-wide Files.workspace_id, read for each request, unless
+    # +workspace_id+ gives this client its own workspace; 0 is sent as "0". A request's own workspace_id option still
+    # takes precedence, and a request whose workspace_id is nil uses this client's. Pass workspace_id: nil to name no
+    # workspace for this client's requests even when Files.workspace_id is set.
+    def initialize(conn = nil, logger: USE_GLOBAL, log_level: USE_GLOBAL, workspace_id: USE_GLOBAL)
       self.conn = conn || self.class.default_conn
       @logger = logger
       @log_level = log_level.equal?(USE_GLOBAL) ? log_level : Util.normalize_log_level(log_level)
+      @workspace_id = workspace_id
       @system_profiler = SystemProfiler.new
       @last_request_metrics = nil
     end
@@ -125,7 +131,7 @@ module Files
       else
         session_id = nil
       end
-      workspace_id = Files.workspace_id if workspace_id.nil?
+      workspace_id = default_workspace_id if workspace_id.nil?
 
       if session_id and session_id != ""
         check_session_id!(session_id)
@@ -548,6 +554,11 @@ module Files
       Util::LogSettings.new(@logger.equal?(USE_GLOBAL) ? Files.logger : @logger,
                             @log_level.equal?(USE_GLOBAL) ? Files.log_level : @log_level
                            )
+    end
+
+    # This client's own workspace where it set one, and the library-wide one otherwise.
+    private def default_workspace_id
+      @workspace_id.equal?(USE_GLOBAL) ? Files.workspace_id : @workspace_id
     end
 
     class RequestLogContext

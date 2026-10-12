@@ -402,6 +402,45 @@ RSpec.describe Files::ApiClient do
     end
   end
 
+  describe "client workspaces" do
+    around do |example|
+      original = Files.workspace_id
+      example.run
+    ensure
+      Files.workspace_id = original
+    end
+
+    it "sends each client's own workspace, and the library-wide one for clients without their own" do
+      workspace_headers = []
+      connection = Faraday.new do |builder|
+        builder.response :raise_error
+        builder.adapter :test do |stub|
+          stub.get("/api/rest/v1/workspaces/1") do |env|
+            workspace_headers << env.request_headers["X-Files-Workspace-Id"]
+            [ 200, { "Content-Type" => "application/json" }, { id: 1 }.to_json ]
+          end
+        end
+      end
+      find_workspace = ->(client, **options) { Files::Workspace.find(1, {}, api_key: "key", client: client, **options) }
+      Files.workspace_id = 5
+      client_a = described_class.new(connection, workspace_id: 0)
+      client_b = described_class.new(connection, workspace_id: 7)
+
+      find_workspace.call(client_a)
+      find_workspace.call(client_b)
+      Files.workspace_id = 6
+      find_workspace.call(client_a)
+      find_workspace.call(described_class.new(connection))
+      find_workspace.call(described_class.new(connection, workspace_id: nil))
+      find_workspace.call(client_b, workspace_id: 0)
+      find_workspace.call(client_b, workspace_id: "")
+      find_workspace.call(client_b, workspace_id: nil)
+
+      expect(workspace_headers).to eq([ "0", "7", "0", "6", nil, "0", nil, "7" ])
+      expect(Files.workspace_id).to eq(6)
+    end
+  end
+
   describe "network timeouts" do
     around do |example|
       original = [ Files.open_timeout, Files.read_timeout ]
