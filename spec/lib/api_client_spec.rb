@@ -441,6 +441,15 @@ RSpec.describe Files::ApiClient do
     end
   end
 
+  describe "User-Agent" do
+    it "reports the SDK version the package declares" do
+      package_version = Gem::Specification.load(File.expand_path("../../files.com.gemspec", __dir__)).version.to_s
+      user_agent = described_class.new.send(:request_headers, nil, nil, :get, nil)["User-Agent"]
+
+      expect(user_agent).to match(/\AFiles\.com Ruby SDK v#{Regexp.escape(package_version)}(?: |\z)/)
+    end
+  end
+
   describe "network timeouts" do
     around do |example|
       original = [ Files.open_timeout, Files.read_timeout ]
