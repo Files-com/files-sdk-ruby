@@ -69,7 +69,7 @@ module Files
     #
     # Returns a Files::FileMigration.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

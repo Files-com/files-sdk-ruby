@@ -161,15 +161,19 @@ module Files
     #   user_tag - string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
     #   workspace_id - int64 - Workspace whose users the rule applies to. `0` means the Default Workspace. A Custom Workspace rule applies only to users who belong to that Workspace, regardless of access granted to other users.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if !params[:action].nil? and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: apply_to_all_workspaces must be a single value, not #{params[:apply_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:apply_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if !params[:authentication_method].nil? and !params[:authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an Array") if !params[:group_ids].nil? and !params[:group_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if !params[:inactivity_days].nil? and !params[:inactivity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: include_site_admins must be a single value, not #{params[:include_site_admins].class}") if [ Array, Hash ].any? { |klass| params[:include_site_admins].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: include_folder_admins must be a single value, not #{params[:include_folder_admins].class}") if [ Array, Hash ].any? { |klass| params[:include_folder_admins].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notify_users must be a single value, not #{params[:notify_users].class}") if [ Array, Hash ].any? { |klass| params[:notify_users].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: partner_tag must be an String") if !params[:partner_tag].nil? and !params[:partner_tag].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if !params[:user_state].nil? and !params[:user_state].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_tag must be an String") if !params[:user_tag].nil? and !params[:user_tag].is_a?(String)
@@ -178,18 +182,21 @@ module Files
 
       response, options = Api.send_request("/user_lifecycle_rules/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("UserLifecycleRule") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/user_lifecycle_rules/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/user_lifecycle_rules/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -204,6 +211,7 @@ module Files
       else
         new_obj = UserLifecycleRule.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -225,8 +233,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(UserLifecycleRule, params) do |page_params, &check_page|
-        Api.send_request("/user_lifecycle_rules", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/user_lifecycle_rules", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -242,7 +253,7 @@ module Files
     #
     # Returns a Files::UserLifecycleRule.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -276,10 +287,14 @@ module Files
     # Returns a Files::UserLifecycleRule.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: action must be an String") if !params[:action].nil? and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: apply_to_all_workspaces must be a single value, not #{params[:apply_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:apply_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if !params[:authentication_method].nil? and !params[:authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an Array") if !params[:group_ids].nil? and !params[:group_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if !params[:inactivity_days].nil? and !params[:inactivity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: include_site_admins must be a single value, not #{params[:include_site_admins].class}") if [ Array, Hash ].any? { |klass| params[:include_site_admins].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: include_folder_admins must be a single value, not #{params[:include_folder_admins].class}") if [ Array, Hash ].any? { |klass| params[:include_folder_admins].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notify_users must be a single value, not #{params[:notify_users].class}") if [ Array, Hash ].any? { |klass| params[:notify_users].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: partner_tag must be an String") if !params[:partner_tag].nil? and !params[:partner_tag].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if !params[:user_state].nil? and !params[:user_state].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_tag must be an String") if !params[:user_tag].nil? and !params[:user_tag].is_a?(String)
@@ -309,14 +324,18 @@ module Files
     #
     # Returns a Files::UserLifecycleRule.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if !params[:action].nil? and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: apply_to_all_workspaces must be a single value, not #{params[:apply_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:apply_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if !params[:authentication_method].nil? and !params[:authentication_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an Array") if !params[:group_ids].nil? and !params[:group_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if !params[:inactivity_days].nil? and !params[:inactivity_days].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: include_site_admins must be a single value, not #{params[:include_site_admins].class}") if [ Array, Hash ].any? { |klass| params[:include_site_admins].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: include_folder_admins must be a single value, not #{params[:include_folder_admins].class}") if [ Array, Hash ].any? { |klass| params[:include_folder_admins].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: notify_users must be a single value, not #{params[:notify_users].class}") if [ Array, Hash ].any? { |klass| params[:notify_users].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: partner_tag must be an String") if !params[:partner_tag].nil? and !params[:partner_tag].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_state must be an String") if !params[:user_state].nil? and !params[:user_state].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_tag must be an String") if !params[:user_tag].nil? and !params[:user_tag].is_a?(String)
@@ -332,7 +351,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

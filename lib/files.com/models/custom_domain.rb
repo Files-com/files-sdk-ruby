@@ -128,10 +128,11 @@ module Files
     #   ssl_certificate_id - int64 - Current SSL certificate ID.
     #   domain - string - Customer-owned domain name.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: available_to_all_workspaces must be a single value, not #{params[:available_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:available_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: folder_behavior_id must be an Integer") if !params[:folder_behavior_id].nil? and !params[:folder_behavior_id].is_a?(Integer)
@@ -141,18 +142,21 @@ module Files
 
       response, options = Api.send_request("/custom_domains/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("CustomDomain") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/custom_domains/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/custom_domains/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -167,6 +171,7 @@ module Files
       else
         new_obj = CustomDomain.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -188,8 +193,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(CustomDomain, params) do |page_params, &check_page|
-        Api.send_request("/custom_domains", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/custom_domains", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -205,7 +213,7 @@ module Files
     #
     # Returns a Files::CustomDomain.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -227,7 +235,7 @@ module Files
     #
     # Returns a Files::CustomDomain.
     def self.create_allocate_ip(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: count must be an Integer") if !params[:count].nil? and !params[:count].is_a?(Integer)
@@ -251,6 +259,7 @@ module Files
     #
     # Returns a Files::CustomDomain.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: available_to_all_workspaces must be a single value, not #{params[:available_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:available_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: folder_behavior_id must be an Integer") if !params[:folder_behavior_id].nil? and !params[:folder_behavior_id].is_a?(Integer)
@@ -275,9 +284,10 @@ module Files
     #
     # Returns a Files::CustomDomain.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: available_to_all_workspaces must be a single value, not #{params[:available_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:available_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: folder_behavior_id must be an Integer") if !params[:folder_behavior_id].nil? and !params[:folder_behavior_id].is_a?(Integer)
@@ -294,7 +304,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

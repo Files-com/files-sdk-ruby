@@ -233,16 +233,18 @@ module Files
     #   pkcs12 - string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the partner's public certificate. Provide this instead of public_certificate. Any private key in the file is discarded. A public-only file must contain exactly one certificate.
     #   pkcs12_password - string - Password for pkcs12. The file and password are used only for import; the extracted public certificate is stored as PEM.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: enable_dedicated_ips must be a single value, not #{params[:enable_dedicated_ips].class}") if [ Array, Hash ].any? { |klass| params[:enable_dedicated_ips].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if !params[:http_auth_username].nil? and !params[:http_auth_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if !params[:http_auth_password].nil? and !params[:http_auth_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if !params[:mdn_validation_level].nil? and !params[:mdn_validation_level].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: signature_validation_level must be an String") if !params[:signature_validation_level].nil? and !params[:signature_validation_level].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if !params[:server_certificate].nil? and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: default_mime_type must be an String") if !params[:default_mime_type].nil? and !params[:default_mime_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: additional_http_headers must be an Hash") if !params[:additional_http_headers].nil? and !params[:additional_http_headers].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uri must be an String") if !params[:uri].nil? and !params[:uri].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_certificate must be an String") if !params[:public_certificate].nil? and !params[:public_certificate].is_a?(String)
@@ -252,18 +254,21 @@ module Files
 
       response, options = Api.send_request("/as2_partners/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("As2Partner") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/as2_partners/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/as2_partners/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -278,6 +283,7 @@ module Files
       else
         new_obj = As2Partner.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -299,8 +305,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(As2Partner, params) do |page_params, &check_page|
-        Api.send_request("/as2_partners", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/as2_partners", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -316,7 +325,7 @@ module Files
     #
     # Returns a Files::As2Partner.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -350,6 +359,7 @@ module Files
     #
     # Returns a Files::As2Partner.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: enable_dedicated_ips must be a single value, not #{params[:enable_dedicated_ips].class}") if [ Array, Hash ].any? { |klass| params[:enable_dedicated_ips].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if !params[:http_auth_username].nil? and !params[:http_auth_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if !params[:http_auth_password].nil? and !params[:http_auth_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if !params[:mdn_validation_level].nil? and !params[:mdn_validation_level].is_a?(String)
@@ -391,9 +401,10 @@ module Files
     #
     # Returns a Files::As2Partner.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: enable_dedicated_ips must be a single value, not #{params[:enable_dedicated_ips].class}") if [ Array, Hash ].any? { |klass| params[:enable_dedicated_ips].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: http_auth_username must be an String") if !params[:http_auth_username].nil? and !params[:http_auth_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: http_auth_password must be an String") if !params[:http_auth_password].nil? and !params[:http_auth_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: mdn_validation_level must be an String") if !params[:mdn_validation_level].nil? and !params[:mdn_validation_level].is_a?(String)
@@ -417,7 +428,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

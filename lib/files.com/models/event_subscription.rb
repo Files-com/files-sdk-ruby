@@ -152,33 +152,41 @@ module Files
     #   delivery_policy - object - Event Subscription delivery policy.
     #   event_target_ids - array(int64) - Event Target IDs this subscription sends to.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: event_channel_id must be an Integer") if !params[:event_channel_id].nil? and !params[:event_channel_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: apply_to_all_workspaces must be a single value, not #{params[:apply_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:apply_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subject must be an String") if !params[:subject].nil? and !params[:subject].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: message must be an String") if !params[:message].nil? and !params[:message].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message_only must be a single value, not #{params[:message_only].class}") if [ Array, Hash ].any? { |klass| params[:message_only].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: enabled must be a single value, not #{params[:enabled].class}") if [ Array, Hash ].any? { |klass| params[:enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: event_types must be an Array") if !params[:event_types].nil? and !params[:event_types].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: delivery_policy must be an Hash") if !params[:delivery_policy].nil? and !params[:delivery_policy].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: event_target_ids must be an Array") if !params[:event_target_ids].nil? and !params[:event_target_ids].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/event_subscriptions/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("EventSubscription") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/event_subscriptions/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/event_subscriptions/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -193,6 +201,7 @@ module Files
       else
         new_obj = EventSubscription.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -214,8 +223,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(EventSubscription, params) do |page_params, &check_page|
-        Api.send_request("/event_subscriptions", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/event_subscriptions", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -231,7 +243,7 @@ module Files
     #
     # Returns a Files::EventSubscription.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -265,9 +277,12 @@ module Files
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: event_channel_id must be an Integer") if !params[:event_channel_id].nil? and !params[:event_channel_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: apply_to_all_workspaces must be a single value, not #{params[:apply_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:apply_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subject must be an String") if !params[:subject].nil? and !params[:subject].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: message must be an String") if !params[:message].nil? and !params[:message].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message_only must be a single value, not #{params[:message_only].class}") if [ Array, Hash ].any? { |klass| params[:message_only].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: enabled must be a single value, not #{params[:enabled].class}") if [ Array, Hash ].any? { |klass| params[:enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: event_types must be an Array") if !params[:event_types].nil? and !params[:event_types].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: delivery_policy must be an Hash") if !params[:delivery_policy].nil? and !params[:delivery_policy].is_a?(Hash)
@@ -297,14 +312,17 @@ module Files
     #
     # Returns a Files::EventSubscription.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: event_channel_id must be an Integer") if !params[:event_channel_id].nil? and !params[:event_channel_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: apply_to_all_workspaces must be a single value, not #{params[:apply_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:apply_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subject must be an String") if !params[:subject].nil? and !params[:subject].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: message must be an String") if !params[:message].nil? and !params[:message].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: message_only must be a single value, not #{params[:message_only].class}") if [ Array, Hash ].any? { |klass| params[:message_only].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: enabled must be a single value, not #{params[:enabled].class}") if [ Array, Hash ].any? { |klass| params[:enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: event_types must be an Array") if !params[:event_types].nil? and !params[:event_types].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: delivery_policy must be an Hash") if !params[:delivery_policy].nil? and !params[:delivery_policy].is_a?(Hash)
@@ -320,7 +338,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

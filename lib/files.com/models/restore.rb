@@ -215,6 +215,7 @@ module Files
       else
         new_obj = Restore.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -236,8 +237,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(Restore, params) do |page_params, &check_page|
-        Api.send_request("/restores", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/restores", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -262,6 +266,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: earliest_date must be an String") if !params[:earliest_date].nil? and !params[:earliest_date].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: prefix must be an String") if !params[:prefix].nil? and !params[:prefix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: restoration_type must be an String") if !params[:restoration_type].nil? and !params[:restoration_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: restore_deleted_permissions must be a single value, not #{params[:restore_deleted_permissions].class}") if [ Array, Hash ].any? { |klass| params[:restore_deleted_permissions].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: restore_in_place must be a single value, not #{params[:restore_in_place].class}") if [ Array, Hash ].any? { |klass| params[:restore_in_place].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: update_timestamps must be a single value, not #{params[:update_timestamps].class}") if [ Array, Hash ].any? { |klass| params[:update_timestamps].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: earliest_date") if params[:earliest_date].nil?
 

@@ -78,8 +78,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: action_notification_export_id must be an Integer") if !params[:action_notification_export_id].nil? and !params[:action_notification_export_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: action_notification_export_id") if params[:action_notification_export_id].nil?
 
+      list_options = options.dup
       List.new(ActionNotificationExportResult, params) do |page_params, &check_page|
-        Api.send_request("/action_notification_export_results", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/action_notification_export_results", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 

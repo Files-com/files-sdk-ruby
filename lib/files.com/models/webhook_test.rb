@@ -152,6 +152,7 @@ module Files
       else
         new_obj = WebhookTest.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -180,8 +181,10 @@ module Files
       raise InvalidParameterError.new("Bad parameter: headers must be an Hash") if !params[:headers].nil? and !params[:headers].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: body must be an Hash") if !params[:body].nil? and !params[:body].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: raw_body must be an String") if !params[:raw_body].nil? and !params[:raw_body].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: file_as_body must be a single value, not #{params[:file_as_body].class}") if [ Array, Hash ].any? { |klass| params[:file_as_body].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: file_form_field must be an String") if !params[:file_form_field].nil? and !params[:file_form_field].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if !params[:action].nil? and !params[:action].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: use_dedicated_ips must be a single value, not #{params[:use_dedicated_ips].class}") if [ Array, Hash ].any? { |klass| params[:use_dedicated_ips].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: url") if params[:url].nil?
 
       response, options = Api.send_request("/webhook_tests", :post, params, options) { |reply| reply.require_object("WebhookTest") }

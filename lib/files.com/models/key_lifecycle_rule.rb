@@ -82,10 +82,11 @@ module Files
     #   name - string - Key Lifecycle Rule name
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: apply_to_all_workspaces must be a single value, not #{params[:apply_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:apply_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: expiration_days must be an Integer") if !params[:expiration_days].nil? and !params[:expiration_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: key_type must be an String") if !params[:key_type].nil? and !params[:key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if !params[:inactivity_days].nil? and !params[:inactivity_days].is_a?(Integer)
@@ -95,18 +96,21 @@ module Files
 
       response, options = Api.send_request("/key_lifecycle_rules/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("KeyLifecycleRule") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/key_lifecycle_rules/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/key_lifecycle_rules/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -121,6 +125,7 @@ module Files
       else
         new_obj = KeyLifecycleRule.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -142,8 +147,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(KeyLifecycleRule, params) do |page_params, &check_page|
-        Api.send_request("/key_lifecycle_rules", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/key_lifecycle_rules", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -159,7 +167,7 @@ module Files
     #
     # Returns a Files::KeyLifecycleRule.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -185,6 +193,7 @@ module Files
     #
     # Returns a Files::KeyLifecycleRule.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: apply_to_all_workspaces must be a single value, not #{params[:apply_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:apply_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: expiration_days must be an Integer") if !params[:expiration_days].nil? and !params[:expiration_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: key_type must be an String") if !params[:key_type].nil? and !params[:key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if !params[:inactivity_days].nil? and !params[:inactivity_days].is_a?(Integer)
@@ -208,9 +217,10 @@ module Files
     #
     # Returns a Files::KeyLifecycleRule.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: apply_to_all_workspaces must be a single value, not #{params[:apply_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:apply_to_all_workspaces].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: expiration_days must be an Integer") if !params[:expiration_days].nil? and !params[:expiration_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: key_type must be an String") if !params[:key_type].nil? and !params[:key_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: inactivity_days must be an Integer") if !params[:inactivity_days].nil? and !params[:inactivity_days].is_a?(Integer)
@@ -227,7 +237,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

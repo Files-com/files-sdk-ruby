@@ -99,8 +99,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if !params[:bundle_id].nil? and !params[:bundle_id].is_a?(Integer)
 
+      list_options = options.dup
       List.new(BundleRegistration, params) do |page_params, &check_page|
-        Api.send_request("/bundle_registrations", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/bundle_registrations", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 

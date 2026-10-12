@@ -305,7 +305,7 @@ end
 
 ```ruby title="Range Filter Example"
 begin
-  # users who haven't logged in since 2024-01-01
+  # users whose last login was on or after 2024-01-01
   Files::User.list(
     filter_gteq: { "last_login_at": "2024-01-01" }
   )
@@ -320,7 +320,7 @@ end
 begin
   # users whose usernames start with 'test'
   Files::User.list(
-    filter_pre: { username: "test" }
+    filter_prefix: { username: "test" }
   )
 rescue Files::NotAuthenticatedError => e
   puts "Authentication Error Occurred (#{e.class.to_s}): " + e.message

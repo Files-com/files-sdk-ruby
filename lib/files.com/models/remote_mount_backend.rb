@@ -176,13 +176,15 @@ module Files
     #
     # Returns the [response, options] pair from Files::Api.send_request.
     def reset_status(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/remote_mount_backends/#{@attributes[:id]}/reset_status", :post, params, @options)
+      response, options = Api.send_request("/remote_mount_backends/#{@attributes[:id]}/reset_status", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Parameters:
@@ -199,11 +201,13 @@ module Files
     #   canary_file_path - string - Path to the canary file used for health checks.
     #   remote_server_id - int64 - The remote server that this backend is associated with.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: enabled must be a single value, not #{params[:enabled].class}") if [ Array, Hash ].any? { |klass| params[:enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if !params[:fall].nil? and !params[:fall].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: health_check_enabled must be a single value, not #{params[:health_check_enabled].class}") if [ Array, Hash ].any? { |klass| params[:health_check_enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if !params[:health_check_type].nil? and !params[:health_check_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if !params[:interval].nil? and !params[:interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: priority must be an Integer") if !params[:priority].nil? and !params[:priority].is_a?(Integer)
@@ -215,18 +219,21 @@ module Files
 
       response, options = Api.send_request("/remote_mount_backends/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("RemoteMountBackend") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/remote_mount_backends/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/remote_mount_backends/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -241,6 +248,7 @@ module Files
       else
         new_obj = RemoteMountBackend.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -260,8 +268,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(RemoteMountBackend, params) do |page_params, &check_page|
-        Api.send_request("/remote_mount_backends", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/remote_mount_backends", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -277,7 +288,7 @@ module Files
     #
     # Returns a Files::RemoteMountBackend.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -310,7 +321,9 @@ module Files
     #
     # Returns a Files::RemoteMountBackend.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: enabled must be a single value, not #{params[:enabled].class}") if [ Array, Hash ].any? { |klass| params[:enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if !params[:fall].nil? and !params[:fall].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: health_check_enabled must be a single value, not #{params[:health_check_enabled].class}") if [ Array, Hash ].any? { |klass| params[:health_check_enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if !params[:health_check_type].nil? and !params[:health_check_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if !params[:interval].nil? and !params[:interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: min_free_cpu must be an Float") if !params[:min_free_cpu].nil? and !params[:min_free_cpu].is_a?(Float)
@@ -336,7 +349,7 @@ module Files
     #
     # Returns nil.
     def self.reset_status(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -364,10 +377,12 @@ module Files
     #
     # Returns a Files::RemoteMountBackend.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: enabled must be a single value, not #{params[:enabled].class}") if [ Array, Hash ].any? { |klass| params[:enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: fall must be an Integer") if !params[:fall].nil? and !params[:fall].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: health_check_enabled must be a single value, not #{params[:health_check_enabled].class}") if [ Array, Hash ].any? { |klass| params[:health_check_enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: health_check_type must be an String") if !params[:health_check_type].nil? and !params[:health_check_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an Integer") if !params[:interval].nil? and !params[:interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: min_free_cpu must be an Float") if !params[:min_free_cpu].nil? and !params[:min_free_cpu].is_a?(Float)
@@ -388,7 +403,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

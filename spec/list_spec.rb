@@ -75,6 +75,31 @@ RSpec.describe Files::List do
       expect(seen).to eq([ 1, 2 ])
       expect(requested_cursors).to eq([ nil, "a" ])
     end
+
+    it "follows X-Files-Cursor-Next, or X-Files-Cursor without it, and raises a later page's error after each record once" do
+      pages = {
+        nil => [ [ 1 ], { "X-Files-Cursor-Next" => "2:a+b&=opaque" } ],
+        "2:a+b&=opaque" => [ [ 2 ], { "X-Files-Cursor" => "legacy-3" } ],
+        "legacy-3" => [ [ 3 ], { "X-Files-Cursor-Next" => "next-4", "X-Files-Cursor" => "stale" } ],
+      }
+      client = stubbed_api_client do |stub|
+        stub.get("/api/rest/v1/workspaces") do |env|
+          requests << env.params
+          next json_response(404, { error: "Not Found", type: "not-found" }) if env.params["cursor"] == "next-4"
+
+          ids, headers = pages.fetch(env.params["cursor"])
+          json_response(200, ids.map { |id| { id: id } }, headers)
+        end
+      end
+      seen = []
+
+      expect {
+        Files::Workspace.list({ per_page: 1, filter: { name: "Workspace" } }, api_key: "list-key", client: client).auto_paging_each { |workspace| seen << workspace.id }
+      }.to raise_error(Files::NotFoundError)
+      expect(seen).to eq([ 1, 2, 3 ])
+      expect(requested_cursors).to eq([ nil, "2:a+b&=opaque", "legacy-3", "next-4" ])
+      expect(requests).to all(include("per_page" => "1", "filter" => { "name" => "Workspace" }))
+    end
   end
 
   describe "#each" do
@@ -132,6 +157,8 @@ RSpec.describe Files::List do
     end
 
     it "requests the same page again after a failed request" do
+      original_retries = Files.max_network_retries
+      Files.max_network_retries = 0
       failures = [ json_response(429, { error: "Slow down", type: "too-many-requests" }) ]
       client = stubbed_api_client do |stub|
         stub.get("/api/rest/v1/workspaces") do |env|
@@ -147,6 +174,8 @@ RSpec.describe Files::List do
       expect { page.next_page }.to raise_error(Files::TooManyRequestsError)
       expect(page.next_page.map(&:id)).to eq([ 2 ])
       expect(requested_cursors).to eq([ nil, "c2", "c2" ])
+    ensure
+      Files.max_network_retries = original_retries
     end
 
     {
@@ -200,7 +229,7 @@ RSpec.describe Files::List do
           json_response(200, [])
         end
       end
-      options = { api_key: "list-key" }
+      options = { api_key: "list-key" }.freeze
       list = Files::Workspace.list({}, options)
 
       expect { rejecting.request { list.to_a } }.to raise_error(Files::APIConnectionError)
@@ -209,7 +238,7 @@ RSpec.describe Files::List do
       first_ids = nil
       accepting.request { first_ids = list.map(&:id) }
       expect(first_ids).to eq([ 1 ])
-      expect(options).to include(api_key: "list-key", client: accepting)
+      expect(options).to eq(api_key: "list-key")
 
       second = nil
       other.request { second = list.next_page }

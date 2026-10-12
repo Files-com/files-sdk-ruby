@@ -484,6 +484,7 @@ module Files
     def save
       new_obj = Folder.create(path, @attributes, @options)
       @attributes = new_obj.attributes
+      @options = @options.merge(new_obj.options)
       true
     end
 
@@ -506,7 +507,7 @@ module Files
     #
     # Returns a Files::List of Files::File objects.
     def self.list_for(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -515,12 +516,18 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: search must be an String") if !params[:search].nil? and !params[:search].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: search_custom_metadata_key must be an String") if !params[:search_custom_metadata_key].nil? and !params[:search_custom_metadata_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: search_all must be a single value, not #{params[:search_all].class}") if [ Array, Hash ].any? { |klass| params[:search_all].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: with_previews must be a single value, not #{params[:with_previews].class}") if [ Array, Hash ].any? { |klass| params[:with_previews].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: with_priority_color must be a single value, not #{params[:with_priority_color].class}") if [ Array, Hash ].any? { |klass| params[:with_priority_color].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: type must be an String") if !params[:type].nil? and !params[:type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: modified_at_datetime must be an String") if !params[:modified_at_datetime].nil? and !params[:modified_at_datetime].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
+      list_options = options.dup
       List.new(File, params) do |page_params, &check_page|
-        Api.send_request("/folders/#{page_params[:path]}", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/folders/#{page_params[:path]}", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -534,9 +541,10 @@ module Files
     #
     # Returns a Files::File.
     def self.create(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: mkdir_parents must be a single value, not #{params[:mkdir_parents].class}") if [ Array, Hash ].any? { |klass| params[:mkdir_parents].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if !params[:provided_mtime].nil? and !params[:provided_mtime].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 

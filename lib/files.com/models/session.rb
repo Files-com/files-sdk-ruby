@@ -93,6 +93,7 @@ module Files
       else
         new_obj = Session.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true

@@ -133,7 +133,7 @@ module Files
     #
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
@@ -141,7 +141,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: token") if params[:token].nil?
 
-      Api.send_request("/locks/#{@attributes[:path]}", :delete, params, @options)
+      response, options = Api.send_request("/locks/#{@attributes[:path]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -153,6 +155,7 @@ module Files
     def save
       new_obj = Lock.create(path, @attributes, @options)
       @attributes = new_obj.attributes
+      @options = @options.merge(new_obj.options)
       true
     end
 
@@ -167,15 +170,19 @@ module Files
     #
     # Returns a Files::List of Files::Lock objects.
     def self.list_for(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: include_children must be a single value, not #{params[:include_children].class}") if [ Array, Hash ].any? { |klass| params[:include_children].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
+      list_options = options.dup
       List.new(Lock, params) do |page_params, &check_page|
-        Api.send_request("/locks/#{page_params[:path]}", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/locks/#{page_params[:path]}", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -194,11 +201,14 @@ module Files
     #
     # Returns a Files::Lock.
     def self.create(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: token must be an String") if !params[:token].nil? and !params[:token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: expected_token must be an String") if !params[:expected_token].nil? and !params[:expected_token].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: allow_access_by_any_user must be a single value, not #{params[:allow_access_by_any_user].class}") if [ Array, Hash ].any? { |klass| params[:allow_access_by_any_user].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: exclusive must be a single value, not #{params[:exclusive].class}") if [ Array, Hash ].any? { |klass| params[:exclusive].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: owner must be an String") if !params[:owner].nil? and !params[:owner].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: timeout must be an Integer") if !params[:timeout].nil? and !params[:timeout].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
@@ -215,7 +225,7 @@ module Files
     #
     # Returns nil.
     def self.delete(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: token must be an String") if !params[:token].nil? and !params[:token].is_a?(String)

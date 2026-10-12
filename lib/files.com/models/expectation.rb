@@ -266,13 +266,15 @@ module Files
 
     # Manually open an Expectation window
     def trigger_evaluation(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/expectations/#{@attributes[:id]}/trigger_evaluation", :post, params, @options)
+      response, options = Api.send_request("/expectations/#{@attributes[:id]}/trigger_evaluation", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Parameters:
@@ -298,7 +300,7 @@ module Files
     #   criteria - object - Versioned success criteria definition for the expectation, including optional Files Transform Script content validation in criteria v2.
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
@@ -307,6 +309,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if !params[:source].nil? and !params[:source].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if !params[:exclude_pattern].nil? and !params[:exclude_pattern].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if !params[:trigger].nil? and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if !params[:interval].nil? and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if !params[:recurring_day].nil? and !params[:recurring_day].is_a?(Integer)
@@ -320,23 +323,27 @@ module Files
       raise InvalidParameterError.new("Bad parameter: late_acceptance_interval must be an Integer") if !params[:late_acceptance_interval].nil? and !params[:late_acceptance_interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: inactivity_interval must be an Integer") if !params[:inactivity_interval].nil? and !params[:inactivity_interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_open_interval must be an Integer") if !params[:max_open_interval].nil? and !params[:max_open_interval].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: criteria must be an Hash") if !params[:criteria].nil? and !params[:criteria].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/expectations/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Expectation") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/expectations/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/expectations/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -351,6 +358,7 @@ module Files
       else
         new_obj = Expectation.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -372,8 +380,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(Expectation, params) do |page_params, &check_page|
-        Api.send_request("/expectations", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/expectations", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -389,7 +400,7 @@ module Files
     #
     # Returns a Files::Expectation.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -435,6 +446,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if !params[:source].nil? and !params[:source].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if !params[:exclude_pattern].nil? and !params[:exclude_pattern].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if !params[:trigger].nil? and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if !params[:interval].nil? and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if !params[:recurring_day].nil? and !params[:recurring_day].is_a?(Integer)
@@ -462,7 +474,7 @@ module Files
     #
     # Returns a Files::ExpectationEvaluation.
     def self.trigger_evaluation(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -499,7 +511,7 @@ module Files
     #
     # Returns a Files::Expectation.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
@@ -507,6 +519,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if !params[:source].nil? and !params[:source].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if !params[:exclude_pattern].nil? and !params[:exclude_pattern].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if !params[:trigger].nil? and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: interval must be an String") if !params[:interval].nil? and !params[:interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if !params[:recurring_day].nil? and !params[:recurring_day].is_a?(Integer)
@@ -533,7 +546,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

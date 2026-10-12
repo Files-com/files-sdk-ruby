@@ -134,8 +134,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if !params[:filter_prefix].nil? and !params[:filter_prefix].is_a?(Hash)
 
+      list_options = options.dup
       List.new(App, params) do |page_params, &check_page|
-        Api.send_request("/apps", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/apps", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 

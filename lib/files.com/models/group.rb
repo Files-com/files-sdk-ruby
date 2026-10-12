@@ -179,7 +179,7 @@ module Files
     #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
     #   name - string - Group name.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
@@ -187,6 +187,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if !params[:user_ids].nil? and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if !params[:admin_ids].nil? and !params[:admin_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ftp_permission must be a single value, not #{params[:ftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:ftp_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sftp_permission must be a single value, not #{params[:sftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:sftp_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: dav_permission must be a single value, not #{params[:dav_permission].class}") if [ Array, Hash ].any? { |klass| params[:dav_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: restapi_permission must be a single value, not #{params[:restapi_permission].class}") if [ Array, Hash ].any? { |klass| params[:restapi_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint_permission must be a single value, not #{params[:s3_compatible_endpoint_permission].class}") if [ Array, Hash ].any? { |klass| params[:s3_compatible_endpoint_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
@@ -195,18 +200,21 @@ module Files
 
       response, options = Api.send_request("/groups/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Group") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/groups/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/groups/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -221,6 +229,7 @@ module Files
       else
         new_obj = Group.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -246,9 +255,13 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if !params[:filter_prefix].nil? and !params[:filter_prefix].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: ids must be an String") if !params[:ids].nil? and !params[:ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: include_parent_site_groups must be a single value, not #{params[:include_parent_site_groups].class}") if [ Array, Hash ].any? { |klass| params[:include_parent_site_groups].is_a?(klass) }
 
+      list_options = options.dup
       List.new(Group, params) do |page_params, &check_page|
-        Api.send_request("/groups", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/groups", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -264,7 +277,7 @@ module Files
     #
     # Returns a Files::Group.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -302,6 +315,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if !params[:user_ids].nil? and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if !params[:admin_ids].nil? and !params[:admin_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ftp_permission must be a single value, not #{params[:ftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:ftp_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sftp_permission must be a single value, not #{params[:sftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:sftp_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: dav_permission must be a single value, not #{params[:dav_permission].class}") if [ Array, Hash ].any? { |klass| params[:dav_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: restapi_permission must be a single value, not #{params[:restapi_permission].class}") if [ Array, Hash ].any? { |klass| params[:restapi_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint_permission must be a single value, not #{params[:s3_compatible_endpoint_permission].class}") if [ Array, Hash ].any? { |klass| params[:s3_compatible_endpoint_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
@@ -333,13 +351,18 @@ module Files
     #
     # Returns a Files::Group.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if !params[:user_ids].nil? and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: admin_ids must be an String") if !params[:admin_ids].nil? and !params[:admin_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: ftp_permission must be a single value, not #{params[:ftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:ftp_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sftp_permission must be a single value, not #{params[:sftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:sftp_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: dav_permission must be a single value, not #{params[:dav_permission].class}") if [ Array, Hash ].any? { |klass| params[:dav_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: restapi_permission must be a single value, not #{params[:restapi_permission].class}") if [ Array, Hash ].any? { |klass| params[:restapi_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint_permission must be a single value, not #{params[:s3_compatible_endpoint_permission].class}") if [ Array, Hash ].any? { |klass| params[:s3_compatible_endpoint_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
@@ -355,7 +378,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

@@ -418,13 +418,15 @@ module Files
 
     # Upgrade a legacy Automation to Automation v2
     def upgrade(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/automations/#{@attributes[:id]}/upgrade", :post, params, @options)
+      response, options = Api.send_request("/automations/#{@attributes[:id]}/upgrade", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Manually Run Automation
@@ -434,14 +436,16 @@ module Files
     #
     # Returns the [response, options] pair from Files::Api.send_request.
     def manual_run(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: items must be an Array") if !params[:items].nil? and !params[:items].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/automations/#{@attributes[:id]}/manual_run", :post, params, @options)
+      response, options = Api.send_request("/automations/#{@attributes[:id]}/manual_run", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Parameters:
@@ -481,7 +485,7 @@ module Files
     #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     #   automation - string - Automation type
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
@@ -499,15 +503,24 @@ module Files
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: always_overwrite_size_matching_files must be a single value, not #{params[:always_overwrite_size_matching_files].class}") if [ Array, Hash ].any? { |klass| params[:always_overwrite_size_matching_files].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: always_serialize_jobs must be a single value, not #{params[:always_serialize_jobs].class}") if [ Array, Hash ].any? { |klass| params[:always_serialize_jobs].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: definition must be an Hash") if !params[:definition].nil? and !params[:definition].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if !params[:exclude_pattern].nil? and !params[:exclude_pattern].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: import_urls must be an Array") if !params[:import_urls].nil? and !params[:import_urls].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: flatten_destination_structure must be a single value, not #{params[:flatten_destination_structure].class}") if [ Array, Hash ].any? { |klass| params[:flatten_destination_structure].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ignore_locked_folders must be a single value, not #{params[:ignore_locked_folders].class}") if [ Array, Hash ].any? { |klass| params[:ignore_locked_folders].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: legacy_folder_matching must be a single value, not #{params[:legacy_folder_matching].class}") if [ Array, Hash ].any? { |klass| params[:legacy_folder_matching].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: overwrite_files must be a single value, not #{params[:overwrite_files].class}") if [ Array, Hash ].any? { |klass| params[:overwrite_files].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: path_time_zone must be an String") if !params[:path_time_zone].nil? and !params[:path_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: retry_on_failure_interval_in_minutes must be an Integer") if !params[:retry_on_failure_interval_in_minutes].nil? and !params[:retry_on_failure_interval_in_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: retry_on_failure_number_of_attempts must be an Integer") if !params[:retry_on_failure_number_of_attempts].nil? and !params[:retry_on_failure_number_of_attempts].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: trigger must be an String") if !params[:trigger].nil? and !params[:trigger].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: trigger_actions must be an Array") if !params[:trigger_actions].nil? and !params[:trigger_actions].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: value must be an Hash") if !params[:value].nil? and !params[:value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: recurring_day must be an Integer") if !params[:recurring_day].nil? and !params[:recurring_day].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if !params[:recurring_days].nil? and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: automation must be an String") if !params[:automation].nil? and !params[:automation].is_a?(String)
@@ -515,18 +528,21 @@ module Files
 
       response, options = Api.send_request("/automations/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Automation") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/automations/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/automations/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -541,6 +557,7 @@ module Files
       else
         new_obj = Automation.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -570,8 +587,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if !params[:filter_lt].nil? and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if !params[:filter_lteq].nil? and !params[:filter_lteq].is_a?(Hash)
 
+      list_options = options.dup
       List.new(Automation, params) do |page_params, &check_page|
-        Api.send_request("/automations", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/automations", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -587,7 +607,7 @@ module Files
     #
     # Returns a Files::Automation.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -666,11 +686,18 @@ module Files
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: always_overwrite_size_matching_files must be a single value, not #{params[:always_overwrite_size_matching_files].class}") if [ Array, Hash ].any? { |klass| params[:always_overwrite_size_matching_files].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: always_serialize_jobs must be a single value, not #{params[:always_serialize_jobs].class}") if [ Array, Hash ].any? { |klass| params[:always_serialize_jobs].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: definition must be an Hash") if !params[:definition].nil? and !params[:definition].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if !params[:exclude_pattern].nil? and !params[:exclude_pattern].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: import_urls must be an Array") if !params[:import_urls].nil? and !params[:import_urls].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: flatten_destination_structure must be a single value, not #{params[:flatten_destination_structure].class}") if [ Array, Hash ].any? { |klass| params[:flatten_destination_structure].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ignore_locked_folders must be a single value, not #{params[:ignore_locked_folders].class}") if [ Array, Hash ].any? { |klass| params[:ignore_locked_folders].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: legacy_folder_matching must be a single value, not #{params[:legacy_folder_matching].class}") if [ Array, Hash ].any? { |klass| params[:legacy_folder_matching].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: overwrite_files must be a single value, not #{params[:overwrite_files].class}") if [ Array, Hash ].any? { |klass| params[:overwrite_files].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: path_time_zone must be an String") if !params[:path_time_zone].nil? and !params[:path_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: retry_on_failure_interval_in_minutes must be an Integer") if !params[:retry_on_failure_interval_in_minutes].nil? and !params[:retry_on_failure_interval_in_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: retry_on_failure_number_of_attempts must be an Integer") if !params[:retry_on_failure_number_of_attempts].nil? and !params[:retry_on_failure_number_of_attempts].is_a?(Integer)
@@ -694,7 +721,7 @@ module Files
     #
     # Returns a Files::Automation.
     def self.upgrade(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -713,7 +740,7 @@ module Files
     #
     # Returns nil.
     def self.manual_run(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: items must be an Array") if !params[:items].nil? and !params[:items].is_a?(Array)
@@ -765,7 +792,7 @@ module Files
     #
     # Returns a Files::Automation.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if !params[:source].nil? and !params[:source].is_a?(String)
@@ -782,11 +809,18 @@ module Files
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: always_overwrite_size_matching_files must be a single value, not #{params[:always_overwrite_size_matching_files].class}") if [ Array, Hash ].any? { |klass| params[:always_overwrite_size_matching_files].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: always_serialize_jobs must be a single value, not #{params[:always_serialize_jobs].class}") if [ Array, Hash ].any? { |klass| params[:always_serialize_jobs].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: definition must be an Hash") if !params[:definition].nil? and !params[:definition].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: exclude_pattern must be an String") if !params[:exclude_pattern].nil? and !params[:exclude_pattern].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: import_urls must be an Array") if !params[:import_urls].nil? and !params[:import_urls].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: flatten_destination_structure must be a single value, not #{params[:flatten_destination_structure].class}") if [ Array, Hash ].any? { |klass| params[:flatten_destination_structure].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ignore_locked_folders must be a single value, not #{params[:ignore_locked_folders].class}") if [ Array, Hash ].any? { |klass| params[:ignore_locked_folders].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: legacy_folder_matching must be a single value, not #{params[:legacy_folder_matching].class}") if [ Array, Hash ].any? { |klass| params[:legacy_folder_matching].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: overwrite_files must be a single value, not #{params[:overwrite_files].class}") if [ Array, Hash ].any? { |klass| params[:overwrite_files].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: path_time_zone must be an String") if !params[:path_time_zone].nil? and !params[:path_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: retry_on_failure_interval_in_minutes must be an Integer") if !params[:retry_on_failure_interval_in_minutes].nil? and !params[:retry_on_failure_interval_in_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: retry_on_failure_number_of_attempts must be an Integer") if !params[:retry_on_failure_number_of_attempts].nil? and !params[:retry_on_failure_number_of_attempts].is_a?(Integer)
@@ -807,7 +841,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

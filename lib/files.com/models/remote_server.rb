@@ -940,24 +940,28 @@ module Files
 
     # List Files.com Agent nodes
     def agent_nodes(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/remote_servers/#{@attributes[:id]}/agent_nodes", :get, params, @options)
+      response, options = Api.send_request("/remote_servers/#{@attributes[:id]}/agent_nodes", :get, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Push update to Files Agent
     def agent_push_update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/remote_servers/#{@attributes[:id]}/agent_push_update", :post, params, @options)
+      response, options = Api.send_request("/remote_servers/#{@attributes[:id]}/agent_push_update", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Parameters:
@@ -1046,13 +1050,14 @@ module Files
     #   wasabi_bucket - string - Wasabi: Bucket name
     #   wasabi_region - string - Wasabi: Region
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if !params[:password].nil? and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if !params[:private_key].nil? and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if !params[:private_key_passphrase].nil? and !params[:private_key_passphrase].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: reset_authentication must be a single value, not #{params[:reset_authentication].class}") if [ Array, Hash ].any? { |klass| params[:reset_authentication].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sharepoint_client_certificate must be an String") if !params[:sharepoint_client_certificate].nil? and !params[:sharepoint_client_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sharepoint_client_secret must be an String") if !params[:sharepoint_client_secret].nil? and !params[:sharepoint_client_secret].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if !params[:ssl_certificate].nil? and !params[:ssl_certificate].is_a?(String)
@@ -1070,10 +1075,12 @@ module Files
       raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if !params[:linode_secret_key].nil? and !params[:linode_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if !params[:s3_compatible_secret_key].nil? and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if !params[:wasabi_secret_key].nil? and !params[:wasabi_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: allow_relative_paths must be a single value, not #{params[:allow_relative_paths].class}") if [ Array, Hash ].any? { |klass| params[:allow_relative_paths].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if !params[:aws_access_key].nil? and !params[:aws_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if !params[:azure_blob_storage_account].nil? and !params[:azure_blob_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if !params[:azure_blob_storage_container].nil? and !params[:azure_blob_storage_container].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if !params[:azure_blob_storage_dns_suffix].nil? and !params[:azure_blob_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_hierarchical_namespace must be a single value, not #{params[:azure_blob_storage_hierarchical_namespace].class}") if [ Array, Hash ].any? { |klass| params[:azure_blob_storage_hierarchical_namespace].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if !params[:azure_files_storage_account].nil? and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if !params[:azure_files_storage_dns_suffix].nil? and !params[:azure_files_storage_dns_suffix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if !params[:azure_files_storage_share_name].nil? and !params[:azure_files_storage_share_name].is_a?(String)
@@ -1084,6 +1091,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if !params[:cloudflare_bucket].nil? and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if !params[:cloudflare_endpoint].nil? and !params[:cloudflare_endpoint].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: dropbox_teams must be a single value, not #{params[:dropbox_teams].class}") if [ Array, Hash ].any? { |klass| params[:dropbox_teams].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: enable_dedicated_ips must be a single value, not #{params[:enable_dedicated_ips].class}") if [ Array, Hash ].any? { |klass| params[:enable_dedicated_ips].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if !params[:filebase_access_key].nil? and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if !params[:filebase_bucket].nil? and !params[:filebase_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_api_key must be an String") if !params[:files_api_key].nil? and !params[:files_api_key].is_a?(String)
@@ -1104,6 +1113,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if !params[:max_connections].nil? and !params[:max_connections].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if !params[:one_drive_account_type].nil? and !params[:one_drive_account_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pin_to_site_region must be a single value, not #{params[:pin_to_site_region].class}") if [ Array, Hash ].any? { |klass| params[:pin_to_site_region].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if !params[:port].nil? and !params[:port].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: upload_staging_path must be an String") if !params[:upload_staging_path].nil? and !params[:upload_staging_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if !params[:remote_server_credential_id].nil? and !params[:remote_server_credential_id].is_a?(Integer)
@@ -1114,6 +1124,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if !params[:s3_compatible_bucket].nil? and !params[:s3_compatible_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if !params[:s3_compatible_endpoint].nil? and !params[:s3_compatible_endpoint].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if !params[:s3_compatible_region].nil? and !params[:s3_compatible_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_virtual_hosted_style must be a single value, not #{params[:s3_compatible_virtual_hosted_style].class}") if [ Array, Hash ].any? { |klass| params[:s3_compatible_virtual_hosted_style].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: s3_kms_key_id must be an String") if !params[:s3_kms_key_id].nil? and !params[:s3_kms_key_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if !params[:s3_region].nil? and !params[:s3_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if !params[:server_certificate].nil? and !params[:server_certificate].is_a?(String)
@@ -1131,18 +1142,21 @@ module Files
 
       response, options = Api.send_request("/remote_servers/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("RemoteServer") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/remote_servers/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/remote_servers/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -1157,6 +1171,7 @@ module Files
       else
         new_obj = RemoteServer.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -1182,8 +1197,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if !params[:filter_prefix].nil? and !params[:filter_prefix].is_a?(Hash)
 
+      list_options = options.dup
       List.new(RemoteServer, params) do |page_params, &check_page|
-        Api.send_request("/remote_servers", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/remote_servers", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -1199,7 +1217,7 @@ module Files
     #
     # Returns a Files::RemoteServer.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -1219,7 +1237,7 @@ module Files
     #
     # Returns a Files::AgentNode.
     def self.agent_nodes(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -1236,7 +1254,7 @@ module Files
     #
     # Returns a Files::RemoteServerConfigurationFile.
     def self.find_configuration_file(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -1342,6 +1360,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: password must be an String") if !params[:password].nil? and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if !params[:private_key].nil? and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if !params[:private_key_passphrase].nil? and !params[:private_key_passphrase].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: reset_authentication must be a single value, not #{params[:reset_authentication].class}") if [ Array, Hash ].any? { |klass| params[:reset_authentication].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sharepoint_client_certificate must be an String") if !params[:sharepoint_client_certificate].nil? and !params[:sharepoint_client_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sharepoint_client_secret must be an String") if !params[:sharepoint_client_secret].nil? and !params[:sharepoint_client_secret].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if !params[:ssl_certificate].nil? and !params[:ssl_certificate].is_a?(String)
@@ -1359,10 +1378,12 @@ module Files
       raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if !params[:linode_secret_key].nil? and !params[:linode_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if !params[:s3_compatible_secret_key].nil? and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if !params[:wasabi_secret_key].nil? and !params[:wasabi_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: allow_relative_paths must be a single value, not #{params[:allow_relative_paths].class}") if [ Array, Hash ].any? { |klass| params[:allow_relative_paths].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if !params[:aws_access_key].nil? and !params[:aws_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if !params[:azure_blob_storage_account].nil? and !params[:azure_blob_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if !params[:azure_blob_storage_container].nil? and !params[:azure_blob_storage_container].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if !params[:azure_blob_storage_dns_suffix].nil? and !params[:azure_blob_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_hierarchical_namespace must be a single value, not #{params[:azure_blob_storage_hierarchical_namespace].class}") if [ Array, Hash ].any? { |klass| params[:azure_blob_storage_hierarchical_namespace].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if !params[:azure_files_storage_account].nil? and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if !params[:azure_files_storage_dns_suffix].nil? and !params[:azure_files_storage_dns_suffix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if !params[:azure_files_storage_share_name].nil? and !params[:azure_files_storage_share_name].is_a?(String)
@@ -1373,6 +1394,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if !params[:cloudflare_bucket].nil? and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if !params[:cloudflare_endpoint].nil? and !params[:cloudflare_endpoint].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: dropbox_teams must be a single value, not #{params[:dropbox_teams].class}") if [ Array, Hash ].any? { |klass| params[:dropbox_teams].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: enable_dedicated_ips must be a single value, not #{params[:enable_dedicated_ips].class}") if [ Array, Hash ].any? { |klass| params[:enable_dedicated_ips].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if !params[:filebase_access_key].nil? and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if !params[:filebase_bucket].nil? and !params[:filebase_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_api_key must be an String") if !params[:files_api_key].nil? and !params[:files_api_key].is_a?(String)
@@ -1393,6 +1416,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if !params[:max_connections].nil? and !params[:max_connections].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if !params[:one_drive_account_type].nil? and !params[:one_drive_account_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pin_to_site_region must be a single value, not #{params[:pin_to_site_region].class}") if [ Array, Hash ].any? { |klass| params[:pin_to_site_region].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if !params[:port].nil? and !params[:port].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: upload_staging_path must be an String") if !params[:upload_staging_path].nil? and !params[:upload_staging_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if !params[:remote_server_credential_id].nil? and !params[:remote_server_credential_id].is_a?(Integer)
@@ -1403,6 +1427,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if !params[:s3_compatible_bucket].nil? and !params[:s3_compatible_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if !params[:s3_compatible_endpoint].nil? and !params[:s3_compatible_endpoint].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if !params[:s3_compatible_region].nil? and !params[:s3_compatible_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_virtual_hosted_style must be a single value, not #{params[:s3_compatible_virtual_hosted_style].class}") if [ Array, Hash ].any? { |klass| params[:s3_compatible_virtual_hosted_style].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: s3_kms_key_id must be an String") if !params[:s3_kms_key_id].nil? and !params[:s3_kms_key_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if !params[:s3_region].nil? and !params[:s3_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if !params[:server_certificate].nil? and !params[:server_certificate].is_a?(String)
@@ -1429,7 +1454,7 @@ module Files
     #
     # Returns a Files::AgentPushUpdate.
     def self.agent_push_update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -1529,12 +1554,13 @@ module Files
     #
     # Returns a Files::RemoteServer.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if !params[:password].nil? and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key must be an String") if !params[:private_key].nil? and !params[:private_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: private_key_passphrase must be an String") if !params[:private_key_passphrase].nil? and !params[:private_key_passphrase].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: reset_authentication must be a single value, not #{params[:reset_authentication].class}") if [ Array, Hash ].any? { |klass| params[:reset_authentication].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sharepoint_client_certificate must be an String") if !params[:sharepoint_client_certificate].nil? and !params[:sharepoint_client_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sharepoint_client_secret must be an String") if !params[:sharepoint_client_secret].nil? and !params[:sharepoint_client_secret].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ssl_certificate must be an String") if !params[:ssl_certificate].nil? and !params[:ssl_certificate].is_a?(String)
@@ -1552,10 +1578,12 @@ module Files
       raise InvalidParameterError.new("Bad parameter: linode_secret_key must be an String") if !params[:linode_secret_key].nil? and !params[:linode_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_secret_key must be an String") if !params[:s3_compatible_secret_key].nil? and !params[:s3_compatible_secret_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: wasabi_secret_key must be an String") if !params[:wasabi_secret_key].nil? and !params[:wasabi_secret_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: allow_relative_paths must be a single value, not #{params[:allow_relative_paths].class}") if [ Array, Hash ].any? { |klass| params[:allow_relative_paths].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: aws_access_key must be an String") if !params[:aws_access_key].nil? and !params[:aws_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_account must be an String") if !params[:azure_blob_storage_account].nil? and !params[:azure_blob_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_container must be an String") if !params[:azure_blob_storage_container].nil? and !params[:azure_blob_storage_container].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_blob_storage_dns_suffix must be an String") if !params[:azure_blob_storage_dns_suffix].nil? and !params[:azure_blob_storage_dns_suffix].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: azure_blob_storage_hierarchical_namespace must be a single value, not #{params[:azure_blob_storage_hierarchical_namespace].class}") if [ Array, Hash ].any? { |klass| params[:azure_blob_storage_hierarchical_namespace].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_account must be an String") if !params[:azure_files_storage_account].nil? and !params[:azure_files_storage_account].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_dns_suffix must be an String") if !params[:azure_files_storage_dns_suffix].nil? and !params[:azure_files_storage_dns_suffix].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: azure_files_storage_share_name must be an String") if !params[:azure_files_storage_share_name].nil? and !params[:azure_files_storage_share_name].is_a?(String)
@@ -1566,6 +1594,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cloudflare_bucket must be an String") if !params[:cloudflare_bucket].nil? and !params[:cloudflare_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cloudflare_endpoint must be an String") if !params[:cloudflare_endpoint].nil? and !params[:cloudflare_endpoint].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: dropbox_teams must be a single value, not #{params[:dropbox_teams].class}") if [ Array, Hash ].any? { |klass| params[:dropbox_teams].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: enable_dedicated_ips must be a single value, not #{params[:enable_dedicated_ips].class}") if [ Array, Hash ].any? { |klass| params[:enable_dedicated_ips].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: filebase_access_key must be an String") if !params[:filebase_access_key].nil? and !params[:filebase_access_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filebase_bucket must be an String") if !params[:filebase_bucket].nil? and !params[:filebase_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: files_api_key must be an String") if !params[:files_api_key].nil? and !params[:files_api_key].is_a?(String)
@@ -1586,6 +1616,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: max_connections must be an Integer") if !params[:max_connections].nil? and !params[:max_connections].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: one_drive_account_type must be an String") if !params[:one_drive_account_type].nil? and !params[:one_drive_account_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: pin_to_site_region must be a single value, not #{params[:pin_to_site_region].class}") if [ Array, Hash ].any? { |klass| params[:pin_to_site_region].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: port must be an Integer") if !params[:port].nil? and !params[:port].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: upload_staging_path must be an String") if !params[:upload_staging_path].nil? and !params[:upload_staging_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: remote_server_credential_id must be an Integer") if !params[:remote_server_credential_id].nil? and !params[:remote_server_credential_id].is_a?(Integer)
@@ -1596,6 +1627,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: s3_compatible_bucket must be an String") if !params[:s3_compatible_bucket].nil? and !params[:s3_compatible_bucket].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint must be an String") if !params[:s3_compatible_endpoint].nil? and !params[:s3_compatible_endpoint].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_compatible_region must be an String") if !params[:s3_compatible_region].nil? and !params[:s3_compatible_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_virtual_hosted_style must be a single value, not #{params[:s3_compatible_virtual_hosted_style].class}") if [ Array, Hash ].any? { |klass| params[:s3_compatible_virtual_hosted_style].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: s3_kms_key_id must be an String") if !params[:s3_kms_key_id].nil? and !params[:s3_kms_key_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: s3_region must be an String") if !params[:s3_region].nil? and !params[:s3_region].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if !params[:server_certificate].nil? and !params[:server_certificate].is_a?(String)
@@ -1620,7 +1652,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

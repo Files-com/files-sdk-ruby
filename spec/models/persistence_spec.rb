@@ -120,7 +120,7 @@ RSpec.describe "Saving and updating models" do
       expect(Files::File.zip_list_contents("empty.zip", {}, options)).to eq([])
       expect(Files::File.begin_upload("empty-part.csv", {}, options).map { |part| [ part.class, part.attributes ] }).to eq([ [ Files::FileUploadPart, {} ] ])
     end
-    expect(options).to include(api_key: "key-a", client: client)
+    expect(options).to eq(api_key: "key-a")
   end
 
   it "refreshes each model from its own client, keeping false, zero, empty, null and decimal values" do

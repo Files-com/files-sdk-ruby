@@ -181,7 +181,7 @@ module Files
     # Parameters:
     #   title (required) - string - Internal reference for key.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
@@ -191,18 +191,21 @@ module Files
 
       response, options = Api.send_request("/public_keys/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("PublicKey") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/public_keys/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/public_keys/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -217,6 +220,7 @@ module Files
       else
         new_obj = PublicKey.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -248,8 +252,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if !params[:filter_lt].nil? and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if !params[:filter_lteq].nil? and !params[:filter_lteq].is_a?(Hash)
 
+      list_options = options.dup
       List.new(PublicKey, params) do |page_params, &check_page|
-        Api.send_request("/public_keys", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/public_keys", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -265,7 +272,7 @@ module Files
     #
     # Returns a Files::PublicKey.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -295,6 +302,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: title must be an String") if !params[:title].nil? and !params[:title].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: public_key must be an String") if !params[:public_key].nil? and !params[:public_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: generate_keypair must be a single value, not #{params[:generate_keypair].class}") if [ Array, Hash ].any? { |klass| params[:generate_keypair].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: generate_private_key_password must be an String") if !params[:generate_private_key_password].nil? and !params[:generate_private_key_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: generate_algorithm must be an String") if !params[:generate_algorithm].nil? and !params[:generate_algorithm].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: generate_length must be an Integer") if !params[:generate_length].nil? and !params[:generate_length].is_a?(Integer)
@@ -312,7 +320,7 @@ module Files
     #
     # Returns a Files::PublicKey.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: title must be an String") if !params[:title].nil? and !params[:title].is_a?(String)
@@ -328,7 +336,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

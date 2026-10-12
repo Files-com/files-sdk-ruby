@@ -69,7 +69,7 @@ module Files
     #   file - file - Logo for custom branding. Required when creating a new style.
     #   logo_click_href - string - URL to open when a public visitor clicks the logo.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
@@ -78,18 +78,21 @@ module Files
 
       response, options = Api.send_request("/styles/#{@attributes[:path]}", :patch, params, @options) { |reply| reply.require_object("Style") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
-      Api.send_request("/styles/#{@attributes[:path]}", :delete, params, @options)
+      response, options = Api.send_request("/styles/#{@attributes[:path]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -111,7 +114,7 @@ module Files
     #
     # Returns a Files::Style.
     def self.find(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
@@ -133,7 +136,7 @@ module Files
     #
     # Returns a Files::Style.
     def self.update(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: logo_click_href must be an String") if !params[:logo_click_href].nil? and !params[:logo_click_href].is_a?(String)
@@ -148,7 +151,7 @@ module Files
     #
     # Returns nil.
     def self.delete(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?

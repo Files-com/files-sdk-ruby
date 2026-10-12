@@ -604,11 +604,13 @@ module Files
     #   destination_type - string - Destination Type
     #   destination_url - string - Destination Url
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if !params[:additional_headers].nil? and !params[:additional_headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: sending_active must be a single value, not #{params[:sending_active].class}") if [ Array, Hash ].any? { |klass| params[:sending_active].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if !params[:generic_payload_type].nil? and !params[:generic_payload_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if !params[:file_destination_path].nil? and !params[:file_destination_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_format must be an String") if !params[:file_format].nil? and !params[:file_format].is_a?(String)
@@ -625,24 +627,39 @@ module Files
       raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if !params[:solar_winds_token].nil? and !params[:solar_winds_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if !params[:new_relic_api_key].nil? and !params[:new_relic_api_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if !params[:datadog_api_key].nil? and !params[:datadog_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: action_send_enabled must be a single value, not #{params[:action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sftp_action_send_enabled must be a single value, not #{params[:sftp_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:sftp_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ftp_action_send_enabled must be a single value, not #{params[:ftp_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:ftp_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: web_dav_action_send_enabled must be a single value, not #{params[:web_dav_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:web_dav_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sync_send_enabled must be a single value, not #{params[:sync_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:sync_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: outbound_connection_send_enabled must be a single value, not #{params[:outbound_connection_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:outbound_connection_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: automation_send_enabled must be a single value, not #{params[:automation_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:automation_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: api_request_send_enabled must be a single value, not #{params[:api_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:api_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: public_hosting_request_send_enabled must be a single value, not #{params[:public_hosting_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:public_hosting_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: email_send_enabled must be a single value, not #{params[:email_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:email_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: exavault_api_request_send_enabled must be a single value, not #{params[:exavault_api_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:exavault_api_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: settings_change_send_enabled must be a single value, not #{params[:settings_change_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:settings_change_send_enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if !params[:destination_type].nil? and !params[:destination_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if !params[:destination_url].nil? and !params[:destination_url].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/siem_http_destinations/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("SiemHttpDestination") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/siem_http_destinations/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/siem_http_destinations/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -657,6 +674,7 @@ module Files
       else
         new_obj = SiemHttpDestination.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -674,8 +692,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
 
+      list_options = options.dup
       List.new(SiemHttpDestination, params) do |page_params, &check_page|
-        Api.send_request("/siem_http_destinations", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/siem_http_destinations", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -691,7 +712,7 @@ module Files
     #
     # Returns a Files::SiemHttpDestination.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -746,6 +767,7 @@ module Files
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if !params[:additional_headers].nil? and !params[:additional_headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: sending_active must be a single value, not #{params[:sending_active].class}") if [ Array, Hash ].any? { |klass| params[:sending_active].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if !params[:generic_payload_type].nil? and !params[:generic_payload_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if !params[:file_destination_path].nil? and !params[:file_destination_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_format must be an String") if !params[:file_format].nil? and !params[:file_format].is_a?(String)
@@ -762,6 +784,18 @@ module Files
       raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if !params[:solar_winds_token].nil? and !params[:solar_winds_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if !params[:new_relic_api_key].nil? and !params[:new_relic_api_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if !params[:datadog_api_key].nil? and !params[:datadog_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: action_send_enabled must be a single value, not #{params[:action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sftp_action_send_enabled must be a single value, not #{params[:sftp_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:sftp_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ftp_action_send_enabled must be a single value, not #{params[:ftp_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:ftp_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: web_dav_action_send_enabled must be a single value, not #{params[:web_dav_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:web_dav_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sync_send_enabled must be a single value, not #{params[:sync_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:sync_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: outbound_connection_send_enabled must be a single value, not #{params[:outbound_connection_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:outbound_connection_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: automation_send_enabled must be a single value, not #{params[:automation_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:automation_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: api_request_send_enabled must be a single value, not #{params[:api_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:api_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: public_hosting_request_send_enabled must be a single value, not #{params[:public_hosting_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:public_hosting_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: email_send_enabled must be a single value, not #{params[:email_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:email_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: exavault_api_request_send_enabled must be a single value, not #{params[:exavault_api_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:exavault_api_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: settings_change_send_enabled must be a single value, not #{params[:settings_change_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:settings_change_send_enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if !params[:destination_type].nil? and !params[:destination_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if !params[:destination_url].nil? and !params[:destination_url].is_a?(String)
       raise MissingParameterError.new("Parameter missing: destination_type") if params[:destination_type].nil?
@@ -816,6 +850,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if !params[:destination_url].nil? and !params[:destination_url].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if !params[:additional_headers].nil? and !params[:additional_headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: sending_active must be a single value, not #{params[:sending_active].class}") if [ Array, Hash ].any? { |klass| params[:sending_active].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if !params[:generic_payload_type].nil? and !params[:generic_payload_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if !params[:file_destination_path].nil? and !params[:file_destination_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_format must be an String") if !params[:file_format].nil? and !params[:file_format].is_a?(String)
@@ -832,6 +867,18 @@ module Files
       raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if !params[:solar_winds_token].nil? and !params[:solar_winds_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if !params[:new_relic_api_key].nil? and !params[:new_relic_api_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if !params[:datadog_api_key].nil? and !params[:datadog_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: action_send_enabled must be a single value, not #{params[:action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sftp_action_send_enabled must be a single value, not #{params[:sftp_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:sftp_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ftp_action_send_enabled must be a single value, not #{params[:ftp_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:ftp_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: web_dav_action_send_enabled must be a single value, not #{params[:web_dav_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:web_dav_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sync_send_enabled must be a single value, not #{params[:sync_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:sync_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: outbound_connection_send_enabled must be a single value, not #{params[:outbound_connection_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:outbound_connection_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: automation_send_enabled must be a single value, not #{params[:automation_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:automation_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: api_request_send_enabled must be a single value, not #{params[:api_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:api_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: public_hosting_request_send_enabled must be a single value, not #{params[:public_hosting_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:public_hosting_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: email_send_enabled must be a single value, not #{params[:email_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:email_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: exavault_api_request_send_enabled must be a single value, not #{params[:exavault_api_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:exavault_api_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: settings_change_send_enabled must be a single value, not #{params[:settings_change_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:settings_change_send_enabled].is_a?(klass) }
 
       Api.send_request("/siem_http_destinations/send_test_entry", :post, params, options)
       nil
@@ -877,11 +924,12 @@ module Files
     #
     # Returns a Files::SiemHttpDestination.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: additional_headers must be an Hash") if !params[:additional_headers].nil? and !params[:additional_headers].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: sending_active must be a single value, not #{params[:sending_active].class}") if [ Array, Hash ].any? { |klass| params[:sending_active].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: generic_payload_type must be an String") if !params[:generic_payload_type].nil? and !params[:generic_payload_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_destination_path must be an String") if !params[:file_destination_path].nil? and !params[:file_destination_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: file_format must be an String") if !params[:file_format].nil? and !params[:file_format].is_a?(String)
@@ -898,6 +946,18 @@ module Files
       raise InvalidParameterError.new("Bad parameter: solar_winds_token must be an String") if !params[:solar_winds_token].nil? and !params[:solar_winds_token].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: new_relic_api_key must be an String") if !params[:new_relic_api_key].nil? and !params[:new_relic_api_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: datadog_api_key must be an String") if !params[:datadog_api_key].nil? and !params[:datadog_api_key].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: action_send_enabled must be a single value, not #{params[:action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sftp_action_send_enabled must be a single value, not #{params[:sftp_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:sftp_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ftp_action_send_enabled must be a single value, not #{params[:ftp_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:ftp_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: web_dav_action_send_enabled must be a single value, not #{params[:web_dav_action_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:web_dav_action_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sync_send_enabled must be a single value, not #{params[:sync_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:sync_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: outbound_connection_send_enabled must be a single value, not #{params[:outbound_connection_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:outbound_connection_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: automation_send_enabled must be a single value, not #{params[:automation_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:automation_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: api_request_send_enabled must be a single value, not #{params[:api_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:api_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: public_hosting_request_send_enabled must be a single value, not #{params[:public_hosting_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:public_hosting_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: email_send_enabled must be a single value, not #{params[:email_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:email_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: exavault_api_request_send_enabled must be a single value, not #{params[:exavault_api_request_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:exavault_api_request_send_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: settings_change_send_enabled must be a single value, not #{params[:settings_change_send_enabled].class}") if [ Array, Hash ].any? { |klass| params[:settings_change_send_enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: destination_type must be an String") if !params[:destination_type].nil? and !params[:destination_type].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination_url must be an String") if !params[:destination_url].nil? and !params[:destination_url].is_a?(String)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -911,7 +971,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

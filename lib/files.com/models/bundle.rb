@@ -511,7 +511,7 @@ module Files
     #
     # Returns the [response, options] pair from Files::Api.send_request.
     def share(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
@@ -520,7 +520,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: recipients must be an Array") if !params[:recipients].nil? and !params[:recipients].is_a?(Array)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/bundles/#{@attributes[:id]}/share", :post, params, @options)
+      response, options = Api.send_request("/bundles/#{@attributes[:id]}/share", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Parameters:
@@ -557,17 +559,21 @@ module Files
     #   watermark_value - object - Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if !params[:paths].nil? and !params[:paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if !params[:password].nil? and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: bypasses_site_expiration_rules must be a single value, not #{params[:bypasses_site_expiration_rules].class}") if [ Array, Hash ].any? { |klass| params[:bypasses_site_expiration_rules].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if !params[:form_field_set_id].nil? and !params[:form_field_set_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if !params[:clickwrap_id].nil? and !params[:clickwrap_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if !params[:code].nil? and !params[:code].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: create_snapshot must be a single value, not #{params[:create_snapshot].class}") if [ Array, Hash ].any? { |klass| params[:create_snapshot].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: dont_separate_submissions_by_folder must be a single value, not #{params[:dont_separate_submissions_by_folder].class}") if [ Array, Hash ].any? { |klass| params[:dont_separate_submissions_by_folder].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if !params[:expires_at].nil? and !params[:expires_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: finalize_snapshot must be a single value, not #{params[:finalize_snapshot].class}") if [ Array, Hash ].any? { |klass| params[:finalize_snapshot].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if !params[:inbox_id].nil? and !params[:inbox_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if !params[:max_uses].nil? and !params[:max_uses].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
@@ -576,25 +582,37 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path_template must be an String") if !params[:path_template].nil? and !params[:path_template].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_template_time_zone must be an String") if !params[:path_template_time_zone].nil? and !params[:path_template_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if !params[:permissions].nil? and !params[:permissions].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: require_registration must be a single value, not #{params[:require_registration].class}") if [ Array, Hash ].any? { |klass| params[:require_registration].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: require_share_recipient must be a single value, not #{params[:require_share_recipient].class}") if [ Array, Hash ].any? { |klass| params[:require_share_recipient].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: send_one_time_password_to_recipient_at_registration must be a single value, not #{params[:send_one_time_password_to_recipient_at_registration].class}") if [ Array, Hash ].any? { |klass| params[:send_one_time_password_to_recipient_at_registration].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: send_email_receipt_to_uploader must be a single value, not #{params[:send_email_receipt_to_uploader].class}") if [ Array, Hash ].any? { |klass| params[:send_email_receipt_to_uploader].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: skip_company must be a single value, not #{params[:skip_company].class}") if [ Array, Hash ].any? { |klass| params[:skip_company].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if !params[:start_access_on_date].nil? and !params[:start_access_on_date].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: skip_email must be a single value, not #{params[:skip_email].class}") if [ Array, Hash ].any? { |klass| params[:skip_email].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: skip_name must be a single value, not #{params[:skip_name].class}") if [ Array, Hash ].any? { |klass| params[:skip_name].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: watermark_attachment_delete must be a single value, not #{params[:watermark_attachment_delete].class}") if [ Array, Hash ].any? { |klass| params[:watermark_attachment_delete].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: watermark_value must be an Hash") if !params[:watermark_value].nil? and !params[:watermark_value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/bundles/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Bundle") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/bundles/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/bundles/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -609,6 +627,7 @@ module Files
       else
         new_obj = Bundle.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -642,9 +661,13 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if !params[:filter_prefix].nil? and !params[:filter_prefix].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if !params[:filter_lt].nil? and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if !params[:filter_lteq].nil? and !params[:filter_lteq].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: deleted must be a single value, not #{params[:deleted].class}") if [ Array, Hash ].any? { |klass| params[:deleted].is_a?(klass) }
 
+      list_options = options.dup
       List.new(Bundle, params) do |page_params, &check_page|
-        Api.send_request("/bundles", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/bundles", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -661,9 +684,10 @@ module Files
     #
     # Returns a Files::Bundle.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: deleted must be a single value, not #{params[:deleted].class}") if [ Array, Hash ].any? { |klass| params[:deleted].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/bundles/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Bundle") }
@@ -716,8 +740,12 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if !params[:paths].nil? and !params[:paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if !params[:password].nil? and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: bypasses_site_expiration_rules must be a single value, not #{params[:bypasses_site_expiration_rules].class}") if [ Array, Hash ].any? { |klass| params[:bypasses_site_expiration_rules].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if !params[:form_field_set_id].nil? and !params[:form_field_set_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: create_snapshot must be a single value, not #{params[:create_snapshot].class}") if [ Array, Hash ].any? { |klass| params[:create_snapshot].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: dont_separate_submissions_by_folder must be a single value, not #{params[:dont_separate_submissions_by_folder].class}") if [ Array, Hash ].any? { |klass| params[:dont_separate_submissions_by_folder].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if !params[:expires_at].nil? and !params[:expires_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: finalize_snapshot must be a single value, not #{params[:finalize_snapshot].class}") if [ Array, Hash ].any? { |klass| params[:finalize_snapshot].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if !params[:max_uses].nil? and !params[:max_uses].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: internal_name must be an String") if !params[:internal_name].nil? and !params[:internal_name].is_a?(String)
@@ -727,8 +755,15 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path_template must be an String") if !params[:path_template].nil? and !params[:path_template].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_template_time_zone must be an String") if !params[:path_template_time_zone].nil? and !params[:path_template_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if !params[:permissions].nil? and !params[:permissions].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: require_registration must be a single value, not #{params[:require_registration].class}") if [ Array, Hash ].any? { |klass| params[:require_registration].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if !params[:clickwrap_id].nil? and !params[:clickwrap_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if !params[:inbox_id].nil? and !params[:inbox_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: require_share_recipient must be a single value, not #{params[:require_share_recipient].class}") if [ Array, Hash ].any? { |klass| params[:require_share_recipient].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: send_one_time_password_to_recipient_at_registration must be a single value, not #{params[:send_one_time_password_to_recipient_at_registration].class}") if [ Array, Hash ].any? { |klass| params[:send_one_time_password_to_recipient_at_registration].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: send_email_receipt_to_uploader must be a single value, not #{params[:send_email_receipt_to_uploader].class}") if [ Array, Hash ].any? { |klass| params[:send_email_receipt_to_uploader].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: skip_email must be a single value, not #{params[:skip_email].class}") if [ Array, Hash ].any? { |klass| params[:skip_email].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: skip_name must be a single value, not #{params[:skip_name].class}") if [ Array, Hash ].any? { |klass| params[:skip_name].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: skip_company must be a single value, not #{params[:skip_company].class}") if [ Array, Hash ].any? { |klass| params[:skip_company].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if !params[:start_access_on_date].nil? and !params[:start_access_on_date].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: snapshot_id must be an Integer") if !params[:snapshot_id].nil? and !params[:snapshot_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
@@ -751,7 +786,7 @@ module Files
     #
     # Returns nil.
     def self.share(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: to must be an Array") if !params[:to].nil? and !params[:to].is_a?(Array)
@@ -802,16 +837,20 @@ module Files
     #
     # Returns a Files::Bundle.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if !params[:paths].nil? and !params[:paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if !params[:password].nil? and !params[:password].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: bypasses_site_expiration_rules must be a single value, not #{params[:bypasses_site_expiration_rules].class}") if [ Array, Hash ].any? { |klass| params[:bypasses_site_expiration_rules].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: form_field_set_id must be an Integer") if !params[:form_field_set_id].nil? and !params[:form_field_set_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: clickwrap_id must be an Integer") if !params[:clickwrap_id].nil? and !params[:clickwrap_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: code must be an String") if !params[:code].nil? and !params[:code].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: create_snapshot must be a single value, not #{params[:create_snapshot].class}") if [ Array, Hash ].any? { |klass| params[:create_snapshot].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: dont_separate_submissions_by_folder must be a single value, not #{params[:dont_separate_submissions_by_folder].class}") if [ Array, Hash ].any? { |klass| params[:dont_separate_submissions_by_folder].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if !params[:expires_at].nil? and !params[:expires_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: finalize_snapshot must be a single value, not #{params[:finalize_snapshot].class}") if [ Array, Hash ].any? { |klass| params[:finalize_snapshot].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if !params[:inbox_id].nil? and !params[:inbox_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_uses must be an Integer") if !params[:max_uses].nil? and !params[:max_uses].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
@@ -820,8 +859,16 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path_template must be an String") if !params[:path_template].nil? and !params[:path_template].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: path_template_time_zone must be an String") if !params[:path_template_time_zone].nil? and !params[:path_template_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: permissions must be an String") if !params[:permissions].nil? and !params[:permissions].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: require_registration must be a single value, not #{params[:require_registration].class}") if [ Array, Hash ].any? { |klass| params[:require_registration].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: require_share_recipient must be a single value, not #{params[:require_share_recipient].class}") if [ Array, Hash ].any? { |klass| params[:require_share_recipient].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: send_one_time_password_to_recipient_at_registration must be a single value, not #{params[:send_one_time_password_to_recipient_at_registration].class}") if [ Array, Hash ].any? { |klass| params[:send_one_time_password_to_recipient_at_registration].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: send_email_receipt_to_uploader must be a single value, not #{params[:send_email_receipt_to_uploader].class}") if [ Array, Hash ].any? { |klass| params[:send_email_receipt_to_uploader].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: skip_company must be a single value, not #{params[:skip_company].class}") if [ Array, Hash ].any? { |klass| params[:skip_company].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: start_access_on_date must be an String") if !params[:start_access_on_date].nil? and !params[:start_access_on_date].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: skip_email must be a single value, not #{params[:skip_email].class}") if [ Array, Hash ].any? { |klass| params[:skip_email].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: skip_name must be a single value, not #{params[:skip_name].class}") if [ Array, Hash ].any? { |klass| params[:skip_name].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: watermark_attachment_delete must be a single value, not #{params[:watermark_attachment_delete].class}") if [ Array, Hash ].any? { |klass| params[:watermark_attachment_delete].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: watermark_value must be an Hash") if !params[:watermark_value].nil? and !params[:watermark_value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -835,7 +882,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

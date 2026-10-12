@@ -72,28 +72,34 @@ module Files
     #   use_for_all_users - boolean - Whether this profile applies to all users in the Workspace by default
     #   disable_drive_mounting - boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: mount_mappings must be an Hash") if !params[:mount_mappings].nil? and !params[:mount_mappings].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: use_for_all_users must be a single value, not #{params[:use_for_all_users].class}") if [ Array, Hash ].any? { |klass| params[:use_for_all_users].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: disable_drive_mounting must be a single value, not #{params[:disable_drive_mounting].class}") if [ Array, Hash ].any? { |klass| params[:disable_drive_mounting].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/desktop_configuration_profiles/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("DesktopConfigurationProfile") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/desktop_configuration_profiles/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/desktop_configuration_profiles/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -108,6 +114,7 @@ module Files
       else
         new_obj = DesktopConfigurationProfile.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -129,8 +136,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(DesktopConfigurationProfile, params) do |page_params, &check_page|
-        Api.send_request("/desktop_configuration_profiles", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/desktop_configuration_profiles", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -146,7 +156,7 @@ module Files
     #
     # Returns a Files::DesktopConfigurationProfile.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -174,6 +184,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: mount_mappings must be an Hash") if !params[:mount_mappings].nil? and !params[:mount_mappings].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: use_for_all_users must be a single value, not #{params[:use_for_all_users].class}") if [ Array, Hash ].any? { |klass| params[:use_for_all_users].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: disable_drive_mounting must be a single value, not #{params[:disable_drive_mounting].class}") if [ Array, Hash ].any? { |klass| params[:disable_drive_mounting].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: name") if params[:name].nil?
       raise MissingParameterError.new("Parameter missing: mount_mappings") if params[:mount_mappings].nil?
 
@@ -193,12 +205,14 @@ module Files
     #
     # Returns a Files::DesktopConfigurationProfile.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: mount_mappings must be an Hash") if !params[:mount_mappings].nil? and !params[:mount_mappings].is_a?(Hash)
+      raise InvalidParameterError.new("Bad parameter: use_for_all_users must be a single value, not #{params[:use_for_all_users].class}") if [ Array, Hash ].any? { |klass| params[:use_for_all_users].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: disable_drive_mounting must be a single value, not #{params[:disable_drive_mounting].class}") if [ Array, Hash ].any? { |klass| params[:disable_drive_mounting].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/desktop_configuration_profiles/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("DesktopConfigurationProfile") }
@@ -210,7 +224,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

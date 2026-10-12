@@ -80,6 +80,7 @@ module Files
       else
         new_obj = InboxRecipient.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -104,8 +105,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: inbox_id must be an Integer") if !params[:inbox_id].nil? and !params[:inbox_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: inbox_id") if params[:inbox_id].nil?
 
+      list_options = options.dup
       List.new(InboxRecipient, params) do |page_params, &check_page|
-        Api.send_request("/inbox_recipients", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/inbox_recipients", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -131,6 +135,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: company must be an String") if !params[:company].nil? and !params[:company].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: note must be an String") if !params[:note].nil? and !params[:note].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: share_after_create must be a single value, not #{params[:share_after_create].class}") if [ Array, Hash ].any? { |klass| params[:share_after_create].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: inbox_id") if params[:inbox_id].nil?
       raise MissingParameterError.new("Parameter missing: recipient") if params[:recipient].nil?
 

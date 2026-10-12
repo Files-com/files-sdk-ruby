@@ -12,6 +12,11 @@ module Files
     USE_GLOBAL = Object.new.freeze
     private_constant :USE_GLOBAL
 
+    # Local and Files.com development domains. A lockout region mismatch moves a request to an https:// origin on one
+    # of these, or on a name under one, only with Files.region_handler's approval.
+    DEVELOPMENT_DOMAINS = %w[localhost local filesrails.test files.test].freeze
+    private_constant :DEVELOPMENT_DOMAINS
+
     # Creates a client that sends requests through +conn+, or through a new default connection when +conn+ is nil.
     #
     # By default the client logs its ordinary API requests, responses and errors through the library-wide Files.logger and
@@ -32,11 +37,18 @@ module Files
     # +workspace_id+ gives this client its own workspace; 0 is sent as "0". A request's own workspace_id option still
     # takes precedence, and a request whose workspace_id is nil uses this client's. Pass workspace_id: nil to name no
     # workspace for this client's requests even when Files.workspace_id is set.
-    def initialize(conn = nil, logger: USE_GLOBAL, log_level: USE_GLOBAL, workspace_id: USE_GLOBAL)
+    #
+    # A lockout region mismatch moves its requests over plain HTTP only from the source to the destination of a pair in
+    # the library-wide Files.region_http_pairs, read at the start of each request, unless +region_http_pairs+ gives this
+    # client its own pairs, in the same form. The client keeps a frozen copy of them, and [] allows none. A request's own
+    # region_http_pairs option, such as the one a returned record keeps, takes precedence over both. Plain HTTP is for
+    # your own development servers only (see Files.region_http_pairs=).
+    def initialize(conn = nil, logger: USE_GLOBAL, log_level: USE_GLOBAL, workspace_id: USE_GLOBAL, region_http_pairs: USE_GLOBAL)
       self.conn = conn || self.class.default_conn
       @logger = logger
       @log_level = log_level.equal?(USE_GLOBAL) ? log_level : Util.normalize_log_level(log_level)
       @workspace_id = workspace_id
+      @region_http_pairs = region_http_pairs.equal?(USE_GLOBAL) ? region_http_pairs : Util.checked_region_http_pairs(region_http_pairs)
       @system_profiler = SystemProfiler.new
       @last_request_metrics = nil
     end
@@ -96,8 +108,9 @@ module Files
       return false if num_retries >= Files.max_network_retries
       return true if error.is_a?(Faraday::TimeoutError)
       return true if error.is_a?(Faraday::ConnectionFailed)
-      return true if error.is_a?(Faraday::ServerError)
-      return true if error.is_a?(Faraday::ClientError) and error.response_status == 405
+      # 501 Not Implemented means the API does not support the request, so repeating it cannot succeed.
+      return true if error.is_a?(Faraday::ServerError) and error.response_status != 501
+      return true if error.is_a?(Faraday::ClientError) and [ 405, 429 ].include?(error.response_status)
 
       false
     end
@@ -124,7 +137,17 @@ module Files
       end
     end
 
-    def execute_request(method, path, base_url: nil, api_key: nil, session_id: nil, workspace_id: nil, headers: {}, params: {})
+    # The frozen [source, destination] pairs of http:// origins this client's requests use when they name none of their
+    # own: the client's own, or Files.region_http_pairs.
+    def region_http_pairs
+      @region_http_pairs.equal?(USE_GLOBAL) ? Files.region_http_pairs : @region_http_pairs
+    end
+
+    # Returns the response and the API key and session ID the request used. +region_http_pairs+, such as the pairs a
+    # returned record keeps, is used instead of this client's. The block, if given, receives the request's context once
+    # its response has arrived: the regional origin a lockout region mismatch moved it to, or nil, and the frozen
+    # region_http_pairs it used.
+    def execute_request(method, path, base_url: nil, api_key: nil, session_id: nil, workspace_id: nil, region_http_pairs: nil, headers: {}, params: {}, &on_request_context)
       base_url ||= Files.base_url
       if api_key.nil?
         session_id ||= Files.session_id
@@ -155,12 +178,22 @@ module Files
       context = RequestLogContext.new
       context.api_key      = api_key
       context.body         = body
+      context.headers      = headers
       context.method       = method
       context.path         = path
       context.query_params = query_params if query_params
       context.session_id   = session_id
 
-      http_resp = execute_request_with_rescues(base_url, context) do
+      regional_base_url = nil
+      # Fixed before the request starts, so later changes to the caller's or the library-wide pairs cannot affect it.
+      http_pairs = region_http_pairs.nil? ? self.region_http_pairs : Util.checked_region_http_pairs(region_http_pairs)
+      relocate = lambda do |error_response|
+        regional_base_url = region_continuation_base_url(error_response, base_url, body, http_pairs)
+        url = api_url(path, regional_base_url) if regional_base_url
+        regional_base_url
+      end
+
+      http_resp = execute_request_with_rescues(base_url, context, relocate: relocate) do
         conn.run_request(method, url, body, headers) do |req|
           req.options.open_timeout = Files.open_timeout
           req.options.timeout = Files.read_timeout
@@ -175,6 +208,7 @@ module Files
       end
 
       @last_response = resp
+      on_request_context&.call(regional_base_url, http_pairs)
       [ resp, api_key, session_id ]
     end
 
@@ -287,13 +321,141 @@ module Files
     end
 
     private def api_url(url = "", base_url = nil)
+      begin
+        root = Addressable::URI.parse(base_url)
+      rescue Addressable::URI::InvalidURIError
+        # The parser's message can include the whole URL and its credentials, so only the cause carries it.
+        raise InvalidParameterError, "Invalid Files.com base URL. Use an http:// or https:// URL with a valid host and port, such as https://app.files.com."
+      end
+
+      # Other schemes fail inside Net::HTTP with a NoMethodError rather than a Files::Error.
+      raise InvalidParameterError, "Unsupported Files.com base URL scheme \"#{root.scheme}\". Use an http:// or https:// base URL, such as https://app.files.com." unless root.scheme.nil? || %w[http https].include?(root.scheme.downcase)
+
       uri        = Addressable::URI.new
-      uri.host   = Addressable::URI.parse(base_url).host
-      uri.port   = Addressable::URI.parse(base_url).port
+      uri.host   = root.host
+      uri.port   = root.port
       uri.path   = "/api/rest/v1#{Files::URI.normalized_path(url)}"
-      uri.scheme = Addressable::URI.parse(base_url).scheme
+      uri.scheme = root.scheme
 
       uri.to_s
+    end
+
+    # The origin a lockout region mismatch moves this request to, or nil to raise the error as it is. The API answers
+    # with that error, naming the site's own origin in data.host, when the site is pinned to another region or to a
+    # custom domain. Only the configured HTTPS origin, reached over this client's verified connection, may send the
+    # credentials elsewhere, apart from an http:// origin to the destination +http_pairs+ pairs it with.
+    private def region_continuation_base_url(error_response, base_url, body, http_pairs)
+      return if Files.region_policy == :disabled
+
+      error_object = error_response.data
+      return unless error_response.http_status == 403 && error_object[:type] == "not-authenticated/lockout-region-mismatch"
+      return unless replayable?(body)
+
+      host = error_object[:data].is_a?(Hash) ? error_object[:data][:host] : nil
+      return http_pair_origin(base_url, host, http_pairs) unless verified_https_connection?(base_url)
+
+      configured = Addressable::URI.parse(base_url)
+      original_origin = https_origin(configured.normalized_host, configured.inferred_port)
+      target_origin, approval_required = region_target(host)
+      # A mismatch that names the origin it came from cannot be resolved by moving, so the handler is not asked.
+      return if target_origin.nil? || target_origin == original_origin
+
+      if Files.region_handler
+        target_origin = approved_region_origin(original_origin, target_origin, approval_required) { |decision| region_target(decision)&.first }
+      elsif approval_required
+        return
+      end
+      return if target_origin.nil? || target_origin == original_origin
+
+      Util.log_info("Region continuation", { from: original_origin, to: target_origin }, log_settings)
+      target_origin
+    end
+
+    # The origin Files.region_handler approves: the target for true, or another origin it returns that the block gives
+    # back unchanged, as the canonical form of an origin the request may move to. nil when it declines. The handler
+    # gets frozen copies, so it cannot change the origins used here.
+    private def approved_region_origin(original_origin, target_origin, approval_required)
+      event = { reason: :lockout_region_mismatch, original_origin: original_origin.dup.freeze, target_origin: target_origin.dup.freeze, approval_required: approval_required }.freeze
+      decision = Files.region_handler.call(event)
+      return target_origin if decision == true
+      return unless decision.is_a?(String)
+
+      approved_origin = yield(decision)
+      approved_origin if approved_origin == decision
+    end
+
+    # The http:// origin data.host names when +http_pairs+ pairs it with +base_url+'s own http:// origin, or nil. Plain
+    # HTTP proves nothing about who answered, so only that exact pair, the caller's own choice, gives the authority to
+    # continue. Within it a bare host means that host over plain HTTP, on port 80 unless it names another port. The
+    # region handler may still decline, or choose another destination paired with the same source; the request then
+    # continues at that pair's own frozen destination, not at the String the handler returned.
+    private def http_pair_origin(base_url, host, http_pairs)
+      original_origin = Util.http_origin(base_url)
+      target_origin = Util.http_origin(host.is_a?(String) && !host.include?("://") ? "http://#{host}" : host)
+      return unless original_origin && target_origin != original_origin && http_pairs.include?([ original_origin, target_origin ])
+
+      if Files.region_handler
+        target_origin = approved_region_origin(original_origin, target_origin, false) do |decision|
+          http_pairs.find { |source, destination| source == original_origin && destination == decision }&.last
+        end
+      end
+      return if target_origin.nil? || target_origin == original_origin
+
+      Util.log_info("Region continuation", { from: original_origin, to: target_origin }, log_settings)
+      target_origin
+    end
+
+    # Whether a response through this client came from +base_url+ over verified HTTPS: the SDK's own middleware and a
+    # Net::HTTP adapter, with certificate and host name verification on. Other middleware or adapters, such as a
+    # caller's, could produce a response that never came from there.
+    private def verified_https_connection?(base_url)
+      return false unless Addressable::URI.parse(base_url).scheme.to_s.casecmp?("https") && conn.is_a?(Faraday::Connection)
+
+      ssl = conn.ssl
+      ssl.verify? && ssl.verify_hostname? && [ nil, OpenSSL::SSL::VERIFY_PEER ].include?(ssl.verify_mode) &&
+      conn.builder.handlers == self.class.build_default_conn.builder.handlers &&
+      [ Faraday::Adapter::NetHttp, Faraday::Adapter::NetHttpPersistent ].include?(conn.builder.adapter&.klass)
+    end
+
+    # Whether +body+ can be sent again. A file in a multipart body has already been read.
+    private def replayable?(body)
+      case body
+      when Hash then body.values.all? { |value| replayable?(value) }
+      when Array then body.all? { |value| replayable?(value) }
+      else !body.respond_to?(:read)
+      end
+    end
+
+    # The HTTPS origin data.host names and whether continuing there needs the region handler's approval, or nil when
+    # data.host is not a plain origin. It may be a host name, with or without a port, or an https:// origin whose path
+    # is empty or "/"; credentials, a query, a fragment, a path, another scheme, spaces or backslashes are refused.
+    # Without approval the request continues only to a DNS name on port 443: an IP address, a local or Files.com
+    # development name (DEVELOPMENT_DOMAINS, or a name without a dot) or another port needs the handler to allow it.
+    private def region_target(host)
+      return unless host.is_a?(String) && !host.match?(/[[:space:][:cntrl:]\\]/)
+
+      origin = host.include?("://") ? host : "https://#{host}"
+      return unless origin.match?(/\Ahttps:\/\/[^\/?#@]+\/?\z/i)
+
+      uri = Addressable::URI.parse(origin)
+      name = uri.normalized_host.to_s
+      port = uri.port || 443
+      ip_address = name.match?(/\A\[[0-9a-f:.]+\]\z/) || name.match?(/\A\d{1,3}(\.\d{1,3}){3}\z/)
+      return unless port.between?(1, 65_535) && (ip_address || dns_name?(name))
+
+      local = ip_address || !name.include?(".") || DEVELOPMENT_DOMAINS.any? { |domain| name == domain || name.end_with?(".#{domain}") }
+      [ https_origin(name, port), local || port != 443 ]
+    rescue Addressable::URI::InvalidURIError, ArgumentError
+      nil
+    end
+
+    private def dns_name?(name)
+      labels = name.split(".", -1)
+      name.length <= 253 && labels.all? { |label| label.match?(/\A[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\z/) } && !labels.last.match?(/\A\d+\z/)
+    end
+
+    private def https_origin(host, port)
+      port == 443 ? "https://#{host}" : "https://#{host}:#{port}"
     end
 
     private def check_api_key!(api_key)
@@ -311,20 +473,23 @@ module Files
       raise AuthenticationError, "The provided Session ID is invalid (it contains whitespace)"
     end
 
-    def execute_request_with_rescues(base_url, context, skip_body_logging: false, is_transfer: false)
+    # +relocate+, given only for ordinary API requests, receives a structured error response and returns the regional
+    # origin to send the request to instead, or nil. The request is sent there at most once, and retries before and
+    # after count together.
+    def execute_request_with_rescues(base_url, context, skip_body_logging: false, is_transfer: false, relocate: nil)
       num_retries = 0
       begin
         request_start = Time.now
         log_request(context, num_retries, no_body: skip_body_logging)
         resp = yield
-        log_response(context, request_start, resp.status, resp.body, no_body: skip_body_logging)
+        log_response(context, request_start, resp.status, resp.body, headers: resp.headers, no_body: skip_body_logging)
       rescue StandardError => e
         error_context = context
 
         if e.respond_to?(:response) && e.response
           error_context = context
           log_response(error_context, request_start,
-                       e.response[:status], e.response[:body], no_body: skip_body_logging
+                       e.response[:status], e.response[:body], headers: e.response[:headers], no_body: skip_body_logging
           )
         else
           log_response_error(error_context, request_start, e)
@@ -332,7 +497,9 @@ module Files
 
         if self.class.should_retry?(e, num_retries)
           num_retries += 1
-          sleep self.class.sleep_time(num_retries)
+          wait_seconds = self.class.sleep_time(num_retries)
+          log_retry(context, num_retries, e, wait_seconds) unless is_transfer
+          sleep wait_seconds
           retry
         end
 
@@ -340,7 +507,14 @@ module Files
 
         case e
         when Faraday::ClientError, Faraday::ServerError
-          if (error_response = api_error_response(e.response))
+          error_response = api_error_response(e.response)
+          if relocate && error_response && (regional_base_url = relocate.call(error_response))
+            relocate = nil
+            base_url = regional_base_url
+            retry
+          end
+
+          if error_response
             handle_error_response(error_response, error_context, is_transfer: is_transfer)
           else
             handle_network_error(e, error_context, num_retries, base_url, is_transfer: is_transfer)
@@ -348,6 +522,7 @@ module Files
         else
           raise e.exception("Transfer request failed (#{e.class})"), cause: nil if is_transfer
 
+          handle_network_error(e, error_context, num_retries, base_url) if e.is_a?(Faraday::ConnectionFailed) || e.is_a?(Faraday::SSLError)
           raise
         end
       end
@@ -536,17 +711,21 @@ module Files
 
     private def log_request(context, num_retries, no_body: false)
       Util.log_info("Request", { method: context.method, num_retries: num_retries, path: context.path }, log_settings)
-      Util.log_debug("Request details", { body: context.body, query_params: context.query_params }, log_settings) unless no_body
+      Util.log_debug("Request details", { body: context.body, headers: context.headers, query_params: context.query_params }, log_settings) unless no_body
     end
 
-    private def log_response(context, request_start, status, body, no_body: false)
+    private def log_response(context, request_start, status, body, headers: nil, no_body: false)
       Util.log_info("Response", { elapsed: Time.now - request_start, method: context.method, path: context.path, status: status }, log_settings)
-      Util.log_debug("Response details", { body: body }, log_settings) unless no_body
+      Util.log_debug("Response details", { body: body, headers: headers }, log_settings) unless no_body
     end
 
     private def log_response_error(context, request_start, error)
       Util.log_error("Error", { elapsed: Time.now - request_start, error_type: error.class, method: context.method, path: context.path }, log_settings)
       Util.log_debug("Error details", { error_message: error.message }, log_settings)
+    end
+
+    private def log_retry(context, attempt, error, wait_seconds)
+      Util.log_info("Retry", { attempt: attempt, error_type: error.class, max_retries: Files.max_network_retries, method: context.method, path: context.path, status: error.response_status, wait_seconds: wait_seconds }, log_settings)
     end
 
     # This client's own logger and level where it set them, and the library-wide ones otherwise.
@@ -562,7 +741,7 @@ module Files
     end
 
     class RequestLogContext
-      attr_accessor :body, :api_key, :method, :path, :query_params, :session_id
+      attr_accessor :body, :api_key, :headers, :method, :path, :query_params, :session_id
     end
   end
 end

@@ -149,11 +149,12 @@ module Files
     #   name - string - The name of the Partner Channel Template.
     #   path - string - Channel path relative to the Partner root folder.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: direction must be an String") if !params[:direction].nil? and !params[:direction].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: use_channel_root must be a single value, not #{params[:use_channel_root].class}") if [ Array, Hash ].any? { |klass| params[:use_channel_root].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: from_partner_folder_name must be an String") if !params[:from_partner_folder_name].nil? and !params[:from_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_managed_folder_paths must be an Array") if !params[:from_partner_managed_folder_paths].nil? and !params[:from_partner_managed_folder_paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: from_partner_route_path_pattern must be an String") if !params[:from_partner_route_path_pattern].nil? and !params[:from_partner_route_path_pattern].is_a?(String)
@@ -166,18 +167,21 @@ module Files
 
       response, options = Api.send_request("/partner_channel_templates/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("PartnerChannelTemplate") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/partner_channel_templates/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/partner_channel_templates/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -192,6 +196,7 @@ module Files
       else
         new_obj = PartnerChannelTemplate.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -213,8 +218,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(PartnerChannelTemplate, params) do |page_params, &check_page|
-        Api.send_request("/partner_channel_templates", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/partner_channel_templates", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -230,7 +238,7 @@ module Files
     #
     # Returns a Files::PartnerChannelTemplate.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -262,6 +270,7 @@ module Files
     # Returns a Files::PartnerChannelTemplate.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: direction must be an String") if !params[:direction].nil? and !params[:direction].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: use_channel_root must be a single value, not #{params[:use_channel_root].class}") if [ Array, Hash ].any? { |klass| params[:use_channel_root].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: from_partner_folder_name must be an String") if !params[:from_partner_folder_name].nil? and !params[:from_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_managed_folder_paths must be an Array") if !params[:from_partner_managed_folder_paths].nil? and !params[:from_partner_managed_folder_paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: from_partner_route_path_pattern must be an String") if !params[:from_partner_route_path_pattern].nil? and !params[:from_partner_route_path_pattern].is_a?(String)
@@ -295,10 +304,11 @@ module Files
     #
     # Returns a Files::PartnerChannelTemplate.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: direction must be an String") if !params[:direction].nil? and !params[:direction].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: use_channel_root must be a single value, not #{params[:use_channel_root].class}") if [ Array, Hash ].any? { |klass| params[:use_channel_root].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: from_partner_folder_name must be an String") if !params[:from_partner_folder_name].nil? and !params[:from_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_managed_folder_paths must be an Array") if !params[:from_partner_managed_folder_paths].nil? and !params[:from_partner_managed_folder_paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: from_partner_route_path_pattern must be an String") if !params[:from_partner_route_path_pattern].nil? and !params[:from_partner_route_path_pattern].is_a?(String)
@@ -318,7 +328,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

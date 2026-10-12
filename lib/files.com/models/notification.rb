@@ -262,33 +262,44 @@ module Files
     #   trigger_by_share_recipients - boolean - Notify when actions are performed by a share recipient?
     #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: notify_on_copy must be a single value, not #{params[:notify_on_copy].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_copy].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_delete must be a single value, not #{params[:notify_on_delete].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_delete].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_download must be a single value, not #{params[:notify_on_download].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_download].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_move must be a single value, not #{params[:notify_on_move].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_move].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_upload must be a single value, not #{params[:notify_on_upload].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_upload].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_user_actions must be a single value, not #{params[:notify_user_actions].class}") if [ Array, Hash ].any? { |klass| params[:notify_user_actions].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if !params[:send_interval].nil? and !params[:send_interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subject must be an String") if !params[:subject].nil? and !params[:subject].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: message must be an String") if !params[:message].nil? and !params[:message].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: triggering_filenames must be an Array") if !params[:triggering_filenames].nil? and !params[:triggering_filenames].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: triggering_group_ids must be an Array") if !params[:triggering_group_ids].nil? and !params[:triggering_group_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: triggering_user_ids must be an Array") if !params[:triggering_user_ids].nil? and !params[:triggering_user_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: trigger_by_share_recipients must be a single value, not #{params[:trigger_by_share_recipients].class}") if [ Array, Hash ].any? { |klass| params[:trigger_by_share_recipients].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/notifications/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Notification") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/notifications/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/notifications/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -303,6 +314,7 @@ module Files
       else
         new_obj = Notification.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -329,10 +341,14 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if !params[:filter_prefix].nil? and !params[:filter_prefix].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: include_ancestors must be a single value, not #{params[:include_ancestors].class}") if [ Array, Hash ].any? { |klass| params[:include_ancestors].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: group_id must be an String") if !params[:group_id].nil? and !params[:group_id].is_a?(String)
 
+      list_options = options.dup
       List.new(Notification, params) do |page_params, &check_page|
-        Api.send_request("/notifications", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/notifications", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -348,7 +364,7 @@ module Files
     #
     # Returns a Files::Notification.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -389,12 +405,20 @@ module Files
     # Returns a Files::Notification.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: notify_on_copy must be a single value, not #{params[:notify_on_copy].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_copy].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_delete must be a single value, not #{params[:notify_on_delete].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_delete].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_download must be a single value, not #{params[:notify_on_download].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_download].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_move must be a single value, not #{params[:notify_on_move].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_move].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_upload must be a single value, not #{params[:notify_on_upload].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_upload].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_user_actions must be a single value, not #{params[:notify_user_actions].class}") if [ Array, Hash ].any? { |klass| params[:notify_user_actions].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if !params[:send_interval].nil? and !params[:send_interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subject must be an String") if !params[:subject].nil? and !params[:subject].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: message must be an String") if !params[:message].nil? and !params[:message].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: triggering_filenames must be an Array") if !params[:triggering_filenames].nil? and !params[:triggering_filenames].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: triggering_group_ids must be an Array") if !params[:triggering_group_ids].nil? and !params[:triggering_group_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: triggering_user_ids must be an Array") if !params[:triggering_user_ids].nil? and !params[:triggering_user_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: trigger_by_share_recipients must be a single value, not #{params[:trigger_by_share_recipients].class}") if [ Array, Hash ].any? { |klass| params[:trigger_by_share_recipients].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if !params[:group_ids].nil? and !params[:group_ids].is_a?(String)
@@ -427,15 +451,23 @@ module Files
     #
     # Returns a Files::Notification.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: notify_on_copy must be a single value, not #{params[:notify_on_copy].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_copy].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_delete must be a single value, not #{params[:notify_on_delete].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_delete].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_download must be a single value, not #{params[:notify_on_download].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_download].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_move must be a single value, not #{params[:notify_on_move].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_move].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_upload must be a single value, not #{params[:notify_on_upload].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_upload].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_user_actions must be a single value, not #{params[:notify_user_actions].class}") if [ Array, Hash ].any? { |klass| params[:notify_user_actions].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: send_interval must be an String") if !params[:send_interval].nil? and !params[:send_interval].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: subject must be an String") if !params[:subject].nil? and !params[:subject].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: message must be an String") if !params[:message].nil? and !params[:message].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: triggering_filenames must be an Array") if !params[:triggering_filenames].nil? and !params[:triggering_filenames].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: triggering_group_ids must be an Array") if !params[:triggering_group_ids].nil? and !params[:triggering_group_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: triggering_user_ids must be an Array") if !params[:triggering_user_ids].nil? and !params[:triggering_user_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: trigger_by_share_recipients must be a single value, not #{params[:trigger_by_share_recipients].class}") if [ Array, Hash ].any? { |klass| params[:trigger_by_share_recipients].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
@@ -448,7 +480,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

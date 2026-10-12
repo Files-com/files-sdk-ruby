@@ -2,7 +2,7 @@
 
 module Files
   module Util
-    OPTS = Set[:api_key, :client, :session_id, :workspace_id].freeze
+    OPTS = Set[:api_key, :base_url, :client, :region_http_pairs, :session_id, :workspace_id].freeze
     COLOR_CODES = {
       black:   0, light_black:   60,
       red:     1, light_red:     61,
@@ -51,6 +51,37 @@ module Files
               "log_level should only be set to `nil`, `debug` or `info`"
       end
       val
+    end
+
+    # The http:// origin +value+ names, written as http://, its lowercase host and a port only when it is not 80, or
+    # nil when +value+ is not a plain http:// origin: a host name or IP address with an empty or "/" path and no
+    # credentials, query, fragment, spaces or backslashes.
+    def self.http_origin(value)
+      return unless value.is_a?(String) && !value.match?(/[[:space:][:cntrl:]\\]/) && value.match?(/\Ahttp:\/\/[^\/?#@]+\/?\z/i)
+
+      uri = Addressable::URI.parse(value)
+      host = uri.normalized_host.to_s
+      port = uri.port || 80
+      return unless port.between?(1, 65_535) && host.match?(/\A(\[[0-9a-f:.]+\]|[a-z0-9]([a-z0-9.-]*[a-z0-9])?)\z/)
+
+      port == 80 ? "http://#{host}" : "http://#{host}:#{port}"
+    rescue Addressable::URI::InvalidURIError, ArgumentError
+      nil
+    end
+
+    # A frozen copy of +pairs+ for Files.region_http_pairs= and the region_http_pairs option of a Files::ApiClient or a
+    # request, made of new Arrays and Strings, so the caller's are neither kept nor changed. Raises ArgumentError unless
+    # +pairs+ is an Array of [source, destination] Arrays of two origins already written the way http_origin writes them.
+    def self.checked_region_http_pairs(pairs)
+      message = "region_http_pairs should be an Array of [source, destination] Arrays of http:// origins, each with a lowercase host, a port only when it is not 80 and no path"
+      raise ArgumentError, message unless pairs.is_a?(Array)
+
+      pairs.map do |pair|
+        origins = pair.is_a?(Array) ? pair.map { |origin| http_origin(origin) } : []
+        raise ArgumentError, message unless origins.length == 2 && origins.all? && origins == pair
+
+        origins.each(&:freeze).freeze
+      end.freeze
     end
 
     def self.log_error(message, data = {}, settings = global_log_settings)

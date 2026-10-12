@@ -128,13 +128,15 @@ module Files
 
     # Cancel Automation Run
     def cancel(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/automation_runs/#{@attributes[:id]}/cancel", :post, params, @options)
+      response, options = Api.send_request("/automation_runs/#{@attributes[:id]}/cancel", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Re-run Automation from Node
@@ -142,7 +144,7 @@ module Files
     # Parameters:
     #   node_id (required) - string - Node ID at which execution should resume.
     def rerun(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
@@ -150,7 +152,9 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
       raise MissingParameterError.new("Parameter missing: node_id") if params[:node_id].nil?
 
-      Api.send_request("/automation_runs/#{@attributes[:id]}/rerun", :post, params, @options)
+      response, options = Api.send_request("/automation_runs/#{@attributes[:id]}/rerun", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Parameters:
@@ -174,8 +178,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: automation_id must be an Integer") if !params[:automation_id].nil? and !params[:automation_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: automation_id") if params[:automation_id].nil?
 
+      list_options = options.dup
       List.new(AutomationRun, params) do |page_params, &check_page|
-        Api.send_request("/automation_runs", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/automation_runs", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -191,7 +198,7 @@ module Files
     #
     # Returns a Files::AutomationRun.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -213,7 +220,7 @@ module Files
     #
     # Returns a Files::AutomationExecutionNode.
     def self.find_node(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: node_id must be an String") if !params[:node_id].nil? and !params[:node_id].is_a?(String)
@@ -231,7 +238,7 @@ module Files
     #
     # Returns a Files::AutomationRun.
     def self.cancel(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -250,7 +257,7 @@ module Files
     #
     # Returns a Files::AutomationRun.
     def self.rerun(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: node_id must be an String") if !params[:node_id].nil? and !params[:node_id].is_a?(String)

@@ -190,6 +190,9 @@ module Files
   @log_level = nil
   @logger = nil
   @proxy = nil
+  @region_handler = nil
+  @region_http_pairs = [].freeze
+  @region_policy = :automatic
   @session_id = nil
   @workspace_id = nil
   @default_headers = nil
@@ -203,7 +206,7 @@ module Files
 
   class << self
     attr_accessor :api_key, :base_url, :default_headers, :initial_network_retry_delay, :language, :max_network_retry_delay, :proxy, :session_id, :workspace_id
-    attr_reader :open_timeout, :read_timeout
+    attr_reader :open_timeout, :read_timeout, :region_handler, :region_http_pairs, :region_policy
   end
 
   # map to the same values as the standard library's logger
@@ -279,6 +282,56 @@ module Files
     return seconds if seconds.nil? || (seconds.is_a?(Numeric) && seconds.real? && seconds >= 0 && seconds <= MAX_TIMEOUT)
 
     raise ArgumentError, "#{name} should be nil or a number of seconds from 0 to #{MAX_TIMEOUT}"
+  end
+
+  # What a request does when the API answers that the site must be reached through another origin, such as its
+  # region or its custom domain (Files::LockoutRegionMismatchError, with that origin in data[:host]).
+  #
+  # :automatic (the default) sends the same request once more to that origin, within the same retry count, and keeps
+  # using it for the records and pages the request returns. Other requests still start at Files.base_url. It does so
+  # only for an error that came over verified HTTPS from the configured base URL through the SDK's own connection, and
+  # only to an https:// origin on a DNS name at port 443 that is not a local or Files.com development name, unless
+  # region_handler approves another. The only exception is plain HTTP from the source to the destination of a
+  # region_http_pairs pair. :disabled raises the error instead, so you can update your own settings and retry.
+  def self.region_policy=(policy)
+    raise ArgumentError, "region_policy should be :automatic or :disabled" unless %i[automatic disabled].include?(policy)
+
+    @region_policy = policy
+  end
+
+  # Pairs of http:// origins, each letting a lockout region mismatch move a request from the first to the second over
+  # plain HTTP, for your own local development servers only. Plain HTTP is intentionally insecure: it sends the API key
+  # or session unencrypted to whatever answers, and a pair is your explicit choice, never a verified or trusted origin.
+  # Each pair is [source, destination], such as [["http://localhost:3000", "http://site.localhost:3000"]].
+  #
+  # With region_policy :automatic, a request to the source (Files.base_url, or the request's own base_url) that gets
+  # the error with data[:host] naming the destination, as that full http:// origin or as its bare host (with its port
+  # when it is not 80), is sent once more to the destination, within the same retry count, and the records and pages
+  # it returns keep using it. region_handler, when set, is still asked first and can decline. Nothing else continues
+  # over plain HTTP, a request to an https:// origin never does, and :disabled still raises the error.
+  #
+  # Write each origin as http://, a lowercase host name or IP address, a port only when it is not 80 and no path.
+  # The default, [], allows none. The SDK keeps a frozen copy, so changing the Arrays or Strings you passed has no
+  # effect. Each request fixes its pairs before it starts: its own region_http_pairs option if it has one, otherwise
+  # those of a Files::ApiClient created with its own region_http_pairs, otherwise this setting. The records and pages
+  # it returns keep those pairs in their options, so their own requests use them even after this setting changes;
+  # other requests use the setting as it is when they start.
+  def self.region_http_pairs=(pairs)
+    @region_http_pairs = Util.checked_region_http_pairs(pairs)
+  end
+
+  # An optional object with a call method that decides each move to another origin. It receives a frozen Hash with
+  # :reason (:lockout_region_mismatch), :original_origin, :target_origin and :approval_required (true for an IP
+  # address, a localhost, .local, files.test or filesrails.test name, a name without a dot or a port other than 443).
+  # It returns true to continue at the target origin; another https:// origin in the same form (lowercase host, a port
+  # only when it is not 443, no path) to continue there instead, which the SDK checks like the target; or false or nil
+  # to raise the error. An error it raises stops the request. It cannot make a request continue from an error the SDK
+  # does not trust. For a move between region_http_pairs origins, :approval_required is false, since the pair already
+  # allows it, and another origin it returns must be a destination paired with the same source, written as in the pairs.
+  def self.region_handler=(handler)
+    raise ArgumentError, "region_handler should be nil or respond to call" unless handler.nil? || handler.respond_to?(:call)
+
+    @region_handler = handler
   end
 
   def self.session=(session)

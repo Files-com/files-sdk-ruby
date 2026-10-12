@@ -118,8 +118,10 @@ module Files
     def request_page(cursor)
       response, options = @request.call(cursor ? @params.merge(cursor: cursor) : @params) { |reply| reply.require_list(@resource_wrapper) }
       records = response.data.map { |attributes| @resource_wrapper.new(attributes, options) }
-      next_cursor = response.http_headers["x-files-cursor"]
-      Page.new(records, cursor, (next_cursor unless next_cursor.to_s.strip.empty?))
+      # The API documents X-Files-Cursor-Next for the next page's cursor; X-Files-Cursor is the older header. A blank
+      # cursor means there is no next page.
+      next_cursor = %w[x-files-cursor-next x-files-cursor].map { |name| response.http_headers[name] }.find { |value| !value.to_s.strip.empty? }
+      Page.new(records, cursor, next_cursor)
     end
 
     def with_page(page)

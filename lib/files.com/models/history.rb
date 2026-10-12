@@ -95,7 +95,7 @@ module Files
     #
     # Returns a Files::List of Files::Action objects.
     def self.list_for_file(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
@@ -106,8 +106,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
+      list_options = options.dup
       List.new(Action, params) do |page_params, &check_page|
-        Api.send_request("/history/files/#{page_params[:path]}", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/history/files/#{page_params[:path]}", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -125,7 +128,7 @@ module Files
     #
     # Returns a Files::List of Files::Action objects.
     def self.list_for_folder(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
@@ -136,8 +139,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
+      list_options = options.dup
       List.new(Action, params) do |page_params, &check_page|
-        Api.send_request("/history/folders/#{page_params[:path]}", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/history/folders/#{page_params[:path]}", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -155,7 +161,7 @@ module Files
     #
     # Returns a Files::List of Files::Action objects.
     def self.list_for_user(user_id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:user_id] = user_id
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
@@ -166,8 +172,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: user_id") if params[:user_id].nil?
 
+      list_options = options.dup
       List.new(Action, params) do |page_params, &check_page|
-        Api.send_request("/history/users/#{page_params[:user_id]}", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/history/users/#{page_params[:user_id]}", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -191,8 +200,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
 
+      list_options = options.dup
       List.new(Action, params) do |page_params, &check_page|
-        Api.send_request("/history/login", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/history/login", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -220,8 +232,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_prefix must be an Hash") if !params[:filter_prefix].nil? and !params[:filter_prefix].is_a?(Hash)
 
+      list_options = options.dup
       List.new(Action, params) do |page_params, &check_page|
-        Api.send_request("/history", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/history", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 

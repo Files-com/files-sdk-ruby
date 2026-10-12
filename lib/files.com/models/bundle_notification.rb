@@ -87,26 +87,31 @@ module Files
     #   notify_on_registration - boolean - Triggers bundle notification when a registration action occurs for it.
     #   notify_on_upload - boolean - Triggers bundle notification when a upload action occurs for it.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: notify_on_registration must be a single value, not #{params[:notify_on_registration].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_registration].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_upload must be a single value, not #{params[:notify_on_upload].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_upload].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/bundle_notifications/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("BundleNotification") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/bundle_notifications/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/bundle_notifications/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -121,6 +126,7 @@ module Files
       else
         new_obj = BundleNotification.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -146,8 +152,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if !params[:bundle_id].nil? and !params[:bundle_id].is_a?(Integer)
 
+      list_options = options.dup
       List.new(BundleNotification, params) do |page_params, &check_page|
-        Api.send_request("/bundle_notifications", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/bundle_notifications", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -163,7 +172,7 @@ module Files
     #
     # Returns a Files::BundleNotification.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -191,6 +200,8 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: bundle_id must be an Integer") if !params[:bundle_id].nil? and !params[:bundle_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: notify_user_id must be an Integer") if !params[:notify_user_id].nil? and !params[:notify_user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: notify_on_registration must be a single value, not #{params[:notify_on_registration].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_registration].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_upload must be a single value, not #{params[:notify_on_upload].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_upload].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: bundle_id") if params[:bundle_id].nil?
 
       response, options = Api.send_request("/bundle_notifications", :post, params, options) { |reply| reply.require_object("BundleNotification") }
@@ -206,9 +217,11 @@ module Files
     #
     # Returns a Files::BundleNotification.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: notify_on_registration must be a single value, not #{params[:notify_on_registration].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_registration].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_upload must be a single value, not #{params[:notify_on_upload].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_upload].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/bundle_notifications/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("BundleNotification") }
@@ -220,7 +233,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

@@ -189,7 +189,7 @@ module Files
     #   private_key_password - string - The GPG private key password
     #   name - string - GPG key name.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
@@ -202,18 +202,21 @@ module Files
 
       response, options = Api.send_request("/gpg_keys/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("GpgKey") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/gpg_keys/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/gpg_keys/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -228,6 +231,7 @@ module Files
       else
         new_obj = GpgKey.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -259,8 +263,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if !params[:filter_lt].nil? and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if !params[:filter_lteq].nil? and !params[:filter_lteq].is_a?(Hash)
 
+      list_options = options.dup
       List.new(GpgKey, params) do |page_params, &check_page|
-        Api.send_request("/gpg_keys", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/gpg_keys", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -276,7 +283,7 @@ module Files
     #
     # Returns a Files::GpgKey.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -315,6 +322,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: generate_expires_at must be an String") if !params[:generate_expires_at].nil? and !params[:generate_expires_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: generate_keypair must be a single value, not #{params[:generate_keypair].class}") if [ Array, Hash ].any? { |klass| params[:generate_keypair].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: generate_full_name must be an String") if !params[:generate_full_name].nil? and !params[:generate_full_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: generate_email must be an String") if !params[:generate_email].nil? and !params[:generate_email].is_a?(String)
       raise MissingParameterError.new("Parameter missing: name") if params[:name].nil?
@@ -335,7 +343,7 @@ module Files
     #
     # Returns a Files::GpgKey.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if !params[:partner_id].nil? and !params[:partner_id].is_a?(Integer)
@@ -354,7 +362,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

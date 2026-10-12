@@ -1106,15 +1106,20 @@ module Files
     #   with_priority_color - boolean - Include file priority color information?
     #   with_direct_connection_info - boolean - Include optional direct connection information for a direct Agent transfer attempt?
     def download(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if !params[:action].nil? and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if !params[:preview_size].nil? and !params[:preview_size].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: with_previews must be a single value, not #{params[:with_previews].class}") if [ Array, Hash ].any? { |klass| params[:with_previews].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: with_priority_color must be a single value, not #{params[:with_priority_color].class}") if [ Array, Hash ].any? { |klass| params[:with_priority_color].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: with_direct_connection_info must be a single value, not #{params[:with_direct_connection_info].class}") if [ Array, Hash ].any? { |klass| params[:with_direct_connection_info].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
-      Api.send_request("/files/#{@attributes[:path]}", :get, params, @options)
+      response, options = Api.send_request("/files/#{@attributes[:path]}", :get, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Parameters:
@@ -1122,16 +1127,18 @@ module Files
     #   provided_mtime - string - Modified time of file.
     #   priority_color - string - Priority/Bookmark color of file.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: custom_metadata must be an Hash") if !params[:custom_metadata].nil? and !params[:custom_metadata].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if !params[:provided_mtime].nil? and !params[:provided_mtime].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: priority_color must be an String") if !params[:priority_color].nil? and !params[:priority_color].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/files/#{@attributes[:path]}", :patch, params, @options) { |reply| reply.require_object("File") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
@@ -1140,13 +1147,16 @@ module Files
     #
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
-      Api.send_request("/files/#{@attributes[:path]}", :delete, params, @options)
+      response, options = Api.send_request("/files/#{@attributes[:path]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -1157,13 +1167,15 @@ module Files
 
     # List the contents of a ZIP file
     def zip_list_contents(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
-      Api.send_request("/file_actions/zip_list/#{@attributes[:path]}", :get, params, @options)
+      response, options = Api.send_request("/file_actions/zip_list/#{@attributes[:path]}", :get, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
@@ -1171,13 +1183,16 @@ module Files
     # Parameters:
     #   recursive - boolean - If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
     def begin_delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
-      Api.send_request("/file_actions/delete/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/delete/#{@attributes[:path]}", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Copy File/Folder
@@ -1188,15 +1203,20 @@ module Files
     #   structure - boolean - Copy structure only?
     #   overwrite - boolean - Overwrite existing file(s) in the destination?
     def copy(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: copy_behaviors must be a single value, not #{params[:copy_behaviors].class}") if [ Array, Hash ].any? { |klass| params[:copy_behaviors].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: structure must be a single value, not #{params[:structure].class}") if [ Array, Hash ].any? { |klass| params[:structure].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      Api.send_request("/file_actions/copy/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/copy/#{@attributes[:path]}", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Move File/Folder
@@ -1205,15 +1225,18 @@ module Files
     #   destination (required) - string - Move destination path.
     #   overwrite - boolean - Overwrite existing file(s) in the destination?
     def move(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      Api.send_request("/file_actions/move/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/move/#{@attributes[:path]}", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Transform a file and save the output to a destination path
@@ -1227,7 +1250,7 @@ module Files
     #   height - int64 - Maximum output height for image_convert.
     #   overwrite - boolean - Overwrite existing file in the destination?
     def transform(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
@@ -1237,12 +1260,15 @@ module Files
       raise InvalidParameterError.new("Bad parameter: script must be an String") if !params[:script].nil? and !params[:script].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: width must be an Integer") if !params[:width].nil? and !params[:width].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: height must be an Integer") if !params[:height].nil? and !params[:height].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
       raise MissingParameterError.new("Parameter missing: transform_type") if params[:transform_type].nil?
       raise MissingParameterError.new("Parameter missing: target_format") if params[:target_format].nil?
 
-      Api.send_request("/file_actions/transform/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/transform/#{@attributes[:path]}", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Decrypt a GPG-encrypted file and save it to a destination path
@@ -1255,17 +1281,22 @@ module Files
     #   ignore_mdc_error - boolean - Ignore errors from the MDC (modification detection code) check.
     #   overwrite - boolean - Overwrite existing file in the destination?
     def gpg_decrypt(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: use_all_private_keys must be a single value, not #{params[:use_all_private_keys].class}") if [ Array, Hash ].any? { |klass| params[:use_all_private_keys].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ignore_mdc_error must be a single value, not #{params[:ignore_mdc_error].class}") if [ Array, Hash ].any? { |klass| params[:ignore_mdc_error].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      Api.send_request("/file_actions/gpg_decrypt/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/gpg_decrypt/#{@attributes[:path]}", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Encrypt a file with GPG and save it to a destination path
@@ -1278,7 +1309,7 @@ module Files
     #   armor - boolean - Output ASCII-armored encrypted data.
     #   overwrite - boolean - Overwrite existing file in the destination?
     def gpg_encrypt(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
@@ -1286,10 +1317,14 @@ module Files
       raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: signing_key_id must be an Integer") if !params[:signing_key_id].nil? and !params[:signing_key_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: armor must be a single value, not #{params[:armor].class}") if [ Array, Hash ].any? { |klass| params[:armor].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      Api.send_request("/file_actions/gpg_encrypt/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/gpg_encrypt/#{@attributes[:path]}", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Extract a ZIP file to a destination folder
@@ -1299,16 +1334,19 @@ module Files
     #   filename - string - Optional single entry filename to extract.
     #   overwrite - boolean - Overwrite existing files in the destination?
     def unzip(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filename must be an String") if !params[:filename].nil? and !params[:filename].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      Api.send_request("/file_actions/unzip", :post, params, @options)
+      response, options = Api.send_request("/file_actions/unzip", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Begin File Upload
@@ -1324,23 +1362,30 @@ module Files
     #   buffered_upload - boolean - If true, and the path refers to a destination not stored on Files.com (such as a remote server mount), the upload will be uploaded first to Files.com before being sent to the remote server mount. This can allow clients to upload using parallel parts to a remote server destination that does not offer parallel parts support natively.
     #   with_direct_connection_info - boolean - Include optional direct connection information for a direct Agent transfer attempt?
     def begin_upload(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: mkdir_parents must be a single value, not #{params[:mkdir_parents].class}") if [ Array, Hash ].any? { |klass| params[:mkdir_parents].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: part must be an Integer") if !params[:part].nil? and !params[:part].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if !params[:parts].nil? and !params[:parts].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ref must be an String") if !params[:ref].nil? and !params[:ref].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if !params[:restart].nil? and !params[:restart].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: size must be an Integer") if !params[:size].nil? and !params[:size].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: with_rename must be a single value, not #{params[:with_rename].class}") if [ Array, Hash ].any? { |klass| params[:with_rename].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: buffered_upload must be a single value, not #{params[:buffered_upload].class}") if [ Array, Hash ].any? { |klass| params[:buffered_upload].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: with_direct_connection_info must be a single value, not #{params[:with_direct_connection_info].class}") if [ Array, Hash ].any? { |klass| params[:with_direct_connection_info].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
-      Api.send_request("/file_actions/begin_upload/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/begin_upload/#{@attributes[:path]}", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     def save
       new_obj = File.create(path, @attributes, @options)
       @attributes = new_obj.attributes
+      @options = @options.merge(new_obj.options)
       true
     end
 
@@ -1358,11 +1403,14 @@ module Files
     #
     # Returns a Files::File.
     def self.download(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if !params[:action].nil? and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if !params[:preview_size].nil? and !params[:preview_size].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: with_previews must be a single value, not #{params[:with_previews].class}") if [ Array, Hash ].any? { |klass| params[:with_previews].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: with_priority_color must be a single value, not #{params[:with_priority_color].class}") if [ Array, Hash ].any? { |klass| params[:with_priority_color].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: with_direct_connection_info must be a single value, not #{params[:with_direct_connection_info].class}") if [ Array, Hash ].any? { |klass| params[:with_direct_connection_info].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/files/#{params[:path]}", :get, params, options) { |reply| reply.require_object("File") }
@@ -1394,19 +1442,24 @@ module Files
     #
     # Returns a Files::File.
     def self.create(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: action must be an String") if !params[:action].nil? and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: custom_metadata must be an Hash") if !params[:custom_metadata].nil? and !params[:custom_metadata].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: length must be an Integer") if !params[:length].nil? and !params[:length].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: mkdir_parents must be a single value, not #{params[:mkdir_parents].class}") if [ Array, Hash ].any? { |klass| params[:mkdir_parents].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: part must be an Integer") if !params[:part].nil? and !params[:part].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if !params[:parts].nil? and !params[:parts].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: provided_mtime must be an String") if !params[:provided_mtime].nil? and !params[:provided_mtime].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ref must be an String") if !params[:ref].nil? and !params[:ref].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if !params[:restart].nil? and !params[:restart].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: size must be an Integer") if !params[:size].nil? and !params[:size].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: copy_behaviors must be a single value, not #{params[:copy_behaviors].class}") if [ Array, Hash ].any? { |klass| params[:copy_behaviors].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: structure must be an String") if !params[:structure].nil? and !params[:structure].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: with_rename must be a single value, not #{params[:with_rename].class}") if [ Array, Hash ].any? { |klass| params[:with_rename].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: buffered_upload must be a single value, not #{params[:buffered_upload].class}") if [ Array, Hash ].any? { |klass| params[:buffered_upload].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: with_direct_connection_info must be a single value, not #{params[:with_direct_connection_info].class}") if [ Array, Hash ].any? { |klass| params[:with_direct_connection_info].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/files/#{params[:path]}", :post, params, options) { |reply| reply.require_object("File") }
@@ -1423,7 +1476,7 @@ module Files
     #
     # Returns a Files::File.
     def self.update(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: custom_metadata must be an Hash") if !params[:custom_metadata].nil? and !params[:custom_metadata].is_a?(Hash)
@@ -1443,9 +1496,10 @@ module Files
     #
     # Returns nil.
     def self.delete(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       Api.send_request("/files/#{params[:path]}", :delete, params, options)
@@ -1469,10 +1523,12 @@ module Files
     #
     # Returns a Files::File.
     def self.find(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: preview_size must be an String") if !params[:preview_size].nil? and !params[:preview_size].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: with_previews must be a single value, not #{params[:with_previews].class}") if [ Array, Hash ].any? { |klass| params[:with_previews].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: with_priority_color must be a single value, not #{params[:with_priority_color].class}") if [ Array, Hash ].any? { |klass| params[:with_priority_color].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/file_actions/metadata/#{params[:path]}", :get, params, options) { |reply| reply.require_object("File") }
@@ -1490,7 +1546,7 @@ module Files
     #
     # Returns an Array of Files::ZipListEntry objects.
     def self.zip_list_contents(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
@@ -1511,9 +1567,10 @@ module Files
     #
     # Returns a Files::FileAction.
     def self.begin_delete(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/file_actions/delete/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
@@ -1533,10 +1590,13 @@ module Files
     #
     # Returns a Files::FileAction.
     def self.copy(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: copy_behaviors must be a single value, not #{params[:copy_behaviors].class}") if [ Array, Hash ].any? { |klass| params[:copy_behaviors].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: structure must be a single value, not #{params[:structure].class}") if [ Array, Hash ].any? { |klass| params[:structure].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
@@ -1555,10 +1615,11 @@ module Files
     #
     # Returns a Files::FileAction.
     def self.move(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
@@ -1582,7 +1643,7 @@ module Files
     #
     # Returns a Files::FileAction.
     def self.transform(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
@@ -1591,6 +1652,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: script must be an String") if !params[:script].nil? and !params[:script].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: width must be an Integer") if !params[:width].nil? and !params[:width].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: height must be an Integer") if !params[:height].nil? and !params[:height].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
       raise MissingParameterError.new("Parameter missing: transform_type") if params[:transform_type].nil?
@@ -1615,12 +1677,15 @@ module Files
     #
     # Returns a Files::FileAction.
     def self.gpg_decrypt(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: use_all_private_keys must be a single value, not #{params[:use_all_private_keys].class}") if [ Array, Hash ].any? { |klass| params[:use_all_private_keys].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ignore_mdc_error must be a single value, not #{params[:ignore_mdc_error].class}") if [ Array, Hash ].any? { |klass| params[:ignore_mdc_error].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
@@ -1643,13 +1708,15 @@ module Files
     #
     # Returns a Files::FileAction.
     def self.gpg_encrypt(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: signing_key_id must be an Integer") if !params[:signing_key_id].nil? and !params[:signing_key_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: armor must be a single value, not #{params[:armor].class}") if [ Array, Hash ].any? { |klass| params[:armor].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
@@ -1669,11 +1736,12 @@ module Files
     #
     # Returns a Files::FileAction.
     def self.unzip(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: filename must be an String") if !params[:filename].nil? and !params[:filename].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
@@ -1693,6 +1761,7 @@ module Files
     def self.zip(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if !params[:paths].nil? and !params[:paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: paths") if params[:paths].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
@@ -1718,14 +1787,18 @@ module Files
     #
     # Returns an Array of Files::FileUploadPart objects.
     def self.begin_upload(path, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: mkdir_parents must be a single value, not #{params[:mkdir_parents].class}") if [ Array, Hash ].any? { |klass| params[:mkdir_parents].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: part must be an Integer") if !params[:part].nil? and !params[:part].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: parts must be an Integer") if !params[:parts].nil? and !params[:parts].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ref must be an String") if !params[:ref].nil? and !params[:ref].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: restart must be an Integer") if !params[:restart].nil? and !params[:restart].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: size must be an Integer") if !params[:size].nil? and !params[:size].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: with_rename must be a single value, not #{params[:with_rename].class}") if [ Array, Hash ].any? { |klass| params[:with_rename].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: buffered_upload must be a single value, not #{params[:buffered_upload].class}") if [ Array, Hash ].any? { |klass| params[:buffered_upload].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: with_direct_connection_info must be a single value, not #{params[:with_direct_connection_info].class}") if [ Array, Hash ].any? { |klass| params[:with_direct_connection_info].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       response, options = Api.send_request("/file_actions/begin_upload/#{params[:path]}", :post, params, options) { |reply| reply.require_list("FileUploadPart") }

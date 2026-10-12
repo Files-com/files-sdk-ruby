@@ -152,6 +152,7 @@ module Files
       else
         new_obj = ActionNotificationExport.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -165,7 +166,7 @@ module Files
     #
     # Returns a Files::ActionNotificationExport.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -204,6 +205,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: query_request_method must be an String") if !params[:query_request_method].nil? and !params[:query_request_method].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_request_url must be an String") if !params[:query_request_url].nil? and !params[:query_request_url].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_status must be an String") if !params[:query_status].nil? and !params[:query_status].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: query_success must be a single value, not #{params[:query_success].class}") if [ Array, Hash ].any? { |klass| params[:query_success].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: query_path must be an String") if !params[:query_path].nil? and !params[:query_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: query_folder must be an String") if !params[:query_folder].nil? and !params[:query_folder].is_a?(String)
 

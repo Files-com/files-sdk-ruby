@@ -218,16 +218,22 @@ module Files
     #   partnership_role - string - This site's role for this Partner in Connected Sites relationships. `host` is a Partner this site configured. `guest` is a Partner created by approving another site's connection request; it has no root folder and cannot hold users, permissions, or Partner Channels, or host a connection. `host_and_guest` is a configured Partner that is also the guest side of a connection. Promote a `guest` Partner by setting this to `host_and_guest` together with a `root_folder`.
     #   root_folder - string - The root folder path for this Partner.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: allow_bypassing_2fa_policies must be a single value, not #{params[:allow_bypassing_2fa_policies].class}") if [ Array, Hash ].any? { |klass| params[:allow_bypassing_2fa_policies].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: allow_credential_changes must be a single value, not #{params[:allow_credential_changes].class}") if [ Array, Hash ].any? { |klass| params[:allow_credential_changes].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: allow_providing_gpg_keys must be a single value, not #{params[:allow_providing_gpg_keys].class}") if [ Array, Hash ].any? { |klass| params[:allow_providing_gpg_keys].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: allow_user_creation must be a single value, not #{params[:allow_user_creation].class}") if [ Array, Hash ].any? { |klass| params[:allow_user_creation].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: cc_emails_to_responsible_party must be a single value, not #{params[:cc_emails_to_responsible_party].class}") if [ Array, Hash ].any? { |klass| params[:cc_emails_to_responsible_party].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if !params[:partner_channel_template_id].nil? and !params[:partner_channel_template_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if !params[:responsible_group_id].nil? and !params[:responsible_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if !params[:responsible_user_id].nil? and !params[:responsible_user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: show_partner_channel_home_page must be a single value, not #{params[:show_partner_channel_home_page].class}") if [ Array, Hash ].any? { |klass| params[:show_partner_channel_home_page].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partnership_role must be an String") if !params[:partnership_role].nil? and !params[:partnership_role].is_a?(String)
@@ -236,18 +242,21 @@ module Files
 
       response, options = Api.send_request("/partners/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Partner") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/partners/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/partners/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -262,6 +271,7 @@ module Files
       else
         new_obj = Partner.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -283,8 +293,11 @@ module Files
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
 
+      list_options = options.dup
       List.new(Partner, params) do |page_params, &check_page|
-        Api.send_request("/partners", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/partners", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -300,7 +313,7 @@ module Files
     #
     # Returns a Files::Partner.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -338,10 +351,16 @@ module Files
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: allow_bypassing_2fa_policies must be a single value, not #{params[:allow_bypassing_2fa_policies].class}") if [ Array, Hash ].any? { |klass| params[:allow_bypassing_2fa_policies].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: allow_credential_changes must be a single value, not #{params[:allow_credential_changes].class}") if [ Array, Hash ].any? { |klass| params[:allow_credential_changes].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: allow_providing_gpg_keys must be a single value, not #{params[:allow_providing_gpg_keys].class}") if [ Array, Hash ].any? { |klass| params[:allow_providing_gpg_keys].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: allow_user_creation must be a single value, not #{params[:allow_user_creation].class}") if [ Array, Hash ].any? { |klass| params[:allow_user_creation].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: cc_emails_to_responsible_party must be a single value, not #{params[:cc_emails_to_responsible_party].class}") if [ Array, Hash ].any? { |klass| params[:cc_emails_to_responsible_party].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if !params[:partner_channel_template_id].nil? and !params[:partner_channel_template_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if !params[:responsible_group_id].nil? and !params[:responsible_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if !params[:responsible_user_id].nil? and !params[:responsible_user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: show_partner_channel_home_page must be a single value, not #{params[:show_partner_channel_home_page].class}") if [ Array, Hash ].any? { |klass| params[:show_partner_channel_home_page].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: root_folder must be an String") if !params[:root_folder].nil? and !params[:root_folder].is_a?(String)
@@ -376,15 +395,21 @@ module Files
     #
     # Returns a Files::Partner.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: allow_bypassing_2fa_policies must be a single value, not #{params[:allow_bypassing_2fa_policies].class}") if [ Array, Hash ].any? { |klass| params[:allow_bypassing_2fa_policies].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: allow_credential_changes must be a single value, not #{params[:allow_credential_changes].class}") if [ Array, Hash ].any? { |klass| params[:allow_credential_changes].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: allow_providing_gpg_keys must be a single value, not #{params[:allow_providing_gpg_keys].class}") if [ Array, Hash ].any? { |klass| params[:allow_providing_gpg_keys].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: allow_user_creation must be a single value, not #{params[:allow_user_creation].class}") if [ Array, Hash ].any? { |klass| params[:allow_user_creation].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: cc_emails_to_responsible_party must be a single value, not #{params[:cc_emails_to_responsible_party].class}") if [ Array, Hash ].any? { |klass| params[:cc_emails_to_responsible_party].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partner_channel_template_id must be an Integer") if !params[:partner_channel_template_id].nil? and !params[:partner_channel_template_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if !params[:responsible_group_id].nil? and !params[:responsible_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if !params[:responsible_user_id].nil? and !params[:responsible_user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: show_partner_channel_home_page must be a single value, not #{params[:show_partner_channel_home_page].class}") if [ Array, Hash ].any? { |klass| params[:show_partner_channel_home_page].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partnership_role must be an String") if !params[:partnership_role].nil? and !params[:partnership_role].is_a?(String)
@@ -400,7 +425,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?

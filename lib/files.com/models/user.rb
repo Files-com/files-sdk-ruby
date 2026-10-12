@@ -920,39 +920,45 @@ module Files
     #
     # Returns the [response, options] pair from Files::Api.send_request.
     def unlock(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/users/#{@attributes[:id]}/unlock", :post, params, @options)
+      response, options = Api.send_request("/users/#{@attributes[:id]}/unlock", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Resend user welcome email
     #
     # Returns the [response, options] pair from Files::Api.send_request.
     def resend_welcome_email(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/users/#{@attributes[:id]}/resend_welcome_email", :post, params, @options)
+      response, options = Api.send_request("/users/#{@attributes[:id]}/resend_welcome_email", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
     #
     # Returns the [response, options] pair from Files::Api.send_request.
     def user_2fa_reset(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/users/#{@attributes[:id]}/2fa/reset", :post, params, @options)
+      response, options = Api.send_request("/users/#{@attributes[:id]}/2fa/reset", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Parameters:
@@ -1028,10 +1034,11 @@ module Files
     #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
     #   convert_to_partner_user - boolean - Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
     def update(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: avatar_delete must be a single value, not #{params[:avatar_delete].class}") if [ Array, Hash ].any? { |klass| params[:avatar_delete].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: change_password must be an String") if !params[:change_password].nil? and !params[:change_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if !params[:change_password_confirmation].nil? and !params[:change_password_confirmation].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: email must be an String") if !params[:email].nil? and !params[:email].is_a?(String)
@@ -1041,13 +1048,21 @@ module Files
       raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if !params[:imported_password_hash].nil? and !params[:imported_password_hash].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if !params[:password].nil? and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if !params[:password_confirmation].nil? and !params[:password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: announcements_read must be a single value, not #{params[:announcements_read].class}") if [ Array, Hash ].any? { |klass| params[:announcements_read].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: attachments_permission must be a single value, not #{params[:attachments_permission].class}") if [ Array, Hash ].any? { |klass| params[:attachments_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if !params[:authenticate_until].nil? and !params[:authenticate_until].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if !params[:authentication_method].nil? and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: billing_permission must be a single value, not #{params[:billing_permission].class}") if [ Array, Hash ].any? { |klass| params[:billing_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: bypass_user_lifecycle_rules must be a single value, not #{params[:bypass_user_lifecycle_rules].class}") if [ Array, Hash ].any? { |klass| params[:bypass_user_lifecycle_rules].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: bypass_site_allowed_ips must be a single value, not #{params[:bypass_site_allowed_ips].class}") if [ Array, Hash ].any? { |klass| params[:bypass_site_allowed_ips].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: dav_permission must be a single value, not #{params[:dav_permission].class}") if [ Array, Hash ].any? { |klass| params[:dav_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: default_workspace_id must be an Integer") if !params[:default_workspace_id].nil? and !params[:default_workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if !params[:filesystem_layout].nil? and !params[:filesystem_layout].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ftp_permission must be a single value, not #{params[:ftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:ftp_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: header_text must be an String") if !params[:header_text].nil? and !params[:header_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if !params[:language].nil? and !params[:language].is_a?(String)
@@ -1055,25 +1070,49 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: company must be an String") if !params[:company].nil? and !params[:company].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: office_integration_enabled must be a single value, not #{params[:office_integration_enabled].class}") if [ Array, Hash ].any? { |klass| params[:office_integration_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: partner_admin must be a single value, not #{params[:partner_admin].class}") if [ Array, Hash ].any? { |klass| params[:partner_admin].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if !params[:partner_id].nil? and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if !params[:password_validity_days].nil? and !params[:password_validity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: primary_group_id must be an Integer") if !params[:primary_group_id].nil? and !params[:primary_group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: readonly_site_admin must be a single value, not #{params[:readonly_site_admin].class}") if [ Array, Hash ].any? { |klass| params[:readonly_site_admin].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: receive_admin_alerts must be a single value, not #{params[:receive_admin_alerts].class}") if [ Array, Hash ].any? { |klass| params[:receive_admin_alerts].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_site_warnings must be a single value, not #{params[:notify_on_all_site_warnings].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_site_warnings].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_sso_failures must be a single value, not #{params[:notify_on_all_sso_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_sso_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_user_security_events must be a single value, not #{params[:notify_on_all_user_security_events].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_user_security_events].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_pending_work_failures must be a single value, not #{params[:notify_on_all_pending_work_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_pending_work_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_siem_http_destination_failures must be a single value, not #{params[:notify_on_all_siem_http_destination_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_siem_http_destination_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_sync_failures must be a single value, not #{params[:notify_on_all_sync_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_sync_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_automation_failures must be a single value, not #{params[:notify_on_all_automation_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_automation_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_expectation_failures must be a single value, not #{params[:notify_on_all_expectation_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_expectation_failures].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: require_login_by must be an String") if !params[:require_login_by].nil? and !params[:require_login_by].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: require_password_change must be a single value, not #{params[:require_password_change].class}") if [ Array, Hash ].any? { |klass| params[:require_password_change].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if !params[:responsible_group_id].nil? and !params[:responsible_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if !params[:responsible_user_id].nil? and !params[:responsible_user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: restapi_permission must be a single value, not #{params[:restapi_permission].class}") if [ Array, Hash ].any? { |klass| params[:restapi_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint_permission must be a single value, not #{params[:s3_compatible_endpoint_permission].class}") if [ Array, Hash ].any? { |klass| params[:s3_compatible_endpoint_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: self_managed must be a single value, not #{params[:self_managed].class}") if [ Array, Hash ].any? { |klass| params[:self_managed].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sftp_permission must be a single value, not #{params[:sftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:sftp_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: site_admin must be a single value, not #{params[:site_admin].class}") if [ Array, Hash ].any? { |klass| params[:site_admin].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: skip_welcome_screen must be a single value, not #{params[:skip_welcome_screen].class}") if [ Array, Hash ].any? { |klass| params[:skip_welcome_screen].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if !params[:ssl_required].nil? and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if !params[:sso_strategy_id].nil? and !params[:sso_strategy_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: subscribe_to_newsletter must be a single value, not #{params[:subscribe_to_newsletter].class}") if [ Array, Hash ].any? { |klass| params[:subscribe_to_newsletter].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if !params[:require_2fa].nil? and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if !params[:time_zone].nil? and !params[:time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if !params[:user_root].nil? and !params[:user_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_home must be an String") if !params[:user_home].nil? and !params[:user_home].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_admin must be a single value, not #{params[:workspace_admin].class}") if [ Array, Hash ].any? { |klass| params[:workspace_admin].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: username must be an String") if !params[:username].nil? and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: clear_2fa must be a single value, not #{params[:clear_2fa].class}") if [ Array, Hash ].any? { |klass| params[:clear_2fa].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: convert_to_partner_user must be a single value, not #{params[:convert_to_partner_user].class}") if [ Array, Hash ].any? { |klass| params[:convert_to_partner_user].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/users/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("User") }
       @attributes = response.data
+      @options = @options.merge(options)
       [ response, options ]
     end
 
@@ -1082,14 +1121,16 @@ module Files
     #
     # Returns the [response, options] pair from Files::Api.send_request.
     def delete(params = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: new_owner_id must be an Integer") if !params[:new_owner_id].nil? and !params[:new_owner_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/users/#{@attributes[:id]}", :delete, params, @options)
+      response, options = Api.send_request("/users/#{@attributes[:id]}", :delete, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
     end
 
     # Alias for #delete. Returns nil.
@@ -1104,6 +1145,7 @@ module Files
       else
         new_obj = User.create(@attributes, @options)
         @attributes = new_obj.attributes
+        @options = @options.merge(new_obj.options)
       end
 
       true
@@ -1138,10 +1180,14 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lt must be an Hash") if !params[:filter_lt].nil? and !params[:filter_lt].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if !params[:filter_lteq].nil? and !params[:filter_lteq].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: ids must be an String") if !params[:ids].nil? and !params[:ids].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: include_parent_site_users must be a single value, not #{params[:include_parent_site_users].class}") if [ Array, Hash ].any? { |klass| params[:include_parent_site_users].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: search must be an String") if !params[:search].nil? and !params[:search].is_a?(String)
 
+      list_options = options.dup
       List.new(User, params) do |page_params, &check_page|
-        Api.send_request("/users", :get, page_params, options, &check_page)
+        response, page_options = Api.send_request("/users", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
       end
     end
 
@@ -1157,7 +1203,7 @@ module Files
     #
     # Returns a Files::User.
     def self.find(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -1246,6 +1292,7 @@ module Files
     #
     # Returns a Files::User.
     def self.create(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: avatar_delete must be a single value, not #{params[:avatar_delete].class}") if [ Array, Hash ].any? { |klass| params[:avatar_delete].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: change_password must be an String") if !params[:change_password].nil? and !params[:change_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if !params[:change_password_confirmation].nil? and !params[:change_password_confirmation].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: email must be an String") if !params[:email].nil? and !params[:email].is_a?(String)
@@ -1255,13 +1302,21 @@ module Files
       raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if !params[:imported_password_hash].nil? and !params[:imported_password_hash].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if !params[:password].nil? and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if !params[:password_confirmation].nil? and !params[:password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: announcements_read must be a single value, not #{params[:announcements_read].class}") if [ Array, Hash ].any? { |klass| params[:announcements_read].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: attachments_permission must be a single value, not #{params[:attachments_permission].class}") if [ Array, Hash ].any? { |klass| params[:attachments_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if !params[:authenticate_until].nil? and !params[:authenticate_until].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if !params[:authentication_method].nil? and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: billing_permission must be a single value, not #{params[:billing_permission].class}") if [ Array, Hash ].any? { |klass| params[:billing_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: bypass_user_lifecycle_rules must be a single value, not #{params[:bypass_user_lifecycle_rules].class}") if [ Array, Hash ].any? { |klass| params[:bypass_user_lifecycle_rules].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: bypass_site_allowed_ips must be a single value, not #{params[:bypass_site_allowed_ips].class}") if [ Array, Hash ].any? { |klass| params[:bypass_site_allowed_ips].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: dav_permission must be a single value, not #{params[:dav_permission].class}") if [ Array, Hash ].any? { |klass| params[:dav_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: default_workspace_id must be an Integer") if !params[:default_workspace_id].nil? and !params[:default_workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if !params[:filesystem_layout].nil? and !params[:filesystem_layout].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ftp_permission must be a single value, not #{params[:ftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:ftp_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: header_text must be an String") if !params[:header_text].nil? and !params[:header_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if !params[:language].nil? and !params[:language].is_a?(String)
@@ -1269,19 +1324,40 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: company must be an String") if !params[:company].nil? and !params[:company].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: office_integration_enabled must be a single value, not #{params[:office_integration_enabled].class}") if [ Array, Hash ].any? { |klass| params[:office_integration_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: partner_admin must be a single value, not #{params[:partner_admin].class}") if [ Array, Hash ].any? { |klass| params[:partner_admin].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if !params[:partner_id].nil? and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if !params[:password_validity_days].nil? and !params[:password_validity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: primary_group_id must be an Integer") if !params[:primary_group_id].nil? and !params[:primary_group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: readonly_site_admin must be a single value, not #{params[:readonly_site_admin].class}") if [ Array, Hash ].any? { |klass| params[:readonly_site_admin].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: receive_admin_alerts must be a single value, not #{params[:receive_admin_alerts].class}") if [ Array, Hash ].any? { |klass| params[:receive_admin_alerts].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_site_warnings must be a single value, not #{params[:notify_on_all_site_warnings].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_site_warnings].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_sso_failures must be a single value, not #{params[:notify_on_all_sso_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_sso_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_user_security_events must be a single value, not #{params[:notify_on_all_user_security_events].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_user_security_events].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_pending_work_failures must be a single value, not #{params[:notify_on_all_pending_work_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_pending_work_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_siem_http_destination_failures must be a single value, not #{params[:notify_on_all_siem_http_destination_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_siem_http_destination_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_sync_failures must be a single value, not #{params[:notify_on_all_sync_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_sync_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_automation_failures must be a single value, not #{params[:notify_on_all_automation_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_automation_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_expectation_failures must be a single value, not #{params[:notify_on_all_expectation_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_expectation_failures].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: require_login_by must be an String") if !params[:require_login_by].nil? and !params[:require_login_by].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: require_password_change must be a single value, not #{params[:require_password_change].class}") if [ Array, Hash ].any? { |klass| params[:require_password_change].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if !params[:responsible_group_id].nil? and !params[:responsible_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if !params[:responsible_user_id].nil? and !params[:responsible_user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: restapi_permission must be a single value, not #{params[:restapi_permission].class}") if [ Array, Hash ].any? { |klass| params[:restapi_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint_permission must be a single value, not #{params[:s3_compatible_endpoint_permission].class}") if [ Array, Hash ].any? { |klass| params[:s3_compatible_endpoint_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: self_managed must be a single value, not #{params[:self_managed].class}") if [ Array, Hash ].any? { |klass| params[:self_managed].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sftp_permission must be a single value, not #{params[:sftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:sftp_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: site_admin must be a single value, not #{params[:site_admin].class}") if [ Array, Hash ].any? { |klass| params[:site_admin].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: skip_welcome_screen must be a single value, not #{params[:skip_welcome_screen].class}") if [ Array, Hash ].any? { |klass| params[:skip_welcome_screen].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if !params[:ssl_required].nil? and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if !params[:sso_strategy_id].nil? and !params[:sso_strategy_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: subscribe_to_newsletter must be a single value, not #{params[:subscribe_to_newsletter].class}") if [ Array, Hash ].any? { |klass| params[:subscribe_to_newsletter].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if !params[:require_2fa].nil? and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if !params[:time_zone].nil? and !params[:time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if !params[:user_root].nil? and !params[:user_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_home must be an String") if !params[:user_home].nil? and !params[:user_home].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_admin must be a single value, not #{params[:workspace_admin].class}") if [ Array, Hash ].any? { |klass| params[:workspace_admin].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: username must be an String") if !params[:username].nil? and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: username") if params[:username].nil?
@@ -1297,7 +1373,7 @@ module Files
     #
     # Returns nil.
     def self.unlock(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -1313,7 +1389,7 @@ module Files
     #
     # Returns nil.
     def self.resend_welcome_email(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -1329,7 +1405,7 @@ module Files
     #
     # Returns nil.
     def self.user_2fa_reset(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
@@ -1416,9 +1492,10 @@ module Files
     #
     # Returns a Files::User.
     def self.update(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: avatar_delete must be a single value, not #{params[:avatar_delete].class}") if [ Array, Hash ].any? { |klass| params[:avatar_delete].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: change_password must be an String") if !params[:change_password].nil? and !params[:change_password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: change_password_confirmation must be an String") if !params[:change_password_confirmation].nil? and !params[:change_password_confirmation].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: email must be an String") if !params[:email].nil? and !params[:email].is_a?(String)
@@ -1428,13 +1505,21 @@ module Files
       raise InvalidParameterError.new("Bad parameter: imported_password_hash must be an String") if !params[:imported_password_hash].nil? and !params[:imported_password_hash].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password must be an String") if !params[:password].nil? and !params[:password].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: password_confirmation must be an String") if !params[:password_confirmation].nil? and !params[:password_confirmation].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: announcements_read must be a single value, not #{params[:announcements_read].class}") if [ Array, Hash ].any? { |klass| params[:announcements_read].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: attachments_permission must be a single value, not #{params[:attachments_permission].class}") if [ Array, Hash ].any? { |klass| params[:attachments_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: authenticate_until must be an String") if !params[:authenticate_until].nil? and !params[:authenticate_until].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: authentication_method must be an String") if !params[:authentication_method].nil? and !params[:authentication_method].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: billing_permission must be a single value, not #{params[:billing_permission].class}") if [ Array, Hash ].any? { |klass| params[:billing_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: bypass_user_lifecycle_rules must be a single value, not #{params[:bypass_user_lifecycle_rules].class}") if [ Array, Hash ].any? { |klass| params[:bypass_user_lifecycle_rules].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: bypass_site_allowed_ips must be a single value, not #{params[:bypass_site_allowed_ips].class}") if [ Array, Hash ].any? { |klass| params[:bypass_site_allowed_ips].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: dav_permission must be a single value, not #{params[:dav_permission].class}") if [ Array, Hash ].any? { |klass| params[:dav_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: default_workspace_id must be an Integer") if !params[:default_workspace_id].nil? and !params[:default_workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if !params[:filesystem_layout].nil? and !params[:filesystem_layout].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ftp_permission must be a single value, not #{params[:ftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:ftp_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: header_text must be an String") if !params[:header_text].nil? and !params[:header_text].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: language must be an String") if !params[:language].nil? and !params[:language].is_a?(String)
@@ -1442,21 +1527,44 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: company must be an String") if !params[:company].nil? and !params[:company].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: notes must be an String") if !params[:notes].nil? and !params[:notes].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: office_integration_enabled must be a single value, not #{params[:office_integration_enabled].class}") if [ Array, Hash ].any? { |klass| params[:office_integration_enabled].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: partner_admin must be a single value, not #{params[:partner_admin].class}") if [ Array, Hash ].any? { |klass| params[:partner_admin].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if !params[:partner_id].nil? and !params[:partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: password_validity_days must be an Integer") if !params[:password_validity_days].nil? and !params[:password_validity_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: primary_group_id must be an Integer") if !params[:primary_group_id].nil? and !params[:primary_group_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: readonly_site_admin must be a single value, not #{params[:readonly_site_admin].class}") if [ Array, Hash ].any? { |klass| params[:readonly_site_admin].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: receive_admin_alerts must be a single value, not #{params[:receive_admin_alerts].class}") if [ Array, Hash ].any? { |klass| params[:receive_admin_alerts].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_site_warnings must be a single value, not #{params[:notify_on_all_site_warnings].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_site_warnings].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_sso_failures must be a single value, not #{params[:notify_on_all_sso_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_sso_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_user_security_events must be a single value, not #{params[:notify_on_all_user_security_events].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_user_security_events].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_pending_work_failures must be a single value, not #{params[:notify_on_all_pending_work_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_pending_work_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_siem_http_destination_failures must be a single value, not #{params[:notify_on_all_siem_http_destination_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_siem_http_destination_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_sync_failures must be a single value, not #{params[:notify_on_all_sync_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_sync_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_automation_failures must be a single value, not #{params[:notify_on_all_automation_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_automation_failures].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: notify_on_all_expectation_failures must be a single value, not #{params[:notify_on_all_expectation_failures].class}") if [ Array, Hash ].any? { |klass| params[:notify_on_all_expectation_failures].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: require_login_by must be an String") if !params[:require_login_by].nil? and !params[:require_login_by].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: require_password_change must be a single value, not #{params[:require_password_change].class}") if [ Array, Hash ].any? { |klass| params[:require_password_change].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: responsible_group_id must be an Integer") if !params[:responsible_group_id].nil? and !params[:responsible_group_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: responsible_user_id must be an Integer") if !params[:responsible_user_id].nil? and !params[:responsible_user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: restapi_permission must be a single value, not #{params[:restapi_permission].class}") if [ Array, Hash ].any? { |klass| params[:restapi_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: s3_compatible_endpoint_permission must be a single value, not #{params[:s3_compatible_endpoint_permission].class}") if [ Array, Hash ].any? { |klass| params[:s3_compatible_endpoint_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: self_managed must be a single value, not #{params[:self_managed].class}") if [ Array, Hash ].any? { |klass| params[:self_managed].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: sftp_permission must be a single value, not #{params[:sftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:sftp_permission].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: site_admin must be a single value, not #{params[:site_admin].class}") if [ Array, Hash ].any? { |klass| params[:site_admin].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: skip_welcome_screen must be a single value, not #{params[:skip_welcome_screen].class}") if [ Array, Hash ].any? { |klass| params[:skip_welcome_screen].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if !params[:ssl_required].nil? and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if !params[:sso_strategy_id].nil? and !params[:sso_strategy_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: subscribe_to_newsletter must be a single value, not #{params[:subscribe_to_newsletter].class}") if [ Array, Hash ].any? { |klass| params[:subscribe_to_newsletter].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if !params[:require_2fa].nil? and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if !params[:time_zone].nil? and !params[:time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_root must be an String") if !params[:user_root].nil? and !params[:user_root].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: user_home must be an String") if !params[:user_home].nil? and !params[:user_home].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: workspace_admin must be a single value, not #{params[:workspace_admin].class}") if [ Array, Hash ].any? { |klass| params[:workspace_admin].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: username must be an String") if !params[:username].nil? and !params[:username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: clear_2fa must be a single value, not #{params[:clear_2fa].class}") if [ Array, Hash ].any? { |klass| params[:clear_2fa].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: convert_to_partner_user must be a single value, not #{params[:convert_to_partner_user].class}") if [ Array, Hash ].any? { |klass| params[:convert_to_partner_user].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/users/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("User") }
@@ -1471,7 +1579,7 @@ module Files
     #
     # Returns nil.
     def self.delete(id, params = {}, options = {})
-      params ||= {}
+      params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: new_owner_id must be an Integer") if !params[:new_owner_id].nil? and !params[:new_owner_id].is_a?(Integer)
