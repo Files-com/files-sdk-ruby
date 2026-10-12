@@ -5,6 +5,13 @@ module Files
     attr_reader :options, :attributes
     attr_reader :mode
 
+    WINDOWS_DEVICE_NAMES = [
+      "CON", "PRN", "AUX", "NUL", "CONIN$", "CONOUT$",
+      "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM\u00b9", "COM\u00b2", "COM\u00b3",
+      "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "LPT\u00b9", "LPT\u00b2", "LPT\u00b3"
+    ].freeze
+    private_constant :WINDOWS_DEVICE_NAMES
+
     def self.binread(name, *args)
       new(name).read(*args)
     end
@@ -41,10 +48,22 @@ module Files
     private_class_method def self.default_local_path(path)
       name = PathUtil.normalize(path).split("/").last.to_s
       # On Windows a colon makes the name a drive-relative path or an NTFS
-      # stream, which can write outside the working directory or onto another file.
-      raise InvalidParameterError.new("Bad parameter: local_path is required because #{name.inspect} is not a valid local file name") if Gem.win_platform? && name.include?(":")
+      # stream, which can write outside the working directory or onto another
+      # file, and a device name such as NUL writes to the device instead of a file.
+      raise InvalidParameterError.new("Bad parameter: local_path is required because #{name.inspect} is not a valid local file name") if Gem.win_platform? && (name.include?(":") || windows_device_name?(name))
 
       name
+    end
+
+    # A bare device name is always a device. Anything after it, such as the
+    # extension in NUL.txt, makes it a device on some Windows versions and a
+    # file on others, so Windows decides those names: it resolves a device to
+    # a //./ path.
+    private_class_method def self.windows_device_name?(name)
+      base = name.split(".", 2).first.to_s.sub(/ +\z/, "")
+      return false unless WINDOWS_DEVICE_NAMES.include?(base.upcase)
+
+      base == name || ::File.absolute_path(name).start_with?("//./")
     end
 
     private_class_method def self.underscore_destination_path(root, id, relative_path = nil)

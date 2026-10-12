@@ -11,10 +11,10 @@ RSpec.describe Files::File do
       described_class.download_file("folder/report:2026.txt")
     end
 
-    it "refuses a drive or stream name on Windows" do
+    it "refuses a drive, stream, or device name on Windows" do
       allow(Gem).to receive(:win_platform?).and_return(true)
 
-      [ "folder/C:victim.txt", "C:victim.txt", "folder/victim.txt::$DATA" ].each do |remote_path|
+      [ "folder/C:victim.txt", "C:victim.txt", "folder/victim.txt::$DATA", "folder/NUL", "folder/con", "COM1", "folder/CONIN$" ].each do |remote_path|
         expect { described_class.download_file(remote_path) }.to raise_error(Files::InvalidParameterError)
       end
     end
