@@ -72,7 +72,7 @@ module Files
       @attributes[:config] = value
     end
 
-    # object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400.
+    # object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
     def delivery_policy
       @attributes[:delivery_policy]
     end
@@ -97,7 +97,7 @@ module Files
     #   apply_to_all_workspaces - boolean - If true, this default-workspace target can receive events from all workspaces.
     #   enabled - boolean - Whether this Event Target can receive events.
     #   config - object - Event Target configuration. Folder targets accept path and format (json or csv).
-    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400.
+    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
     def update(params = {})
       params ||= {}
       params[:id] = @attributes[:id]
@@ -192,7 +192,7 @@ module Files
     #   apply_to_all_workspaces - boolean - If true, this default-workspace target can receive events from all workspaces.
     #   enabled - boolean - Whether this Event Target can receive events.
     #   config (required) - object - Event Target configuration. Folder targets accept path and format (json or csv).
-    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400.
+    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
     #   target_type (required) - string - Event Target type.
     #
     # params:: Hash of API operation parameter values.
@@ -219,7 +219,7 @@ module Files
     #   apply_to_all_workspaces - boolean - If true, this default-workspace target can receive events from all workspaces.
     #   enabled - boolean - Whether this Event Target can receive events.
     #   config - object - Event Target configuration. Folder targets accept path and format (json or csv).
-    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400.
+    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
     #
     # params:: Hash of API operation parameter values.
     # options:: Hash of optional request configuration passed to Files::Api.send_request.

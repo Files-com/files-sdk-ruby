@@ -361,6 +361,11 @@ module Files
       @attributes[:disable_notifications]
     end
 
+    # boolean - If true, file operations produce file_action.activity.v1 EventChannel events in all workspaces. Defaults to false; subscription filters and workspace access still control delivery.
+    def file_activity_events_enabled
+      @attributes[:file_activity_events_enabled]
+    end
+
     # boolean - Is password reset disabled?
     def disable_password_reset
       @attributes[:disable_password_reset]
@@ -1076,6 +1081,7 @@ module Files
     #   legacy_checksums_mode - boolean - Use legacy checksums mode?
     #   migrate_remote_server_sync_to_sync - boolean - If true, we will migrate all remote server syncs to the new Sync model.
     #   as2_message_retention_days - int64 - Number of days to retain AS2 messages (incoming and outgoing).
+    #   file_activity_events_enabled - boolean - If true, file operations produce file_action.activity.v1 EventChannel events in all workspaces. Defaults to false; subscription filters and workspace access still control delivery.
     #   username_display - string - How usernames are displayed in the web UI. Can be `username_only`, `full_name_only`, `full_name_username`, `full_name_company`, or `full_name_username_company`.
     #   session_expiry_minutes - int64 - Session expiry in minutes
     #   ssl_required - boolean - Is SSL required?  Disabling this is insecure.

@@ -27,6 +27,15 @@ module Files
       @attributes[:title] = value
     end
 
+    # boolean - Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
+    def require_complete_metadata_capture
+      @attributes[:require_complete_metadata_capture]
+    end
+
+    def require_complete_metadata_capture=(value)
+      @attributes[:require_complete_metadata_capture] = value
+    end
+
     # array(int64) - Layout of the form
     def form_layout
       @attributes[:form_layout]
@@ -101,6 +110,7 @@ module Files
 
     # Parameters:
     #   title - string - Title to be displayed
+    #   require_complete_metadata_capture - boolean - Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
     #   workspace_id - int64 - Workspace ID
     #   skip_email - boolean - Skip validating form email
     #   skip_name - boolean - Skip validating form name
@@ -196,6 +206,7 @@ module Files
     # Parameters:
     #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
     #   title - string - Title to be displayed
+    #   require_complete_metadata_capture - boolean - Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
     #   workspace_id - int64 - Workspace ID
     #   skip_email - boolean - Skip validating form email
     #   skip_name - boolean - Skip validating form name
@@ -218,6 +229,7 @@ module Files
 
     # Parameters:
     #   title - string - Title to be displayed
+    #   require_complete_metadata_capture - boolean - Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
     #   workspace_id - int64 - Workspace ID
     #   skip_email - boolean - Skip validating form email
     #   skip_name - boolean - Skip validating form name

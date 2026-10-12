@@ -29,6 +29,11 @@ module Files
       @attributes[:event_target_id]
     end
 
+    # int64 - Shared summary ID when this event is delivered in a Slack or Teams subfolder summary. All events in a summary share its delivery outcome.
+    def activity_notification_batch_id
+      @attributes[:activity_notification_batch_id]
+    end
+
     # int64 - Workspace ID. 0 means the default workspace or site-wide.
     def workspace_id
       @attributes[:workspace_id]
