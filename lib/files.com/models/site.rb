@@ -223,6 +223,11 @@ module Files
       @attributes[:calculate_file_checksums_sha256]
     end
 
+    # boolean - If true, administrators on this site's Child Sites, including Folder Admins, can list this site's Default Workspace users and groups and grant them folder permissions and notifications on Child Site paths.
+    def child_site_folder_admins_can_see_parent_site_directory
+      @attributes[:child_site_folder_admins_can_see_parent_site_directory]
+    end
+
     # boolean - Require email authentication, virus, and spam checks for incoming emails to Inboxes and Incoming Email Automations in every Workspace on this site?
     def uploads_via_email_authentication
       @attributes[:uploads_via_email_authentication]
@@ -1160,6 +1165,7 @@ module Files
     #   group_admins_can_bypass_user_lifecycle_rules - boolean - Allow group admins to exempt users in their groups from lifecycle rules
     #   group_admins_can_reset_passwords - boolean - Allow group admins to reset passwords for users in their groups
     #   group_admins_can_set_user_password - boolean - Allow group admins to set password authentication method
+    #   child_site_folder_admins_can_see_parent_site_directory - boolean - If true, administrators on this site's Child Sites, including Folder Admins, can list this site's Default Workspace users and groups and grant them folder permissions and notifications on Child Site paths.
     #   bundle_recipient_blacklist_free_email_domains - boolean - Disallow free email domains for Bundle/Inbox recipients?
     #   bundle_recipient_blacklist_domains - array(string) - List of email domains to disallow when entering a Bundle/Inbox recipients
     #   admins_bypass_locked_subfolders - boolean - Allow admins to bypass the locked subfolders setting.
@@ -1360,6 +1366,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: group_admins_can_bypass_user_lifecycle_rules must be a single value, not #{params[:group_admins_can_bypass_user_lifecycle_rules].class}") if [ Array, Hash ].any? { |klass| params[:group_admins_can_bypass_user_lifecycle_rules].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: group_admins_can_reset_passwords must be a single value, not #{params[:group_admins_can_reset_passwords].class}") if [ Array, Hash ].any? { |klass| params[:group_admins_can_reset_passwords].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: group_admins_can_set_user_password must be a single value, not #{params[:group_admins_can_set_user_password].class}") if [ Array, Hash ].any? { |klass| params[:group_admins_can_set_user_password].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: child_site_folder_admins_can_see_parent_site_directory must be a single value, not #{params[:child_site_folder_admins_can_see_parent_site_directory].class}") if [ Array, Hash ].any? { |klass| params[:child_site_folder_admins_can_see_parent_site_directory].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: bundle_recipient_blacklist_free_email_domains must be a single value, not #{params[:bundle_recipient_blacklist_free_email_domains].class}") if [ Array, Hash ].any? { |klass| params[:bundle_recipient_blacklist_free_email_domains].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: bundle_recipient_blacklist_domains must be an Array") if !params[:bundle_recipient_blacklist_domains].nil? and !params[:bundle_recipient_blacklist_domains].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: admins_bypass_locked_subfolders must be a single value, not #{params[:admins_bypass_locked_subfolders].class}") if [ Array, Hash ].any? { |klass| params[:admins_bypass_locked_subfolders].is_a?(klass) }
