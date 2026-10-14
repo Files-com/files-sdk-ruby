@@ -1163,6 +1163,7 @@ module Files
     #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
     #   ids - string - comma-separated list of User IDs
     #   include_parent_site_users - boolean - Include users from the parent site.
+    #   include_default_workspace_users - boolean - When scoped to a Custom Workspace, include Default Workspace users who have permissions in that Workspace. Available to Site Administrators, and to Workspace Administrators and Folder Admins in that Workspace when the site shares its Default Workspace directory with Workspaces.
     #   search - string - Searches for partial matches of name, username, or email.
     #
     # params:: Hash of API operation parameter values.
@@ -1181,6 +1182,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: filter_lteq must be an Hash") if !params[:filter_lteq].nil? and !params[:filter_lteq].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: ids must be an String") if !params[:ids].nil? and !params[:ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: include_parent_site_users must be a single value, not #{params[:include_parent_site_users].class}") if [ Array, Hash ].any? { |klass| params[:include_parent_site_users].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: include_default_workspace_users must be a single value, not #{params[:include_default_workspace_users].class}") if [ Array, Hash ].any? { |klass| params[:include_default_workspace_users].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: search must be an String") if !params[:search].nil? and !params[:search].is_a?(String)
 
       list_options = options.dup
