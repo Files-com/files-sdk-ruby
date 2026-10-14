@@ -31,7 +31,7 @@ RSpec.describe Files::Folder, :with_test_folder do
     end
   end
 
-  xdescribe "mkdir" do
+  describe "mkdir" do
     it "makes a new folder" do
       Files::Folder.mkdir(test_folder.join("my-new-folder").to_s, {}, options)
       expect(Files::Folder.exist?(test_folder.join("my-new-folder").to_s, options)).to eq(true)
