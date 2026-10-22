@@ -2,9 +2,12 @@ require "spec_helper"
 require "stringio"
 require "tmpdir"
 require "zlib"
+require_relative "../support/stubbed_api"
 require_relative "../support/transfer_server"
 
 RSpec.describe Files::File, "transfers" do
+  include StubbedApi
+
   # 22,528 bytes that include every byte value, so text handling would show.
   let(:payload) { (0..255).map(&:chr).join.b * 88 }
   let(:signed_target) { "/objects/report.bin?X-Amz-Credential=fixture%2Fcredential&X-Amz-Signature=fixture-signature" }
@@ -53,6 +56,118 @@ RSpec.describe Files::File, "transfers" do
     complete ? "#{encoded}0\r\n\r\n" : encoded
   end
 
+  # The API and storage an upload sends through: the SDK's own connection with Faraday test stubs. Each begin_upload of
+  # report.bin grants the parts it asks for, partsize bytes each, at https://storage.example.test/parts/<number>; each
+  # part request is answered by part_response (200 with an ETag unless given), and the end of the upload with 201.
+  # requests keeps every request in order, with its parameters or body and its headers. A planning request past the
+  # tenth fails, so an upload that never ends stops.
+  def upload_api(requests, partsize:, part_response: nil)
+    stubbed_api_client do |stub|
+      stub.post("/api/rest/v1/file_actions/begin_upload/report.bin") do |env|
+        params = Faraday::Utils.parse_nested_query(env.body)
+        requests << [ :begin, params, env.request_headers ]
+        raise "The upload planned more than ten parts" if requests.count { |kind, *| kind == :begin } > 10
+
+        first = Integer(params.fetch("part"))
+        json_response(200, (first...(first + Integer(params.fetch("parts")))).map do |number|
+          { part_number: number, partsize: partsize, ref: "upload-ref", http_method: "PUT", upload_uri: "https://storage.example.test/parts/#{number}" }
+        end
+        )
+      end
+      stub.put(/\A\/parts\/\d+\z/) do |env|
+        number = Integer(env.url.path.split("/").last)
+        requests << [ :part, number, env.body, env.request_headers ]
+        part_response ? part_response.call(number) : [ 200, { "ETag" => "\"etag-#{number}\"" }, "" ]
+      end
+      stub.post("/api/rest/v1/files/report.bin") do |env|
+        requests << [ :end, Faraday::Utils.parse_nested_query(env.body), env.request_headers ]
+        json_response(201, { path: "report.bin", type: "file" })
+      end
+    end
+  end
+
+  def parts_sent(requests)
+    requests.select { |kind, *| kind == :part }.map { |_, number, body| [ number, body ] }
+  end
+
+  # A source that has only read, eof? and close: it gives its data at most max_read bytes a read, then, at its end,
+  # end_read (nil or an empty string). From stall_at on, every read gives an empty string although eof? is false. It
+  # refuses its hundred-and-first read, so a loop that never ends stops.
+  def short_reader(data, max_read:, end_read: nil, stall_at: nil)
+    offset = 0
+    reads = 0
+    Object.new.tap do |reader|
+      reader.define_singleton_method(:read) do |length = nil, _outbuf = nil|
+        raise "The source was read more than a hundred times" if (reads += 1) > 100
+        next "" if stall_at && offset >= stall_at
+        next end_read if offset >= data.bytesize
+
+        data.byteslice(offset, [ max_read, length || max_read ].min).tap { |chunk| offset += chunk.bytesize }
+      end
+      reader.define_singleton_method(:eof?) { offset >= data.bytesize }
+      reader.define_singleton_method(:close) { nil }
+    end
+  end
+
+  # Runs block with the path of a new local file holding data.
+  def with_local_file(data)
+    Dir.mktmpdir do |dir|
+      path = File.join(dir, "report.bin")
+      File.binwrite(path, data)
+      yield path
+    end
+  end
+
+  describe ".upload_chunks" do
+    it "fills each granted part from as many short reads as it takes" do
+      requests = []
+      described_class.upload_chunks(short_reader("abcdefghij", max_read: 3), "report.bin", { client: upload_api(requests, partsize: 4) })
+
+      expect(parts_sent(requests)).to eq([ [ 1, "abcd" ], [ 2, "efgh" ], [ 3, "ij" ] ])
+    end
+
+    it "ends a part at the source's end when its last read gives an empty string" do
+      requests = []
+      described_class.upload_chunks(short_reader("abcdefghij", max_read: 4, end_read: ""), "report.bin", { client: upload_api(requests, partsize: 4) })
+
+      expect(parts_sent(requests)).to eq([ [ 1, "abcd" ], [ 2, "efgh" ], [ 3, "ij" ] ])
+    end
+
+    it "refuses a source that gives nothing before its end, before sending that part" do
+      requests = []
+      reader = short_reader("abcdefghij", max_read: 4, stall_at: 4)
+
+      expect { described_class.upload_chunks(reader, "report.bin", { client: upload_api(requests, partsize: 4) }) }
+        .to raise_error(Files::InvalidParameterError, "The upload source returned no bytes before its end")
+      expect(parts_sent(requests)).to eq([ [ 1, "abcd" ] ])
+    end
+
+    it "lets a read's own error through, sending nothing after it" do
+      requests = []
+      read_error = IOError.new("the source failed")
+      reader = short_reader("abcdefghij", max_read: 4)
+      first_read = reader.method(:read)
+      reads = 0
+      reader.define_singleton_method(:read) { |*args| (reads += 1) == 2 ? raise(read_error) : first_read.call(*args) }
+
+      expect { described_class.upload_chunks(reader, "report.bin", { client: upload_api(requests, partsize: 4) }) }.to raise_error(IOError) { |error| expect(error).to equal(read_error) }
+      expect(parts_sent(requests)).to eq([ [ 1, "abcd" ] ])
+    end
+
+    it "reports each acknowledged part to progress, with an unknown total and this call's acknowledged bytes" do
+      requests = []
+      reports = []
+      described_class.upload_chunks(short_reader("abcdefghij", max_read: 3), "report.bin", { client: upload_api(requests, partsize: 4) }, progress: ->(report) { reports << report })
+
+      expect(reports).to eq([
+        { total_bytes: nil, acknowledged_bytes: 4, part_number: 1, part_bytes: 4 },
+        { total_bytes: nil, acknowledged_bytes: 8, part_number: 2, part_bytes: 4 },
+        { total_bytes: nil, acknowledged_bytes: 10, part_number: 3, part_bytes: 2 }
+      ]
+                           )
+    end
+  end
+
   describe ".upload_file" do
     it "raises the filesystem error when the local source does not exist" do
       Dir.mktmpdir do |dir|
@@ -60,6 +175,82 @@ RSpec.describe Files::File, "transfers" do
 
         expect { described_class.upload_file(missing_path, "report.bin") }.to raise_error(Errno::ENOENT)
       end
+    end
+
+    it "uploads an empty file as one empty part" do
+      requests = []
+      with_local_file("") { |path| described_class.upload_file(path, "report.bin", { client: upload_api(requests, partsize: 4) }) }
+
+      expect(parts_sent(requests)).to eq([ [ 1, "" ] ])
+      expect(requests.last[0..1]).to match([ :end, hash_including("action" => "end", "size" => "0") ])
+    end
+
+    it "reports progress with the local file's size as its total, whatever size its planning parameters carry, and sends progress in no request" do
+      requests = []
+      reports = []
+      with_local_file("abcdefghij") do |path|
+        described_class.upload_file(path, "report.bin", { client: upload_api(requests, partsize: 4) }, params: { size: 999 }, progress: ->(report) { reports << report })
+      end
+
+      expect(requests.first[1]["size"]).to eq("999")
+      expect(reports).to eq([
+        { total_bytes: 10, acknowledged_bytes: 4, part_number: 1, part_bytes: 4 },
+        { total_bytes: 10, acknowledged_bytes: 8, part_number: 2, part_bytes: 4 },
+        { total_bytes: 10, acknowledged_bytes: 10, part_number: 3, part_bytes: 2 }
+      ]
+                           )
+      requests.each do |_kind, sent, *, headers|
+        expect(headers.keys.map(&:downcase)).not_to include("progress")
+        expect(sent.keys).not_to include("progress") if sent.is_a?(Hash)
+      end
+    end
+
+    it "refuses a part answered with a non-success status it returns, before reporting or ending the upload, when progress is given" do
+      requests = []
+      reports = []
+      client = upload_api(requests, partsize: 4, part_response: ->(_number) { [ 302, {}, "" ] })
+
+      with_local_file("abcdefghij") do |path|
+        expect { described_class.upload_file(path, "report.bin", { client: client }, progress: ->(report) { reports << report }) }
+          .to raise_error(Files::APIError, "Transfer request failed") { |error|
+            expect(error.http_status).to eq(302)
+            expect(error.full_message).not_to include("storage.example.test")
+          }
+      end
+      expect(reports).to be_empty
+      expect(requests.map(&:first)).to eq(%i[begin part])
+    end
+
+    it "uploads as before when a part's non-success status is returned and no progress is given" do
+      requests = []
+      client = upload_api(requests, partsize: 4, part_response: ->(_number) { [ 302, {}, "" ] })
+
+      with_local_file("abcdefghij") { |path| described_class.upload_file(path, "report.bin", { client: client }) }
+
+      expect(requests.map(&:first)).to eq(%i[begin part begin part begin part end])
+    end
+
+    it "stops at a part answered 500, reporting nothing and not ending the upload" do
+      requests = []
+      reports = []
+      client = upload_api(requests, partsize: 4, part_response: ->(_number) { [ 500, {}, "" ] })
+
+      with_local_file("abcdefghij") do |path|
+        expect { described_class.upload_file(path, "report.bin", { client: client }, progress: ->(report) { reports << report }) }.to raise_error(Files::APIConnectionError)
+      end
+      expect(reports).to be_empty
+      expect(requests.map(&:first)).to eq(%i[begin part])
+    end
+
+    it "ends the upload where its progress callback raises, with nothing planned, sent or ended after it, and closes its own file" do
+      requests = []
+      cancelled = StandardError.new("cancelled")
+      with_local_file("abcdefghij") do |path|
+        expect { described_class.upload_file(path, "report.bin", { client: upload_api(requests, partsize: 4) }, progress: ->(_report) { raise cancelled }) }
+          .to raise_error(StandardError) { |error| expect(error).to equal(cancelled) }
+        expect(ObjectSpace.each_object(::File).select { |file| !file.closed? && file.path == path }).to be_empty
+      end
+      expect(requests.map(&:first)).to eq(%i[begin part])
     end
   end
 

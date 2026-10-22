@@ -16,7 +16,7 @@ RSpec.describe Files::File do
       "local/path/to/file.txt",
       "_/RemoteServers/42/file.txt",
       {},
-      params: {}
+      params: {}, progress: nil
     )
 
     described_class.upload_to_remote_server("local/path/to/file.txt", 42)

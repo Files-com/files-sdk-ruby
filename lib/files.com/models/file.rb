@@ -72,9 +72,9 @@ module Files
       PathUtil.normalize("_", root, id.to_s, relative_path)
     end
 
-    def self.upload_to_remote_server(path, remote_server_id, destination = nil, options = {}, params: {})
+    def self.upload_to_remote_server(path, remote_server_id, destination = nil, options = {}, params: {}, progress: nil)
       destination ||= ::File.basename(path)
-      upload_file(path, underscore_destination_path("RemoteServers", remote_server_id, destination), options, params: params)
+      upload_file(path, underscore_destination_path("RemoteServers", remote_server_id, destination), options, params: params, progress: progress)
     end
 
     def self.copy_to_remote_server(path, remote_server_id, destination, params = {}, options = {})
@@ -85,9 +85,9 @@ module Files
       move(path, params.merge(destination: underscore_destination_path("RemoteServers", remote_server_id, destination)), options)
     end
 
-    def self.upload_to_snapshot(path, snapshot_id, destination = nil, options = {}, params: {})
+    def self.upload_to_snapshot(path, snapshot_id, destination = nil, options = {}, params: {}, progress: nil)
       destination ||= ::File.basename(path)
-      upload_file(path, underscore_destination_path("Snapshots", snapshot_id, destination), options, params: params)
+      upload_file(path, underscore_destination_path("Snapshots", snapshot_id, destination), options, params: params, progress: progress)
     end
 
     def self.copy_to_snapshot(path, snapshot_id, destination, params = {}, options = {})
@@ -98,9 +98,9 @@ module Files
       move(path, params.merge(destination: underscore_destination_path("Snapshots", snapshot_id, destination)), options)
     end
 
-    def self.upload_to_child_site(path, site_id, destination = nil, options = {}, params: {})
+    def self.upload_to_child_site(path, site_id, destination = nil, options = {}, params: {}, progress: nil)
       destination ||= ::File.basename(path)
-      upload_file(path, underscore_destination_path("Sites", site_id, destination), options, params: params)
+      upload_file(path, underscore_destination_path("Sites", site_id, destination), options, params: params, progress: progress)
     end
 
     def self.copy_to_child_site(path, site_id, destination, params = {}, options = {})
@@ -207,27 +207,59 @@ module Files
       paths.map { |p| delete(p) }
     end
 
-    def self.upload_chunks(io, path, options, upload = nil, etags = [], params: {})
+    # Uploads what io holds to path, a part at a time as the API grants each, and returns the last part, the parts'
+    # ETags and the bytes sent. Each part is filled from as many reads as it takes (read_part). With progress, a
+    # callable, each part's response must be a success (2xx) before the part counts as acknowledged; progress is then
+    # called with total_bytes (nil: unknown here), acknowledged_bytes (this call's bytes so far), part_number and
+    # part_bytes. Anything it raises ends the upload there, with no later part planned or sent.
+    def self.upload_chunks(io, path, options, upload = nil, etags = [], params: {}, progress: nil)
       etags ||= []
       bytes_written = 0
       request_parts = options[:size] && options[:size] < 5.megabytes ? 1 : 5
       loop do
         begin_upload = File.begin_upload(path, params.merge(ref: upload&.ref, parts: request_parts, part: (upload&.part_number || 0) + 1), options) if begin_upload.nil? || begin_upload.empty?
         upload = begin_upload.is_a?(Enumerable) ? begin_upload.shift : begin_upload
-        buf = io.read(upload.partsize) || ""
+        buf = read_part(io, upload.partsize)
         bytes_written += buf.length
         method = upload.http_method.downcase.to_sym
         response = client(options).remote_request(method, upload.upload_uri, { 'Content-Length': buf.length.to_s, 'Content-Type': 'application/octet-stream' }, buf)
+        raise APIError.new("Transfer request failed", http_status: response.status), cause: nil if progress && !response.status.between?(200, 299)
+
         etags << { etag: response.headers["ETag"], part: upload.part_number }
+        progress&.call({ total_bytes: nil, acknowledged_bytes: bytes_written, part_number: upload.part_number, part_bytes: buf.length })
         return upload, etags, bytes_written if io.eof?
       end
     end
 
-    def self.upload_file(path, destination = nil, options = {}, params: {})
+    # The next part's bytes from io: as many reads as it takes to fill length bytes. A read that gives nothing (nil or
+    # "") ends the part when io.eof? says the source has ended; before its end, the source made no progress, and the
+    # part is not sent.
+    private_class_method def self.read_part(io, length)
+      buf = String.new(encoding: Encoding::BINARY)
+      while buf.bytesize < length
+        chunk = io.read(length - buf.bytesize)
+        if chunk.nil? || chunk.empty?
+          break if io.eof?
+
+          raise InvalidParameterError, "The upload source returned no bytes before its end"
+        end
+        # A read that fills the part at once, as an IO's or a StringIO's does, is sent as it came.
+        return chunk if buf.empty? && chunk.bytesize == length
+
+        buf << chunk.b
+      end
+      buf
+    end
+
+    # With progress, a callable, it is called after each part is acknowledged, as upload_chunks reports it, with
+    # total_bytes the local file's size.
+    def self.upload_file(path, destination = nil, options = {}, params: {}, progress: nil)
       local_file = ::File.open(path, 'r')
       destination ||= File.basename(path)
       params[:size] ||= local_file.size
-      upload, etags = upload_chunks(local_file, destination, options, params: params)
+      total_bytes = local_file.size
+      report = progress && ->(part) { progress.call(part.merge(total_bytes: total_bytes)) }
+      upload, etags = upload_chunks(local_file, destination, options, params: params, progress: report)
 
       params = {
         action: "end",
