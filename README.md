@@ -12,6 +12,8 @@ The content included here should be enough to get started, but please visit our
 
 ## Introduction
 
+For integration choices and credential scope, start with [SDKs & APIs](https://www.files.com/docs/clients-and-protocols/sdks-and-apis). [Scripts, APIs & Application Workflows](https://www.files.com/docs/automated-workflows/scripts-apis-and-application-workflows) explains how to coordinate Files.com operations with the work your application owns.
+
 The Files.com Ruby gem provides convenient access to all aspects of Files.com from applications written in the Ruby language.
 
 Files.com customers use our Ruby gem for directly working with files and folders as well as performing management tasks such as adding/removing users, onboarding counterparties, retrieving information about automations and more.
@@ -54,7 +56,7 @@ Files::Folder).
 
 The Files.com Support team provides official support for all of our official Files.com integration tools.
 
-To initiate a support conversation, you can send an [Authenticated Support Request](https://www.files.com/docs/overview/requesting-support) or simply send an E-Mail to support@files.com.
+To initiate a support conversation, you can send an [Authenticated Support Request](https://www.files.com/docs/support-and-services/requesting-support) or simply send an E-Mail to support@files.com.
 
 ## Authentication
 
@@ -66,12 +68,10 @@ Authenticating with an API key is the recommended authentication method for most
 the method used in the examples on this site.
 
 To use an API Key, first generate an API key from the [web
-interface](https://www.files.com/docs/sdk-and-apis/api-keys) or [via the API or an
+interface](https://www.files.com/docs/security/authentication-and-credentials/api-keys) or [via the API or an
 SDK](https://developers.files.com/ruby/resources/developers/api-keys).
 
-Note that when using a user-specific API key, if the user is an administrator, you will have full
-access to the entire API. If the user is not an administrator, you will only be able to access files
-that user can access, and no access will be granted to site administration functions in the API.
+A user key follows its account's permissions, narrowed by the key's permission scope, Workspace, and any path restriction on file operations. It can perform administrative operations only when both the account and key permit them. [API Keys](https://www.files.com/docs/security/authentication-and-credentials/api-keys) explains credential scope and lifecycle; [Workspaces](https://developers.files.com/ruby/overview/workspaces) explains request context and delegated administration.
 
 ```ruby title="Example Request"
 Files.api_key = 'YOUR_API_KEY'
@@ -90,10 +90,7 @@ Don't forget to replace the placeholder, `YOUR_API_KEY`, with your actual API ke
 
 ### Authenticate with a Session
 
-You can also authenticate by creating a user session using the username and
-password of an active user. If the user is an administrator, the session will have full access to
-all capabilities of Files.com. Sessions created from regular user accounts will only be able to access files that
-user can access, and no access will be granted to site administration functions.
+Create a session with the username and password of an active user. The session uses that user's permissions, including any delegated administrative access. [Workspaces](https://developers.files.com/ruby/overview/workspaces) describes account scope and administrative access.
 
 Sessions use the exact same session timeout settings as web interface sessions. When a
 session times out, simply create a new session and resume where you left off. This process is not
@@ -366,7 +363,7 @@ This behavior applies across:
 - Folder and file lookup operations
 - Automations and workflows
 
-See also: [Case Sensitivity Documentation](https://www.files.com/docs/files-and-folders/case-sensitivity/)
+See also: [Case Sensitivity Documentation](https://www.files.com/docs/files-and-folders/file-system-semantics/case-sensitivity)
 
 ### Slashes
 
