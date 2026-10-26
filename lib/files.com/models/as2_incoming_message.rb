@@ -11,9 +11,14 @@ module Files
       @options = options || {}
     end
 
-    # int64 - Id of the AS2 Partner.
+    # int64 - ID of this AS2 incoming message record.
     def id
       @attributes[:id]
+    end
+
+    # int64 - ID of the incoming message record this message was replayed from. Empty for messages received directly from a trading partner.
+    def replayed_from_message_id
+      @attributes[:replayed_from_message_id]
     end
 
     # int64 - ID of the Workspace associated with this AS2 Incoming Message.
@@ -186,6 +191,19 @@ module Files
       @attributes[:mdn_response_uri]
     end
 
+    # Replay AS2 Incoming Message
+    def replay(params = {})
+      params = (params || {}).dup
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+
+      response, options = Api.send_request("/as2_incoming_messages/#{@attributes[:id]}/replay", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
+    end
+
     # Parameters:
     #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
@@ -220,6 +238,22 @@ module Files
 
     def self.all(params = {}, options = {})
       list(params, options)
+    end
+
+    # Replay AS2 Incoming Message
+    #
+    # params:: Hash of API operation parameter values.
+    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    #
+    # Returns a Files::As2IncomingMessage.
+    def self.replay(id, params = {}, options = {})
+      params = (params || {}).dup
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+
+      response, options = Api.send_request("/as2_incoming_messages/#{params[:id]}/replay", :post, params, options) { |reply| reply.require_object("As2IncomingMessage") }
+      As2IncomingMessage.new(response.data, options)
     end
   end
 end
