@@ -718,15 +718,6 @@ module Files
       @attributes[:sso_strategy_id] = value
     end
 
-    # boolean - Is the user subscribed to the newsletter?
-    def subscribe_to_newsletter
-      @attributes[:subscribe_to_newsletter]
-    end
-
-    def subscribe_to_newsletter=(value)
-      @attributes[:subscribe_to_newsletter] = value
-    end
-
     # boolean - Is this user managed by a SsoStrategy?
     def externally_managed
       @attributes[:externally_managed]
@@ -1022,7 +1013,6 @@ module Files
     #   skip_welcome_screen - boolean - Skip Welcome page in the UI?
     #   ssl_required - string - SSL required setting
     #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
-    #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
     #   require_2fa - string - 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
     #   tags - string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   time_zone - string - User time zone
@@ -1097,7 +1087,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: skip_welcome_screen must be a single value, not #{params[:skip_welcome_screen].class}") if [ Array, Hash ].any? { |klass| params[:skip_welcome_screen].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if !params[:ssl_required].nil? and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if !params[:sso_strategy_id].nil? and !params[:sso_strategy_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: subscribe_to_newsletter must be a single value, not #{params[:subscribe_to_newsletter].class}") if [ Array, Hash ].any? { |klass| params[:subscribe_to_newsletter].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if !params[:require_2fa].nil? and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if !params[:time_zone].nil? and !params[:time_zone].is_a?(String)
@@ -1279,7 +1268,6 @@ module Files
     #   skip_welcome_screen - boolean - Skip Welcome page in the UI?
     #   ssl_required - string - SSL required setting
     #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
-    #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
     #   require_2fa - string - 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
     #   tags - string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   time_zone - string - User time zone
@@ -1353,7 +1341,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: skip_welcome_screen must be a single value, not #{params[:skip_welcome_screen].class}") if [ Array, Hash ].any? { |klass| params[:skip_welcome_screen].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if !params[:ssl_required].nil? and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if !params[:sso_strategy_id].nil? and !params[:sso_strategy_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: subscribe_to_newsletter must be a single value, not #{params[:subscribe_to_newsletter].class}") if [ Array, Hash ].any? { |klass| params[:subscribe_to_newsletter].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if !params[:require_2fa].nil? and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if !params[:time_zone].nil? and !params[:time_zone].is_a?(String)
@@ -1477,7 +1464,6 @@ module Files
     #   skip_welcome_screen - boolean - Skip Welcome page in the UI?
     #   ssl_required - string - SSL required setting
     #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
-    #   subscribe_to_newsletter - boolean - Is the user subscribed to the newsletter?
     #   require_2fa - string - 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
     #   tags - string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
     #   time_zone - string - User time zone
@@ -1556,7 +1542,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: skip_welcome_screen must be a single value, not #{params[:skip_welcome_screen].class}") if [ Array, Hash ].any? { |klass| params[:skip_welcome_screen].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if !params[:ssl_required].nil? and !params[:ssl_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if !params[:sso_strategy_id].nil? and !params[:sso_strategy_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: subscribe_to_newsletter must be a single value, not #{params[:subscribe_to_newsletter].class}") if [ Array, Hash ].any? { |klass| params[:subscribe_to_newsletter].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if !params[:require_2fa].nil? and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: time_zone must be an String") if !params[:time_zone].nil? and !params[:time_zone].is_a?(String)
