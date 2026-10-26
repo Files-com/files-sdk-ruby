@@ -108,6 +108,11 @@ module Files
       @attributes[:allowed_ips]
     end
 
+    # boolean - Require Parent Site users entering this Child Site to match its allowed IP addresses in addition to their existing IP restrictions. Applies to all Workspaces. Defaults to false.
+    def enforce_parent_site_user_ip_restrictions
+      @attributes[:enforce_parent_site_user_ip_restrictions]
+    end
+
     # boolean - Create parent directories if they do not exist during uploads?  This is primarily used to work around broken upload clients that assume servers will perform this step.
     def always_mkdir_parents
       @attributes[:always_mkdir_parents]
@@ -1111,6 +1116,7 @@ module Files
     #   allow_user_level_2fa_override - boolean - Allow the site-wide two-factor authentication requirement to be overriden on a per-user-basis?
     #   allow_user_level_allowed_ip_override - boolean - Allow the site-wide allowed IP restriction to be overriden on a per-user-basis?
     #   allow_user_level_ssl_override - boolean - Allow the site-wide FTP SSL requirement to be overriden on a per-user-basis?
+    #   enforce_parent_site_user_ip_restrictions - boolean - Require Parent Site users entering this Child Site to match its allowed IP addresses in addition to their existing IP restrictions. Applies to all Workspaces. Defaults to false.
     #   disallowed_countries - string - Comma separated list of disallowed Country codes
     #   days_to_retain_backups - int64 - Number of days to keep deleted files
     #   max_prior_passwords - int64 - Number of prior passwords to disallow
@@ -1313,6 +1319,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: allow_user_level_2fa_override must be a single value, not #{params[:allow_user_level_2fa_override].class}") if [ Array, Hash ].any? { |klass| params[:allow_user_level_2fa_override].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: allow_user_level_allowed_ip_override must be a single value, not #{params[:allow_user_level_allowed_ip_override].class}") if [ Array, Hash ].any? { |klass| params[:allow_user_level_allowed_ip_override].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: allow_user_level_ssl_override must be a single value, not #{params[:allow_user_level_ssl_override].class}") if [ Array, Hash ].any? { |klass| params[:allow_user_level_ssl_override].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: enforce_parent_site_user_ip_restrictions must be a single value, not #{params[:enforce_parent_site_user_ip_restrictions].class}") if [ Array, Hash ].any? { |klass| params[:enforce_parent_site_user_ip_restrictions].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: disallowed_countries must be an String") if !params[:disallowed_countries].nil? and !params[:disallowed_countries].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: days_to_retain_backups must be an Integer") if !params[:days_to_retain_backups].nil? and !params[:days_to_retain_backups].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: max_prior_passwords must be an Integer") if !params[:max_prior_passwords].nil? and !params[:max_prior_passwords].is_a?(Integer)
