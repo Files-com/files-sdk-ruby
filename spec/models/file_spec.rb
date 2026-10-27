@@ -1,7 +1,7 @@
 require "spec_helper"
 require "tempfile"
 
-RSpec.describe Files::File, :with_test_folder, skip: ENV.fetch("GITLAB", nil) do
+RSpec.describe Files::File, :with_test_folder do
   describe "#read" do
     before do
       Files::File.open(test_folder.join("[[strange stuff]]#yes.text").to_s, 'w', options) do |f|
@@ -17,7 +17,8 @@ RSpec.describe Files::File, :with_test_folder, skip: ENV.fetch("GITLAB", nil) do
     context "stream failure" do
       let(:expired_download) { "https://s3.amazonaws.com/objects.brickftp.com/metadata/37868/52f55a21-1685-46aa-aaff-99ca8b172c00?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIEWLY3MN4YGZQOWA%2F20210621%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210621T202802Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&response-cache-control=no-cache%2C%20no-store&response-content-disposition=attachment%3B%20filename%3D%22write-as-io.txt%22&response-content-type=text%2Fplain&X-Amz-Signature=83d5b5789cbd2282bfea6e560e4319385135204dc0df3217930f96905c9cb18f" }
 
-      it "waits for io to be ready" do
+      # The download URL is a real, expired S3 URL outside the simulator, so CI never requests it.
+      it "waits for io to be ready", skip: ENV.fetch("GITLAB", nil) do
         file = Files::File.new
         allow(file).to receive(:download_uri_with_load).and_return(expired_download)
         expect { file.read_io }.to raise_error('403 "Forbidden"')
@@ -40,10 +41,10 @@ RSpec.describe Files::File, :with_test_folder, skip: ENV.fetch("GITLAB", nil) do
     end
 
     it "works for file with zero bytes" do
-      file = Files::File.open("zero-byte.txt", 'w', options)
+      file = Files::File.open(test_folder.join("zero-byte.txt").to_s, 'w', options)
       file.write("")
       file.close
-      file = Files::File.find("zero-byte.txt", {}, options)
+      file = Files::File.find(test_folder.join("zero-byte.txt").to_s, {}, options)
       expect(file.read_io.read).to eq("")
     end
   end
@@ -83,7 +84,8 @@ RSpec.describe Files::File, :with_test_folder, skip: ENV.fetch("GITLAB", nil) do
       temp_file.close
     end
 
-    it "will send with_rename" do
+    # The simulator answers with_rename with 501 (simulation/not-supported), so CI leaves this probe out.
+    it "will send with_rename", skip: ENV.fetch("GITLAB", nil) do
       path = test_folder.join("with_rename_test.txt").to_s
       io = StringIO.new("I am a string via IO")
       file = Files::File.new({ path: path, with_rename: true }, options)
@@ -123,8 +125,8 @@ RSpec.describe Files::File, :with_test_folder, skip: ENV.fetch("GITLAB", nil) do
     end
 
     it "returns a directory type" do
-      Files::Folder.mkdir("testdir", {}, options) unless Files::Folder.exist?("testdir", options)
-      expect(Files::File.from_path("testdir", options).type).to eq("directory")
+      Files::Folder.mkdir(test_folder.join("testdir").to_s, {}, options)
+      expect(Files::File.from_path(test_folder.join("testdir").to_s, options).type).to eq("directory")
     end
   end
 end
