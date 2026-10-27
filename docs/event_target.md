@@ -6,12 +6,24 @@
 {
   "id": 1,
   "name": "example",
-  "target_type": "example",
+  "target_type": "webhook",
   "workspace_id": 1,
   "apply_to_all_workspaces": true,
   "enabled": true,
-  "config": "example",
-  "delivery_policy": "example",
+  "config": {
+    "url": "https://example.com/files-events",
+    "headers": {
+      "X-Example": "value"
+    },
+    "use_dedicated_ips": false
+  },
+  "delivery_policy": {
+    "max_attempts": 3,
+    "retry_delay_minutes": [
+      1,
+      10
+    ]
+  },
   "created_at": "2000-01-01T01:00:00Z",
   "updated_at": "2000-01-01T01:00:00Z"
 }
@@ -23,7 +35,7 @@
 * `workspace_id` (int64): Workspace ID. 0 means the default workspace or site-wide.
 * `apply_to_all_workspaces` (boolean): If true, this default-workspace target can receive events from all workspaces.
 * `enabled` (boolean): Whether this Event Target can receive events.
-* `config` (object): Event Target configuration. Folder targets accept path and format (json or csv).
+* `config` (object): Event Target configuration. Fields depend on target_type.
 * `delivery_policy` (object): Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
 * `created_at` (date-time): Event Target create date/time.
 * `updated_at` (date-time): Event Target update date/time.
@@ -68,9 +80,9 @@ Files::EventTarget.create(
   workspace_id: 1, 
   apply_to_all_workspaces: true, 
   enabled: true, 
-  config: "example", 
-  delivery_policy: "example", 
-  target_type: "example"
+  config: {"url":"https://example.com/files-events","headers":{"X-Example":"value"},"use_dedicated_ips":false}, 
+  delivery_policy: {"max_attempts":3,"retry_delay_minutes":[1,10]}, 
+  target_type: "webhook"
 )
 ```
 
@@ -80,7 +92,7 @@ Files::EventTarget.create(
 * `workspace_id` (int64): Workspace ID. 0 means the default workspace or site-wide.
 * `apply_to_all_workspaces` (boolean): If true, this default-workspace target can receive events from all workspaces.
 * `enabled` (boolean): Whether this Event Target can receive events.
-* `config` (object): Required - Event Target configuration. Folder targets accept path and format (json or csv).
+* `config` (object): Required - Event Target configuration. Fields depend on target_type.
 * `delivery_policy` (object): Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
 * `target_type` (string): Required - Event Target type.
 
@@ -95,8 +107,8 @@ Files::EventTarget.update(id,
   workspace_id: 1, 
   apply_to_all_workspaces: true, 
   enabled: true, 
-  config: "example", 
-  delivery_policy: "example"
+  config: {"url":"https://example.com/files-events","headers":{"X-Example":"value"},"use_dedicated_ips":false}, 
+  delivery_policy: {"max_attempts":3,"retry_delay_minutes":[1,10]}
 )
 ```
 
@@ -107,7 +119,7 @@ Files::EventTarget.update(id,
 * `workspace_id` (int64): Workspace ID. 0 means the default workspace or site-wide.
 * `apply_to_all_workspaces` (boolean): If true, this default-workspace target can receive events from all workspaces.
 * `enabled` (boolean): Whether this Event Target can receive events.
-* `config` (object): Event Target configuration. Folder targets accept path and format (json or csv).
+* `config` (object): Event Target configuration. Fields depend on target_type.
 * `delivery_policy` (object): Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
 
 
@@ -136,8 +148,8 @@ event_target.update(
   workspace_id: 1,
   apply_to_all_workspaces: true,
   enabled: true,
-  config: "example",
-  delivery_policy: "example"
+  config: {"url":"https://example.com/files-events","headers":{"X-Example":"value"},"use_dedicated_ips":false},
+  delivery_policy: {"max_attempts":3,"retry_delay_minutes":[1,10]}
 )
 ```
 
@@ -148,7 +160,7 @@ event_target.update(
 * `workspace_id` (int64): Workspace ID. 0 means the default workspace or site-wide.
 * `apply_to_all_workspaces` (boolean): If true, this default-workspace target can receive events from all workspaces.
 * `enabled` (boolean): Whether this Event Target can receive events.
-* `config` (object): Event Target configuration. Folder targets accept path and format (json or csv).
+* `config` (object): Event Target configuration. Fields depend on target_type.
 * `delivery_policy` (object): Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
 
 

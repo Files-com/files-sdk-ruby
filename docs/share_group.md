@@ -12,7 +12,7 @@
     {
       "name": "John Doe",
       "company": "Acme Ltd",
-      "email": "johndoe@gmail.com"
+      "email": "johndoe@example.com"
     }
   ]
 }
@@ -64,7 +64,7 @@ Files::ShareGroup.create(
   user_id: 1, 
   notes: "This group is defined for testing purposes", 
   name: "Test group 1", 
-  members: [{"name":"John Doe","company":"Acme Ltd","email":"johndoe@gmail.com"}]
+  members: [{"name":"John Doe","company":"Acme Ltd","email":"johndoe@example.com"}]
 )
 ```
 
@@ -84,7 +84,7 @@ Files::ShareGroup.create(
 Files::ShareGroup.update(id, 
   notes: "This group is defined for testing purposes", 
   name: "Test group 1", 
-  members: [{"name":"John Doe","company":"Acme Ltd","email":"johndoe@gmail.com"}]
+  members: [{"name":"John Doe","company":"Acme Ltd","email":"johndoe@example.com"}]
 )
 ```
 
@@ -119,7 +119,7 @@ share_group = Files::ShareGroup.find(id)
 share_group.update(
   notes: "This group is defined for testing purposes",
   name: "Test group 1",
-  members: [{"name":"John Doe","company":"Acme Ltd","email":"johndoe@gmail.com"}]
+  members: [{"name":"John Doe","company":"Acme Ltd","email":"johndoe@example.com"}]
 )
 ```
 

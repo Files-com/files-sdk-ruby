@@ -8,7 +8,17 @@
   "policy_type": "settings",
   "name": "example",
   "description": "example",
-  "value": "{ \"color2_left\": \"#000000\", \"folder_behaviors\": [{ \"behavior\": \"file_expiration\", \"value\": { \"days_to_retain\": 30 } }] }",
+  "value": {
+    "color2_left": "#000000",
+    "folder_behaviors": [
+      {
+        "behavior": "file_expiration",
+        "value": {
+          "days_to_retain": 30
+        }
+      }
+    ]
+  },
   "applied_child_site_ids": [
     1,
     2
@@ -73,7 +83,7 @@ Files::ChildSiteManagementPolicy.find(id)
 
 ```
 Files::ChildSiteManagementPolicy.create(
-  value: {"color2_left":"#000000"}, 
+  value: {"color2_left":"#000000","folder_behaviors":[{"behavior":"file_expiration","value":{"days_to_retain":30}}]}, 
   skip_child_site_ids: [1,2], 
   child_site_ids: [1,2], 
   default_policy: true, 
@@ -100,7 +110,7 @@ Files::ChildSiteManagementPolicy.create(
 
 ```
 Files::ChildSiteManagementPolicy.update(id, 
-  value: {"color2_left":"#000000"}, 
+  value: {"color2_left":"#000000","folder_behaviors":[{"behavior":"file_expiration","value":{"days_to_retain":30}}]}, 
   skip_child_site_ids: [1,2], 
   child_site_ids: [1,2], 
   default_policy: true, 
@@ -143,7 +153,7 @@ Files::ChildSiteManagementPolicy.delete(id)
 child_site_management_policy = Files::ChildSiteManagementPolicy.find(id)
 
 child_site_management_policy.update(
-  value: {"color2_left":"#000000"},
+  value: {"color2_left":"#000000","folder_behaviors":[{"behavior":"file_expiration","value":{"days_to_retain":30}}]},
   skip_child_site_ids: [1,2],
   child_site_ids: [1,2],
   default_policy: true,
