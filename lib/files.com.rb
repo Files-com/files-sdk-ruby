@@ -285,7 +285,10 @@ module Files
   end
 
   # What a request does when the API answers that the site must be reached through another origin, such as its
-  # region or its custom domain (Files::LockoutRegionMismatchError, with that origin in data[:host]).
+  # region or its custom domain: the typed HTTP 403 Files::LockoutRegionMismatchError, with that origin in data[:host]
+  # or X-Files-Host when the data host is absent or empty, or the legacy plain-text HTTP 403 beginning "You have connected to a URL"
+  # with X-Files-Host. A recognized legacy answer raises the same typed error when the request cannot continue, keeping
+  # its original text and headers in http_body and http_headers. An unrelated 403 never moves the request.
   #
   # :automatic (the default) sends the same request once more to that origin, within the same retry count, and keeps
   # using it for the records and pages the request returns. Other requests still start at Files.base_url. It does so
@@ -305,8 +308,8 @@ module Files
   # Each pair is [source, destination], such as [["http://localhost:3000", "http://site.localhost:3000"]].
   #
   # With region_policy :automatic, a request to the source (Files.base_url, or the request's own base_url) that gets
-  # the error with data[:host] naming the destination, as that full http:// origin or as its bare host (with its port
-  # when it is not 80), is sent once more to the destination, within the same retry count, and the records and pages
+  # the mismatch naming the destination in data[:host] or X-Files-Host, as that full http:// origin or as its bare host
+  # (with its port when it is not 80), is sent once more to the destination, within the same retry count, and the records and pages
   # it returns keep using it. region_handler, when set, is still asked first and can decline. Nothing else continues
   # over plain HTTP, a request to an https:// origin never does, and :disabled still raises the error.
   #

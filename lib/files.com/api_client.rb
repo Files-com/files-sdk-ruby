@@ -341,8 +341,8 @@ module Files
     end
 
     # The origin a lockout region mismatch moves this request to, or nil to raise the error as it is. The API answers
-    # with that error, naming the site's own origin in data.host, when the site is pinned to another region or to a
-    # custom domain. Only the configured HTTPS origin, reached over this client's verified connection, may send the
+    # with that error, naming the site's own origin in data.host or X-Files-Host, when the site is pinned to another
+    # region or to a custom domain. Only the configured HTTPS origin, reached over this client's verified connection, may send the
     # credentials elsewhere, apart from an http:// origin to the destination +http_pairs+ pairs it with.
     private def region_continuation_base_url(error_response, base_url, body, http_pairs)
       return if Files.region_policy == :disabled
@@ -351,7 +351,11 @@ module Files
       return unless error_response.http_status == 403 && error_object[:type] == "not-authenticated/lockout-region-mismatch"
       return unless replayable?(body)
 
-      host = error_object[:data].is_a?(Hash) ? error_object[:data][:host] : nil
+      data = error_object[:data]
+      return unless data.nil? || data.is_a?(Hash)
+
+      host = data && data[:host]
+      host = Faraday::Utils::Headers.new(error_response.http_headers || {})["X-Files-Host"] if host.nil? || host == ""
       return http_pair_origin(base_url, host, http_pairs) unless verified_https_connection?(base_url)
 
       configured = Addressable::URI.parse(base_url)
@@ -507,10 +511,11 @@ module Files
 
         case e
         when Faraday::ClientError, Faraday::ServerError
-          error_response = api_error_response(e.response)
-          if relocate && error_response && (regional_base_url = relocate.call(error_response))
+          error_response = api_error_response(e.response, allow_legacy_region_mismatch: !is_transfer)
+          if relocate && num_retries < Files.max_network_retries && error_response && (regional_base_url = relocate.call(error_response))
             relocate = nil
             base_url = regional_base_url
+            num_retries += 1
             retry
           end
 
@@ -547,16 +552,29 @@ module Files
     end
 
     # A failed response carrying a Files.com error object: a JSON object with an
-    # error message or type. Any other body, JSON or not, is not an answer the
-    # SDK can use.
-    private def api_error_response(http_resp)
+    # error message or type, or an ordinary API request's recognized legacy
+    # plain-text region mismatch. Other bodies give the SDK no usable answer.
+    private def api_error_response(http_resp, allow_legacy_region_mismatch: false)
       return unless http_resp
 
       resp = Response.from_faraday_hash(http_resp)
       error_object = resp.data
       resp if error_object.is_a?(Hash) && (error_object[:error] || error_object[:errors] || error_object[:type])
     rescue JSON::ParserError
-      nil
+      return unless allow_legacy_region_mismatch && http_resp[:status] == 403
+
+      body = http_resp[:body]
+      host = Faraday::Utils::Headers.new(http_resp[:headers] || {})["X-Files-Host"]
+      return unless body.is_a?(String) && body.start_with?("You have connected to a URL") && host.is_a?(String) && !host.empty?
+
+      # The legacy API answer predates JSON errors. Give callers the same typed error and routing data while keeping
+      # the original text and headers on the response; a storage response never acquires API routing authority.
+      resp = Response.new
+      resp.http_status = http_resp[:status]
+      resp.http_headers = http_resp[:headers]
+      resp.http_body = body
+      resp.data = { type: "not-authenticated/lockout-region-mismatch", error: body, data: { host: host } }
+      resp
     end
 
     private def handle_error_response(resp, context, is_transfer: false)
