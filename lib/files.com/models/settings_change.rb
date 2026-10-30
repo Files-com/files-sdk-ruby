@@ -4,58 +4,73 @@ module Files
   # Files::SettingsChange is the Ruby SDK's representation of Files.com API SettingsChange objects.
   # Each instance keeps its API field values in +attributes+.
   class SettingsChange
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - The API key id responsible for this change.
+    # The API key id responsible for this change.
+    # @return [Integer, nil] the field value, or nil when absent.
     def api_key_id
       @attributes[:api_key_id]
     end
 
-    # array(string) - Markdown-formatted change messages.
+    # Markdown-formatted change messages.
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def changes
       @attributes[:changes]
     end
 
-    # date-time - The time this change was made.
+    # The time this change was made.
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # int64 - The user id responsible for this change.
+    # The user id responsible for this change.
+    # @return [Integer, nil] the field value, or nil when absent.
     def user_id
       @attributes[:user_id]
     end
 
-    # boolean - true if this change was performed by Files.com support.
+    # true if this change was performed by Files.com support.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def user_is_files_support
       @attributes[:user_is_files_support]
     end
 
-    # boolean - true if this change was performed by a user on a parent site.
+    # true if this change was performed by a user on a parent site.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def user_is_from_parent_site
       @attributes[:user_is_from_parent_site]
     end
 
-    # string - The username of the user responsible for this change.
+    # The username of the user responsible for this change.
+    # @return [String, nil] the field value, or nil when absent.
     def username
       @attributes[:username]
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`, `api_key_id` or `user_id`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `api_key_id` and `user_id`.
+    # List Settings Changes
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::SettingsChange objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`, `api_key_id` or `user_id`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `api_key_id` and `user_id`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -70,6 +85,7 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end

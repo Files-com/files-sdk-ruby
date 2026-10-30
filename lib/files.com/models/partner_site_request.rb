@@ -4,78 +4,116 @@ module Files
   # Files::PartnerSiteRequest is the Ruby SDK's representation of Files.com API PartnerSiteRequest objects.
   # Each instance keeps its API field values in +attributes+.
   class PartnerSiteRequest
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Partner Site Request ID
+    # Partner Site Request ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # int64 - Host Partner ID
+    # Host Partner ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def host_partner_id
       @attributes[:host_partner_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def host_partner_id=(value)
       @attributes[:host_partner_id] = value
     end
 
-    # string - Guest Site URL
+    # Guest Site URL
+    # @return [String, nil] the field value, or nil when absent.
     def guest_site_url
       @attributes[:guest_site_url]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def guest_site_url=(value)
       @attributes[:guest_site_url] = value
     end
 
-    # string - Request status (pending, approved, rejected)
+    # Request status (pending, approved, rejected)
+    # @return [String, nil] the field value, or nil when absent.
     def status
       @attributes[:status]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def status=(value)
       @attributes[:status] = value
     end
 
-    # string - Host Site Name
+    # Host Site Name
+    # @return [String, nil] the field value, or nil when absent.
     def host_site_name
       @attributes[:host_site_name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def host_site_name=(value)
       @attributes[:host_site_name] = value
     end
 
-    # string - Pairing key used to approve this request on the Guest Site
+    # Pairing key used to approve this request on the Guest Site
+    # @return [String, nil] the field value, or nil when absent.
     def pairing_key
       @attributes[:pairing_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def pairing_key=(value)
       @attributes[:pairing_key] = value
     end
 
-    # date-time - Request creation date/time
+    # Request creation date/time
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # date-time - Request last updated date/time
+    # Request last updated date/time
+    # @return [String, nil] the field value, or nil when absent.
     def updated_at
       @attributes[:updated_at]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Partner Site Request
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -88,12 +126,20 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
+    # @raise [Files::NotImplementedError] if this record already has an id; updates are unsupported.
     def save
       if @attributes[:id]
         raise NotImplementedError.new("The PartnerSiteRequest object doesn't support updates.")
@@ -106,16 +152,18 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `host_partner_id`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `host_partner_id`.
+    # List Partner Site Requests
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::PartnerSiteRequest objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `host_partner_id`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `host_partner_id`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -130,17 +178,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   pairing_key (required) - string - Pairing key for the partner site request
+    # Find partner site request by pairing key
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns nil.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] pairing_key Required. Pairing key for the partner site request
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find_by_pairing_key(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: pairing_key must be an String") if !params[:pairing_key].nil? and !params[:pairing_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: pairing_key") if params[:pairing_key].nil?
@@ -149,14 +200,16 @@ module Files
       nil
     end
 
-    # Parameters:
-    #   host_partner_id (required) - int64 - Host Partner ID to link with
-    #   guest_site_url (required) - string - Guest Site URL to link to
+    # Create Partner Site Request
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::PartnerSiteRequest.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] host_partner_id Required. Host Partner ID to link with
+    # @option params [String] guest_site_url Required. Guest Site URL to link to
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::PartnerSiteRequest] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: host_partner_id must be an Integer") if !params[:host_partner_id].nil? and !params[:host_partner_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: guest_site_url must be an String") if !params[:guest_site_url].nil? and !params[:guest_site_url].is_a?(String)
@@ -167,13 +220,15 @@ module Files
       PartnerSiteRequest.new(response.data, options)
     end
 
-    # Parameters:
-    #   pairing_key (required) - string - Pairing key for the partner site request
+    # Reject partner site request
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns nil.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] pairing_key Required. Pairing key for the partner site request
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.reject(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: pairing_key must be an String") if !params[:pairing_key].nil? and !params[:pairing_key].is_a?(String)
       raise MissingParameterError.new("Parameter missing: pairing_key") if params[:pairing_key].nil?
@@ -182,14 +237,16 @@ module Files
       nil
     end
 
-    # Parameters:
-    #   pairing_key (required) - string - Pairing key for the partner site request
-    #   partner_id - int64 - ID of an existing Partner on this site, with the host role, that represents the requesting organization. The connection binds to that Partner and makes it host_and_guest. When omitted, a guest Partner named after the host site is created.
+    # Approve partner site request
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns nil.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] pairing_key Required. Pairing key for the partner site request
+    # @option params [Integer] partner_id ID of an existing Partner on this site, with the host role, that represents the requesting organization. The connection binds to that Partner and makes it host_and_guest. When omitted, a guest Partner named after the host site is created.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.approve(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: pairing_key must be an String") if !params[:pairing_key].nil? and !params[:pairing_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if !params[:partner_id].nil? and !params[:partner_id].is_a?(Integer)
@@ -199,10 +256,15 @@ module Files
       nil
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Partner Site Request
     #
-    # Returns nil.
+    # @param id [Integer] Partner Site Request ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -213,7 +275,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

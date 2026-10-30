@@ -9,6 +9,22 @@ module Files
     # check, succeed; the caller's options are not changed. An options base_url
     # sends the request there instead of to Files.base_url, and an options
     # region_http_pairs is used instead of the client's.
+    #
+    # @param path [String] API endpoint path.
+    # @param verb [Symbol] HTTP method.
+    # @param params [Hash] API parameters keyed by Symbol.
+    # @param options [Hash] request configuration, copied before use.
+    # @option options [String] :api_key API key, overriding {Files.api_key}.
+    # @option options [String] :session_id session ID, overriding {Files.session_id}.
+    # @option options [Files::Session] :session session to save and use for authentication.
+    # @option options [String] :base_url API origin, overriding {Files.base_url}.
+    # @option options [Files::ApiClient] :client client to use instead of the active client.
+    # @option options [Integer] :workspace_id workspace to select for the request.
+    # @option options [Array<Array<String>>] :region_http_pairs explicit local HTTP origin pairs.
+    # @yield [response] checks the response before its options are retained.
+    # @yieldparam response [Files::Response] the successful API response.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::Error] if the API request fails.
     def self.send_request(path, verb, params, options)
       warn_on_options_in_params(params)
 

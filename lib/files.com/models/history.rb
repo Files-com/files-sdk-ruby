@@ -4,96 +4,118 @@ module Files
   # Files::History is the Ruby SDK's representation of Files.com API History objects.
   # Each instance keeps its API field values in +attributes+.
   class History
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Action ID
+    # Action ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
-    # string - Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # @return [String, nil] the field value, or nil when absent.
     def path
       @attributes[:path]
     end
 
-    # date-time - Action occurrence date/time
+    # Action occurrence date/time
+    # @return [String, nil] the field value, or nil when absent.
     def when
       @attributes[:when]
     end
 
-    # string - The destination path for this action, if applicable
+    # The destination path for this action, if applicable
+    # @return [String, nil] the field value, or nil when absent.
     def destination
       @attributes[:destination]
     end
 
-    # string - Friendly displayed output
+    # Friendly displayed output
+    # @return [String, nil] the field value, or nil when absent.
     def display
       @attributes[:display]
     end
 
-    # string - IP Address that performed this action
+    # IP Address that performed this action
+    # @return [String, nil] the field value, or nil when absent.
     def ip
       @attributes[:ip]
     end
 
-    # string - The source path for this action, if applicable
+    # The source path for this action, if applicable
+    # @return [String, nil] the field value, or nil when absent.
     def source
       @attributes[:source]
     end
 
-    # object - Targets
+    # Targets
+    # @return [Hash, nil] the field value, or nil when absent.
     def targets
       @attributes[:targets]
     end
 
-    # int64 - User ID
+    # User ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def user_id
       @attributes[:user_id]
     end
 
-    # string - Username
+    # Username
+    # @return [String, nil] the field value, or nil when absent.
     def username
       @attributes[:username]
     end
 
-    # boolean - true if this change was performed by a user on a parent site.
+    # true if this change was performed by a user on a parent site.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def user_is_from_parent_site
       @attributes[:user_is_from_parent_site]
     end
 
-    # string - Type of action
+    # Type of action
+    # @return [String, nil] the field value, or nil when absent.
     def action
       @attributes[:action]
     end
 
-    # string - Failure type.  If action was a user login or session failure, why did it fail?
+    # Failure type.  If action was a user login or session failure, why did it fail?
+    # @return [String, nil] the field value, or nil when absent.
     def failure_type
       @attributes[:failure_type]
     end
 
-    # string - Interface on which this action occurred.
+    # Interface on which this action occurred.
+    # @return [String, nil] the field value, or nil when absent.
     def interface
       @attributes[:interface]
     end
 
-    # Parameters:
-    #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
-    #   end_at - string - Leave blank or set to a date/time to filter later entries.
-    #   display - string - Display format. Leave blank or set to `full` or `parent`.
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
-    #   path (required) - string - Path to operate on.
+    # List history for specific file
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::Action objects.
+    # @param path [String] Path to operate on.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
+    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
+    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list_for_file(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
@@ -114,19 +136,21 @@ module Files
       end
     end
 
-    # Parameters:
-    #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
-    #   end_at - string - Leave blank or set to a date/time to filter later entries.
-    #   display - string - Display format. Leave blank or set to `full` or `parent`.
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
-    #   path (required) - string - Path to operate on.
+    # List history for specific folder
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::Action objects.
+    # @param path [String] Path to operate on.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
+    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
+    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list_for_folder(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
@@ -147,19 +171,21 @@ module Files
       end
     end
 
-    # Parameters:
-    #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
-    #   end_at - string - Leave blank or set to a date/time to filter later entries.
-    #   display - string - Display format. Leave blank or set to `full` or `parent`.
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
-    #   user_id (required) - int64 - User ID.
+    # List history for specific user
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::Action objects.
+    # @param user_id [Integer] User ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
+    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
+    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list_for_user(user_id, params = {}, options = {})
       params = (params || {}).dup
       params[:user_id] = user_id
@@ -180,18 +206,20 @@ module Files
       end
     end
 
-    # Parameters:
-    #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
-    #   end_at - string - Leave blank or set to a date/time to filter later entries.
-    #   display - string - Display format. Leave blank or set to `full` or `parent`.
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    # List site login history
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::Action objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
+    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
+    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list_logins(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
@@ -208,20 +236,22 @@ module Files
       end
     end
 
-    # Parameters:
-    #   start_at - string - Leave blank or set to a date/time to filter earlier entries.
-    #   end_at - string - Leave blank or set to a date/time to filter later entries.
-    #   display - string - Display format. Leave blank or set to `full` or `parent`.
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `user_id`, `folder` or `path`. Valid field combinations are `[  ]`, `[ path ]`, `[ path ]` or `[ path ]`.
-    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `path`.
+    # List site full action history
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::Action objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
+    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
+    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `user_id`, `folder` or `path`. Valid field combinations are `[  ]`, `[ path ]`, `[ path ]` or `[ path ]`.
+    # @option params [Hash] filter_prefix If set, return records where the specified field is prefixed by the supplied value. Valid fields are `path`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
@@ -240,6 +270,7 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end

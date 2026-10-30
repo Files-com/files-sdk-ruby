@@ -4,120 +4,176 @@ module Files
   # Files::FormFieldSet is the Ruby SDK's representation of Files.com API FormFieldSet objects.
   # Each instance keeps its API field values in +attributes+.
   class FormFieldSet
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Form field set id
+    # Form field set id
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - Title to be displayed
+    # Title to be displayed
+    # @return [String, nil] the field value, or nil when absent.
     def title
       @attributes[:title]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def title=(value)
       @attributes[:title] = value
     end
 
-    # boolean - Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
+    # Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
+    # @return [Boolean, nil] the field value, or nil when absent.
     def require_complete_metadata_capture
       @attributes[:require_complete_metadata_capture]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def require_complete_metadata_capture=(value)
       @attributes[:require_complete_metadata_capture] = value
     end
 
-    # array(int64) - Layout of the form
+    # Layout of the form
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def form_layout
       @attributes[:form_layout]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def form_layout=(value)
       @attributes[:form_layout] = value
     end
 
-    # array(object) - Associated form field definitions; authenticated form field set responses include historical definitions, while form_layout identifies current fields
+    # Associated form field definitions; authenticated form field set responses include historical definitions, while form_layout identifies current fields
+    # @return [Array<Hash>, nil] the field value, or nil when absent.
     def form_fields
       @attributes[:form_fields]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Hash>, nil] the new field value.
+    # @return [Array<Hash>, nil] the assigned value.
     def form_fields=(value)
       @attributes[:form_fields] = value
     end
 
-    # boolean - Any associated InboxRegistrations or BundleRegistrations can be saved without providing name
+    # Any associated InboxRegistrations or BundleRegistrations can be saved without providing name
+    # @return [Boolean, nil] the field value, or nil when absent.
     def skip_name
       @attributes[:skip_name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def skip_name=(value)
       @attributes[:skip_name] = value
     end
 
-    # boolean - Any associated InboxRegistrations or BundleRegistrations can be saved without providing email
+    # Any associated InboxRegistrations or BundleRegistrations can be saved without providing email
+    # @return [Boolean, nil] the field value, or nil when absent.
     def skip_email
       @attributes[:skip_email]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def skip_email=(value)
       @attributes[:skip_email] = value
     end
 
-    # boolean - Any associated InboxRegistrations or BundleRegistrations can be saved without providing company
+    # Any associated InboxRegistrations or BundleRegistrations can be saved without providing company
+    # @return [Boolean, nil] the field value, or nil when absent.
     def skip_company
       @attributes[:skip_company]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def skip_company=(value)
       @attributes[:skip_company] = value
     end
 
-    # boolean - Form Field Set is in use by an active Inbox / Bundle / Inbox Registration / Bundle Registration
+    # Form Field Set is in use by an active Inbox / Bundle / Inbox Registration / Bundle Registration
+    # @return [Boolean, nil] the field value, or nil when absent.
     def in_use
       @attributes[:in_use]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def in_use=(value)
       @attributes[:in_use] = value
     end
 
-    # int64 - User ID.  Provide a value of `0` to operate the current session's user.
+    # User ID.  Provide a value of `0` to operate the current session's user.
+    # @return [Integer, nil] the field value, or nil when absent.
     def user_id
       @attributes[:user_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def user_id=(value)
       @attributes[:user_id] = value
     end
 
-    # int64 - Workspace ID
+    # Workspace ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # Parameters:
-    #   title - string - Title to be displayed
-    #   require_complete_metadata_capture - boolean - Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
-    #   workspace_id - int64 - Workspace ID
-    #   skip_email - boolean - Skip validating form email
-    #   skip_name - boolean - Skip validating form name
-    #   skip_company - boolean - Skip validating company
-    #   form_fields - array(object)
+    # Update Form Field Set
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] title Title to be displayed
+    # @option params [Boolean] require_complete_metadata_capture Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
+    # @option params [Integer] workspace_id Workspace ID
+    # @option params [Boolean] skip_email Skip validating form email
+    # @option params [Boolean] skip_name Skip validating form name
+    # @option params [Boolean] skip_company Skip validating company
+    # @option params [Array<Hash>] form_fields
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -138,7 +194,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Form Field Set
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -151,12 +213,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -169,15 +238,17 @@ module Files
       true
     end
 
-    # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # List Form Field Sets
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::FormFieldSet objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] user_id User ID.  Provide a value of `0` to operate the current session's user.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
@@ -191,17 +262,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Form Field Set ID.
+    # Show Form Field Set
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::FormFieldSet.
+    # @param id [Integer] Form Field Set ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::FormFieldSet] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -212,24 +286,27 @@ module Files
       FormFieldSet.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   title - string - Title to be displayed
-    #   require_complete_metadata_capture - boolean - Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
-    #   workspace_id - int64 - Workspace ID
-    #   skip_email - boolean - Skip validating form email
-    #   skip_name - boolean - Skip validating form name
-    #   skip_company - boolean - Skip validating company
-    #   form_fields - array(object)
+    # Create Form Field Set
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::FormFieldSet.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] user_id User ID.  Provide a value of `0` to operate the current session's user.
+    # @option params [String] title Title to be displayed
+    # @option params [Boolean] require_complete_metadata_capture Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
+    # @option params [Integer] workspace_id Workspace ID
+    # @option params [Boolean] skip_email Skip validating form email
+    # @option params [Boolean] skip_name Skip validating form name
+    # @option params [Boolean] skip_company Skip validating company
+    # @option params [Array<Hash>] form_fields
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::FormFieldSet] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: title must be an String") if !params[:title].nil? and !params[:title].is_a?(String)
@@ -244,19 +321,22 @@ module Files
       FormFieldSet.new(response.data, options)
     end
 
-    # Parameters:
-    #   title - string - Title to be displayed
-    #   require_complete_metadata_capture - boolean - Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
-    #   workspace_id - int64 - Workspace ID
-    #   skip_email - boolean - Skip validating form email
-    #   skip_name - boolean - Skip validating form name
-    #   skip_company - boolean - Skip validating company
-    #   form_fields - array(object)
+    # Update Form Field Set
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::FormFieldSet.
+    # @param id [Integer] Form Field Set ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] title Title to be displayed
+    # @option params [Boolean] require_complete_metadata_capture Reject answers over 1024 characters or more than 32 answered custom fields to ensure complete file metadata capture
+    # @option params [Integer] workspace_id Workspace ID
+    # @option params [Boolean] skip_email Skip validating form email
+    # @option params [Boolean] skip_name Skip validating form name
+    # @option params [Boolean] skip_company Skip validating company
+    # @option params [Array<Hash>] form_fields
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::FormFieldSet] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -274,10 +354,15 @@ module Files
       FormFieldSet.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Form Field Set
     #
-    # Returns nil.
+    # @param id [Integer] Form Field Set ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -288,7 +373,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

@@ -4,103 +4,127 @@ module Files
   # Files::EventDeliveryAttempt is the Ruby SDK's representation of Files.com API EventDeliveryAttempt objects.
   # Each instance keeps its API field values in +attributes+.
   class EventDeliveryAttempt
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Event Delivery Attempt ID
+    # Event Delivery Attempt ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
-    # int64 - Event Record ID
+    # Event Record ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def event_record_id
       @attributes[:event_record_id]
     end
 
-    # int64 - Event Subscription ID
+    # Event Subscription ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def event_subscription_id
       @attributes[:event_subscription_id]
     end
 
-    # int64 - Event Target ID
+    # Event Target ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def event_target_id
       @attributes[:event_target_id]
     end
 
-    # int64 - Shared summary ID when this event is delivered in a Slack or Teams subfolder summary. All events in a summary share its delivery outcome.
+    # Shared summary ID when this event is delivered in a Slack or Teams subfolder summary. All events in a summary share its delivery outcome.
+    # @return [Integer, nil] the field value, or nil when absent.
     def activity_notification_batch_id
       @attributes[:activity_notification_batch_id]
     end
 
-    # int64 - Workspace ID. 0 means the default workspace or site-wide.
+    # Workspace ID. 0 means the default workspace or site-wide.
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
-    # string - Delivery status.
+    # Delivery status.
+    # @return [String, nil] the field value, or nil when absent.
     def status
       @attributes[:status]
     end
 
-    # int64 - Number of delivery attempts made.
+    # Number of delivery attempts made.
+    # @return [Integer, nil] the field value, or nil when absent.
     def attempt_number
       @attributes[:attempt_number]
     end
 
-    # int64 - HTTP response code, if applicable.
+    # HTTP response code, if applicable.
+    # @return [Integer, nil] the field value, or nil when absent.
     def response_code
       @attributes[:response_code]
     end
 
-    # string - Delivery error message, if applicable.
+    # Delivery error message, if applicable.
+    # @return [String, nil] the field value, or nil when absent.
     def error_message
       @attributes[:error_message]
     end
 
-    # string - Delivery response body, if applicable.
+    # Delivery response body, if applicable.
+    # @return [String, nil] the field value, or nil when absent.
     def response_body
       @attributes[:response_body]
     end
 
-    # int64 - Delivery latency in milliseconds.
+    # Delivery latency in milliseconds.
+    # @return [Integer, nil] the field value, or nil when absent.
     def latency_ms
       @attributes[:latency_ms]
     end
 
-    # date-time - Successful delivery date/time.
+    # Successful delivery date/time.
+    # @return [String, nil] the field value, or nil when absent.
     def delivered_at
       @attributes[:delivered_at]
     end
 
-    # date-time - Most recent attempt date/time.
+    # Most recent attempt date/time.
+    # @return [String, nil] the field value, or nil when absent.
     def last_attempted_at
       @attributes[:last_attempted_at]
     end
 
-    # date-time - Next scheduled attempt date/time.
+    # Next scheduled attempt date/time.
+    # @return [String, nil] the field value, or nil when absent.
     def next_attempt_at
       @attributes[:next_attempt_at]
     end
 
-    # date-time - Delivery Attempt create date/time.
+    # Delivery Attempt create date/time.
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`, `status`, `event_record_id`, `event_target_id` or `workspace_id`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `status`, `workspace_id`, `event_record_id` or `event_target_id`. Valid field combinations are `[ workspace_id, status ]`, `[ workspace_id, event_record_id ]` or `[ workspace_id, event_target_id ]`.
+    # List Event Delivery Attempts
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::EventDeliveryAttempt objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`, `status`, `event_record_id`, `event_target_id` or `workspace_id`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `status`, `workspace_id`, `event_record_id` or `event_target_id`. Valid field combinations are `[ workspace_id, status ]`, `[ workspace_id, event_record_id ]` or `[ workspace_id, event_target_id ]`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -115,17 +139,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Event Delivery Attempt ID.
+    # Show Event Delivery Attempt
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::EventDeliveryAttempt.
+    # @param id [Integer] Event Delivery Attempt ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::EventDeliveryAttempt] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -136,6 +163,7 @@ module Files
       EventDeliveryAttempt.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end

@@ -4,219 +4,315 @@ module Files
   # Files::Partner is the Ruby SDK's representation of Files.com API Partner objects.
   # Each instance keeps its API field values in +attributes+.
   class Partner
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # boolean - Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
+    # Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def allow_bypassing_2fa_policies
       @attributes[:allow_bypassing_2fa_policies]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def allow_bypassing_2fa_policies=(value)
       @attributes[:allow_bypassing_2fa_policies] = value
     end
 
-    # string - A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
+    # A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
+    # @return [String, nil] the field value, or nil when absent.
     def allowed_ips
       @attributes[:allowed_ips]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def allowed_ips=(value)
       @attributes[:allowed_ips] = value
     end
 
-    # boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
+    # Allow Partner Admins to change or reset credentials for users belonging to this Partner.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def allow_credential_changes
       @attributes[:allow_credential_changes]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def allow_credential_changes=(value)
       @attributes[:allow_credential_changes] = value
     end
 
-    # boolean - Allow Partner Admins to provide GPG keys.
+    # Allow Partner Admins to provide GPG keys.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def allow_providing_gpg_keys
       @attributes[:allow_providing_gpg_keys]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def allow_providing_gpg_keys=(value)
       @attributes[:allow_providing_gpg_keys] = value
     end
 
-    # boolean - Allow Partner Admins to create users.
+    # Allow Partner Admins to create users.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def allow_user_creation
       @attributes[:allow_user_creation]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def allow_user_creation=(value)
       @attributes[:allow_user_creation] = value
     end
 
-    # boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
+    # When `true`, emails sent to Partner users are copied to the responsible User or Group.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def cc_emails_to_responsible_party
       @attributes[:cc_emails_to_responsible_party]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def cc_emails_to_responsible_party=(value)
       @attributes[:cc_emails_to_responsible_party] = value
     end
 
-    # array(object) - Approved Connected Sites relationships for this Partner, in both directions. Empty when this Partner has no connections. Read-only.
+    # Approved Connected Sites relationships for this Partner, in both directions. Empty when this Partner has no connections. Read-only.
+    # @return [Array<Hash>, nil] the field value, or nil when absent.
     def connections
       @attributes[:connections]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Hash>, nil] the new field value.
+    # @return [Array<Hash>, nil] the assigned value.
     def connections=(value)
       @attributes[:connections] = value
     end
 
-    # int64 - The unique ID of the Partner.
+    # The unique ID of the Partner.
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # int64 - AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
+    # AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
+    # @return [Integer, nil] the field value, or nil when absent.
     def ai_assistant_personality_id
       @attributes[:ai_assistant_personality_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def ai_assistant_personality_id=(value)
       @attributes[:ai_assistant_personality_id] = value
     end
 
-    # int64 - ID of the Workspace associated with this Partner.
+    # ID of the Workspace associated with this Partner.
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # string - The name of the Partner.
+    # The name of the Partner.
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # string - Notes about this Partner.
+    # Notes about this Partner.
+    # @return [String, nil] the field value, or nil when absent.
     def notes
       @attributes[:notes]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def notes=(value)
       @attributes[:notes] = value
     end
 
-    # array(int64) - Array of User IDs that are Partner Admins for this Partner.
+    # Array of User IDs that are Partner Admins for this Partner.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def partner_admin_ids
       @attributes[:partner_admin_ids]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def partner_admin_ids=(value)
       @attributes[:partner_admin_ids] = value
     end
 
-    # int64 - ID of the Partner Channel Template assigned to this Partner.
+    # ID of the Partner Channel Template assigned to this Partner.
+    # @return [Integer, nil] the field value, or nil when absent.
     def partner_channel_template_id
       @attributes[:partner_channel_template_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def partner_channel_template_id=(value)
       @attributes[:partner_channel_template_id] = value
     end
 
-    # string - This site's role for this Partner in Connected Sites relationships. `host` is a Partner this site configured. `guest` is a Partner created by approving another site's connection request; it has no root folder and cannot hold users, permissions, or Partner Channels, or host a connection. `host_and_guest` is a configured Partner that is also the guest side of a connection. Promote a `guest` Partner by setting this to `host_and_guest` together with a `root_folder`.
+    # This site's role for this Partner in Connected Sites relationships. `host` is a Partner this site configured. `guest` is a Partner created by approving another site's connection request; it has no root folder and cannot hold users, permissions, or Partner Channels, or host a connection. `host_and_guest` is a configured Partner that is also the guest side of a connection. Promote a `guest` Partner by setting this to `host_and_guest` together with a `root_folder`.
+    # @return [String, nil] the field value, or nil when absent.
     def partnership_role
       @attributes[:partnership_role]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def partnership_role=(value)
       @attributes[:partnership_role] = value
     end
 
-    # int64 - ID of the Group responsible for this Partner.
+    # ID of the Group responsible for this Partner.
+    # @return [Integer, nil] the field value, or nil when absent.
     def responsible_group_id
       @attributes[:responsible_group_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def responsible_group_id=(value)
       @attributes[:responsible_group_id] = value
     end
 
-    # int64 - ID of the User responsible for this Partner.
+    # ID of the User responsible for this Partner.
+    # @return [Integer, nil] the field value, or nil when absent.
     def responsible_user_id
       @attributes[:responsible_user_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def responsible_user_id=(value)
       @attributes[:responsible_user_id] = value
     end
 
-    # string - The root folder path for this Partner.
+    # The root folder path for this Partner.
+    # @return [String, nil] the field value, or nil when absent.
     def root_folder
       @attributes[:root_folder]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def root_folder=(value)
       @attributes[:root_folder] = value
     end
 
-    # boolean - Show Partner users a simplified home page built from this Partner's Channels.
+    # Show Partner users a simplified home page built from this Partner's Channels.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def show_partner_channel_home_page
       @attributes[:show_partner_channel_home_page]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def show_partner_channel_home_page=(value)
       @attributes[:show_partner_channel_home_page] = value
     end
 
-    # string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    # Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    # @return [String, nil] the field value, or nil when absent.
     def tags
       @attributes[:tags]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def tags=(value)
       @attributes[:tags] = value
     end
 
-    # array(int64) - Array of User IDs that belong to this Partner.
+    # Array of User IDs that belong to this Partner.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def user_ids
       @attributes[:user_ids]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def user_ids=(value)
       @attributes[:user_ids] = value
     end
 
-    # Parameters:
-    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
-    #   allowed_ips - string - A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
-    #   allow_bypassing_2fa_policies - boolean - Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
-    #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
-    #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
-    #   allow_user_creation - boolean - Allow Partner Admins to create users.
-    #   cc_emails_to_responsible_party - boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
-    #   notes - string - Notes about this Partner.
-    #   partner_channel_template_id - int64 - ID of the Partner Channel Template assigned to this Partner.
-    #   responsible_group_id - int64 - ID of the Group responsible for this Partner.
-    #   responsible_user_id - int64 - ID of the User responsible for this Partner.
-    #   show_partner_channel_home_page - boolean - Show Partner users a simplified home page built from this Partner's Channels.
-    #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
-    #   name - string - The name of the Partner.
-    #   partnership_role - string - This site's role for this Partner in Connected Sites relationships. `host` is a Partner this site configured. `guest` is a Partner created by approving another site's connection request; it has no root folder and cannot hold users, permissions, or Partner Channels, or host a connection. `host_and_guest` is a configured Partner that is also the guest side of a connection. Promote a `guest` Partner by setting this to `host_and_guest` together with a `root_folder`.
-    #   root_folder - string - The root folder path for this Partner.
+    # Update Partner
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] ai_assistant_personality_id AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
+    # @option params [String] allowed_ips A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
+    # @option params [Boolean] allow_bypassing_2fa_policies Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
+    # @option params [Boolean] allow_credential_changes Allow Partner Admins to change or reset credentials for users belonging to this Partner.
+    # @option params [Boolean] allow_providing_gpg_keys Allow Partner Admins to provide GPG keys.
+    # @option params [Boolean] allow_user_creation Allow Partner Admins to create users.
+    # @option params [Boolean] cc_emails_to_responsible_party When `true`, emails sent to Partner users are copied to the responsible User or Group.
+    # @option params [String] notes Notes about this Partner.
+    # @option params [Integer] partner_channel_template_id ID of the Partner Channel Template assigned to this Partner.
+    # @option params [Integer] responsible_group_id ID of the Group responsible for this Partner.
+    # @option params [Integer] responsible_user_id ID of the User responsible for this Partner.
+    # @option params [Boolean] show_partner_channel_home_page Show Partner users a simplified home page built from this Partner's Channels.
+    # @option params [String] tags Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [String] name The name of the Partner.
+    # @option params [String] partnership_role This site's role for this Partner in Connected Sites relationships. `host` is a Partner this site configured. `guest` is a Partner created by approving another site's connection request; it has no root folder and cannot hold users, permissions, or Partner Channels, or host a connection. `host_and_guest` is a configured Partner that is also the guest side of a connection. Promote a `guest` Partner by setting this to `host_and_guest` together with a `root_folder`.
+    # @option params [String] root_folder The root folder path for this Partner.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -246,7 +342,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Partner
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -259,12 +361,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -277,16 +386,18 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
+    # List Partners
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::Partner objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -301,17 +412,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Partner ID.
+    # Show Partner
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Partner.
+    # @param id [Integer] Partner ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Partner] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -322,32 +436,35 @@ module Files
       Partner.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
-    #   allowed_ips - string - A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
-    #   allow_bypassing_2fa_policies - boolean - Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
-    #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
-    #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
-    #   allow_user_creation - boolean - Allow Partner Admins to create users.
-    #   cc_emails_to_responsible_party - boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
-    #   notes - string - Notes about this Partner.
-    #   partner_channel_template_id - int64 - ID of the Partner Channel Template assigned to this Partner.
-    #   responsible_group_id - int64 - ID of the Group responsible for this Partner.
-    #   responsible_user_id - int64 - ID of the User responsible for this Partner.
-    #   show_partner_channel_home_page - boolean - Show Partner users a simplified home page built from this Partner's Channels.
-    #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
-    #   name (required) - string - The name of the Partner.
-    #   root_folder (required) - string - The root folder path for this Partner.
-    #   workspace_id - int64 - ID of the Workspace associated with this Partner.
+    # Create Partner
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Partner.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] ai_assistant_personality_id AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
+    # @option params [String] allowed_ips A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
+    # @option params [Boolean] allow_bypassing_2fa_policies Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
+    # @option params [Boolean] allow_credential_changes Allow Partner Admins to change or reset credentials for users belonging to this Partner.
+    # @option params [Boolean] allow_providing_gpg_keys Allow Partner Admins to provide GPG keys.
+    # @option params [Boolean] allow_user_creation Allow Partner Admins to create users.
+    # @option params [Boolean] cc_emails_to_responsible_party When `true`, emails sent to Partner users are copied to the responsible User or Group.
+    # @option params [String] notes Notes about this Partner.
+    # @option params [Integer] partner_channel_template_id ID of the Partner Channel Template assigned to this Partner.
+    # @option params [Integer] responsible_group_id ID of the Group responsible for this Partner.
+    # @option params [Integer] responsible_user_id ID of the User responsible for this Partner.
+    # @option params [Boolean] show_partner_channel_home_page Show Partner users a simplified home page built from this Partner's Channels.
+    # @option params [String] tags Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [String] name Required. The name of the Partner.
+    # @option params [String] root_folder Required. The root folder path for this Partner.
+    # @option params [Integer] workspace_id ID of the Workspace associated with this Partner.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Partner] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: ai_assistant_personality_id must be an Integer") if !params[:ai_assistant_personality_id].nil? and !params[:ai_assistant_personality_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
@@ -372,28 +489,31 @@ module Files
       Partner.new(response.data, options)
     end
 
-    # Parameters:
-    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
-    #   allowed_ips - string - A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
-    #   allow_bypassing_2fa_policies - boolean - Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
-    #   allow_credential_changes - boolean - Allow Partner Admins to change or reset credentials for users belonging to this Partner.
-    #   allow_providing_gpg_keys - boolean - Allow Partner Admins to provide GPG keys.
-    #   allow_user_creation - boolean - Allow Partner Admins to create users.
-    #   cc_emails_to_responsible_party - boolean - When `true`, emails sent to Partner users are copied to the responsible User or Group.
-    #   notes - string - Notes about this Partner.
-    #   partner_channel_template_id - int64 - ID of the Partner Channel Template assigned to this Partner.
-    #   responsible_group_id - int64 - ID of the Group responsible for this Partner.
-    #   responsible_user_id - int64 - ID of the User responsible for this Partner.
-    #   show_partner_channel_home_page - boolean - Show Partner users a simplified home page built from this Partner's Channels.
-    #   tags - string - Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
-    #   name - string - The name of the Partner.
-    #   partnership_role - string - This site's role for this Partner in Connected Sites relationships. `host` is a Partner this site configured. `guest` is a Partner created by approving another site's connection request; it has no root folder and cannot hold users, permissions, or Partner Channels, or host a connection. `host_and_guest` is a configured Partner that is also the guest side of a connection. Promote a `guest` Partner by setting this to `host_and_guest` together with a `root_folder`.
-    #   root_folder - string - The root folder path for this Partner.
+    # Update Partner
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Partner.
+    # @param id [Integer] Partner ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] ai_assistant_personality_id AI Assistant Personality ID assigned to this Partner, if any. Users in the Partner inherit it unless a direct per-user assignment overrides it.
+    # @option params [String] allowed_ips A list of allowed IPs for this Partner. Newline delimited. Partner User IP access is allowed when the IP matches the Partner, User, or Site allowed IP lists.
+    # @option params [Boolean] allow_bypassing_2fa_policies Allow Partner Admins to change Two-Factor Authentication requirements for Partner Users.
+    # @option params [Boolean] allow_credential_changes Allow Partner Admins to change or reset credentials for users belonging to this Partner.
+    # @option params [Boolean] allow_providing_gpg_keys Allow Partner Admins to provide GPG keys.
+    # @option params [Boolean] allow_user_creation Allow Partner Admins to create users.
+    # @option params [Boolean] cc_emails_to_responsible_party When `true`, emails sent to Partner users are copied to the responsible User or Group.
+    # @option params [String] notes Notes about this Partner.
+    # @option params [Integer] partner_channel_template_id ID of the Partner Channel Template assigned to this Partner.
+    # @option params [Integer] responsible_group_id ID of the Group responsible for this Partner.
+    # @option params [Integer] responsible_user_id ID of the User responsible for this Partner.
+    # @option params [Boolean] show_partner_channel_home_page Show Partner users a simplified home page built from this Partner's Channels.
+    # @option params [String] tags Comma-separated list of Tags for this Partner. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [String] name The name of the Partner.
+    # @option params [String] partnership_role This site's role for this Partner in Connected Sites relationships. `host` is a Partner this site configured. `guest` is a Partner created by approving another site's connection request; it has no root folder and cannot hold users, permissions, or Partner Channels, or host a connection. `host_and_guest` is a configured Partner that is also the guest side of a connection. Promote a `guest` Partner by setting this to `host_and_guest` together with a `root_folder`.
+    # @option params [String] root_folder The root folder path for this Partner.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Partner] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -420,10 +540,15 @@ module Files
       Partner.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Partner
     #
-    # Returns nil.
+    # @param id [Integer] Partner ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -434,7 +559,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

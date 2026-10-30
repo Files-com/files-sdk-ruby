@@ -4,52 +4,80 @@ module Files
   # Files::MetadataCategory is the Ruby SDK's representation of Files.com API MetadataCategory objects.
   # Each instance keeps its API field values in +attributes+.
   class MetadataCategory
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Metadata Category ID
+    # Metadata Category ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - Name of the metadata category.
+    # Name of the metadata category.
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # hash(string,array(string)) - Map of key names to arrays of allowed values. An empty array means free-form text.
+    # Map of key names to arrays of allowed values. An empty array means free-form text.
+    # @return [Hash, nil] the field value, or nil when absent.
     def definitions
       @attributes[:definitions]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def definitions=(value)
       @attributes[:definitions] = value
     end
 
-    # array(string) - Metadata keys that should appear as columns in the UI by default.
+    # Metadata keys that should appear as columns in the UI by default.
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def default_columns
       @attributes[:default_columns]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<String>, nil] the new field value.
+    # @return [Array<String>, nil] the assigned value.
     def default_columns=(value)
       @attributes[:default_columns] = value
     end
 
-    # Parameters:
-    #   name - string - Name of the metadata category.
-    #   default_columns - array(string) - Metadata keys that should appear as columns in the UI by default.
+    # Update Metadata Category
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Name of the metadata category.
+    # @option params [Array<String>] default_columns Metadata keys that should appear as columns in the UI by default.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -65,7 +93,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Metadata Category
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -78,12 +112,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -96,15 +137,17 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
+    # List Metadata Categories
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::MetadataCategory objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are .
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -118,17 +161,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Metadata Category ID.
+    # Show Metadata Category
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::MetadataCategory.
+    # @param id [Integer] Metadata Category ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::MetadataCategory] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -139,19 +185,22 @@ module Files
       MetadataCategory.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   path (required) - string - Path to operate on.
+    # List Metadata Categories by Path
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::MetadataCategory objects.
+    # @param path [String] Path to operate on.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list_for(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
@@ -168,14 +217,16 @@ module Files
       end
     end
 
-    # Parameters:
-    #   name (required) - string - Name of the metadata category.
-    #   default_columns - array(string) - Metadata keys that should appear as columns in the UI by default.
+    # Create Metadata Category
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::MetadataCategory.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Required. Name of the metadata category.
+    # @option params [Array<String>] default_columns Metadata keys that should appear as columns in the UI by default.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::MetadataCategory] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: default_columns must be an Array") if !params[:default_columns].nil? and !params[:default_columns].is_a?(Array)
@@ -185,14 +236,17 @@ module Files
       MetadataCategory.new(response.data, options)
     end
 
-    # Parameters:
-    #   name - string - Name of the metadata category.
-    #   default_columns - array(string) - Metadata keys that should appear as columns in the UI by default.
+    # Update Metadata Category
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::MetadataCategory.
+    # @param id [Integer] Metadata Category ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Name of the metadata category.
+    # @option params [Array<String>] default_columns Metadata keys that should appear as columns in the UI by default.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::MetadataCategory] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -205,10 +259,15 @@ module Files
       MetadataCategory.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Metadata Category
     #
-    # Returns nil.
+    # @param id [Integer] Metadata Category ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -219,7 +278,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

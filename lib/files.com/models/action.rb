@@ -4,79 +4,99 @@ module Files
   # Files::Action is the Ruby SDK's representation of Files.com API Action objects.
   # Each instance keeps its API field values in +attributes+.
   class Action
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Action ID
+    # Action ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
-    # string - Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # @return [String, nil] the field value, or nil when absent.
     def path
       @attributes[:path]
     end
 
-    # date-time - Action occurrence date/time
+    # Action occurrence date/time
+    # @return [String, nil] the field value, or nil when absent.
     def when
       @attributes[:when]
     end
 
-    # string - The destination path for this action, if applicable
+    # The destination path for this action, if applicable
+    # @return [String, nil] the field value, or nil when absent.
     def destination
       @attributes[:destination]
     end
 
-    # string - Friendly displayed output
+    # Friendly displayed output
+    # @return [String, nil] the field value, or nil when absent.
     def display
       @attributes[:display]
     end
 
-    # string - IP Address that performed this action
+    # IP Address that performed this action
+    # @return [String, nil] the field value, or nil when absent.
     def ip
       @attributes[:ip]
     end
 
-    # string - The source path for this action, if applicable
+    # The source path for this action, if applicable
+    # @return [String, nil] the field value, or nil when absent.
     def source
       @attributes[:source]
     end
 
-    # object - Targets
+    # Targets
+    # @return [Hash, nil] the field value, or nil when absent.
     def targets
       @attributes[:targets]
     end
 
-    # int64 - User ID
+    # User ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def user_id
       @attributes[:user_id]
     end
 
-    # string - Username
+    # Username
+    # @return [String, nil] the field value, or nil when absent.
     def username
       @attributes[:username]
     end
 
-    # boolean - true if this change was performed by a user on a parent site.
+    # true if this change was performed by a user on a parent site.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def user_is_from_parent_site
       @attributes[:user_is_from_parent_site]
     end
 
-    # string - Type of action
+    # Type of action
+    # @return [String, nil] the field value, or nil when absent.
     def action
       @attributes[:action]
     end
 
-    # string - Failure type.  If action was a user login or session failure, why did it fail?
+    # Failure type.  If action was a user login or session failure, why did it fail?
+    # @return [String, nil] the field value, or nil when absent.
     def failure_type
       @attributes[:failure_type]
     end
 
-    # string - Interface on which this action occurred.
+    # Interface on which this action occurred.
+    # @return [String, nil] the field value, or nil when absent.
     def interface
       @attributes[:interface]
     end

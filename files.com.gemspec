@@ -22,7 +22,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'net-http-persistent', ">= 4.0"
   s.add_dependency 'ostruct', "~> 0.6"
 
-  s.files         = `find *`.split("\n").uniq.sort.reject(&:empty?)
+  s.files = (`find *`.split("\n") + [ ".yardopts" ]).uniq.sort.reject { |path| path.empty? || path.start_with?("pkg/", "vendor/") }
+  s.extra_rdoc_files = [ "README.md" ]
   s.executables   = [ "files", "files-console" ]
   s.require_paths = [ "lib" ]
 end

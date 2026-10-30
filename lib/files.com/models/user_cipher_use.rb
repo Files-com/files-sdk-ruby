@@ -4,68 +4,84 @@ module Files
   # Files::UserCipherUse is the Ruby SDK's representation of Files.com API UserCipherUse objects.
   # Each instance keeps its API field values in +attributes+.
   class UserCipherUse
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - UserCipherUse ID
+    # UserCipherUse ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
-    # int64 - ID of the user who performed this access
+    # ID of the user who performed this access
+    # @return [Integer, nil] the field value, or nil when absent.
     def user_id
       @attributes[:user_id]
     end
 
-    # string - Username of the user who performed this access
+    # Username of the user who performed this access
+    # @return [String, nil] the field value, or nil when absent.
     def username
       @attributes[:username]
     end
 
-    # string - The protocol and cipher employed
+    # The protocol and cipher employed
+    # @return [String, nil] the field value, or nil when absent.
     def protocol_cipher
       @attributes[:protocol_cipher]
     end
 
-    # date-time - The earliest recorded use of this combination of interface and protocol and cipher (for this user)
+    # The earliest recorded use of this combination of interface and protocol and cipher (for this user)
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # boolean - Is this cipher considered insecure?
+    # Is this cipher considered insecure?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def insecure
       @attributes[:insecure]
     end
 
-    # string - The interface accessed
+    # The interface accessed
+    # @return [String, nil] the field value, or nil when absent.
     def interface
       @attributes[:interface]
     end
 
-    # date-time - The most recent use of this combination of interface and protocol and cipher (for this user)
+    # The most recent use of this combination of interface and protocol and cipher (for this user)
+    # @return [String, nil] the field value, or nil when absent.
     def updated_at
       @attributes[:updated_at]
     end
 
-    # Parameters:
-    #   user_id - int64 - User ID. If provided, will return uses for this user.
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `updated_at`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `insecure` and `updated_at`. Valid field combinations are `[ insecure, updated_at ]`.
-    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `updated_at`.
-    #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `updated_at`.
-    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `updated_at`.
-    #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `updated_at`.
+    # List User Cipher Uses
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::UserCipherUse objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] user_id User ID. If provided, will return uses for this user.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `updated_at`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `insecure` and `updated_at`. Valid field combinations are `[ insecure, updated_at ]`.
+    # @option params [Hash] filter_gt If set, return records where the specified field is greater than the supplied value. Valid fields are `updated_at`.
+    # @option params [Hash] filter_gteq If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `updated_at`.
+    # @option params [Hash] filter_lt If set, return records where the specified field is less than the supplied value. Valid fields are `updated_at`.
+    # @option params [Hash] filter_lteq If set, return records where the specified field is less than or equal the supplied value. Valid fields are `updated_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
@@ -85,6 +101,7 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end

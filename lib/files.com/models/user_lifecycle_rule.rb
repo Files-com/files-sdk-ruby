@@ -4,162 +4,234 @@ module Files
   # Files::UserLifecycleRule is the Ruby SDK's representation of Files.com API UserLifecycleRule objects.
   # Each instance keeps its API field values in +attributes+.
   class UserLifecycleRule
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - User Lifecycle Rule ID
+    # User Lifecycle Rule ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
+    # User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
+    # @return [String, nil] the field value, or nil when absent.
     def authentication_method
       @attributes[:authentication_method]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def authentication_method=(value)
       @attributes[:authentication_method] = value
     end
 
-    # array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
+    # Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def group_ids
       @attributes[:group_ids]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def group_ids=(value)
       @attributes[:group_ids] = value
     end
 
-    # string - Action to take on inactive users (disable or delete)
+    # Action to take on inactive users (disable or delete)
+    # @return [String, nil] the field value, or nil when absent.
     def action
       @attributes[:action]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def action=(value)
       @attributes[:action] = value
     end
 
-    # int64 - Number of days of inactivity before the rule applies
+    # Number of days of inactivity before the rule applies
+    # @return [Integer, nil] the field value, or nil when absent.
     def inactivity_days
       @attributes[:inactivity_days]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def inactivity_days=(value)
       @attributes[:inactivity_days] = value
     end
 
-    # boolean - If true, the rule will apply to folder admins.
+    # If true, the rule will apply to folder admins.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def include_folder_admins
       @attributes[:include_folder_admins]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def include_folder_admins=(value)
       @attributes[:include_folder_admins] = value
     end
 
-    # boolean - If true, the rule includes Site Administrators, who always belong to the Default Workspace. Can only be enabled when `workspace_id` is `0`.
+    # If true, the rule includes Site Administrators, who always belong to the Default Workspace. Can only be enabled when `workspace_id` is `0`.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def include_site_admins
       @attributes[:include_site_admins]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def include_site_admins=(value)
       @attributes[:include_site_admins] = value
     end
 
-    # boolean - If true, a Default Workspace rule also applies to users in all Custom Workspaces. Can only be enabled when `workspace_id` is `0`.
+    # If true, a Default Workspace rule also applies to users in all Custom Workspaces. Can only be enabled when `workspace_id` is `0`.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def apply_to_all_workspaces
       @attributes[:apply_to_all_workspaces]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def apply_to_all_workspaces=(value)
       @attributes[:apply_to_all_workspaces] = value
     end
 
-    # string - User Lifecycle Rule name
+    # User Lifecycle Rule name
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # boolean - If true, users will be emailed before the rule disables or deletes them.
+    # If true, users will be emailed before the rule disables or deletes them.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def notify_users
       @attributes[:notify_users]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def notify_users=(value)
       @attributes[:notify_users] = value
     end
 
-    # string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    # If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    # @return [String, nil] the field value, or nil when absent.
     def partner_tag
       @attributes[:partner_tag]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def partner_tag=(value)
       @attributes[:partner_tag] = value
     end
 
-    # int64 - Site ID
+    # Site ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def site_id
       @attributes[:site_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def site_id=(value)
       @attributes[:site_id] = value
     end
 
-    # int64 - Workspace whose users the rule applies to. `0` means the Default Workspace. A Custom Workspace rule applies only to users who belong to that Workspace, regardless of access granted to other users.
+    # Workspace whose users the rule applies to. `0` means the Default Workspace. A Custom Workspace rule applies only to users who belong to that Workspace, regardless of access granted to other users.
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # string - State of the users to apply the rule to (inactive or disabled)
+    # State of the users to apply the rule to (inactive or disabled)
+    # @return [String, nil] the field value, or nil when absent.
     def user_state
       @attributes[:user_state]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def user_state=(value)
       @attributes[:user_state] = value
     end
 
-    # string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    # If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    # @return [String, nil] the field value, or nil when absent.
     def user_tag
       @attributes[:user_tag]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def user_tag=(value)
       @attributes[:user_tag] = value
     end
 
-    # Parameters:
-    #   action - string - Action to take on inactive users (disable or delete)
-    #   apply_to_all_workspaces - boolean - If true, a Default Workspace rule also applies to users in all Custom Workspaces. Can only be enabled when `workspace_id` is `0`.
-    #   authentication_method - string - User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
-    #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
-    #   inactivity_days - int64 - Number of days of inactivity before the rule applies
-    #   include_site_admins - boolean - If true, the rule includes Site Administrators, who always belong to the Default Workspace. Can only be enabled when `workspace_id` is `0`.
-    #   include_folder_admins - boolean - If true, the rule will apply to folder admins.
-    #   name - string - User Lifecycle Rule name
-    #   notify_users - boolean - If true, users will be emailed before the rule disables or deletes them.
-    #   partner_tag - string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
-    #   user_state - string - State of the users to apply the rule to (inactive or disabled)
-    #   user_tag - string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
-    #   workspace_id - int64 - Workspace whose users the rule applies to. `0` means the Default Workspace. A Custom Workspace rule applies only to users who belong to that Workspace, regardless of access granted to other users.
+    # Update User Lifecycle Rule
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] action Action to take on inactive users (disable or delete)
+    # @option params [Boolean] apply_to_all_workspaces If true, a Default Workspace rule also applies to users in all Custom Workspaces. Can only be enabled when `workspace_id` is `0`.
+    # @option params [String] authentication_method User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
+    # @option params [Array<Integer>] group_ids Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
+    # @option params [Integer] inactivity_days Number of days of inactivity before the rule applies
+    # @option params [Boolean] include_site_admins If true, the rule includes Site Administrators, who always belong to the Default Workspace. Can only be enabled when `workspace_id` is `0`.
+    # @option params [Boolean] include_folder_admins If true, the rule will apply to folder admins.
+    # @option params [String] name User Lifecycle Rule name
+    # @option params [Boolean] notify_users If true, users will be emailed before the rule disables or deletes them.
+    # @option params [String] partner_tag If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [String] user_state State of the users to apply the rule to (inactive or disabled)
+    # @option params [String] user_tag If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [Integer] workspace_id Workspace whose users the rule applies to. `0` means the Default Workspace. A Custom Workspace rule applies only to users who belong to that Workspace, regardless of access granted to other users.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -186,7 +258,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete User Lifecycle Rule
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -199,12 +277,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -217,16 +302,18 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id` and `workspace_id`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
+    # List User Lifecycle Rules
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::UserLifecycleRule objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id` and `workspace_id`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -241,17 +328,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - User Lifecycle Rule ID.
+    # Show User Lifecycle Rule
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::UserLifecycleRule.
+    # @param id [Integer] User Lifecycle Rule ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::UserLifecycleRule] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -262,29 +352,32 @@ module Files
       UserLifecycleRule.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   action - string - Action to take on inactive users (disable or delete)
-    #   apply_to_all_workspaces - boolean - If true, a Default Workspace rule also applies to users in all Custom Workspaces. Can only be enabled when `workspace_id` is `0`.
-    #   authentication_method - string - User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
-    #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
-    #   inactivity_days - int64 - Number of days of inactivity before the rule applies
-    #   include_site_admins - boolean - If true, the rule includes Site Administrators, who always belong to the Default Workspace. Can only be enabled when `workspace_id` is `0`.
-    #   include_folder_admins - boolean - If true, the rule will apply to folder admins.
-    #   name - string - User Lifecycle Rule name
-    #   notify_users - boolean - If true, users will be emailed before the rule disables or deletes them.
-    #   partner_tag - string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
-    #   user_state - string - State of the users to apply the rule to (inactive or disabled)
-    #   user_tag - string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
-    #   workspace_id - int64 - Workspace whose users the rule applies to. `0` means the Default Workspace. A Custom Workspace rule applies only to users who belong to that Workspace, regardless of access granted to other users.
+    # Create User Lifecycle Rule
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::UserLifecycleRule.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] action Action to take on inactive users (disable or delete)
+    # @option params [Boolean] apply_to_all_workspaces If true, a Default Workspace rule also applies to users in all Custom Workspaces. Can only be enabled when `workspace_id` is `0`.
+    # @option params [String] authentication_method User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
+    # @option params [Array<Integer>] group_ids Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
+    # @option params [Integer] inactivity_days Number of days of inactivity before the rule applies
+    # @option params [Boolean] include_site_admins If true, the rule includes Site Administrators, who always belong to the Default Workspace. Can only be enabled when `workspace_id` is `0`.
+    # @option params [Boolean] include_folder_admins If true, the rule will apply to folder admins.
+    # @option params [String] name User Lifecycle Rule name
+    # @option params [Boolean] notify_users If true, users will be emailed before the rule disables or deletes them.
+    # @option params [String] partner_tag If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [String] user_state State of the users to apply the rule to (inactive or disabled)
+    # @option params [String] user_tag If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [Integer] workspace_id Workspace whose users the rule applies to. `0` means the Default Workspace. A Custom Workspace rule applies only to users who belong to that Workspace, regardless of access granted to other users.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::UserLifecycleRule] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: action must be an String") if !params[:action].nil? and !params[:action].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: apply_to_all_workspaces must be a single value, not #{params[:apply_to_all_workspaces].class}") if [ Array, Hash ].any? { |klass| params[:apply_to_all_workspaces].is_a?(klass) }
@@ -304,25 +397,28 @@ module Files
       UserLifecycleRule.new(response.data, options)
     end
 
-    # Parameters:
-    #   action - string - Action to take on inactive users (disable or delete)
-    #   apply_to_all_workspaces - boolean - If true, a Default Workspace rule also applies to users in all Custom Workspaces. Can only be enabled when `workspace_id` is `0`.
-    #   authentication_method - string - User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
-    #   group_ids - array(int64) - Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
-    #   inactivity_days - int64 - Number of days of inactivity before the rule applies
-    #   include_site_admins - boolean - If true, the rule includes Site Administrators, who always belong to the Default Workspace. Can only be enabled when `workspace_id` is `0`.
-    #   include_folder_admins - boolean - If true, the rule will apply to folder admins.
-    #   name - string - User Lifecycle Rule name
-    #   notify_users - boolean - If true, users will be emailed before the rule disables or deletes them.
-    #   partner_tag - string - If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
-    #   user_state - string - State of the users to apply the rule to (inactive or disabled)
-    #   user_tag - string - If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
-    #   workspace_id - int64 - Workspace whose users the rule applies to. `0` means the Default Workspace. A Custom Workspace rule applies only to users who belong to that Workspace, regardless of access granted to other users.
+    # Update User Lifecycle Rule
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::UserLifecycleRule.
+    # @param id [Integer] User Lifecycle Rule ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] action Action to take on inactive users (disable or delete)
+    # @option params [Boolean] apply_to_all_workspaces If true, a Default Workspace rule also applies to users in all Custom Workspaces. Can only be enabled when `workspace_id` is `0`.
+    # @option params [String] authentication_method User authentication method for which the rule will apply. Use `all_non_sso` to target every non-SSO authentication method with one rule.
+    # @option params [Array<Integer>] group_ids Array of Group IDs to which the rule applies. If empty or not set, the rule applies to all users.
+    # @option params [Integer] inactivity_days Number of days of inactivity before the rule applies
+    # @option params [Boolean] include_site_admins If true, the rule includes Site Administrators, who always belong to the Default Workspace. Can only be enabled when `workspace_id` is `0`.
+    # @option params [Boolean] include_folder_admins If true, the rule will apply to folder admins.
+    # @option params [String] name User Lifecycle Rule name
+    # @option params [Boolean] notify_users If true, users will be emailed before the rule disables or deletes them.
+    # @option params [String] partner_tag If provided, only users belonging to Partners with this tag at the Partner level will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [String] user_state State of the users to apply the rule to (inactive or disabled)
+    # @option params [String] user_tag If provided, only users with this tag will be affected by the rule. Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [Integer] workspace_id Workspace whose users the rule applies to. `0` means the Default Workspace. A Custom Workspace rule applies only to users who belong to that Workspace, regardless of access granted to other users.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::UserLifecycleRule] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -346,10 +442,15 @@ module Files
       UserLifecycleRule.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete User Lifecycle Rule
     #
-    # Returns nil.
+    # @param id [Integer] User Lifecycle Rule ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -360,7 +461,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

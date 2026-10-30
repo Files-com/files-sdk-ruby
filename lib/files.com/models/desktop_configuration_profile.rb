@@ -4,73 +4,109 @@ module Files
   # Files::DesktopConfigurationProfile is the Ruby SDK's representation of Files.com API DesktopConfigurationProfile objects.
   # Each instance keeps its API field values in +attributes+.
   class DesktopConfigurationProfile
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Desktop Configuration Profile ID
+    # Desktop Configuration Profile ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - Profile name
+    # Profile name
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # int64 - Workspace ID
+    # Workspace ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # boolean - Whether this profile applies to all users in the Workspace by default
+    # Whether this profile applies to all users in the Workspace by default
+    # @return [Boolean, nil] the field value, or nil when absent.
     def use_for_all_users
       @attributes[:use_for_all_users]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def use_for_all_users=(value)
       @attributes[:use_for_all_users] = value
     end
 
-    # boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    # Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    # @return [Boolean, nil] the field value, or nil when absent.
     def disable_drive_mounting
       @attributes[:disable_drive_mounting]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def disable_drive_mounting=(value)
       @attributes[:disable_drive_mounting] = value
     end
 
-    # object - Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
+    # Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
+    # @return [Hash, nil] the field value, or nil when absent.
     def mount_mappings
       @attributes[:mount_mappings]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def mount_mappings=(value)
       @attributes[:mount_mappings] = value
     end
 
-    # Parameters:
-    #   name - string - Profile name
-    #   workspace_id - int64 - Workspace ID
-    #   mount_mappings - object - Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
-    #   use_for_all_users - boolean - Whether this profile applies to all users in the Workspace by default
-    #   disable_drive_mounting - boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    # Update Desktop Configuration Profile
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Profile name
+    # @option params [Integer] workspace_id Workspace ID
+    # @option params [Hash] mount_mappings Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
+    # @option params [Boolean] use_for_all_users Whether this profile applies to all users in the Workspace by default
+    # @option params [Boolean] disable_drive_mounting Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -89,7 +125,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Desktop Configuration Profile
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -102,12 +144,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -120,16 +169,18 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
+    # List Desktop Configuration Profiles
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::DesktopConfigurationProfile objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -144,17 +195,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Desktop Configuration Profile ID.
+    # Show Desktop Configuration Profile
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::DesktopConfigurationProfile.
+    # @param id [Integer] Desktop Configuration Profile ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::DesktopConfigurationProfile] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -165,21 +219,24 @@ module Files
       DesktopConfigurationProfile.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   name (required) - string - Profile name
-    #   mount_mappings (required) - object - Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
-    #   workspace_id - int64 - Workspace ID
-    #   use_for_all_users - boolean - Whether this profile applies to all users in the Workspace by default
-    #   disable_drive_mounting - boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    # Create Desktop Configuration Profile
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::DesktopConfigurationProfile.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Required. Profile name
+    # @option params [Hash] mount_mappings Required. Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
+    # @option params [Integer] workspace_id Workspace ID
+    # @option params [Boolean] use_for_all_users Whether this profile applies to all users in the Workspace by default
+    # @option params [Boolean] disable_drive_mounting Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::DesktopConfigurationProfile] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: mount_mappings must be an Hash") if !params[:mount_mappings].nil? and !params[:mount_mappings].is_a?(Hash)
@@ -193,17 +250,20 @@ module Files
       DesktopConfigurationProfile.new(response.data, options)
     end
 
-    # Parameters:
-    #   name - string - Profile name
-    #   workspace_id - int64 - Workspace ID
-    #   mount_mappings - object - Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
-    #   use_for_all_users - boolean - Whether this profile applies to all users in the Workspace by default
-    #   disable_drive_mounting - boolean - Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    # Update Desktop Configuration Profile
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::DesktopConfigurationProfile.
+    # @param id [Integer] Desktop Configuration Profile ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Profile name
+    # @option params [Integer] workspace_id Workspace ID
+    # @option params [Hash] mount_mappings Mount point mappings for the desktop app. Keys must be a single uppercase Windows drive letter other than A, B, or C, and values are Files.com paths to mount there.
+    # @option params [Boolean] use_for_all_users Whether this profile applies to all users in the Workspace by default
+    # @option params [Boolean] disable_drive_mounting Whether the desktop app should hide drive mounting, prevent new drive mounts, and unmount active drive mounts for users with this profile
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::DesktopConfigurationProfile] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -219,10 +279,15 @@ module Files
       DesktopConfigurationProfile.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Desktop Configuration Profile
     #
-    # Returns nil.
+    # @param id [Integer] Desktop Configuration Profile ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -233,7 +298,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

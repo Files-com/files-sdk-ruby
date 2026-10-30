@@ -4,912 +4,1319 @@ module Files
   # Files::User is the Ruby SDK's representation of Files.com API User objects.
   # Each instance keeps its API field values in +attributes+.
   class User
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - User ID
+    # User ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - User's username
+    # User's username
+    # @return [String, nil] the field value, or nil when absent.
     def username
       @attributes[:username]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def username=(value)
       @attributes[:username] = value
     end
 
-    # array(int64) - List of group IDs of which this user is an administrator
+    # List of group IDs of which this user is an administrator
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def admin_group_ids
       @attributes[:admin_group_ids]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def admin_group_ids=(value)
       @attributes[:admin_group_ids] = value
     end
 
-    # string - A list of allowed IPs if applicable.  Newline delimited
+    # A list of allowed IPs if applicable.  Newline delimited
+    # @return [String, nil] the field value, or nil when absent.
     def allowed_ips
       @attributes[:allowed_ips]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def allowed_ips=(value)
       @attributes[:allowed_ips] = value
     end
 
-    # boolean - If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
+    # If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def attachments_permission
       @attributes[:attachments_permission]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def attachments_permission=(value)
       @attributes[:attachments_permission] = value
     end
 
-    # int64 - Number of API keys associated with this user
+    # Number of API keys associated with this user
+    # @return [Integer, nil] the field value, or nil when absent.
     def api_keys_count
       @attributes[:api_keys_count]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def api_keys_count=(value)
       @attributes[:api_keys_count] = value
     end
 
-    # date-time - Scheduled Date/Time at which user will be deactivated
+    # Scheduled Date/Time at which user will be deactivated
+    # @return [String, nil] the field value, or nil when absent.
     def authenticate_until
       @attributes[:authenticate_until]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def authenticate_until=(value)
       @attributes[:authenticate_until] = value
     end
 
-    # string - How is this user authenticated?
+    # How is this user authenticated?
+    # @return [String, nil] the field value, or nil when absent.
     def authentication_method
       @attributes[:authentication_method]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def authentication_method=(value)
       @attributes[:authentication_method] = value
     end
 
-    # string - URL holding the user's avatar
+    # URL holding the user's avatar
+    # @return [String, nil] the field value, or nil when absent.
     def avatar_url
       @attributes[:avatar_url]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def avatar_url=(value)
       @attributes[:avatar_url] = value
     end
 
-    # boolean - Is this a billable user record?
+    # Is this a billable user record?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def billable
       @attributes[:billable]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def billable=(value)
       @attributes[:billable] = value
     end
 
-    # boolean - Allow this user to perform operations on the account, payments, and invoices?
+    # Allow this user to perform operations on the account, payments, and invoices?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def billing_permission
       @attributes[:billing_permission]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def billing_permission=(value)
       @attributes[:billing_permission] = value
     end
 
-    # boolean - Allow this user to skip site-wide IP blacklists?
+    # Allow this user to skip site-wide IP blacklists?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def bypass_site_allowed_ips
       @attributes[:bypass_site_allowed_ips]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def bypass_site_allowed_ips=(value)
       @attributes[:bypass_site_allowed_ips] = value
     end
 
-    # boolean - Exempt this user from user lifecycle rules?
+    # Exempt this user from user lifecycle rules?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def bypass_user_lifecycle_rules
       @attributes[:bypass_user_lifecycle_rules]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def bypass_user_lifecycle_rules=(value)
       @attributes[:bypass_user_lifecycle_rules] = value
     end
 
-    # date-time - When this user was created
+    # When this user was created
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # boolean - Can the user connect with WebDAV?
+    # Can the user connect with WebDAV?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def dav_permission
       @attributes[:dav_permission]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def dav_permission=(value)
       @attributes[:dav_permission] = value
     end
 
-    # boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
+    # Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def disabled
       @attributes[:disabled]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def disabled=(value)
       @attributes[:disabled] = value
     end
 
-    # boolean - Computed property that returns true if user disabled or expired or inactive.
+    # Computed property that returns true if user disabled or expired or inactive.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def disabled_expired_or_inactive
       @attributes[:disabled_expired_or_inactive]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def disabled_expired_or_inactive=(value)
       @attributes[:disabled_expired_or_inactive] = value
     end
 
-    # int64 - AI Assistant Personality ID assigned directly to this user, if any.
+    # AI Assistant Personality ID assigned directly to this user, if any.
+    # @return [Integer, nil] the field value, or nil when absent.
     def ai_assistant_personality_id
       @attributes[:ai_assistant_personality_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def ai_assistant_personality_id=(value)
       @attributes[:ai_assistant_personality_id] = value
     end
 
-    # int64 - Desktop Configuration Profile ID assigned directly to this user, if any.
+    # Desktop Configuration Profile ID assigned directly to this user, if any.
+    # @return [Integer, nil] the field value, or nil when absent.
     def desktop_configuration_profile_id
       @attributes[:desktop_configuration_profile_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def desktop_configuration_profile_id=(value)
       @attributes[:desktop_configuration_profile_id] = value
     end
 
-    # int64 - Integration Centric Profile ID assigned directly to this user, if any.
+    # Integration Centric Profile ID assigned directly to this user, if any.
+    # @return [Integer, nil] the field value, or nil when absent.
     def integration_centric_profile_id
       @attributes[:integration_centric_profile_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def integration_centric_profile_id=(value)
       @attributes[:integration_centric_profile_id] = value
     end
 
-    # email - User email address
+    # User email address
+    # @return [Hash, nil] the field value, or nil when absent.
     def email
       @attributes[:email]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def email=(value)
       @attributes[:email] = value
     end
 
-    # string - File system layout
+    # File system layout
+    # @return [String, nil] the field value, or nil when absent.
     def filesystem_layout
       @attributes[:filesystem_layout]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def filesystem_layout=(value)
       @attributes[:filesystem_layout] = value
     end
 
-    # date-time - User's first login time
+    # User's first login time
+    # @return [String, nil] the field value, or nil when absent.
     def first_login_at
       @attributes[:first_login_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def first_login_at=(value)
       @attributes[:first_login_at] = value
     end
 
-    # boolean - Can the user access with FTP/FTPS?
+    # Can the user access with FTP/FTPS?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def ftp_permission
       @attributes[:ftp_permission]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def ftp_permission=(value)
       @attributes[:ftp_permission] = value
     end
 
-    # string - Comma-separated list of group IDs of which this user is a member
+    # Comma-separated list of group IDs of which this user is a member
+    # @return [String, nil] the field value, or nil when absent.
     def group_ids
       @attributes[:group_ids]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def group_ids=(value)
       @attributes[:group_ids] = value
     end
 
-    # string - Text to display to the user in the header of the UI
+    # Text to display to the user in the header of the UI
+    # @return [String, nil] the field value, or nil when absent.
     def header_text
       @attributes[:header_text]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def header_text=(value)
       @attributes[:header_text] = value
     end
 
-    # string - Preferred language
+    # Preferred language
+    # @return [String, nil] the field value, or nil when absent.
     def language
       @attributes[:language]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def language=(value)
       @attributes[:language] = value
     end
 
-    # date-time - User's most recent login time via any protocol
+    # User's most recent login time via any protocol
+    # @return [String, nil] the field value, or nil when absent.
     def last_login_at
       @attributes[:last_login_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_login_at=(value)
       @attributes[:last_login_at] = value
     end
 
-    # date-time - User's most recent login time via web
+    # User's most recent login time via web
+    # @return [String, nil] the field value, or nil when absent.
     def last_web_login_at
       @attributes[:last_web_login_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_web_login_at=(value)
       @attributes[:last_web_login_at] = value
     end
 
-    # date-time - User's most recent login time via FTP
+    # User's most recent login time via FTP
+    # @return [String, nil] the field value, or nil when absent.
     def last_ftp_login_at
       @attributes[:last_ftp_login_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_ftp_login_at=(value)
       @attributes[:last_ftp_login_at] = value
     end
 
-    # date-time - User's most recent login time via SFTP
+    # User's most recent login time via SFTP
+    # @return [String, nil] the field value, or nil when absent.
     def last_sftp_login_at
       @attributes[:last_sftp_login_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_sftp_login_at=(value)
       @attributes[:last_sftp_login_at] = value
     end
 
-    # date-time - User's most recent login time via WebDAV
+    # User's most recent login time via WebDAV
+    # @return [String, nil] the field value, or nil when absent.
     def last_dav_login_at
       @attributes[:last_dav_login_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_dav_login_at=(value)
       @attributes[:last_dav_login_at] = value
     end
 
-    # date-time - User's most recent login time via Desktop app
+    # User's most recent login time via Desktop app
+    # @return [String, nil] the field value, or nil when absent.
     def last_desktop_login_at
       @attributes[:last_desktop_login_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_desktop_login_at=(value)
       @attributes[:last_desktop_login_at] = value
     end
 
-    # date-time - User's most recent login time via Rest API
+    # User's most recent login time via Rest API
+    # @return [String, nil] the field value, or nil when absent.
     def last_restapi_login_at
       @attributes[:last_restapi_login_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_restapi_login_at=(value)
       @attributes[:last_restapi_login_at] = value
     end
 
-    # date-time - User's most recent API use time
+    # User's most recent API use time
+    # @return [String, nil] the field value, or nil when absent.
     def last_api_use_at
       @attributes[:last_api_use_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_api_use_at=(value)
       @attributes[:last_api_use_at] = value
     end
 
-    # date-time - User's most recent activity time, which is the latest of most recent login, most recent API use, enablement, or creation
+    # User's most recent activity time, which is the latest of most recent login, most recent API use, enablement, or creation
+    # @return [String, nil] the field value, or nil when absent.
     def last_active_at
       @attributes[:last_active_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_active_at=(value)
       @attributes[:last_active_at] = value
     end
 
-    # string - The most recent protocol and cipher used
+    # The most recent protocol and cipher used
+    # @return [String, nil] the field value, or nil when absent.
     def last_protocol_cipher
       @attributes[:last_protocol_cipher]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_protocol_cipher=(value)
       @attributes[:last_protocol_cipher] = value
     end
 
-    # date-time - Time in the future that the user will no longer be locked out if applicable
+    # Time in the future that the user will no longer be locked out if applicable
+    # @return [String, nil] the field value, or nil when absent.
     def lockout_expires
       @attributes[:lockout_expires]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def lockout_expires=(value)
       @attributes[:lockout_expires] = value
     end
 
-    # string - User's full name
+    # User's full name
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # string - User's company
+    # User's company
+    # @return [String, nil] the field value, or nil when absent.
     def company
       @attributes[:company]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def company=(value)
       @attributes[:company] = value
     end
 
-    # string - Any internal notes on the user
+    # Any internal notes on the user
+    # @return [String, nil] the field value, or nil when absent.
     def notes
       @attributes[:notes]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def notes=(value)
       @attributes[:notes] = value
     end
 
-    # int64 - Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    # Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    # @return [Integer, nil] the field value, or nil when absent.
     def notification_daily_send_time
       @attributes[:notification_daily_send_time]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def notification_daily_send_time=(value)
       @attributes[:notification_daily_send_time] = value
     end
 
-    # boolean - Enable integration with Office for the web?
+    # Enable integration with Office for the web?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def office_integration_enabled
       @attributes[:office_integration_enabled]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def office_integration_enabled=(value)
       @attributes[:office_integration_enabled] = value
     end
 
-    # boolean - Is this user a Partner administrator?
+    # Is this user a Partner administrator?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def partner_admin
       @attributes[:partner_admin]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def partner_admin=(value)
       @attributes[:partner_admin] = value
     end
 
-    # int64 - Partner ID if this user belongs to a Partner
+    # Partner ID if this user belongs to a Partner
+    # @return [Integer, nil] the field value, or nil when absent.
     def partner_id
       @attributes[:partner_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def partner_id=(value)
       @attributes[:partner_id] = value
     end
 
-    # string - Name of the Partner if this user belongs to a Partner
+    # Name of the Partner if this user belongs to a Partner
+    # @return [String, nil] the field value, or nil when absent.
     def partner_name
       @attributes[:partner_name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def partner_name=(value)
       @attributes[:partner_name] = value
     end
 
-    # date-time - Last time the user's password was set
+    # Last time the user's password was set
+    # @return [String, nil] the field value, or nil when absent.
     def password_set_at
       @attributes[:password_set_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def password_set_at=(value)
       @attributes[:password_set_at] = value
     end
 
-    # int64 - Number of days to allow user to use the same password
+    # Number of days to allow user to use the same password
+    # @return [Integer, nil] the field value, or nil when absent.
     def password_validity_days
       @attributes[:password_validity_days]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def password_validity_days=(value)
       @attributes[:password_validity_days] = value
     end
 
-    # int64 - Primary group ID for Group Admin scoping
+    # Primary group ID for Group Admin scoping
+    # @return [Integer, nil] the field value, or nil when absent.
     def primary_group_id
       @attributes[:primary_group_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def primary_group_id=(value)
       @attributes[:primary_group_id] = value
     end
 
-    # int64 - Number of public keys associated with this user
+    # Number of public keys associated with this user
+    # @return [Integer, nil] the field value, or nil when absent.
     def public_keys_count
       @attributes[:public_keys_count]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def public_keys_count=(value)
       @attributes[:public_keys_count] = value
     end
 
-    # boolean - Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
+    # Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def receive_admin_alerts
       @attributes[:receive_admin_alerts]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def receive_admin_alerts=(value)
       @attributes[:receive_admin_alerts] = value
     end
 
-    # boolean - Should the user receive site warnings via email?
+    # Should the user receive site warnings via email?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def notify_on_all_site_warnings
       @attributes[:notify_on_all_site_warnings]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def notify_on_all_site_warnings=(value)
       @attributes[:notify_on_all_site_warnings] = value
     end
 
-    # boolean - Should the user receive sso/scim/ldap configuration/sync failures via email?
+    # Should the user receive sso/scim/ldap configuration/sync failures via email?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def notify_on_all_sso_failures
       @attributes[:notify_on_all_sso_failures]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def notify_on_all_sso_failures=(value)
       @attributes[:notify_on_all_sso_failures] = value
     end
 
-    # boolean - Should the user receive user security events via email?
+    # Should the user receive user security events via email?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def notify_on_all_user_security_events
       @attributes[:notify_on_all_user_security_events]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def notify_on_all_user_security_events=(value)
       @attributes[:notify_on_all_user_security_events] = value
     end
 
-    # boolean - Should the user receive pending work failures via email?
+    # Should the user receive pending work failures via email?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def notify_on_all_pending_work_failures
       @attributes[:notify_on_all_pending_work_failures]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def notify_on_all_pending_work_failures=(value)
       @attributes[:notify_on_all_pending_work_failures] = value
     end
 
-    # boolean - Should the user receive siem failures via email?
+    # Should the user receive siem failures via email?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def notify_on_all_siem_http_destination_failures
       @attributes[:notify_on_all_siem_http_destination_failures]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def notify_on_all_siem_http_destination_failures=(value)
       @attributes[:notify_on_all_siem_http_destination_failures] = value
     end
 
-    # boolean - Should the user receive sync failures via email?
+    # Should the user receive sync failures via email?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def notify_on_all_sync_failures
       @attributes[:notify_on_all_sync_failures]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def notify_on_all_sync_failures=(value)
       @attributes[:notify_on_all_sync_failures] = value
     end
 
-    # boolean - Should the user receive automation failures via email?
+    # Should the user receive automation failures via email?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def notify_on_all_automation_failures
       @attributes[:notify_on_all_automation_failures]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def notify_on_all_automation_failures=(value)
       @attributes[:notify_on_all_automation_failures] = value
     end
 
-    # boolean - Should the user receive expectation failures and misses via email?
+    # Should the user receive expectation failures and misses via email?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def notify_on_all_expectation_failures
       @attributes[:notify_on_all_expectation_failures]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def notify_on_all_expectation_failures=(value)
       @attributes[:notify_on_all_expectation_failures] = value
     end
 
-    # string - 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
+    # 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
+    # @return [String, nil] the field value, or nil when absent.
     def require_2fa
       @attributes[:require_2fa]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def require_2fa=(value)
       @attributes[:require_2fa] = value
     end
 
-    # date-time - Require user to login by specified date otherwise it will be disabled.
+    # Require user to login by specified date otherwise it will be disabled.
+    # @return [String, nil] the field value, or nil when absent.
     def require_login_by
       @attributes[:require_login_by]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def require_login_by=(value)
       @attributes[:require_login_by] = value
     end
 
-    # boolean - Is 2fa active for the user?
+    # Is 2fa active for the user?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def active_2fa
       @attributes[:active_2fa]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def active_2fa=(value)
       @attributes[:active_2fa] = value
     end
 
-    # boolean - Is a password change required upon next user login?
+    # Is a password change required upon next user login?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def require_password_change
       @attributes[:require_password_change]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def require_password_change=(value)
       @attributes[:require_password_change] = value
     end
 
-    # boolean - Is user's password expired?
+    # Is user's password expired?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def password_expired
       @attributes[:password_expired]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def password_expired=(value)
       @attributes[:password_expired] = value
     end
 
-    # int64 - ID of the internal Group responsible for this Partner User, overriding the Partner default.
+    # ID of the internal Group responsible for this Partner User, overriding the Partner default.
+    # @return [Integer, nil] the field value, or nil when absent.
     def responsible_group_id
       @attributes[:responsible_group_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def responsible_group_id=(value)
       @attributes[:responsible_group_id] = value
     end
 
-    # int64 - ID of the internal User responsible for this Partner User, overriding the Partner default.
+    # ID of the internal User responsible for this Partner User, overriding the Partner default.
+    # @return [Integer, nil] the field value, or nil when absent.
     def responsible_user_id
       @attributes[:responsible_user_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def responsible_user_id=(value)
       @attributes[:responsible_user_id] = value
     end
 
-    # boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
+    # Is the user an allowed to view all (non-billing) site configuration for this site?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def readonly_site_admin
       @attributes[:readonly_site_admin]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def readonly_site_admin=(value)
       @attributes[:readonly_site_admin] = value
     end
 
-    # boolean - Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)
+    # Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)
+    # @return [Boolean, nil] the field value, or nil when absent.
     def restapi_permission
       @attributes[:restapi_permission]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def restapi_permission=(value)
       @attributes[:restapi_permission] = value
     end
 
-    # boolean - Can the user access the S3-compatible endpoint? Defaults to true.
+    # Can the user access the S3-compatible endpoint? Defaults to true.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def s3_compatible_endpoint_permission
       @attributes[:s3_compatible_endpoint_permission]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def s3_compatible_endpoint_permission=(value)
       @attributes[:s3_compatible_endpoint_permission] = value
     end
 
-    # boolean - Does this user manage it's own credentials or is it a shared/bot user?
+    # Does this user manage it's own credentials or is it a shared/bot user?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def self_managed
       @attributes[:self_managed]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def self_managed=(value)
       @attributes[:self_managed] = value
     end
 
-    # boolean - Can the user access with SFTP?
+    # Can the user access with SFTP?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def sftp_permission
       @attributes[:sftp_permission]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def sftp_permission=(value)
       @attributes[:sftp_permission] = value
     end
 
-    # boolean - Is the user an administrator for this site?
+    # Is the user an administrator for this site?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def site_admin
       @attributes[:site_admin]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def site_admin=(value)
       @attributes[:site_admin] = value
     end
 
-    # boolean - Whether the user is an administrator of their own Custom Workspace. Does not reflect administration granted through Permissions.
+    # Whether the user is an administrator of their own Custom Workspace. Does not reflect administration granted through Permissions.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def workspace_admin
       @attributes[:workspace_admin]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def workspace_admin=(value)
       @attributes[:workspace_admin] = value
     end
 
-    # int64 - Site ID
+    # Site ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def site_id
       @attributes[:site_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def site_id=(value)
       @attributes[:site_id] = value
     end
 
-    # int64 - ID of the Workspace the user belongs to. 0 is the Default Workspace.
+    # ID of the Workspace the user belongs to. 0 is the Default Workspace.
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # int64 - Workspace ID the user should land in by default when more than one Workspace is available.
+    # Workspace ID the user should land in by default when more than one Workspace is available.
+    # @return [Integer, nil] the field value, or nil when absent.
     def default_workspace_id
       @attributes[:default_workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def default_workspace_id=(value)
       @attributes[:default_workspace_id] = value
     end
 
-    # boolean - Skip Welcome page in the UI?
+    # Skip Welcome page in the UI?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def skip_welcome_screen
       @attributes[:skip_welcome_screen]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def skip_welcome_screen=(value)
       @attributes[:skip_welcome_screen] = value
     end
 
-    # string - SSL required setting
+    # SSL required setting
+    # @return [String, nil] the field value, or nil when absent.
     def ssl_required
       @attributes[:ssl_required]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def ssl_required=(value)
       @attributes[:ssl_required] = value
     end
 
-    # int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
+    # SSO (Single Sign On) strategy ID for the user, if applicable.
+    # @return [Integer, nil] the field value, or nil when absent.
     def sso_strategy_id
       @attributes[:sso_strategy_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def sso_strategy_id=(value)
       @attributes[:sso_strategy_id] = value
     end
 
-    # boolean - Is this user managed by a SsoStrategy?
+    # Is this user managed by a SsoStrategy?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def externally_managed
       @attributes[:externally_managed]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def externally_managed=(value)
       @attributes[:externally_managed] = value
     end
 
-    # string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    # Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    # @return [String, nil] the field value, or nil when absent.
     def tags
       @attributes[:tags]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def tags=(value)
       @attributes[:tags] = value
     end
 
-    # string - User time zone
+    # User time zone
+    # @return [String, nil] the field value, or nil when absent.
     def time_zone
       @attributes[:time_zone]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def time_zone=(value)
       @attributes[:time_zone] = value
     end
 
-    # string - Type(s) of 2FA methods in use, for programmatic use.  Will be either `sms`, `totp`, `webauthn`, `yubi`, `email`, or multiple values sorted alphabetically and joined by an underscore.  Does not specify whether user has more than one of a given method.
+    # Type(s) of 2FA methods in use, for programmatic use.  Will be either `sms`, `totp`, `webauthn`, `yubi`, `email`, or multiple values sorted alphabetically and joined by an underscore.  Does not specify whether user has more than one of a given method.
+    # @return [String, nil] the field value, or nil when absent.
     def type_of_2fa
       @attributes[:type_of_2fa]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def type_of_2fa=(value)
       @attributes[:type_of_2fa] = value
     end
 
-    # string - Type(s) of 2FA methods in use, formatted for displaying in the UI.  Unlike `type_of_2fa`, this value will make clear when a user has more than 1 of the same type of method.
+    # Type(s) of 2FA methods in use, formatted for displaying in the UI.  Unlike `type_of_2fa`, this value will make clear when a user has more than 1 of the same type of method.
+    # @return [String, nil] the field value, or nil when absent.
     def type_of_2fa_for_display
       @attributes[:type_of_2fa_for_display]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def type_of_2fa_for_display=(value)
       @attributes[:type_of_2fa_for_display] = value
     end
 
-    # string - If filesystem layout is user_root, this path is the root path the user is fixed to for all interfaces. If the filesystem layout is site_root or partner_root, this acts as a root folder only for FTP and SFTP (SFTP applicability also requires a site-wide setting to be set). For partner_root layout, this path is relative to the Partner root folder for all callers and blank opts out of an additional protocol root. In this situation, this path is not applied to the API, Desktop, or Web interface.
+    # If filesystem layout is user_root, this path is the root path the user is fixed to for all interfaces. If the filesystem layout is site_root or partner_root, this acts as a root folder only for FTP and SFTP (SFTP applicability also requires a site-wide setting to be set). For partner_root layout, this path is relative to the Partner root folder for all callers and blank opts out of an additional protocol root. In this situation, this path is not applied to the API, Desktop, or Web interface.
+    # @return [String, nil] the field value, or nil when absent.
     def user_root
       @attributes[:user_root]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def user_root=(value)
       @attributes[:user_root] = value
     end
 
-    # string - Home folder for FTP/SFTP. For users with the partner_root filesystem layout, this path is relative to the Partner root folder. In all other cases, it is an absolute path. Only applies to FTP and SFTP, and not any other interface.
+    # Home folder for FTP/SFTP. For users with the partner_root filesystem layout, this path is relative to the Partner root folder. In all other cases, it is an absolute path. Only applies to FTP and SFTP, and not any other interface.
+    # @return [String, nil] the field value, or nil when absent.
     def user_home
       @attributes[:user_home]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def user_home=(value)
       @attributes[:user_home] = value
     end
 
-    # int64 - Number of days remaining until password expires
+    # Number of days remaining until password expires
+    # @return [Integer, nil] the field value, or nil when absent.
     def days_remaining_until_password_expire
       @attributes[:days_remaining_until_password_expire]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def days_remaining_until_password_expire=(value)
       @attributes[:days_remaining_until_password_expire] = value
     end
 
-    # date-time - Password expiration datetime
+    # Password expiration datetime
+    # @return [String, nil] the field value, or nil when absent.
     def password_expire_at
       @attributes[:password_expire_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def password_expire_at=(value)
       @attributes[:password_expire_at] = value
     end
 
-    # file - An image file for your user avatar.
+    # An image file for your user avatar.
+    # @return [Hash, nil] the field value, or nil when absent.
     def avatar_file
       @attributes[:avatar_file]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def avatar_file=(value)
       @attributes[:avatar_file] = value
     end
 
-    # boolean - If true, the avatar will be deleted.
+    # If true, the avatar will be deleted.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def avatar_delete
       @attributes[:avatar_delete]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def avatar_delete=(value)
       @attributes[:avatar_delete] = value
     end
 
-    # string - Used for changing a password on an existing user.
+    # Used for changing a password on an existing user.
+    # @return [String, nil] the field value, or nil when absent.
     def change_password
       @attributes[:change_password]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def change_password=(value)
       @attributes[:change_password] = value
     end
 
-    # string - Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    # Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    # @return [String, nil] the field value, or nil when absent.
     def change_password_confirmation
       @attributes[:change_password_confirmation]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def change_password_confirmation=(value)
       @attributes[:change_password_confirmation] = value
     end
 
-    # string - Permission to grant on the User Root upon creation, or on the Workspace root when the User Root is blank. For the Default Workspace, a blank User Root uses the site root. `admin` on a Custom Workspace's root grants Workspace Administrator access; on a subfolder it grants Folder Admin access. Can be blank or `admin`, `full`, `read`, `write`, `list`, `read+write`, `list+write`, or `history`.
+    # Permission to grant on the User Root upon creation, or on the Workspace root when the User Root is blank. For the Default Workspace, a blank User Root uses the site root. `admin` on a Custom Workspace's root grants Workspace Administrator access; on a subfolder it grants Folder Admin access. Can be blank or `admin`, `full`, `read`, `write`, `list`, `read+write`, `list+write`, or `history`.
+    # @return [String, nil] the field value, or nil when absent.
     def grant_permission
       @attributes[:grant_permission]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def grant_permission=(value)
       @attributes[:grant_permission] = value
     end
 
-    # int64 - Group ID to associate this user with.
+    # Group ID to associate this user with.
+    # @return [Integer, nil] the field value, or nil when absent.
     def group_id
       @attributes[:group_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def group_id=(value)
       @attributes[:group_id] = value
     end
 
-    # string - Pre-calculated hash of the user's password. If supplied, this will be used to authenticate the user on first login. Supported hash methods are MD5, SHA1, and SHA256.
+    # Pre-calculated hash of the user's password. If supplied, this will be used to authenticate the user on first login. Supported hash methods are MD5, SHA1, and SHA256.
+    # @return [String, nil] the field value, or nil when absent.
     def imported_password_hash
       @attributes[:imported_password_hash]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def imported_password_hash=(value)
       @attributes[:imported_password_hash] = value
     end
 
-    # string - User password.
+    # User password.
+    # @return [String, nil] the field value, or nil when absent.
     def password
       @attributes[:password]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def password=(value)
       @attributes[:password] = value
     end
 
-    # string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    # Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    # @return [String, nil] the field value, or nil when absent.
     def password_confirmation
       @attributes[:password_confirmation]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def password_confirmation=(value)
       @attributes[:password_confirmation] = value
     end
 
-    # boolean - Signifies that the user has read all the announcements in the UI.
+    # Signifies that the user has read all the announcements in the UI.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def announcements_read
       @attributes[:announcements_read]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def announcements_read=(value)
       @attributes[:announcements_read] = value
     end
 
-    # boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
+    # If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def clear_2fa
       @attributes[:clear_2fa]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def clear_2fa=(value)
       @attributes[:clear_2fa] = value
     end
 
-    # boolean - Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
+    # Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def convert_to_partner_user
       @attributes[:convert_to_partner_user]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def convert_to_partner_user=(value)
       @attributes[:convert_to_partner_user] = value
     end
 
     # Unlock user who has been locked out due to failed logins
     #
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def unlock(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -924,7 +1331,11 @@ module Files
 
     # Resend user welcome email
     #
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def resend_welcome_email(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -939,7 +1350,11 @@ module Files
 
     # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
     #
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def user_2fa_reset(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -952,77 +1367,83 @@ module Files
       [ response, options ]
     end
 
-    # Parameters:
-    #   avatar_file - file - An image file for your user avatar.
-    #   avatar_delete - boolean - If true, the avatar will be deleted.
-    #   change_password - string - Used for changing a password on an existing user.
-    #   change_password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    #   email - string - User's email.
-    #   grant_permission - string - Permission to grant on the User Root upon creation, or on the Workspace root when the User Root is blank. For the Default Workspace, a blank User Root uses the site root. `admin` on a Custom Workspace's root grants Workspace Administrator access; on a subfolder it grants Folder Admin access. Can be blank or `admin`, `full`, `read`, `write`, `list`, `read+write`, `list+write`, or `history`.
-    #   group_id - int64 - Group ID to associate this user with.
-    #   group_ids - string - A list of group ids to associate this user with.  Comma delimited.
-    #   imported_password_hash - string - Pre-calculated hash of the user's password. If supplied, this will be used to authenticate the user on first login. Supported hash methods are MD5, SHA1, and SHA256.
-    #   password - string - User password.
-    #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
-    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned directly to this user, if any.
-    #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
-    #   attachments_permission - boolean - DEPRECATED: If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
-    #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
-    #   authentication_method - string - How is this user authenticated?
-    #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
-    #   bypass_user_lifecycle_rules - boolean - Exempt this user from user lifecycle rules?
-    #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
-    #   dav_permission - boolean - Can the user connect with WebDAV?
-    #   desktop_configuration_profile_id - int64 - Desktop Configuration Profile ID assigned directly to this user, if any.
-    #   default_workspace_id - int64 - Workspace ID the user should land in by default when more than one Workspace is available.
-    #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
-    #   filesystem_layout - string - File system layout
-    #   ftp_permission - boolean - Can the user access with FTP/FTPS?
-    #   header_text - string - Text to display to the user in the header of the UI
-    #   integration_centric_profile_id - int64 - Integration Centric Profile ID assigned directly to this user, if any.
-    #   language - string - Preferred language
-    #   notification_daily_send_time - int64 - Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    #   name - string - User's full name
-    #   company - string - User's company
-    #   notes - string - Any internal notes on the user
-    #   office_integration_enabled - boolean - Enable integration with Office for the web?
-    #   partner_admin - boolean - Is this user a Partner administrator?
-    #   partner_id - int64 - Partner ID if this user belongs to a Partner
-    #   password_validity_days - int64 - Number of days to allow user to use the same password
-    #   primary_group_id - int64 - Primary group ID for Group Admin scoping
-    #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
-    #   receive_admin_alerts - boolean - Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
-    #   notify_on_all_site_warnings - boolean - Should the user receive site warnings via email?
-    #   notify_on_all_sso_failures - boolean - Should the user receive sso/scim/ldap configuration/sync failures via email?
-    #   notify_on_all_user_security_events - boolean - Should the user receive user security events via email?
-    #   notify_on_all_pending_work_failures - boolean - Should the user receive pending work failures via email?
-    #   notify_on_all_siem_http_destination_failures - boolean - Should the user receive siem failures via email?
-    #   notify_on_all_sync_failures - boolean - Should the user receive sync failures via email?
-    #   notify_on_all_automation_failures - boolean - Should the user receive automation failures via email?
-    #   notify_on_all_expectation_failures - boolean - Should the user receive expectation failures and misses via email?
-    #   require_login_by - string - Require user to login by specified date otherwise it will be disabled.
-    #   require_password_change - boolean - Is a password change required upon next user login?
-    #   responsible_group_id - int64 - ID of the internal Group responsible for this Partner User, overriding the Partner default.
-    #   responsible_user_id - int64 - ID of the internal User responsible for this Partner User, overriding the Partner default.
-    #   restapi_permission - boolean - Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)
-    #   s3_compatible_endpoint_permission - boolean - Can the user access the S3-compatible endpoint? Defaults to true.
-    #   self_managed - boolean - Does this user manage it's own credentials or is it a shared/bot user?
-    #   sftp_permission - boolean - Can the user access with SFTP?
-    #   site_admin - boolean - Is the user an administrator for this site?
-    #   skip_welcome_screen - boolean - Skip Welcome page in the UI?
-    #   ssl_required - string - SSL required setting
-    #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
-    #   require_2fa - string - 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
-    #   tags - string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
-    #   time_zone - string - User time zone
-    #   user_root - string - If filesystem layout is user_root, this path is the root path the user is fixed to for all interfaces. If the filesystem layout is site_root or partner_root, this acts as a root folder only for FTP and SFTP (SFTP applicability also requires a site-wide setting to be set). For partner_root layout, this path is relative to the Partner root folder for all callers and blank opts out of an additional protocol root. In this situation, this path is not applied to the API, Desktop, or Web interface.
-    #   user_home - string - Home folder for FTP/SFTP. For users with the partner_root filesystem layout, this path is relative to the Partner root folder. In all other cases, it is an absolute path. Only applies to FTP and SFTP, and not any other interface.
-    #   workspace_admin - boolean - Whether the user is an administrator of their own Custom Workspace. Does not reflect administration granted through Permissions.
-    #   username - string - User's username
-    #   workspace_id - int64 - Workspace ID. Only Site Administrators can change this field. Values supplied by Workspace Administrators, Group Administrators, or other non-Site Administrators using `/user` are ignored.
-    #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
-    #   convert_to_partner_user - boolean - Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
+    # Update User
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Object] avatar_file An image file for your user avatar.
+    # @option params [Boolean] avatar_delete If true, the avatar will be deleted.
+    # @option params [String] change_password Used for changing a password on an existing user.
+    # @option params [String] change_password_confirmation Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    # @option params [String] email User's email.
+    # @option params [String] grant_permission Permission to grant on the User Root upon creation, or on the Workspace root when the User Root is blank. For the Default Workspace, a blank User Root uses the site root. `admin` on a Custom Workspace's root grants Workspace Administrator access; on a subfolder it grants Folder Admin access. Can be blank or `admin`, `full`, `read`, `write`, `list`, `read+write`, `list+write`, or `history`.
+    # @option params [Integer] group_id Group ID to associate this user with.
+    # @option params [String] group_ids A list of group ids to associate this user with.  Comma delimited.
+    # @option params [String] imported_password_hash Pre-calculated hash of the user's password. If supplied, this will be used to authenticate the user on first login. Supported hash methods are MD5, SHA1, and SHA256.
+    # @option params [String] password User password.
+    # @option params [String] password_confirmation Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    # @option params [Boolean] announcements_read Signifies that the user has read all the announcements in the UI.
+    # @option params [Integer] ai_assistant_personality_id AI Assistant Personality ID assigned directly to this user, if any.
+    # @option params [String] allowed_ips A list of allowed IPs if applicable.  Newline delimited
+    # @option params [Boolean] attachments_permission DEPRECATED: If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
+    # @option params [String] authenticate_until Scheduled Date/Time at which user will be deactivated
+    # @option params [String] authentication_method How is this user authenticated?
+    # @option params [Boolean] billing_permission Allow this user to perform operations on the account, payments, and invoices?
+    # @option params [Boolean] bypass_user_lifecycle_rules Exempt this user from user lifecycle rules?
+    # @option params [Boolean] bypass_site_allowed_ips Allow this user to skip site-wide IP blacklists?
+    # @option params [Boolean] dav_permission Can the user connect with WebDAV?
+    # @option params [Integer] desktop_configuration_profile_id Desktop Configuration Profile ID assigned directly to this user, if any.
+    # @option params [Integer] default_workspace_id Workspace ID the user should land in by default when more than one Workspace is available.
+    # @option params [Boolean] disabled Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
+    # @option params [String] filesystem_layout File system layout
+    # @option params [Boolean] ftp_permission Can the user access with FTP/FTPS?
+    # @option params [String] header_text Text to display to the user in the header of the UI
+    # @option params [Integer] integration_centric_profile_id Integration Centric Profile ID assigned directly to this user, if any.
+    # @option params [String] language Preferred language
+    # @option params [Integer] notification_daily_send_time Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    # @option params [String] name User's full name
+    # @option params [String] company User's company
+    # @option params [String] notes Any internal notes on the user
+    # @option params [Boolean] office_integration_enabled Enable integration with Office for the web?
+    # @option params [Boolean] partner_admin Is this user a Partner administrator?
+    # @option params [Integer] partner_id Partner ID if this user belongs to a Partner
+    # @option params [Integer] password_validity_days Number of days to allow user to use the same password
+    # @option params [Integer] primary_group_id Primary group ID for Group Admin scoping
+    # @option params [Boolean] readonly_site_admin Is the user an allowed to view all (non-billing) site configuration for this site?
+    # @option params [Boolean] receive_admin_alerts Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
+    # @option params [Boolean] notify_on_all_site_warnings Should the user receive site warnings via email?
+    # @option params [Boolean] notify_on_all_sso_failures Should the user receive sso/scim/ldap configuration/sync failures via email?
+    # @option params [Boolean] notify_on_all_user_security_events Should the user receive user security events via email?
+    # @option params [Boolean] notify_on_all_pending_work_failures Should the user receive pending work failures via email?
+    # @option params [Boolean] notify_on_all_siem_http_destination_failures Should the user receive siem failures via email?
+    # @option params [Boolean] notify_on_all_sync_failures Should the user receive sync failures via email?
+    # @option params [Boolean] notify_on_all_automation_failures Should the user receive automation failures via email?
+    # @option params [Boolean] notify_on_all_expectation_failures Should the user receive expectation failures and misses via email?
+    # @option params [String] require_login_by Require user to login by specified date otherwise it will be disabled.
+    # @option params [Boolean] require_password_change Is a password change required upon next user login?
+    # @option params [Integer] responsible_group_id ID of the internal Group responsible for this Partner User, overriding the Partner default.
+    # @option params [Integer] responsible_user_id ID of the internal User responsible for this Partner User, overriding the Partner default.
+    # @option params [Boolean] restapi_permission Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)
+    # @option params [Boolean] s3_compatible_endpoint_permission Can the user access the S3-compatible endpoint? Defaults to true.
+    # @option params [Boolean] self_managed Does this user manage it's own credentials or is it a shared/bot user?
+    # @option params [Boolean] sftp_permission Can the user access with SFTP?
+    # @option params [Boolean] site_admin Is the user an administrator for this site?
+    # @option params [Boolean] skip_welcome_screen Skip Welcome page in the UI?
+    # @option params [String] ssl_required SSL required setting
+    # @option params [Integer] sso_strategy_id SSO (Single Sign On) strategy ID for the user, if applicable.
+    # @option params [String] require_2fa 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
+    # @option params [String] tags Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [String] time_zone User time zone
+    # @option params [String] user_root If filesystem layout is user_root, this path is the root path the user is fixed to for all interfaces. If the filesystem layout is site_root or partner_root, this acts as a root folder only for FTP and SFTP (SFTP applicability also requires a site-wide setting to be set). For partner_root layout, this path is relative to the Partner root folder for all callers and blank opts out of an additional protocol root. In this situation, this path is not applied to the API, Desktop, or Web interface.
+    # @option params [String] user_home Home folder for FTP/SFTP. For users with the partner_root filesystem layout, this path is relative to the Partner root folder. In all other cases, it is an absolute path. Only applies to FTP and SFTP, and not any other interface.
+    # @option params [Boolean] workspace_admin Whether the user is an administrator of their own Custom Workspace. Does not reflect administration granted through Permissions.
+    # @option params [String] username User's username
+    # @option params [Integer] workspace_id Workspace ID. Only Site Administrators can change this field. Values supplied by Workspace Administrators, Group Administrators, or other non-Site Administrators using `/user` are ignored.
+    # @option params [Boolean] clear_2fa If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
+    # @option params [Boolean] convert_to_partner_user Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -1105,10 +1526,14 @@ module Files
       [ response, options ]
     end
 
-    # Parameters:
-    #   new_owner_id - int64 - Provide a User ID here to transfer ownership of certain resources such as Automations and Share Links (Bundles) to that new user.
+    # Delete User
     #
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] new_owner_id Provide a User ID here to transfer ownership of certain resources such as Automations and Share Links (Bundles) to that new user.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -1122,12 +1547,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -1140,25 +1572,27 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `workspace_id`, `company`, `name`, `disabled`, `authenticate_until`, `username`, `email`, `site_admin`, `last_desktop_login_at`, `last_login_at`, `password_validity_days` or `ssl_required`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `username`, `name`, `email`, `company`, `site_admin`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until`, `not_site_admin`, `disabled`, `partner_id`, `primary_group_id` or `workspace_id`. Valid field combinations are `[ site_admin, username ]`, `[ not_site_admin, username ]`, `[ workspace_id, username ]`, `[ company, name ]`, `[ workspace_id, name ]`, `[ workspace_id, email ]`, `[ workspace_id, company ]`, `[ workspace_id, site_admin ]`, `[ workspace_id, not_site_admin ]`, `[ workspace_id, disabled ]`, `[ workspace_id, partner_id ]`, `[ workspace_id, site_admin, username ]`, `[ workspace_id, not_site_admin, username ]`, `[ workspace_id, disabled, username ]`, `[ workspace_id, partner_id, username ]` or `[ workspace_id, company, name ]`.
-    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
-    #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
-    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `username`, `name`, `email` or `company`. Valid field combinations are `[ company, name ]`.
-    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
-    #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
-    #   ids - string - comma-separated list of User IDs
-    #   include_parent_site_users - boolean - Include users from the parent site.
-    #   include_default_workspace_users - boolean - When scoped to a Custom Workspace, include Default Workspace users who have permissions in that Workspace. Available to Site Administrators, and to Workspace Administrators and Folder Admins in that Workspace when the site shares its Default Workspace directory with Workspaces.
-    #   search - string - Searches for partial matches of name, username, or email.
+    # List Users
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::User objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `workspace_id`, `company`, `name`, `disabled`, `authenticate_until`, `username`, `email`, `site_admin`, `last_desktop_login_at`, `last_login_at`, `password_validity_days` or `ssl_required`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `username`, `name`, `email`, `company`, `site_admin`, `password_validity_days`, `ssl_required`, `last_login_at`, `authenticate_until`, `not_site_admin`, `disabled`, `partner_id`, `primary_group_id` or `workspace_id`. Valid field combinations are `[ site_admin, username ]`, `[ not_site_admin, username ]`, `[ workspace_id, username ]`, `[ company, name ]`, `[ workspace_id, name ]`, `[ workspace_id, email ]`, `[ workspace_id, company ]`, `[ workspace_id, site_admin ]`, `[ workspace_id, not_site_admin ]`, `[ workspace_id, disabled ]`, `[ workspace_id, partner_id ]`, `[ workspace_id, site_admin, username ]`, `[ workspace_id, not_site_admin, username ]`, `[ workspace_id, disabled, username ]`, `[ workspace_id, partner_id, username ]` or `[ workspace_id, company, name ]`.
+    # @option params [Hash] filter_gt If set, return records where the specified field is greater than the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
+    # @option params [Hash] filter_gteq If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
+    # @option params [Hash] filter_prefix If set, return records where the specified field is prefixed by the supplied value. Valid fields are `username`, `name`, `email` or `company`. Valid field combinations are `[ company, name ]`.
+    # @option params [Hash] filter_lt If set, return records where the specified field is less than the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
+    # @option params [Hash] filter_lteq If set, return records where the specified field is less than or equal the supplied value. Valid fields are `password_validity_days`, `last_login_at` or `authenticate_until`.
+    # @option params [String] ids comma-separated list of User IDs
+    # @option params [Boolean] include_parent_site_users Include users from the parent site.
+    # @option params [Boolean] include_default_workspace_users When scoped to a Custom Workspace, include Default Workspace users who have permissions in that Workspace. Available to Site Administrators, and to Workspace Administrators and Folder Admins in that Workspace when the site shares its Default Workspace directory with Workspaces.
+    # @option params [String] search Searches for partial matches of name, username, or email.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -1182,17 +1616,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - User ID.
+    # Show User
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::User.
+    # @param id [Integer] User ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::User] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -1203,84 +1640,87 @@ module Files
       User.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   avatar_file - file - An image file for your user avatar.
-    #   avatar_delete - boolean - If true, the avatar will be deleted.
-    #   change_password - string - Used for changing a password on an existing user.
-    #   change_password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    #   email - string - User's email.
-    #   grant_permission - string - Permission to grant on the User Root upon creation, or on the Workspace root when the User Root is blank. For the Default Workspace, a blank User Root uses the site root. `admin` on a Custom Workspace's root grants Workspace Administrator access; on a subfolder it grants Folder Admin access. Can be blank or `admin`, `full`, `read`, `write`, `list`, `read+write`, `list+write`, or `history`.
-    #   group_id - int64 - Group ID to associate this user with.
-    #   group_ids - string - A list of group ids to associate this user with.  Comma delimited.
-    #   imported_password_hash - string - Pre-calculated hash of the user's password. If supplied, this will be used to authenticate the user on first login. Supported hash methods are MD5, SHA1, and SHA256.
-    #   password - string - User password.
-    #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
-    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned directly to this user, if any.
-    #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
-    #   attachments_permission - boolean - DEPRECATED: If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
-    #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
-    #   authentication_method - string - How is this user authenticated?
-    #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
-    #   bypass_user_lifecycle_rules - boolean - Exempt this user from user lifecycle rules?
-    #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
-    #   dav_permission - boolean - Can the user connect with WebDAV?
-    #   desktop_configuration_profile_id - int64 - Desktop Configuration Profile ID assigned directly to this user, if any.
-    #   default_workspace_id - int64 - Workspace ID the user should land in by default when more than one Workspace is available.
-    #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
-    #   filesystem_layout - string - File system layout
-    #   ftp_permission - boolean - Can the user access with FTP/FTPS?
-    #   header_text - string - Text to display to the user in the header of the UI
-    #   integration_centric_profile_id - int64 - Integration Centric Profile ID assigned directly to this user, if any.
-    #   language - string - Preferred language
-    #   notification_daily_send_time - int64 - Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    #   name - string - User's full name
-    #   company - string - User's company
-    #   notes - string - Any internal notes on the user
-    #   office_integration_enabled - boolean - Enable integration with Office for the web?
-    #   partner_admin - boolean - Is this user a Partner administrator?
-    #   partner_id - int64 - Partner ID if this user belongs to a Partner
-    #   password_validity_days - int64 - Number of days to allow user to use the same password
-    #   primary_group_id - int64 - Primary group ID for Group Admin scoping
-    #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
-    #   receive_admin_alerts - boolean - Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
-    #   notify_on_all_site_warnings - boolean - Should the user receive site warnings via email?
-    #   notify_on_all_sso_failures - boolean - Should the user receive sso/scim/ldap configuration/sync failures via email?
-    #   notify_on_all_user_security_events - boolean - Should the user receive user security events via email?
-    #   notify_on_all_pending_work_failures - boolean - Should the user receive pending work failures via email?
-    #   notify_on_all_siem_http_destination_failures - boolean - Should the user receive siem failures via email?
-    #   notify_on_all_sync_failures - boolean - Should the user receive sync failures via email?
-    #   notify_on_all_automation_failures - boolean - Should the user receive automation failures via email?
-    #   notify_on_all_expectation_failures - boolean - Should the user receive expectation failures and misses via email?
-    #   require_login_by - string - Require user to login by specified date otherwise it will be disabled.
-    #   require_password_change - boolean - Is a password change required upon next user login?
-    #   responsible_group_id - int64 - ID of the internal Group responsible for this Partner User, overriding the Partner default.
-    #   responsible_user_id - int64 - ID of the internal User responsible for this Partner User, overriding the Partner default.
-    #   restapi_permission - boolean - Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)
-    #   s3_compatible_endpoint_permission - boolean - Can the user access the S3-compatible endpoint? Defaults to true.
-    #   self_managed - boolean - Does this user manage it's own credentials or is it a shared/bot user?
-    #   sftp_permission - boolean - Can the user access with SFTP?
-    #   site_admin - boolean - Is the user an administrator for this site?
-    #   skip_welcome_screen - boolean - Skip Welcome page in the UI?
-    #   ssl_required - string - SSL required setting
-    #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
-    #   require_2fa - string - 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
-    #   tags - string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
-    #   time_zone - string - User time zone
-    #   user_root - string - If filesystem layout is user_root, this path is the root path the user is fixed to for all interfaces. If the filesystem layout is site_root or partner_root, this acts as a root folder only for FTP and SFTP (SFTP applicability also requires a site-wide setting to be set). For partner_root layout, this path is relative to the Partner root folder for all callers and blank opts out of an additional protocol root. In this situation, this path is not applied to the API, Desktop, or Web interface.
-    #   user_home - string - Home folder for FTP/SFTP. For users with the partner_root filesystem layout, this path is relative to the Partner root folder. In all other cases, it is an absolute path. Only applies to FTP and SFTP, and not any other interface.
-    #   workspace_admin - boolean - Whether the user is an administrator of their own Custom Workspace. Does not reflect administration granted through Permissions.
-    #   username (required) - string - User's username
-    #   workspace_id - int64 - ID of the Workspace the user belongs to. 0 is the Default Workspace.
+    # Create User
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::User.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Object] avatar_file An image file for your user avatar.
+    # @option params [Boolean] avatar_delete If true, the avatar will be deleted.
+    # @option params [String] change_password Used for changing a password on an existing user.
+    # @option params [String] change_password_confirmation Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    # @option params [String] email User's email.
+    # @option params [String] grant_permission Permission to grant on the User Root upon creation, or on the Workspace root when the User Root is blank. For the Default Workspace, a blank User Root uses the site root. `admin` on a Custom Workspace's root grants Workspace Administrator access; on a subfolder it grants Folder Admin access. Can be blank or `admin`, `full`, `read`, `write`, `list`, `read+write`, `list+write`, or `history`.
+    # @option params [Integer] group_id Group ID to associate this user with.
+    # @option params [String] group_ids A list of group ids to associate this user with.  Comma delimited.
+    # @option params [String] imported_password_hash Pre-calculated hash of the user's password. If supplied, this will be used to authenticate the user on first login. Supported hash methods are MD5, SHA1, and SHA256.
+    # @option params [String] password User password.
+    # @option params [String] password_confirmation Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    # @option params [Boolean] announcements_read Signifies that the user has read all the announcements in the UI.
+    # @option params [Integer] ai_assistant_personality_id AI Assistant Personality ID assigned directly to this user, if any.
+    # @option params [String] allowed_ips A list of allowed IPs if applicable.  Newline delimited
+    # @option params [Boolean] attachments_permission DEPRECATED: If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
+    # @option params [String] authenticate_until Scheduled Date/Time at which user will be deactivated
+    # @option params [String] authentication_method How is this user authenticated?
+    # @option params [Boolean] billing_permission Allow this user to perform operations on the account, payments, and invoices?
+    # @option params [Boolean] bypass_user_lifecycle_rules Exempt this user from user lifecycle rules?
+    # @option params [Boolean] bypass_site_allowed_ips Allow this user to skip site-wide IP blacklists?
+    # @option params [Boolean] dav_permission Can the user connect with WebDAV?
+    # @option params [Integer] desktop_configuration_profile_id Desktop Configuration Profile ID assigned directly to this user, if any.
+    # @option params [Integer] default_workspace_id Workspace ID the user should land in by default when more than one Workspace is available.
+    # @option params [Boolean] disabled Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
+    # @option params [String] filesystem_layout File system layout
+    # @option params [Boolean] ftp_permission Can the user access with FTP/FTPS?
+    # @option params [String] header_text Text to display to the user in the header of the UI
+    # @option params [Integer] integration_centric_profile_id Integration Centric Profile ID assigned directly to this user, if any.
+    # @option params [String] language Preferred language
+    # @option params [Integer] notification_daily_send_time Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    # @option params [String] name User's full name
+    # @option params [String] company User's company
+    # @option params [String] notes Any internal notes on the user
+    # @option params [Boolean] office_integration_enabled Enable integration with Office for the web?
+    # @option params [Boolean] partner_admin Is this user a Partner administrator?
+    # @option params [Integer] partner_id Partner ID if this user belongs to a Partner
+    # @option params [Integer] password_validity_days Number of days to allow user to use the same password
+    # @option params [Integer] primary_group_id Primary group ID for Group Admin scoping
+    # @option params [Boolean] readonly_site_admin Is the user an allowed to view all (non-billing) site configuration for this site?
+    # @option params [Boolean] receive_admin_alerts Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
+    # @option params [Boolean] notify_on_all_site_warnings Should the user receive site warnings via email?
+    # @option params [Boolean] notify_on_all_sso_failures Should the user receive sso/scim/ldap configuration/sync failures via email?
+    # @option params [Boolean] notify_on_all_user_security_events Should the user receive user security events via email?
+    # @option params [Boolean] notify_on_all_pending_work_failures Should the user receive pending work failures via email?
+    # @option params [Boolean] notify_on_all_siem_http_destination_failures Should the user receive siem failures via email?
+    # @option params [Boolean] notify_on_all_sync_failures Should the user receive sync failures via email?
+    # @option params [Boolean] notify_on_all_automation_failures Should the user receive automation failures via email?
+    # @option params [Boolean] notify_on_all_expectation_failures Should the user receive expectation failures and misses via email?
+    # @option params [String] require_login_by Require user to login by specified date otherwise it will be disabled.
+    # @option params [Boolean] require_password_change Is a password change required upon next user login?
+    # @option params [Integer] responsible_group_id ID of the internal Group responsible for this Partner User, overriding the Partner default.
+    # @option params [Integer] responsible_user_id ID of the internal User responsible for this Partner User, overriding the Partner default.
+    # @option params [Boolean] restapi_permission Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)
+    # @option params [Boolean] s3_compatible_endpoint_permission Can the user access the S3-compatible endpoint? Defaults to true.
+    # @option params [Boolean] self_managed Does this user manage it's own credentials or is it a shared/bot user?
+    # @option params [Boolean] sftp_permission Can the user access with SFTP?
+    # @option params [Boolean] site_admin Is the user an administrator for this site?
+    # @option params [Boolean] skip_welcome_screen Skip Welcome page in the UI?
+    # @option params [String] ssl_required SSL required setting
+    # @option params [Integer] sso_strategy_id SSO (Single Sign On) strategy ID for the user, if applicable.
+    # @option params [String] require_2fa 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
+    # @option params [String] tags Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [String] time_zone User time zone
+    # @option params [String] user_root If filesystem layout is user_root, this path is the root path the user is fixed to for all interfaces. If the filesystem layout is site_root or partner_root, this acts as a root folder only for FTP and SFTP (SFTP applicability also requires a site-wide setting to be set). For partner_root layout, this path is relative to the Partner root folder for all callers and blank opts out of an additional protocol root. In this situation, this path is not applied to the API, Desktop, or Web interface.
+    # @option params [String] user_home Home folder for FTP/SFTP. For users with the partner_root filesystem layout, this path is relative to the Partner root folder. In all other cases, it is an absolute path. Only applies to FTP and SFTP, and not any other interface.
+    # @option params [Boolean] workspace_admin Whether the user is an administrator of their own Custom Workspace. Does not reflect administration granted through Permissions.
+    # @option params [String] username Required. User's username
+    # @option params [Integer] workspace_id ID of the Workspace the user belongs to. 0 is the Default Workspace.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::User] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: avatar_delete must be a single value, not #{params[:avatar_delete].class}") if [ Array, Hash ].any? { |klass| params[:avatar_delete].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: change_password must be an String") if !params[:change_password].nil? and !params[:change_password].is_a?(String)
@@ -1357,10 +1797,13 @@ module Files
 
     # Unlock user who has been locked out due to failed logins
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns nil.
+    # @param id [Integer] User ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.unlock(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -1373,10 +1816,13 @@ module Files
 
     # Resend user welcome email
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns nil.
+    # @param id [Integer] User ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.resend_welcome_email(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -1389,10 +1835,13 @@ module Files
 
     # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns nil.
+    # @param id [Integer] User ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.user_2fa_reset(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -1403,82 +1852,85 @@ module Files
       nil
     end
 
-    # Parameters:
-    #   avatar_file - file - An image file for your user avatar.
-    #   avatar_delete - boolean - If true, the avatar will be deleted.
-    #   change_password - string - Used for changing a password on an existing user.
-    #   change_password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
-    #   email - string - User's email.
-    #   grant_permission - string - Permission to grant on the User Root upon creation, or on the Workspace root when the User Root is blank. For the Default Workspace, a blank User Root uses the site root. `admin` on a Custom Workspace's root grants Workspace Administrator access; on a subfolder it grants Folder Admin access. Can be blank or `admin`, `full`, `read`, `write`, `list`, `read+write`, `list+write`, or `history`.
-    #   group_id - int64 - Group ID to associate this user with.
-    #   group_ids - string - A list of group ids to associate this user with.  Comma delimited.
-    #   imported_password_hash - string - Pre-calculated hash of the user's password. If supplied, this will be used to authenticate the user on first login. Supported hash methods are MD5, SHA1, and SHA256.
-    #   password - string - User password.
-    #   password_confirmation - string - Optional, but if provided, we will ensure that it matches the value sent in `password`.
-    #   announcements_read - boolean - Signifies that the user has read all the announcements in the UI.
-    #   ai_assistant_personality_id - int64 - AI Assistant Personality ID assigned directly to this user, if any.
-    #   allowed_ips - string - A list of allowed IPs if applicable.  Newline delimited
-    #   attachments_permission - boolean - DEPRECATED: If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
-    #   authenticate_until - string - Scheduled Date/Time at which user will be deactivated
-    #   authentication_method - string - How is this user authenticated?
-    #   billing_permission - boolean - Allow this user to perform operations on the account, payments, and invoices?
-    #   bypass_user_lifecycle_rules - boolean - Exempt this user from user lifecycle rules?
-    #   bypass_site_allowed_ips - boolean - Allow this user to skip site-wide IP blacklists?
-    #   dav_permission - boolean - Can the user connect with WebDAV?
-    #   desktop_configuration_profile_id - int64 - Desktop Configuration Profile ID assigned directly to this user, if any.
-    #   default_workspace_id - int64 - Workspace ID the user should land in by default when more than one Workspace is available.
-    #   disabled - boolean - Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
-    #   filesystem_layout - string - File system layout
-    #   ftp_permission - boolean - Can the user access with FTP/FTPS?
-    #   header_text - string - Text to display to the user in the header of the UI
-    #   integration_centric_profile_id - int64 - Integration Centric Profile ID assigned directly to this user, if any.
-    #   language - string - Preferred language
-    #   notification_daily_send_time - int64 - Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
-    #   name - string - User's full name
-    #   company - string - User's company
-    #   notes - string - Any internal notes on the user
-    #   office_integration_enabled - boolean - Enable integration with Office for the web?
-    #   partner_admin - boolean - Is this user a Partner administrator?
-    #   partner_id - int64 - Partner ID if this user belongs to a Partner
-    #   password_validity_days - int64 - Number of days to allow user to use the same password
-    #   primary_group_id - int64 - Primary group ID for Group Admin scoping
-    #   readonly_site_admin - boolean - Is the user an allowed to view all (non-billing) site configuration for this site?
-    #   receive_admin_alerts - boolean - Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
-    #   notify_on_all_site_warnings - boolean - Should the user receive site warnings via email?
-    #   notify_on_all_sso_failures - boolean - Should the user receive sso/scim/ldap configuration/sync failures via email?
-    #   notify_on_all_user_security_events - boolean - Should the user receive user security events via email?
-    #   notify_on_all_pending_work_failures - boolean - Should the user receive pending work failures via email?
-    #   notify_on_all_siem_http_destination_failures - boolean - Should the user receive siem failures via email?
-    #   notify_on_all_sync_failures - boolean - Should the user receive sync failures via email?
-    #   notify_on_all_automation_failures - boolean - Should the user receive automation failures via email?
-    #   notify_on_all_expectation_failures - boolean - Should the user receive expectation failures and misses via email?
-    #   require_login_by - string - Require user to login by specified date otherwise it will be disabled.
-    #   require_password_change - boolean - Is a password change required upon next user login?
-    #   responsible_group_id - int64 - ID of the internal Group responsible for this Partner User, overriding the Partner default.
-    #   responsible_user_id - int64 - ID of the internal User responsible for this Partner User, overriding the Partner default.
-    #   restapi_permission - boolean - Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)
-    #   s3_compatible_endpoint_permission - boolean - Can the user access the S3-compatible endpoint? Defaults to true.
-    #   self_managed - boolean - Does this user manage it's own credentials or is it a shared/bot user?
-    #   sftp_permission - boolean - Can the user access with SFTP?
-    #   site_admin - boolean - Is the user an administrator for this site?
-    #   skip_welcome_screen - boolean - Skip Welcome page in the UI?
-    #   ssl_required - string - SSL required setting
-    #   sso_strategy_id - int64 - SSO (Single Sign On) strategy ID for the user, if applicable.
-    #   require_2fa - string - 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
-    #   tags - string - Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
-    #   time_zone - string - User time zone
-    #   user_root - string - If filesystem layout is user_root, this path is the root path the user is fixed to for all interfaces. If the filesystem layout is site_root or partner_root, this acts as a root folder only for FTP and SFTP (SFTP applicability also requires a site-wide setting to be set). For partner_root layout, this path is relative to the Partner root folder for all callers and blank opts out of an additional protocol root. In this situation, this path is not applied to the API, Desktop, or Web interface.
-    #   user_home - string - Home folder for FTP/SFTP. For users with the partner_root filesystem layout, this path is relative to the Partner root folder. In all other cases, it is an absolute path. Only applies to FTP and SFTP, and not any other interface.
-    #   workspace_admin - boolean - Whether the user is an administrator of their own Custom Workspace. Does not reflect administration granted through Permissions.
-    #   username - string - User's username
-    #   workspace_id - int64 - Workspace ID. Only Site Administrators can change this field. Values supplied by Workspace Administrators, Group Administrators, or other non-Site Administrators using `/user` are ignored.
-    #   clear_2fa - boolean - If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
-    #   convert_to_partner_user - boolean - Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
+    # Update User
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::User.
+    # @param id [Integer] User ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Object] avatar_file An image file for your user avatar.
+    # @option params [Boolean] avatar_delete If true, the avatar will be deleted.
+    # @option params [String] change_password Used for changing a password on an existing user.
+    # @option params [String] change_password_confirmation Optional, but if provided, we will ensure that it matches the value sent in `change_password`.
+    # @option params [String] email User's email.
+    # @option params [String] grant_permission Permission to grant on the User Root upon creation, or on the Workspace root when the User Root is blank. For the Default Workspace, a blank User Root uses the site root. `admin` on a Custom Workspace's root grants Workspace Administrator access; on a subfolder it grants Folder Admin access. Can be blank or `admin`, `full`, `read`, `write`, `list`, `read+write`, `list+write`, or `history`.
+    # @option params [Integer] group_id Group ID to associate this user with.
+    # @option params [String] group_ids A list of group ids to associate this user with.  Comma delimited.
+    # @option params [String] imported_password_hash Pre-calculated hash of the user's password. If supplied, this will be used to authenticate the user on first login. Supported hash methods are MD5, SHA1, and SHA256.
+    # @option params [String] password User password.
+    # @option params [String] password_confirmation Optional, but if provided, we will ensure that it matches the value sent in `password`.
+    # @option params [Boolean] announcements_read Signifies that the user has read all the announcements in the UI.
+    # @option params [Integer] ai_assistant_personality_id AI Assistant Personality ID assigned directly to this user, if any.
+    # @option params [String] allowed_ips A list of allowed IPs if applicable.  Newline delimited
+    # @option params [Boolean] attachments_permission DEPRECATED: If `true`, the user can user create Bundles (aka Share Links). Use the bundle permission instead.
+    # @option params [String] authenticate_until Scheduled Date/Time at which user will be deactivated
+    # @option params [String] authentication_method How is this user authenticated?
+    # @option params [Boolean] billing_permission Allow this user to perform operations on the account, payments, and invoices?
+    # @option params [Boolean] bypass_user_lifecycle_rules Exempt this user from user lifecycle rules?
+    # @option params [Boolean] bypass_site_allowed_ips Allow this user to skip site-wide IP blacklists?
+    # @option params [Boolean] dav_permission Can the user connect with WebDAV?
+    # @option params [Integer] desktop_configuration_profile_id Desktop Configuration Profile ID assigned directly to this user, if any.
+    # @option params [Integer] default_workspace_id Workspace ID the user should land in by default when more than one Workspace is available.
+    # @option params [Boolean] disabled Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
+    # @option params [String] filesystem_layout File system layout
+    # @option params [Boolean] ftp_permission Can the user access with FTP/FTPS?
+    # @option params [String] header_text Text to display to the user in the header of the UI
+    # @option params [Integer] integration_centric_profile_id Integration Centric Profile ID assigned directly to this user, if any.
+    # @option params [String] language Preferred language
+    # @option params [Integer] notification_daily_send_time Hour of the day at which daily notifications should be sent. Can be in range 0 to 23
+    # @option params [String] name User's full name
+    # @option params [String] company User's company
+    # @option params [String] notes Any internal notes on the user
+    # @option params [Boolean] office_integration_enabled Enable integration with Office for the web?
+    # @option params [Boolean] partner_admin Is this user a Partner administrator?
+    # @option params [Integer] partner_id Partner ID if this user belongs to a Partner
+    # @option params [Integer] password_validity_days Number of days to allow user to use the same password
+    # @option params [Integer] primary_group_id Primary group ID for Group Admin scoping
+    # @option params [Boolean] readonly_site_admin Is the user an allowed to view all (non-billing) site configuration for this site?
+    # @option params [Boolean] receive_admin_alerts Deprecated. Use notify_on_all_site_warnings and granular failure notification preferences instead.
+    # @option params [Boolean] notify_on_all_site_warnings Should the user receive site warnings via email?
+    # @option params [Boolean] notify_on_all_sso_failures Should the user receive sso/scim/ldap configuration/sync failures via email?
+    # @option params [Boolean] notify_on_all_user_security_events Should the user receive user security events via email?
+    # @option params [Boolean] notify_on_all_pending_work_failures Should the user receive pending work failures via email?
+    # @option params [Boolean] notify_on_all_siem_http_destination_failures Should the user receive siem failures via email?
+    # @option params [Boolean] notify_on_all_sync_failures Should the user receive sync failures via email?
+    # @option params [Boolean] notify_on_all_automation_failures Should the user receive automation failures via email?
+    # @option params [Boolean] notify_on_all_expectation_failures Should the user receive expectation failures and misses via email?
+    # @option params [String] require_login_by Require user to login by specified date otherwise it will be disabled.
+    # @option params [Boolean] require_password_change Is a password change required upon next user login?
+    # @option params [Integer] responsible_group_id ID of the internal Group responsible for this Partner User, overriding the Partner default.
+    # @option params [Integer] responsible_user_id ID of the internal User responsible for this Partner User, overriding the Partner default.
+    # @option params [Boolean] restapi_permission Can this user access the Web app, Desktop app, SDKs, or REST API?  (All of these tools use the API internally, so this is one unified permission set.)
+    # @option params [Boolean] s3_compatible_endpoint_permission Can the user access the S3-compatible endpoint? Defaults to true.
+    # @option params [Boolean] self_managed Does this user manage it's own credentials or is it a shared/bot user?
+    # @option params [Boolean] sftp_permission Can the user access with SFTP?
+    # @option params [Boolean] site_admin Is the user an administrator for this site?
+    # @option params [Boolean] skip_welcome_screen Skip Welcome page in the UI?
+    # @option params [String] ssl_required SSL required setting
+    # @option params [Integer] sso_strategy_id SSO (Single Sign On) strategy ID for the user, if applicable.
+    # @option params [String] require_2fa 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
+    # @option params [String] tags Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
+    # @option params [String] time_zone User time zone
+    # @option params [String] user_root If filesystem layout is user_root, this path is the root path the user is fixed to for all interfaces. If the filesystem layout is site_root or partner_root, this acts as a root folder only for FTP and SFTP (SFTP applicability also requires a site-wide setting to be set). For partner_root layout, this path is relative to the Partner root folder for all callers and blank opts out of an additional protocol root. In this situation, this path is not applied to the API, Desktop, or Web interface.
+    # @option params [String] user_home Home folder for FTP/SFTP. For users with the partner_root filesystem layout, this path is relative to the Partner root folder. In all other cases, it is an absolute path. Only applies to FTP and SFTP, and not any other interface.
+    # @option params [Boolean] workspace_admin Whether the user is an administrator of their own Custom Workspace. Does not reflect administration granted through Permissions.
+    # @option params [String] username User's username
+    # @option params [Integer] workspace_id Workspace ID. Only Site Administrators can change this field. Values supplied by Workspace Administrators, Group Administrators, or other non-Site Administrators using `/user` are ignored.
+    # @option params [Boolean] clear_2fa If true when changing authentication_method from `password` to `sso`, remove all two-factor methods. Ignored in all other cases.
+    # @option params [Boolean] convert_to_partner_user Required when assigning a Partner to an existing non-Partner user. If true, convert the user by assigning the partner_id provided.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::User] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -1558,13 +2010,16 @@ module Files
       User.new(response.data, options)
     end
 
-    # Parameters:
-    #   new_owner_id - int64 - Provide a User ID here to transfer ownership of certain resources such as Automations and Share Links (Bundles) to that new user.
+    # Delete User
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns nil.
+    # @param id [Integer] User ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] new_owner_id Provide a User ID here to transfer ownership of certain resources such as Automations and Share Links (Bundles) to that new user.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -1576,7 +2031,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

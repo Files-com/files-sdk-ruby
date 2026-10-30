@@ -4,70 +4,88 @@ module Files
   # Files::FileMigration is the Ruby SDK's representation of Files.com API FileMigration objects.
   # Each instance keeps its API field values in +attributes+.
   class FileMigration
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - File migration ID
+    # File migration ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
-    # string - Source path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # Source path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # @return [String, nil] the field value, or nil when absent.
     def path
       @attributes[:path]
     end
 
-    # string - Destination path
+    # Destination path
+    # @return [String, nil] the field value, or nil when absent.
     def dest_path
       @attributes[:dest_path]
     end
 
-    # string - Reason for the failure, if applicable.
+    # Reason for the failure, if applicable.
+    # @return [String, nil] the field value, or nil when absent.
     def failure_message
       @attributes[:failure_message]
     end
 
-    # int64 - Number of files processed
+    # Number of files processed
+    # @return [Integer, nil] the field value, or nil when absent.
     def files_moved
       @attributes[:files_moved]
     end
 
-    # int64
+    #
+    # @return [Integer, nil] the field value, or nil when absent.
     def files_total
       @attributes[:files_total]
     end
 
-    # string - The type of operation
+    # The type of operation
+    # @return [String, nil] the field value, or nil when absent.
     def operation
       @attributes[:operation]
     end
 
-    # string - Region
+    # Region
+    # @return [String, nil] the field value, or nil when absent.
     def region
       @attributes[:region]
     end
 
-    # string - Status
+    # Status
+    # @return [String, nil] the field value, or nil when absent.
     def status
       @attributes[:status]
     end
 
-    # string - Link to download the log file for this migration.
+    # Link to download the log file for this migration.
+    # @return [String, nil] the field value, or nil when absent.
     def log_url
       @attributes[:log_url]
     end
 
-    # Parameters:
-    #   id (required) - int64 - File Migration ID.
+    # Show File Migration
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::FileMigration.
+    # @param id [Integer] File Migration ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::FileMigration] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -78,6 +96,7 @@ module Files
       FileMigration.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end

@@ -4,399 +4,567 @@ module Files
   # Files::RemoteServerCredential is the Ruby SDK's representation of Files.com API RemoteServerCredential objects.
   # Each instance keeps its API field values in +attributes+.
   class RemoteServerCredential
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Remote Server Credential ID
+    # Remote Server Credential ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # int64 - Workspace ID (0 for default workspace)
+    # Workspace ID (0 for default workspace)
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # string - Internal name for your reference
+    # Internal name for your reference
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # string - Internal description for your reference
+    # Internal description for your reference
+    # @return [String, nil] the field value, or nil when absent.
     def description
       @attributes[:description]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def description=(value)
       @attributes[:description] = value
     end
 
-    # string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
+    # Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
+    # @return [String, nil] the field value, or nil when absent.
     def server_type
       @attributes[:server_type]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def server_type=(value)
       @attributes[:server_type] = value
     end
 
-    # string - AWS Access Key.
+    # AWS Access Key.
+    # @return [String, nil] the field value, or nil when absent.
     def aws_access_key
       @attributes[:aws_access_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def aws_access_key=(value)
       @attributes[:aws_access_key] = value
     end
 
-    # string - AWS IAM Role ARN for AssumeRole authentication.
+    # AWS IAM Role ARN for AssumeRole authentication.
+    # @return [String, nil] the field value, or nil when absent.
     def s3_assume_role_arn
       @attributes[:s3_assume_role_arn]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def s3_assume_role_arn=(value)
       @attributes[:s3_assume_role_arn] = value
     end
 
-    # int64 - Session duration in seconds for AssumeRole authentication (900-43200).
+    # Session duration in seconds for AssumeRole authentication (900-43200).
+    # @return [Integer, nil] the field value, or nil when absent.
     def s3_assume_role_duration_seconds
       @attributes[:s3_assume_role_duration_seconds]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def s3_assume_role_duration_seconds=(value)
       @attributes[:s3_assume_role_duration_seconds] = value
     end
 
-    # string - External ID for AssumeRole authentication.
+    # External ID for AssumeRole authentication.
+    # @return [String, nil] the field value, or nil when absent.
     def s3_assume_role_external_id
       @attributes[:s3_assume_role_external_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def s3_assume_role_external_id=(value)
       @attributes[:s3_assume_role_external_id] = value
     end
 
-    # string - Google Cloud Storage: S3-compatible Access Key.
+    # Google Cloud Storage: S3-compatible Access Key.
+    # @return [String, nil] the field value, or nil when absent.
     def google_cloud_storage_s3_compatible_access_key
       @attributes[:google_cloud_storage_s3_compatible_access_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def google_cloud_storage_s3_compatible_access_key=(value)
       @attributes[:google_cloud_storage_s3_compatible_access_key] = value
     end
 
-    # string - Wasabi: Access Key.
+    # Wasabi: Access Key.
+    # @return [String, nil] the field value, or nil when absent.
     def wasabi_access_key
       @attributes[:wasabi_access_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def wasabi_access_key=(value)
       @attributes[:wasabi_access_key] = value
     end
 
-    # string - S3-compatible: Access Key
+    # S3-compatible: Access Key
+    # @return [String, nil] the field value, or nil when absent.
     def s3_compatible_access_key
       @attributes[:s3_compatible_access_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def s3_compatible_access_key=(value)
       @attributes[:s3_compatible_access_key] = value
     end
 
-    # string - Filebase: Access Key.
+    # Filebase: Access Key.
+    # @return [String, nil] the field value, or nil when absent.
     def filebase_access_key
       @attributes[:filebase_access_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def filebase_access_key=(value)
       @attributes[:filebase_access_key] = value
     end
 
-    # string - Cloudflare: Access Key.
+    # Cloudflare: Access Key.
+    # @return [String, nil] the field value, or nil when absent.
     def cloudflare_access_key
       @attributes[:cloudflare_access_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def cloudflare_access_key=(value)
       @attributes[:cloudflare_access_key] = value
     end
 
-    # string - Linode: Access Key
+    # Linode: Access Key
+    # @return [String, nil] the field value, or nil when absent.
     def linode_access_key
       @attributes[:linode_access_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def linode_access_key=(value)
       @attributes[:linode_access_key] = value
     end
 
-    # string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
+    # SharePoint: Microsoft Entra tenant ID for app-only authentication.
+    # @return [String, nil] the field value, or nil when absent.
     def sharepoint_tenant_id
       @attributes[:sharepoint_tenant_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def sharepoint_tenant_id=(value)
       @attributes[:sharepoint_tenant_id] = value
     end
 
-    # string - SharePoint: Microsoft Entra application client ID for app-only authentication.
+    # SharePoint: Microsoft Entra application client ID for app-only authentication.
+    # @return [String, nil] the field value, or nil when absent.
     def sharepoint_client_id
       @attributes[:sharepoint_client_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def sharepoint_client_id=(value)
       @attributes[:sharepoint_client_id] = value
     end
 
-    # string - SharePoint: App-only credential type. Either secret or certificate.
+    # SharePoint: App-only credential type. Either secret or certificate.
+    # @return [String, nil] the field value, or nil when absent.
     def sharepoint_app_credential_type
       @attributes[:sharepoint_app_credential_type]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def sharepoint_app_credential_type=(value)
       @attributes[:sharepoint_app_credential_type] = value
     end
 
-    # string - Remote server username.
+    # Remote server username.
+    # @return [String, nil] the field value, or nil when absent.
     def username
       @attributes[:username]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def username=(value)
       @attributes[:username] = value
     end
 
-    # string - Password, if needed.
+    # Password, if needed.
+    # @return [String, nil] the field value, or nil when absent.
     def password
       @attributes[:password]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def password=(value)
       @attributes[:password] = value
     end
 
-    # string - Private key, if needed.
+    # Private key, if needed.
+    # @return [String, nil] the field value, or nil when absent.
     def private_key
       @attributes[:private_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key=(value)
       @attributes[:private_key] = value
     end
 
-    # string - Passphrase for private key if needed.
+    # Passphrase for private key if needed.
+    # @return [String, nil] the field value, or nil when absent.
     def private_key_passphrase
       @attributes[:private_key_passphrase]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key_passphrase=(value)
       @attributes[:private_key_passphrase] = value
     end
 
-    # string - AWS: secret key.
+    # AWS: secret key.
+    # @return [String, nil] the field value, or nil when absent.
     def aws_secret_key
       @attributes[:aws_secret_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def aws_secret_key=(value)
       @attributes[:aws_secret_key] = value
     end
 
-    # string - Azure Blob Storage: Access Key
+    # Azure Blob Storage: Access Key
+    # @return [String, nil] the field value, or nil when absent.
     def azure_blob_storage_access_key
       @attributes[:azure_blob_storage_access_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def azure_blob_storage_access_key=(value)
       @attributes[:azure_blob_storage_access_key] = value
     end
 
-    # string - Azure Blob Storage: Shared Access Signature (SAS) token
+    # Azure Blob Storage: Shared Access Signature (SAS) token
+    # @return [String, nil] the field value, or nil when absent.
     def azure_blob_storage_sas_token
       @attributes[:azure_blob_storage_sas_token]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def azure_blob_storage_sas_token=(value)
       @attributes[:azure_blob_storage_sas_token] = value
     end
 
-    # string - Azure File Storage: Access Key
+    # Azure File Storage: Access Key
+    # @return [String, nil] the field value, or nil when absent.
     def azure_files_storage_access_key
       @attributes[:azure_files_storage_access_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def azure_files_storage_access_key=(value)
       @attributes[:azure_files_storage_access_key] = value
     end
 
-    # string - Azure File Storage: Shared Access Signature (SAS) token
+    # Azure File Storage: Shared Access Signature (SAS) token
+    # @return [String, nil] the field value, or nil when absent.
     def azure_files_storage_sas_token
       @attributes[:azure_files_storage_sas_token]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def azure_files_storage_sas_token=(value)
       @attributes[:azure_files_storage_sas_token] = value
     end
 
-    # string - Backblaze B2 Cloud Storage: applicationKey
+    # Backblaze B2 Cloud Storage: applicationKey
+    # @return [String, nil] the field value, or nil when absent.
     def backblaze_b2_application_key
       @attributes[:backblaze_b2_application_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def backblaze_b2_application_key=(value)
       @attributes[:backblaze_b2_application_key] = value
     end
 
-    # string - Backblaze B2 Cloud Storage: keyID
+    # Backblaze B2 Cloud Storage: keyID
+    # @return [String, nil] the field value, or nil when absent.
     def backblaze_b2_key_id
       @attributes[:backblaze_b2_key_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def backblaze_b2_key_id=(value)
       @attributes[:backblaze_b2_key_id] = value
     end
 
-    # string - Cloudflare: Secret Key
+    # Cloudflare: Secret Key
+    # @return [String, nil] the field value, or nil when absent.
     def cloudflare_secret_key
       @attributes[:cloudflare_secret_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def cloudflare_secret_key=(value)
       @attributes[:cloudflare_secret_key] = value
     end
 
-    # string - Filebase: Secret Key
+    # Filebase: Secret Key
+    # @return [String, nil] the field value, or nil when absent.
     def filebase_secret_key
       @attributes[:filebase_secret_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def filebase_secret_key=(value)
       @attributes[:filebase_secret_key] = value
     end
 
-    # string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    # Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    # @return [String, nil] the field value, or nil when absent.
     def google_cloud_storage_credentials_json
       @attributes[:google_cloud_storage_credentials_json]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def google_cloud_storage_credentials_json=(value)
       @attributes[:google_cloud_storage_credentials_json] = value
     end
 
-    # string - Google Cloud Storage: S3-compatible secret key
+    # Google Cloud Storage: S3-compatible secret key
+    # @return [String, nil] the field value, or nil when absent.
     def google_cloud_storage_s3_compatible_secret_key
       @attributes[:google_cloud_storage_s3_compatible_secret_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def google_cloud_storage_s3_compatible_secret_key=(value)
       @attributes[:google_cloud_storage_s3_compatible_secret_key] = value
     end
 
-    # string - Linode: Secret Key
+    # Linode: Secret Key
+    # @return [String, nil] the field value, or nil when absent.
     def linode_secret_key
       @attributes[:linode_secret_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def linode_secret_key=(value)
       @attributes[:linode_secret_key] = value
     end
 
-    # string - S3-compatible: Secret Key
+    # S3-compatible: Secret Key
+    # @return [String, nil] the field value, or nil when absent.
     def s3_compatible_secret_key
       @attributes[:s3_compatible_secret_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def s3_compatible_secret_key=(value)
       @attributes[:s3_compatible_secret_key] = value
     end
 
-    # string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    # SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    # @return [String, nil] the field value, or nil when absent.
     def sharepoint_client_certificate
       @attributes[:sharepoint_client_certificate]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def sharepoint_client_certificate=(value)
       @attributes[:sharepoint_client_certificate] = value
     end
 
-    # string - SharePoint: Microsoft Entra application client secret for app-only authentication.
+    # SharePoint: Microsoft Entra application client secret for app-only authentication.
+    # @return [String, nil] the field value, or nil when absent.
     def sharepoint_client_secret
       @attributes[:sharepoint_client_secret]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def sharepoint_client_secret=(value)
       @attributes[:sharepoint_client_secret] = value
     end
 
-    # string - Wasabi: Secret Key
+    # Wasabi: Secret Key
+    # @return [String, nil] the field value, or nil when absent.
     def wasabi_secret_key
       @attributes[:wasabi_secret_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def wasabi_secret_key=(value)
       @attributes[:wasabi_secret_key] = value
     end
 
-    # int64 - ID of Remote Server Credential to copy omitted values from.
+    # ID of Remote Server Credential to copy omitted values from.
+    # @return [Integer, nil] the field value, or nil when absent.
     def copy_values_from_credential_id
       @attributes[:copy_values_from_credential_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def copy_values_from_credential_id=(value)
       @attributes[:copy_values_from_credential_id] = value
     end
 
-    # Parameters:
-    #   name - string - Internal name for your reference
-    #   description - string - Internal description for your reference
-    #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
-    #   aws_access_key - string - AWS Access Key.
-    #   s3_assume_role_arn - string - AWS IAM Role ARN for AssumeRole authentication.
-    #   s3_assume_role_duration_seconds - int64 - Session duration in seconds for AssumeRole authentication (900-43200).
-    #   cloudflare_access_key - string - Cloudflare: Access Key.
-    #   filebase_access_key - string - Filebase: Access Key.
-    #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
-    #   linode_access_key - string - Linode: Access Key
-    #   s3_compatible_access_key - string - S3-compatible: Access Key
-    #   sharepoint_client_id - string - SharePoint: Microsoft Entra application client ID for app-only authentication.
-    #   sharepoint_tenant_id - string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
-    #   username - string - Remote server username.
-    #   wasabi_access_key - string - Wasabi: Access Key.
-    #   password - string - Password, if needed.
-    #   private_key - string - Private key, if needed.
-    #   private_key_passphrase - string - Passphrase for private key if needed.
-    #   aws_secret_key - string - AWS: secret key.
-    #   azure_blob_storage_access_key - string - Azure Blob Storage: Access Key
-    #   azure_blob_storage_sas_token - string - Azure Blob Storage: Shared Access Signature (SAS) token
-    #   azure_files_storage_access_key - string - Azure File Storage: Access Key
-    #   azure_files_storage_sas_token - string - Azure File Storage: Shared Access Signature (SAS) token
-    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage: applicationKey
-    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage: keyID
-    #   cloudflare_secret_key - string - Cloudflare: Secret Key
-    #   filebase_secret_key - string - Filebase: Secret Key
-    #   google_cloud_storage_credentials_json - string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
-    #   linode_secret_key - string - Linode: Secret Key
-    #   s3_compatible_secret_key - string - S3-compatible: Secret Key
-    #   sharepoint_client_certificate - string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
-    #   sharepoint_client_secret - string - SharePoint: Microsoft Entra application client secret for app-only authentication.
-    #   wasabi_secret_key - string - Wasabi: Secret Key
+    # Update Remote Server Credential
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Internal name for your reference
+    # @option params [String] description Internal description for your reference
+    # @option params [String] server_type Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
+    # @option params [String] aws_access_key AWS Access Key.
+    # @option params [String] s3_assume_role_arn AWS IAM Role ARN for AssumeRole authentication.
+    # @option params [Integer] s3_assume_role_duration_seconds Session duration in seconds for AssumeRole authentication (900-43200).
+    # @option params [String] cloudflare_access_key Cloudflare: Access Key.
+    # @option params [String] filebase_access_key Filebase: Access Key.
+    # @option params [String] google_cloud_storage_s3_compatible_access_key Google Cloud Storage: S3-compatible Access Key.
+    # @option params [String] linode_access_key Linode: Access Key
+    # @option params [String] s3_compatible_access_key S3-compatible: Access Key
+    # @option params [String] sharepoint_client_id SharePoint: Microsoft Entra application client ID for app-only authentication.
+    # @option params [String] sharepoint_tenant_id SharePoint: Microsoft Entra tenant ID for app-only authentication.
+    # @option params [String] username Remote server username.
+    # @option params [String] wasabi_access_key Wasabi: Access Key.
+    # @option params [String] password Password, if needed.
+    # @option params [String] private_key Private key, if needed.
+    # @option params [String] private_key_passphrase Passphrase for private key if needed.
+    # @option params [String] aws_secret_key AWS: secret key.
+    # @option params [String] azure_blob_storage_access_key Azure Blob Storage: Access Key
+    # @option params [String] azure_blob_storage_sas_token Azure Blob Storage: Shared Access Signature (SAS) token
+    # @option params [String] azure_files_storage_access_key Azure File Storage: Access Key
+    # @option params [String] azure_files_storage_sas_token Azure File Storage: Shared Access Signature (SAS) token
+    # @option params [String] backblaze_b2_application_key Backblaze B2 Cloud Storage: applicationKey
+    # @option params [String] backblaze_b2_key_id Backblaze B2 Cloud Storage: keyID
+    # @option params [String] cloudflare_secret_key Cloudflare: Secret Key
+    # @option params [String] filebase_secret_key Filebase: Secret Key
+    # @option params [String] google_cloud_storage_credentials_json Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    # @option params [String] google_cloud_storage_s3_compatible_secret_key Google Cloud Storage: S3-compatible secret key
+    # @option params [String] linode_secret_key Linode: Secret Key
+    # @option params [String] s3_compatible_secret_key S3-compatible: Secret Key
+    # @option params [String] sharepoint_client_certificate SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    # @option params [String] sharepoint_client_secret SharePoint: Microsoft Entra application client secret for app-only authentication.
+    # @option params [String] wasabi_secret_key Wasabi: Secret Key
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -444,7 +612,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Remote Server Credential
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -457,12 +631,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -475,17 +656,19 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id` and `name`. Valid field combinations are `[ workspace_id, name ]`.
-    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
+    # List Remote Server Credentials
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::RemoteServerCredential objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id` and `name`. Valid field combinations are `[ workspace_id, name ]`.
+    # @option params [Hash] filter_prefix If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -501,17 +684,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Remote Server Credential ID.
+    # Show Remote Server Credential
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::RemoteServerCredential.
+    # @param id [Integer] Remote Server Credential ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::RemoteServerCredential] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -522,52 +708,55 @@ module Files
       RemoteServerCredential.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   name - string - Internal name for your reference
-    #   description - string - Internal description for your reference
-    #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
-    #   aws_access_key - string - AWS Access Key.
-    #   s3_assume_role_arn - string - AWS IAM Role ARN for AssumeRole authentication.
-    #   s3_assume_role_duration_seconds - int64 - Session duration in seconds for AssumeRole authentication (900-43200).
-    #   cloudflare_access_key - string - Cloudflare: Access Key.
-    #   filebase_access_key - string - Filebase: Access Key.
-    #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
-    #   linode_access_key - string - Linode: Access Key
-    #   s3_compatible_access_key - string - S3-compatible: Access Key
-    #   sharepoint_client_id - string - SharePoint: Microsoft Entra application client ID for app-only authentication.
-    #   sharepoint_tenant_id - string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
-    #   username - string - Remote server username.
-    #   wasabi_access_key - string - Wasabi: Access Key.
-    #   password - string - Password, if needed.
-    #   private_key - string - Private key, if needed.
-    #   private_key_passphrase - string - Passphrase for private key if needed.
-    #   aws_secret_key - string - AWS: secret key.
-    #   azure_blob_storage_access_key - string - Azure Blob Storage: Access Key
-    #   azure_blob_storage_sas_token - string - Azure Blob Storage: Shared Access Signature (SAS) token
-    #   azure_files_storage_access_key - string - Azure File Storage: Access Key
-    #   azure_files_storage_sas_token - string - Azure File Storage: Shared Access Signature (SAS) token
-    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage: applicationKey
-    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage: keyID
-    #   cloudflare_secret_key - string - Cloudflare: Secret Key
-    #   filebase_secret_key - string - Filebase: Secret Key
-    #   google_cloud_storage_credentials_json - string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
-    #   linode_secret_key - string - Linode: Secret Key
-    #   s3_compatible_secret_key - string - S3-compatible: Secret Key
-    #   sharepoint_client_certificate - string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
-    #   sharepoint_client_secret - string - SharePoint: Microsoft Entra application client secret for app-only authentication.
-    #   wasabi_secret_key - string - Wasabi: Secret Key
-    #   workspace_id - int64 - Workspace ID (0 for default workspace)
-    #   copy_values_from_credential_id - int64 - ID of Remote Server Credential to copy omitted values from.
+    # Create Remote Server Credential
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::RemoteServerCredential.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Internal name for your reference
+    # @option params [String] description Internal description for your reference
+    # @option params [String] server_type Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
+    # @option params [String] aws_access_key AWS Access Key.
+    # @option params [String] s3_assume_role_arn AWS IAM Role ARN for AssumeRole authentication.
+    # @option params [Integer] s3_assume_role_duration_seconds Session duration in seconds for AssumeRole authentication (900-43200).
+    # @option params [String] cloudflare_access_key Cloudflare: Access Key.
+    # @option params [String] filebase_access_key Filebase: Access Key.
+    # @option params [String] google_cloud_storage_s3_compatible_access_key Google Cloud Storage: S3-compatible Access Key.
+    # @option params [String] linode_access_key Linode: Access Key
+    # @option params [String] s3_compatible_access_key S3-compatible: Access Key
+    # @option params [String] sharepoint_client_id SharePoint: Microsoft Entra application client ID for app-only authentication.
+    # @option params [String] sharepoint_tenant_id SharePoint: Microsoft Entra tenant ID for app-only authentication.
+    # @option params [String] username Remote server username.
+    # @option params [String] wasabi_access_key Wasabi: Access Key.
+    # @option params [String] password Password, if needed.
+    # @option params [String] private_key Private key, if needed.
+    # @option params [String] private_key_passphrase Passphrase for private key if needed.
+    # @option params [String] aws_secret_key AWS: secret key.
+    # @option params [String] azure_blob_storage_access_key Azure Blob Storage: Access Key
+    # @option params [String] azure_blob_storage_sas_token Azure Blob Storage: Shared Access Signature (SAS) token
+    # @option params [String] azure_files_storage_access_key Azure File Storage: Access Key
+    # @option params [String] azure_files_storage_sas_token Azure File Storage: Shared Access Signature (SAS) token
+    # @option params [String] backblaze_b2_application_key Backblaze B2 Cloud Storage: applicationKey
+    # @option params [String] backblaze_b2_key_id Backblaze B2 Cloud Storage: keyID
+    # @option params [String] cloudflare_secret_key Cloudflare: Secret Key
+    # @option params [String] filebase_secret_key Filebase: Secret Key
+    # @option params [String] google_cloud_storage_credentials_json Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    # @option params [String] google_cloud_storage_s3_compatible_secret_key Google Cloud Storage: S3-compatible secret key
+    # @option params [String] linode_secret_key Linode: Secret Key
+    # @option params [String] s3_compatible_secret_key S3-compatible: Secret Key
+    # @option params [String] sharepoint_client_certificate SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    # @option params [String] sharepoint_client_secret SharePoint: Microsoft Entra application client secret for app-only authentication.
+    # @option params [String] wasabi_secret_key Wasabi: Secret Key
+    # @option params [Integer] workspace_id Workspace ID (0 for default workspace)
+    # @option params [Integer] copy_values_from_credential_id ID of Remote Server Credential to copy omitted values from.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::RemoteServerCredential] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
@@ -610,46 +799,49 @@ module Files
       RemoteServerCredential.new(response.data, options)
     end
 
-    # Parameters:
-    #   name - string - Internal name for your reference
-    #   description - string - Internal description for your reference
-    #   server_type - string - Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
-    #   aws_access_key - string - AWS Access Key.
-    #   s3_assume_role_arn - string - AWS IAM Role ARN for AssumeRole authentication.
-    #   s3_assume_role_duration_seconds - int64 - Session duration in seconds for AssumeRole authentication (900-43200).
-    #   cloudflare_access_key - string - Cloudflare: Access Key.
-    #   filebase_access_key - string - Filebase: Access Key.
-    #   google_cloud_storage_s3_compatible_access_key - string - Google Cloud Storage: S3-compatible Access Key.
-    #   linode_access_key - string - Linode: Access Key
-    #   s3_compatible_access_key - string - S3-compatible: Access Key
-    #   sharepoint_client_id - string - SharePoint: Microsoft Entra application client ID for app-only authentication.
-    #   sharepoint_tenant_id - string - SharePoint: Microsoft Entra tenant ID for app-only authentication.
-    #   username - string - Remote server username.
-    #   wasabi_access_key - string - Wasabi: Access Key.
-    #   password - string - Password, if needed.
-    #   private_key - string - Private key, if needed.
-    #   private_key_passphrase - string - Passphrase for private key if needed.
-    #   aws_secret_key - string - AWS: secret key.
-    #   azure_blob_storage_access_key - string - Azure Blob Storage: Access Key
-    #   azure_blob_storage_sas_token - string - Azure Blob Storage: Shared Access Signature (SAS) token
-    #   azure_files_storage_access_key - string - Azure File Storage: Access Key
-    #   azure_files_storage_sas_token - string - Azure File Storage: Shared Access Signature (SAS) token
-    #   backblaze_b2_application_key - string - Backblaze B2 Cloud Storage: applicationKey
-    #   backblaze_b2_key_id - string - Backblaze B2 Cloud Storage: keyID
-    #   cloudflare_secret_key - string - Cloudflare: Secret Key
-    #   filebase_secret_key - string - Filebase: Secret Key
-    #   google_cloud_storage_credentials_json - string - Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
-    #   google_cloud_storage_s3_compatible_secret_key - string - Google Cloud Storage: S3-compatible secret key
-    #   linode_secret_key - string - Linode: Secret Key
-    #   s3_compatible_secret_key - string - S3-compatible: Secret Key
-    #   sharepoint_client_certificate - string - SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
-    #   sharepoint_client_secret - string - SharePoint: Microsoft Entra application client secret for app-only authentication.
-    #   wasabi_secret_key - string - Wasabi: Secret Key
+    # Update Remote Server Credential
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::RemoteServerCredential.
+    # @param id [Integer] Remote Server Credential ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Internal name for your reference
+    # @option params [String] description Internal description for your reference
+    # @option params [String] server_type Remote server type.  Remote Server Credentials are only valid for a single type of Remote Server.
+    # @option params [String] aws_access_key AWS Access Key.
+    # @option params [String] s3_assume_role_arn AWS IAM Role ARN for AssumeRole authentication.
+    # @option params [Integer] s3_assume_role_duration_seconds Session duration in seconds for AssumeRole authentication (900-43200).
+    # @option params [String] cloudflare_access_key Cloudflare: Access Key.
+    # @option params [String] filebase_access_key Filebase: Access Key.
+    # @option params [String] google_cloud_storage_s3_compatible_access_key Google Cloud Storage: S3-compatible Access Key.
+    # @option params [String] linode_access_key Linode: Access Key
+    # @option params [String] s3_compatible_access_key S3-compatible: Access Key
+    # @option params [String] sharepoint_client_id SharePoint: Microsoft Entra application client ID for app-only authentication.
+    # @option params [String] sharepoint_tenant_id SharePoint: Microsoft Entra tenant ID for app-only authentication.
+    # @option params [String] username Remote server username.
+    # @option params [String] wasabi_access_key Wasabi: Access Key.
+    # @option params [String] password Password, if needed.
+    # @option params [String] private_key Private key, if needed.
+    # @option params [String] private_key_passphrase Passphrase for private key if needed.
+    # @option params [String] aws_secret_key AWS: secret key.
+    # @option params [String] azure_blob_storage_access_key Azure Blob Storage: Access Key
+    # @option params [String] azure_blob_storage_sas_token Azure Blob Storage: Shared Access Signature (SAS) token
+    # @option params [String] azure_files_storage_access_key Azure File Storage: Access Key
+    # @option params [String] azure_files_storage_sas_token Azure File Storage: Shared Access Signature (SAS) token
+    # @option params [String] backblaze_b2_application_key Backblaze B2 Cloud Storage: applicationKey
+    # @option params [String] backblaze_b2_key_id Backblaze B2 Cloud Storage: keyID
+    # @option params [String] cloudflare_secret_key Cloudflare: Secret Key
+    # @option params [String] filebase_secret_key Filebase: Secret Key
+    # @option params [String] google_cloud_storage_credentials_json Google Cloud Storage: JSON file that contains the private key. To generate see https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing#APIKey
+    # @option params [String] google_cloud_storage_s3_compatible_secret_key Google Cloud Storage: S3-compatible secret key
+    # @option params [String] linode_secret_key Linode: Secret Key
+    # @option params [String] s3_compatible_secret_key S3-compatible: Secret Key
+    # @option params [String] sharepoint_client_certificate SharePoint: PEM-encoded certificate and unencrypted private key for app-only authentication.
+    # @option params [String] sharepoint_client_secret SharePoint: Microsoft Entra application client secret for app-only authentication.
+    # @option params [String] wasabi_secret_key Wasabi: Secret Key
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::RemoteServerCredential] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -694,10 +886,15 @@ module Files
       RemoteServerCredential.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Remote Server Credential
     #
-    # Returns nil.
+    # @param id [Integer] Remote Server Credential ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -708,7 +905,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

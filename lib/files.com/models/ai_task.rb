@@ -4,224 +4,324 @@ module Files
   # Files::AiTask is the Ruby SDK's representation of Files.com API AiTask objects.
   # Each instance keeps its API field values in +attributes+.
   class AiTask
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - AI Task ID.
+    # AI Task ID.
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # int64 - Workspace ID. `0` means the default workspace.
+    # Workspace ID. `0` means the default workspace.
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # string - AI Task name.
+    # AI Task name.
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # string - AI Task description.
+    # AI Task description.
+    # @return [String, nil] the field value, or nil when absent.
     def description
       @attributes[:description]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def description=(value)
       @attributes[:description] = value
     end
 
-    # string - Prompt sent when this AI Task is invoked.
+    # Prompt sent when this AI Task is invoked.
+    # @return [String, nil] the field value, or nil when absent.
     def prompt
       @attributes[:prompt]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def prompt=(value)
       @attributes[:prompt] = value
     end
 
-    # string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
+    # Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
+    # @return [String, nil] the field value, or nil when absent.
     def permission_set
       @attributes[:permission_set]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def permission_set=(value)
       @attributes[:permission_set] = value
     end
 
-    # string - Path scope used for action-triggered AI Tasks. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # Path scope used for action-triggered AI Tasks. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # @return [String, nil] the field value, or nil when absent.
     def path
       @attributes[:path]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def path=(value)
       @attributes[:path] = value
     end
 
-    # string - Source glob used with `path` for action-triggered AI Tasks.
+    # Source glob used with `path` for action-triggered AI Tasks.
+    # @return [String, nil] the field value, or nil when absent.
     def source
       @attributes[:source]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def source=(value)
       @attributes[:source] = value
     end
 
-    # boolean - If true, this AI Task will not run.
+    # If true, this AI Task will not run.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def disabled
       @attributes[:disabled]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def disabled=(value)
       @attributes[:disabled] = value
     end
 
-    # string - How this AI Task is triggered.
+    # How this AI Task is triggered.
+    # @return [String, nil] the field value, or nil when absent.
     def trigger
       @attributes[:trigger]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def trigger=(value)
       @attributes[:trigger] = value
     end
 
-    # array(string) - If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
+    # If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def trigger_actions
       @attributes[:trigger_actions]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<String>, nil] the new field value.
+    # @return [Array<String>, nil] the assigned value.
     def trigger_actions=(value)
       @attributes[:trigger_actions] = value
     end
 
-    # string - If trigger is `daily`, this specifies how often to run the AI Task.
+    # If trigger is `daily`, this specifies how often to run the AI Task.
+    # @return [String, nil] the field value, or nil when absent.
     def interval
       @attributes[:interval]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def interval=(value)
       @attributes[:interval] = value
     end
 
-    # int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    # If trigger is `daily`, this selects the day number inside the chosen interval.
+    # @return [Integer, nil] the field value, or nil when absent.
     def recurring_day
       @attributes[:recurring_day]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def recurring_day=(value)
       @attributes[:recurring_day] = value
     end
 
-    # array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    # If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def recurring_days
       @attributes[:recurring_days]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def recurring_days=(value)
       @attributes[:recurring_days] = value
     end
 
-    # int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
+    # If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
+    # @return [Integer, nil] the field value, or nil when absent.
     def schedule_id
       @attributes[:schedule_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def schedule_id=(value)
       @attributes[:schedule_id] = value
     end
 
-    # array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def schedule_days_of_week
       @attributes[:schedule_days_of_week]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def schedule_days_of_week=(value)
       @attributes[:schedule_days_of_week] = value
     end
 
-    # array(string) - Times of day in HH:MM format for the AI Task schedule.
+    # Times of day in HH:MM format for the AI Task schedule.
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def schedule_times_of_day
       @attributes[:schedule_times_of_day]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<String>, nil] the new field value.
+    # @return [Array<String>, nil] the assigned value.
     def schedule_times_of_day=(value)
       @attributes[:schedule_times_of_day] = value
     end
 
-    # string - Time zone used by the AI Task schedule.
+    # Time zone used by the AI Task schedule.
+    # @return [String, nil] the field value, or nil when absent.
     def schedule_time_zone
       @attributes[:schedule_time_zone]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def schedule_time_zone=(value)
       @attributes[:schedule_time_zone] = value
     end
 
-    # string - Optional holiday region used by the AI Task schedule.
+    # Optional holiday region used by the AI Task schedule.
+    # @return [String, nil] the field value, or nil when absent.
     def holiday_region
       @attributes[:holiday_region]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def holiday_region=(value)
       @attributes[:holiday_region] = value
     end
 
-    # string - Human-readable schedule description.
+    # Human-readable schedule description.
+    # @return [String, nil] the field value, or nil when absent.
     def human_readable_schedule
       @attributes[:human_readable_schedule]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def human_readable_schedule=(value)
       @attributes[:human_readable_schedule] = value
     end
 
-    # date-time - Most recent successful invocation time.
+    # Most recent successful invocation time.
+    # @return [String, nil] the field value, or nil when absent.
     def last_run_at
       @attributes[:last_run_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_run_at=(value)
       @attributes[:last_run_at] = value
     end
 
-    # int64 - Master User ID used for AI Task invocations.
+    # Master User ID used for AI Task invocations.
+    # @return [Integer, nil] the field value, or nil when absent.
     def master_admin_user_id
       @attributes[:master_admin_user_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def master_admin_user_id=(value)
       @attributes[:master_admin_user_id] = value
     end
 
-    # date-time - Creation time.
+    # Creation time.
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # date-time - Last update time.
+    # Last update time.
+    # @return [String, nil] the field value, or nil when absent.
     def updated_at
       @attributes[:updated_at]
     end
 
     # Manually Run AI Task
     #
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def manual_run(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -234,25 +334,31 @@ module Files
       [ response, options ]
     end
 
-    # Parameters:
-    #   description - string - AI Task description.
-    #   disabled - boolean - If true, this AI Task will not run.
-    #   holiday_region - string - Optional holiday region used by the AI Task schedule.
-    #   interval - string - If trigger is `daily`, this specifies how often to run the AI Task.
-    #   name - string - AI Task name.
-    #   path - string - Path scope used for action-triggered AI Tasks.
-    #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
-    #   prompt - string - Prompt sent when this AI Task is invoked.
-    #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
-    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
-    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
-    #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
-    #   schedule_time_zone - string - Time zone used by the AI Task schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the AI Task schedule.
-    #   source - string - Source glob used with `path` for action-triggered AI Tasks.
-    #   trigger - string - How this AI Task is triggered.
-    #   trigger_actions - array(string) - If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
-    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    # Update Ai Task
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] description AI Task description.
+    # @option params [Boolean] disabled If true, this AI Task will not run.
+    # @option params [String] holiday_region Optional holiday region used by the AI Task schedule.
+    # @option params [String] interval If trigger is `daily`, this specifies how often to run the AI Task.
+    # @option params [String] name AI Task name.
+    # @option params [String] path Path scope used for action-triggered AI Tasks.
+    # @option params [String] permission_set Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
+    # @option params [String] prompt Prompt sent when this AI Task is invoked.
+    # @option params [Integer] recurring_day If trigger is `daily`, this selects the day number inside the chosen interval.
+    # @option params [Array<Integer>] recurring_days If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
+    # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @option params [String] schedule_time_zone Time zone used by the AI Task schedule.
+    # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the AI Task schedule.
+    # @option params [String] source Source glob used with `path` for action-triggered AI Tasks.
+    # @option params [String] trigger How this AI Task is triggered.
+    # @option params [Array<String>] trigger_actions If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
+    # @option params [Integer] workspace_id Workspace ID. `0` means the default workspace.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -284,7 +390,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Ai Task
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -297,12 +409,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -315,16 +434,18 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `name`, `disabled` or `updated_at`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `disabled`, `trigger` or `workspace_id`. Valid field combinations are `[ workspace_id, disabled ]`.
+    # List Ai Tasks
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::AiTask objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `name`, `disabled` or `updated_at`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `disabled`, `trigger` or `workspace_id`. Valid field combinations are `[ workspace_id, disabled ]`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -339,17 +460,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Ai Task ID.
+    # Show Ai Task
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::AiTask.
+    # @param id [Integer] Ai Task ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::AiTask] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -360,34 +484,37 @@ module Files
       AiTask.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   description - string - AI Task description.
-    #   disabled - boolean - If true, this AI Task will not run.
-    #   holiday_region - string - Optional holiday region used by the AI Task schedule.
-    #   interval - string - If trigger is `daily`, this specifies how often to run the AI Task.
-    #   name (required) - string - AI Task name.
-    #   path - string - Path scope used for action-triggered AI Tasks.
-    #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
-    #   prompt (required) - string - Prompt sent when this AI Task is invoked.
-    #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
-    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
-    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
-    #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
-    #   schedule_time_zone - string - Time zone used by the AI Task schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the AI Task schedule.
-    #   source - string - Source glob used with `path` for action-triggered AI Tasks.
-    #   trigger - string - How this AI Task is triggered.
-    #   trigger_actions - array(string) - If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
-    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    # Create Ai Task
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::AiTask.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] description AI Task description.
+    # @option params [Boolean] disabled If true, this AI Task will not run.
+    # @option params [String] holiday_region Optional holiday region used by the AI Task schedule.
+    # @option params [String] interval If trigger is `daily`, this specifies how often to run the AI Task.
+    # @option params [String] name Required. AI Task name.
+    # @option params [String] path Path scope used for action-triggered AI Tasks.
+    # @option params [String] permission_set Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
+    # @option params [String] prompt Required. Prompt sent when this AI Task is invoked.
+    # @option params [Integer] recurring_day If trigger is `daily`, this selects the day number inside the chosen interval.
+    # @option params [Array<Integer>] recurring_days If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
+    # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @option params [String] schedule_time_zone Time zone used by the AI Task schedule.
+    # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the AI Task schedule.
+    # @option params [String] source Source glob used with `path` for action-triggered AI Tasks.
+    # @option params [String] trigger How this AI Task is triggered.
+    # @option params [Array<String>] trigger_actions If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
+    # @option params [Integer] workspace_id Workspace ID. `0` means the default workspace.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::AiTask] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
@@ -416,10 +543,13 @@ module Files
 
     # Manually Run AI Task
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns nil.
+    # @param id [Integer] Ai Task ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.manual_run(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -430,30 +560,33 @@ module Files
       nil
     end
 
-    # Parameters:
-    #   description - string - AI Task description.
-    #   disabled - boolean - If true, this AI Task will not run.
-    #   holiday_region - string - Optional holiday region used by the AI Task schedule.
-    #   interval - string - If trigger is `daily`, this specifies how often to run the AI Task.
-    #   name - string - AI Task name.
-    #   path - string - Path scope used for action-triggered AI Tasks.
-    #   permission_set - string - Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
-    #   prompt - string - Prompt sent when this AI Task is invoked.
-    #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
-    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
-    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
-    #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
-    #   schedule_time_zone - string - Time zone used by the AI Task schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the AI Task schedule.
-    #   source - string - Source glob used with `path` for action-triggered AI Tasks.
-    #   trigger - string - How this AI Task is triggered.
-    #   trigger_actions - array(string) - If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
-    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    # Update Ai Task
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::AiTask.
+    # @param id [Integer] Ai Task ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] description AI Task description.
+    # @option params [Boolean] disabled If true, this AI Task will not run.
+    # @option params [String] holiday_region Optional holiday region used by the AI Task schedule.
+    # @option params [String] interval If trigger is `daily`, this specifies how often to run the AI Task.
+    # @option params [String] name AI Task name.
+    # @option params [String] path Path scope used for action-triggered AI Tasks.
+    # @option params [String] permission_set Permissions used by the internal API key for this AI Task. Valid values are `full` and `files_only`.
+    # @option params [String] prompt Prompt sent when this AI Task is invoked.
+    # @option params [Integer] recurring_day If trigger is `daily`, this selects the day number inside the chosen interval.
+    # @option params [Array<Integer>] recurring_days If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
+    # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @option params [String] schedule_time_zone Time zone used by the AI Task schedule.
+    # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the AI Task schedule.
+    # @option params [String] source Source glob used with `path` for action-triggered AI Tasks.
+    # @option params [String] trigger How this AI Task is triggered.
+    # @option params [Array<String>] trigger_actions If trigger is `action`, the file action types that invoke this AI Task. Valid actions are create, copy, move, archived_delete, update, read, destroy.
+    # @option params [Integer] workspace_id Workspace ID. `0` means the default workspace.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::AiTask] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -482,10 +615,15 @@ module Files
       AiTask.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Ai Task
     #
-    # Returns nil.
+    # @param id [Integer] Ai Task ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -496,7 +634,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

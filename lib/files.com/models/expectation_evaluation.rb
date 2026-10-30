@@ -4,113 +4,139 @@ module Files
   # Files::ExpectationEvaluation is the Ruby SDK's representation of Files.com API ExpectationEvaluation objects.
   # Each instance keeps its API field values in +attributes+.
   class ExpectationEvaluation
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - ExpectationEvaluation ID
+    # ExpectationEvaluation ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
-    # int64 - Workspace ID. `0` means the default workspace.
+    # Workspace ID. `0` means the default workspace.
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
-    # int64 - Expectation ID.
+    # Expectation ID.
+    # @return [Integer, nil] the field value, or nil when absent.
     def expectation_id
       @attributes[:expectation_id]
     end
 
-    # string - Evaluation status.
+    # Evaluation status.
+    # @return [String, nil] the field value, or nil when absent.
     def status
       @attributes[:status]
     end
 
-    # string - How the evaluation window was opened.
+    # How the evaluation window was opened.
+    # @return [String, nil] the field value, or nil when absent.
     def opened_via
       @attributes[:opened_via]
     end
 
-    # date-time - When the evaluation row was opened.
+    # When the evaluation row was opened.
+    # @return [String, nil] the field value, or nil when absent.
     def opened_at
       @attributes[:opened_at]
     end
 
-    # date-time - Logical start of the candidate window.
+    # Logical start of the candidate window.
+    # @return [String, nil] the field value, or nil when absent.
     def window_start_at
       @attributes[:window_start_at]
     end
 
-    # date-time - Actual candidate cutoff boundary for the window.
+    # Actual candidate cutoff boundary for the window.
+    # @return [String, nil] the field value, or nil when absent.
     def window_end_at
       @attributes[:window_end_at]
     end
 
-    # date-time - Logical due boundary for schedule-driven windows.
+    # Logical due boundary for schedule-driven windows.
+    # @return [String, nil] the field value, or nil when absent.
     def deadline_at
       @attributes[:deadline_at]
     end
 
-    # date-time - Logical cutoff for late acceptance, when present.
+    # Logical cutoff for late acceptance, when present.
+    # @return [String, nil] the field value, or nil when absent.
     def late_acceptance_cutoff_at
       @attributes[:late_acceptance_cutoff_at]
     end
 
-    # date-time - Hard stop after which the window may not remain open.
+    # Hard stop after which the window may not remain open.
+    # @return [String, nil] the field value, or nil when absent.
     def hard_close_at
       @attributes[:hard_close_at]
     end
 
-    # date-time - When the evaluation row was finalized.
+    # When the evaluation row was finalized.
+    # @return [String, nil] the field value, or nil when absent.
     def closed_at
       @attributes[:closed_at]
     end
 
-    # array(object) - Captured evidence for files that matched the window.
+    # Captured evidence for files that matched the window.
+    # @return [Array<Hash>, nil] the field value, or nil when absent.
     def matched_files
       @attributes[:matched_files]
     end
 
-    # array(object) - Captured evidence for required files that were missing.
+    # Captured evidence for required files that were missing.
+    # @return [Array<Hash>, nil] the field value, or nil when absent.
     def missing_files
       @attributes[:missing_files]
     end
 
-    # array(string) - Captured criteria failures for the window, including file-scoped FTS errors and returned validation details.
+    # Captured criteria failures for the window, including file-scoped FTS errors and returned validation details.
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def criteria_errors
       @attributes[:criteria_errors]
     end
 
-    # object - Compact evaluator summary payload.
+    # Compact evaluator summary payload.
+    # @return [Hash, nil] the field value, or nil when absent.
     def summary
       @attributes[:summary]
     end
 
-    # date-time - Creation time.
+    # Creation time.
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # date-time - Last update time.
+    # Last update time.
+    # @return [String, nil] the field value, or nil when absent.
     def updated_at
       @attributes[:updated_at]
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `created_at` or `expectation_id`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `expectation_id` and `workspace_id`. Valid field combinations are `[ workspace_id, expectation_id ]`.
+    # List Expectation Evaluations
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::ExpectationEvaluation objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `created_at` or `expectation_id`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `expectation_id` and `workspace_id`. Valid field combinations are `[ workspace_id, expectation_id ]`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -125,17 +151,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Expectation Evaluation ID.
+    # Show Expectation Evaluation
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::ExpectationEvaluation.
+    # @param id [Integer] Expectation Evaluation ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::ExpectationEvaluation] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -146,6 +175,7 @@ module Files
       ExpectationEvaluation.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end

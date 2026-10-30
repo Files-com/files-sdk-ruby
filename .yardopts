@@ -1,0 +1,6 @@
+--markup markdown
+--readme README.md
+--output-dir doc
+--no-private
+--fail-on-warning
+lib/**/*.rb

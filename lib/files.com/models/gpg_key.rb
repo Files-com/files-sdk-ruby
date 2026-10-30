@@ -4,190 +4,278 @@ module Files
   # Files::GpgKey is the Ruby SDK's representation of Files.com API GpgKey objects.
   # Each instance keeps its API field values in +attributes+.
   class GpgKey
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - GPG key ID.
+    # GPG key ID.
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # int64 - Workspace ID (0 for default workspace).
+    # Workspace ID (0 for default workspace).
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # date-time - GPG key expiration date.
+    # GPG key expiration date.
+    # @return [String, nil] the field value, or nil when absent.
     def expires_at
       @attributes[:expires_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def expires_at=(value)
       @attributes[:expires_at] = value
     end
 
-    # string - GPG key name.
+    # GPG key name.
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # int64 - Partner ID who owns this GPG Key, if applicable.
+    # Partner ID who owns this GPG Key, if applicable.
+    # @return [Integer, nil] the field value, or nil when absent.
     def partner_id
       @attributes[:partner_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def partner_id=(value)
       @attributes[:partner_id] = value
     end
 
-    # string - Name of the Partner who owns this GPG Key, if applicable.
+    # Name of the Partner who owns this GPG Key, if applicable.
+    # @return [String, nil] the field value, or nil when absent.
     def partner_name
       @attributes[:partner_name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def partner_name=(value)
       @attributes[:partner_name] = value
     end
 
-    # int64 - User ID who owns this GPG Key, if applicable.
+    # User ID who owns this GPG Key, if applicable.
+    # @return [Integer, nil] the field value, or nil when absent.
     def user_id
       @attributes[:user_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def user_id=(value)
       @attributes[:user_id] = value
     end
 
-    # string - MD5 hash of the GPG public key
+    # MD5 hash of the GPG public key
+    # @return [String, nil] the field value, or nil when absent.
     def public_key_md5
       @attributes[:public_key_md5]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def public_key_md5=(value)
       @attributes[:public_key_md5] = value
     end
 
-    # string - MD5 hash of the GPG private key.
+    # MD5 hash of the GPG private key.
+    # @return [String, nil] the field value, or nil when absent.
     def private_key_md5
       @attributes[:private_key_md5]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key_md5=(value)
       @attributes[:private_key_md5] = value
     end
 
-    # string - GPG public key
+    # GPG public key
+    # @return [String, nil] the field value, or nil when absent.
     def generated_public_key
       @attributes[:generated_public_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def generated_public_key=(value)
       @attributes[:generated_public_key] = value
     end
 
-    # string - GPG private key.
+    # GPG private key.
+    # @return [String, nil] the field value, or nil when absent.
     def generated_private_key
       @attributes[:generated_private_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def generated_private_key=(value)
       @attributes[:generated_private_key] = value
     end
 
-    # string - GPG private key password. Only required for password protected keys.
+    # GPG private key password. Only required for password protected keys.
+    # @return [String, nil] the field value, or nil when absent.
     def private_key_password_md5
       @attributes[:private_key_password_md5]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key_password_md5=(value)
       @attributes[:private_key_password_md5] = value
     end
 
-    # string - The GPG public key
+    # The GPG public key
+    # @return [String, nil] the field value, or nil when absent.
     def public_key
       @attributes[:public_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def public_key=(value)
       @attributes[:public_key] = value
     end
 
-    # string - The GPG private key
+    # The GPG private key
+    # @return [String, nil] the field value, or nil when absent.
     def private_key
       @attributes[:private_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key=(value)
       @attributes[:private_key] = value
     end
 
-    # string - The GPG private key password
+    # The GPG private key password
+    # @return [String, nil] the field value, or nil when absent.
     def private_key_password
       @attributes[:private_key_password]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key_password=(value)
       @attributes[:private_key_password] = value
     end
 
-    # string - Expiration date of the key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # Expiration date of the key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @return [String, nil] the field value, or nil when absent.
     def generate_expires_at
       @attributes[:generate_expires_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def generate_expires_at=(value)
       @attributes[:generate_expires_at] = value
     end
 
-    # boolean - If true, generate a new GPG key pair. Can not be used with `public_key`/`private_key`
+    # If true, generate a new GPG key pair. Can not be used with `public_key`/`private_key`
+    # @return [Boolean, nil] the field value, or nil when absent.
     def generate_keypair
       @attributes[:generate_keypair]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def generate_keypair=(value)
       @attributes[:generate_keypair] = value
     end
 
-    # string - Full name of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # Full name of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @return [String, nil] the field value, or nil when absent.
     def generate_full_name
       @attributes[:generate_full_name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def generate_full_name=(value)
       @attributes[:generate_full_name] = value
     end
 
-    # string - Email address of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # Email address of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @return [String, nil] the field value, or nil when absent.
     def generate_email
       @attributes[:generate_email]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def generate_email=(value)
       @attributes[:generate_email] = value
     end
 
-    # Parameters:
-    #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
-    #   public_key - string - The GPG public key
-    #   private_key - string - The GPG private key
-    #   private_key_password - string - The GPG private key password
-    #   name - string - GPG key name.
+    # Update GPG Key
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] partner_id Partner ID who owns this GPG Key, if applicable.
+    # @option params [String] public_key The GPG public key
+    # @option params [String] private_key The GPG private key
+    # @option params [String] private_key_password The GPG private key password
+    # @option params [String] name GPG key name.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -206,7 +294,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete GPG Key
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -219,12 +313,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -237,21 +338,23 @@ module Files
       true
     end
 
-    # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `name` or `expires_at`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`, `partner_id` or `expires_at`. Valid field combinations are `[ workspace_id, partner_id ]`, `[ workspace_id, expires_at ]`, `[ partner_id, expires_at ]` or `[ workspace_id, partner_id, expires_at ]`.
-    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `expires_at`.
-    #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `expires_at`.
-    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `expires_at`.
-    #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `expires_at`.
+    # List GPG Keys
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::GpgKey objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] user_id User ID.  Provide a value of `0` to operate the current session's user.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `name` or `expires_at`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`, `partner_id` or `expires_at`. Valid field combinations are `[ workspace_id, partner_id ]`, `[ workspace_id, expires_at ]`, `[ partner_id, expires_at ]` or `[ workspace_id, partner_id, expires_at ]`.
+    # @option params [Hash] filter_gt If set, return records where the specified field is greater than the supplied value. Valid fields are `expires_at`.
+    # @option params [Hash] filter_gteq If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `expires_at`.
+    # @option params [Hash] filter_lt If set, return records where the specified field is less than the supplied value. Valid fields are `expires_at`.
+    # @option params [Hash] filter_lteq If set, return records where the specified field is less than or equal the supplied value. Valid fields are `expires_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
@@ -271,17 +374,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Gpg Key ID.
+    # Show GPG Key
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::GpgKey.
+    # @param id [Integer] Gpg Key ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::GpgKey] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -292,27 +398,30 @@ module Files
       GpgKey.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
-    #   public_key - string - The GPG public key
-    #   private_key - string - The GPG private key
-    #   private_key_password - string - The GPG private key password
-    #   name (required) - string - GPG key name.
-    #   workspace_id - int64 - Workspace ID (0 for default workspace).
-    #   generate_expires_at - string - Expiration date of the key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
-    #   generate_keypair - boolean - If true, generate a new GPG key pair. Can not be used with `public_key`/`private_key`
-    #   generate_full_name - string - Full name of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
-    #   generate_email - string - Email address of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # Create GPG Key
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::GpgKey.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] user_id User ID.  Provide a value of `0` to operate the current session's user.
+    # @option params [Integer] partner_id Partner ID who owns this GPG Key, if applicable.
+    # @option params [String] public_key The GPG public key
+    # @option params [String] private_key The GPG private key
+    # @option params [String] private_key_password The GPG private key password
+    # @option params [String] name Required. GPG key name.
+    # @option params [Integer] workspace_id Workspace ID (0 for default workspace).
+    # @option params [String] generate_expires_at Expiration date of the key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @option params [Boolean] generate_keypair If true, generate a new GPG key pair. Can not be used with `public_key`/`private_key`
+    # @option params [String] generate_full_name Full name of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @option params [String] generate_email Email address of the key owner. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::GpgKey] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: partner_id must be an Integer") if !params[:partner_id].nil? and !params[:partner_id].is_a?(Integer)
@@ -331,17 +440,20 @@ module Files
       GpgKey.new(response.data, options)
     end
 
-    # Parameters:
-    #   partner_id - int64 - Partner ID who owns this GPG Key, if applicable.
-    #   public_key - string - The GPG public key
-    #   private_key - string - The GPG private key
-    #   private_key_password - string - The GPG private key password
-    #   name - string - GPG key name.
+    # Update GPG Key
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::GpgKey.
+    # @param id [Integer] Gpg Key ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] partner_id Partner ID who owns this GPG Key, if applicable.
+    # @option params [String] public_key The GPG public key
+    # @option params [String] private_key The GPG private key
+    # @option params [String] private_key_password The GPG private key password
+    # @option params [String] name GPG key name.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::GpgKey] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -357,10 +469,15 @@ module Files
       GpgKey.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete GPG Key
     #
-    # Returns nil.
+    # @param id [Integer] Gpg Key ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -371,7 +488,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

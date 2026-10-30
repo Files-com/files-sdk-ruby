@@ -4,49 +4,63 @@ module Files
   # Files::FormField is the Ruby SDK's representation of Files.com API FormField objects.
   # Each instance keeps its API field values in +attributes+.
   class FormField
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Form field id
+    # Form field id
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
-    # string - Label to be displayed
+    # Label to be displayed
+    # @return [String, nil] the field value, or nil when absent.
     def label
       @attributes[:label]
     end
 
-    # boolean - Is this a required field?
+    # Is this a required field?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def required
       @attributes[:required]
     end
 
-    # string - Help text to be displayed
+    # Help text to be displayed
+    # @return [String, nil] the field value, or nil when absent.
     def help_text
       @attributes[:help_text]
     end
 
-    # string - Type of Field
+    # Type of Field
+    # @return [String, nil] the field value, or nil when absent.
     def field_type
       @attributes[:field_type]
     end
 
-    # array(string) - Options to display for radio and dropdown
+    # Options to display for radio and dropdown
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def options_for_select
       @attributes[:options_for_select]
     end
 
-    # string - Default option for radio and dropdown
+    # Default option for radio and dropdown
+    # @return [String, nil] the field value, or nil when absent.
     def default_option
       @attributes[:default_option]
     end
 
-    # int64 - Form field set id
+    # Form field set id
+    # @return [Integer, nil] the field value, or nil when absent.
     def form_field_set_id
       @attributes[:form_field_set_id]
     end

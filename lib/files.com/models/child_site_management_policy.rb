@@ -4,112 +4,162 @@ module Files
   # Files::ChildSiteManagementPolicy is the Ruby SDK's representation of Files.com API ChildSiteManagementPolicy objects.
   # Each instance keeps its API field values in +attributes+.
   class ChildSiteManagementPolicy
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Policy ID.
+    # Policy ID.
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - Type of policy.  Valid values: `settings`.
+    # Type of policy.  Valid values: `settings`.
+    # @return [String, nil] the field value, or nil when absent.
     def policy_type
       @attributes[:policy_type]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def policy_type=(value)
       @attributes[:policy_type] = value
     end
 
-    # string - Name for this policy.
+    # Name for this policy.
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # string - Description for this policy.
+    # Description for this policy.
+    # @return [String, nil] the field value, or nil when absent.
     def description
       @attributes[:description]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def description=(value)
       @attributes[:description] = value
     end
 
-    # object - Policy configuration data. On a Child Site, contains only managed setting names with null values. Settings policies accept site settings plus an optional `folder_behaviors` array for parent-managed root behaviors on child sites. For more information, refer to the Value Hash section of the developer documentation.
+    # Policy configuration data. On a Child Site, contains only managed setting names with null values. Settings policies accept site settings plus an optional `folder_behaviors` array for parent-managed root behaviors on child sites. For more information, refer to the Value Hash section of the developer documentation.
+    # @return [Hash, nil] the field value, or nil when absent.
     def value
       @attributes[:value]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def value=(value)
       @attributes[:value] = value
     end
 
-    # array(int64) - IDs of child sites that this policy has been applied to. This field is read-only.
+    # IDs of child sites that this policy has been applied to. This field is read-only.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def applied_child_site_ids
       @attributes[:applied_child_site_ids]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def applied_child_site_ids=(value)
       @attributes[:applied_child_site_ids] = value
     end
 
-    # array(int64) - IDs of child sites excluded from this default policy.
+    # IDs of child sites excluded from this default policy.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def skip_child_site_ids
       @attributes[:skip_child_site_ids]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def skip_child_site_ids=(value)
       @attributes[:skip_child_site_ids] = value
     end
 
-    # array(int64) - IDs of child sites explicitly assigned to this non-default policy.
+    # IDs of child sites explicitly assigned to this non-default policy.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def child_site_ids
       @attributes[:child_site_ids]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def child_site_ids=(value)
       @attributes[:child_site_ids] = value
     end
 
-    # boolean - Whether this policy applies to child sites not explicitly assigned to another policy.
+    # Whether this policy applies to child sites not explicitly assigned to another policy.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def default_policy
       @attributes[:default_policy]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def default_policy=(value)
       @attributes[:default_policy] = value
     end
 
-    # date-time - When this policy was created.
+    # When this policy was created.
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # date-time - When this policy was last updated.
+    # When this policy was last updated.
+    # @return [String, nil] the field value, or nil when absent.
     def updated_at
       @attributes[:updated_at]
     end
 
-    # Parameters:
-    #   value - object - Policy configuration data. Attributes differ by policy type. For more information, refer to the Value Hash section of the developer documentation.
-    #   skip_child_site_ids - array(int64) - IDs of child sites excluded from this default policy.
-    #   child_site_ids - array(int64) - IDs of child sites explicitly assigned to this non-default policy.
-    #   default_policy - boolean - Whether this policy applies to child sites not explicitly assigned to another policy.
-    #   policy_type - string - Type of policy.  Valid values: `settings`.
-    #   name - string - Name for this policy.
-    #   description - string - Description for this policy.
+    # Update Child Site Management Policy
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Hash] value Policy configuration data. Attributes differ by policy type. For more information, refer to the Value Hash section of the developer documentation.
+    # @option params [Array<Integer>] skip_child_site_ids IDs of child sites excluded from this default policy.
+    # @option params [Array<Integer>] child_site_ids IDs of child sites explicitly assigned to this non-default policy.
+    # @option params [Boolean] default_policy Whether this policy applies to child sites not explicitly assigned to another policy.
+    # @option params [String] policy_type Type of policy.  Valid values: `settings`.
+    # @option params [String] name Name for this policy.
+    # @option params [String] description Description for this policy.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -130,7 +180,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Child Site Management Policy
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -143,12 +199,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -161,14 +224,16 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # List Child Site Management Policies. On a Child Site, returns only the policy covering that site. Its value contains managed setting names with null values
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::ChildSiteManagementPolicy objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -181,17 +246,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Child Site Management Policy ID.
+    # Show Child Site Management Policy
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::ChildSiteManagementPolicy.
+    # @param id [Integer] Child Site Management Policy ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::ChildSiteManagementPolicy] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -202,23 +270,26 @@ module Files
       ChildSiteManagementPolicy.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   value - object - Policy configuration data. Attributes differ by policy type. For more information, refer to the Value Hash section of the developer documentation.
-    #   skip_child_site_ids - array(int64) - IDs of child sites excluded from this default policy.
-    #   child_site_ids - array(int64) - IDs of child sites explicitly assigned to this non-default policy.
-    #   default_policy - boolean - Whether this policy applies to child sites not explicitly assigned to another policy.
-    #   policy_type (required) - string - Type of policy.  Valid values: `settings`.
-    #   name - string - Name for this policy.
-    #   description - string - Description for this policy.
+    # Create Child Site Management Policy
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::ChildSiteManagementPolicy.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Hash] value Policy configuration data. Attributes differ by policy type. For more information, refer to the Value Hash section of the developer documentation.
+    # @option params [Array<Integer>] skip_child_site_ids IDs of child sites excluded from this default policy.
+    # @option params [Array<Integer>] child_site_ids IDs of child sites explicitly assigned to this non-default policy.
+    # @option params [Boolean] default_policy Whether this policy applies to child sites not explicitly assigned to another policy.
+    # @option params [String] policy_type Required. Type of policy.  Valid values: `settings`.
+    # @option params [String] name Name for this policy.
+    # @option params [String] description Description for this policy.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::ChildSiteManagementPolicy] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: value must be an Hash") if !params[:value].nil? and !params[:value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: skip_child_site_ids must be an Array") if !params[:skip_child_site_ids].nil? and !params[:skip_child_site_ids].is_a?(Array)
@@ -233,19 +304,22 @@ module Files
       ChildSiteManagementPolicy.new(response.data, options)
     end
 
-    # Parameters:
-    #   value - object - Policy configuration data. Attributes differ by policy type. For more information, refer to the Value Hash section of the developer documentation.
-    #   skip_child_site_ids - array(int64) - IDs of child sites excluded from this default policy.
-    #   child_site_ids - array(int64) - IDs of child sites explicitly assigned to this non-default policy.
-    #   default_policy - boolean - Whether this policy applies to child sites not explicitly assigned to another policy.
-    #   policy_type - string - Type of policy.  Valid values: `settings`.
-    #   name - string - Name for this policy.
-    #   description - string - Description for this policy.
+    # Update Child Site Management Policy
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::ChildSiteManagementPolicy.
+    # @param id [Integer] Child Site Management Policy ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Hash] value Policy configuration data. Attributes differ by policy type. For more information, refer to the Value Hash section of the developer documentation.
+    # @option params [Array<Integer>] skip_child_site_ids IDs of child sites excluded from this default policy.
+    # @option params [Array<Integer>] child_site_ids IDs of child sites explicitly assigned to this non-default policy.
+    # @option params [Boolean] default_policy Whether this policy applies to child sites not explicitly assigned to another policy.
+    # @option params [String] policy_type Type of policy.  Valid values: `settings`.
+    # @option params [String] name Name for this policy.
+    # @option params [String] description Description for this policy.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::ChildSiteManagementPolicy] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -263,10 +337,15 @@ module Files
       ChildSiteManagementPolicy.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Child Site Management Policy
     #
-    # Returns nil.
+    # @param id [Integer] Child Site Management Policy ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -277,7 +356,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

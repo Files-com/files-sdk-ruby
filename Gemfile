@@ -11,4 +11,5 @@ group :development, :test do
   gem 'rake'
   gem 'rspec'
   gem 'rubocop'
+  gem 'yard', '~> 0.9', '>= 0.9.45'
 end

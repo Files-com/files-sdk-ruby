@@ -4,182 +4,267 @@ module Files
   # Files::PublicKey is the Ruby SDK's representation of Files.com API PublicKey objects.
   # Each instance keeps its API field values in +attributes+.
   class PublicKey
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Public key ID
+    # Public key ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # int64 - Workspace ID (0 for default workspace).
+    # Workspace ID (0 for default workspace).
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # string - Public key title
+    # Public key title
+    # @return [String, nil] the field value, or nil when absent.
     def title
       @attributes[:title]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def title=(value)
       @attributes[:title] = value
     end
 
-    # date-time - Public key created at date/time
+    # Public key created at date/time
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # date-time - Public key expiration date/time
+    # Public key expiration date/time
+    # @return [String, nil] the field value, or nil when absent.
     def expires_at
       @attributes[:expires_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def expires_at=(value)
       @attributes[:expires_at] = value
     end
 
-    # boolean - Is this public key expired?
+    # Is this public key expired?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def expired
       @attributes[:expired]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def expired=(value)
       @attributes[:expired] = value
     end
 
-    # string - Public key fingerprint (MD5)
+    # Public key fingerprint (MD5)
+    # @return [String, nil] the field value, or nil when absent.
     def fingerprint
       @attributes[:fingerprint]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def fingerprint=(value)
       @attributes[:fingerprint] = value
     end
 
-    # string - Public key fingerprint (SHA256)
+    # Public key fingerprint (SHA256)
+    # @return [String, nil] the field value, or nil when absent.
     def fingerprint_sha256
       @attributes[:fingerprint_sha256]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def fingerprint_sha256=(value)
       @attributes[:fingerprint_sha256] = value
     end
 
-    # string - Only returned when generating keys. Can be invalid, not_generated, generating, complete
+    # Only returned when generating keys. Can be invalid, not_generated, generating, complete
+    # @return [String, nil] the field value, or nil when absent.
     def status
       @attributes[:status]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def status=(value)
       @attributes[:status] = value
     end
 
-    # date-time - Key's most recent login time via SFTP
+    # Key's most recent login time via SFTP
+    # @return [String, nil] the field value, or nil when absent.
     def last_login_at
       @attributes[:last_login_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_login_at=(value)
       @attributes[:last_login_at] = value
     end
 
-    # string - Only returned when generating keys. Private key generated for the user.
+    # Only returned when generating keys. Private key generated for the user.
+    # @return [String, nil] the field value, or nil when absent.
     def generated_private_key
       @attributes[:generated_private_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def generated_private_key=(value)
       @attributes[:generated_private_key] = value
     end
 
-    # string - Only returned when generating keys. Public key generated for the user.
+    # Only returned when generating keys. Public key generated for the user.
+    # @return [String, nil] the field value, or nil when absent.
     def generated_public_key
       @attributes[:generated_public_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def generated_public_key=(value)
       @attributes[:generated_public_key] = value
     end
 
-    # string - Username of the user this public key is associated with
+    # Username of the user this public key is associated with
+    # @return [String, nil] the field value, or nil when absent.
     def username
       @attributes[:username]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def username=(value)
       @attributes[:username] = value
     end
 
-    # int64 - User ID this public key is associated with
+    # User ID this public key is associated with
+    # @return [Integer, nil] the field value, or nil when absent.
     def user_id
       @attributes[:user_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def user_id=(value)
       @attributes[:user_id] = value
     end
 
-    # string - Actual contents of SSH key.
+    # Actual contents of SSH key.
+    # @return [String, nil] the field value, or nil when absent.
     def public_key
       @attributes[:public_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def public_key=(value)
       @attributes[:public_key] = value
     end
 
-    # boolean - If true, generate a new SSH key pair. Can not be used with `public_key`
+    # If true, generate a new SSH key pair. Can not be used with `public_key`
+    # @return [Boolean, nil] the field value, or nil when absent.
     def generate_keypair
       @attributes[:generate_keypair]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def generate_keypair=(value)
       @attributes[:generate_keypair] = value
     end
 
-    # string - Password for the private key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # Password for the private key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @return [String, nil] the field value, or nil when absent.
     def generate_private_key_password
       @attributes[:generate_private_key_password]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def generate_private_key_password=(value)
       @attributes[:generate_private_key_password] = value
     end
 
-    # string - Type of key to generate.  One of rsa, dsa, ecdsa, ed25519. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # Type of key to generate.  One of rsa, dsa, ecdsa, ed25519. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @return [String, nil] the field value, or nil when absent.
     def generate_algorithm
       @attributes[:generate_algorithm]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def generate_algorithm=(value)
       @attributes[:generate_algorithm] = value
     end
 
-    # int64 - Length of key to generate. If algorithm is ecdsa, this is the signature size. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # Length of key to generate. If algorithm is ecdsa, this is the signature size. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @return [Integer, nil] the field value, or nil when absent.
     def generate_length
       @attributes[:generate_length]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def generate_length=(value)
       @attributes[:generate_length] = value
     end
 
-    # Parameters:
-    #   title (required) - string - Internal reference for key.
+    # Update Public Key
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] title Required. Internal reference for key.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -195,7 +280,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Public Key
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -208,12 +299,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -226,21 +324,23 @@ module Files
       true
     end
 
-    # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `user_id`, `title` or `created_at`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at` and `workspace_id`. Valid field combinations are `[ workspace_id, created_at ]`.
-    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `created_at`.
-    #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at`.
-    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
-    #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at`.
+    # List Public Keys
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::PublicKey objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] user_id User ID.  Provide a value of `0` to operate the current session's user.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `user_id`, `title` or `created_at`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at` and `workspace_id`. Valid field combinations are `[ workspace_id, created_at ]`.
+    # @option params [Hash] filter_gt If set, return records where the specified field is greater than the supplied value. Valid fields are `created_at`.
+    # @option params [Hash] filter_gteq If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at`.
+    # @option params [Hash] filter_lt If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
+    # @option params [Hash] filter_lteq If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
@@ -260,17 +360,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Public Key ID.
+    # Show Public Key
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::PublicKey.
+    # @param id [Integer] Public Key ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::PublicKey] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -281,23 +384,26 @@ module Files
       PublicKey.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   title (required) - string - Internal reference for key.
-    #   public_key - string - Actual contents of SSH key.
-    #   generate_keypair - boolean - If true, generate a new SSH key pair. Can not be used with `public_key`
-    #   generate_private_key_password - string - Password for the private key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
-    #   generate_algorithm - string - Type of key to generate.  One of rsa, dsa, ecdsa, ed25519. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
-    #   generate_length - int64 - Length of key to generate. If algorithm is ecdsa, this is the signature size. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # Create Public Key
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::PublicKey.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] user_id User ID.  Provide a value of `0` to operate the current session's user.
+    # @option params [String] title Required. Internal reference for key.
+    # @option params [String] public_key Actual contents of SSH key.
+    # @option params [Boolean] generate_keypair If true, generate a new SSH key pair. Can not be used with `public_key`
+    # @option params [String] generate_private_key_password Password for the private key. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @option params [String] generate_algorithm Type of key to generate.  One of rsa, dsa, ecdsa, ed25519. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @option params [Integer] generate_length Length of key to generate. If algorithm is ecdsa, this is the signature size. Used for the generation of the key. Will be ignored if `generate_keypair` is false.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::PublicKey] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: title must be an String") if !params[:title].nil? and !params[:title].is_a?(String)
@@ -312,13 +418,16 @@ module Files
       PublicKey.new(response.data, options)
     end
 
-    # Parameters:
-    #   title (required) - string - Internal reference for key.
+    # Update Public Key
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::PublicKey.
+    # @param id [Integer] Public Key ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] title Required. Internal reference for key.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::PublicKey] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -331,10 +440,15 @@ module Files
       PublicKey.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Public Key
     #
-    # Returns nil.
+    # @param id [Integer] Public Key ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -345,7 +459,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

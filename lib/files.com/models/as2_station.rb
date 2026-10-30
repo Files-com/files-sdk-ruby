@@ -4,191 +4,279 @@ module Files
   # Files::As2Station is the Ruby SDK's representation of Files.com API As2Station objects.
   # Each instance keeps its API field values in +attributes+.
   class As2Station
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Id of the AS2 Station.
+    # Id of the AS2 Station.
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # int64 - ID of the Workspace associated with this AS2 Station.
+    # ID of the Workspace associated with this AS2 Station.
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # string - The station's formal AS2 name.
+    # The station's formal AS2 name.
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # string - Public URI for sending AS2 message to.
+    # Public URI for sending AS2 message to.
+    # @return [String, nil] the field value, or nil when absent.
     def uri
       @attributes[:uri]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def uri=(value)
       @attributes[:uri] = value
     end
 
-    # string - The station's AS2 domain name.
+    # The station's AS2 domain name.
+    # @return [String, nil] the field value, or nil when absent.
     def domain
       @attributes[:domain]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def domain=(value)
       @attributes[:domain] = value
     end
 
-    # string - Serial of public certificate used for message security in hex format.
+    # Serial of public certificate used for message security in hex format.
+    # @return [String, nil] the field value, or nil when absent.
     def hex_public_certificate_serial
       @attributes[:hex_public_certificate_serial]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def hex_public_certificate_serial=(value)
       @attributes[:hex_public_certificate_serial] = value
     end
 
-    # string - MD5 hash of public certificate used for message security.
+    # MD5 hash of public certificate used for message security.
+    # @return [String, nil] the field value, or nil when absent.
     def public_certificate_md5
       @attributes[:public_certificate_md5]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def public_certificate_md5=(value)
       @attributes[:public_certificate_md5] = value
     end
 
-    # string - Public certificate used for message security.
+    # Public certificate used for message security.
+    # @return [String, nil] the field value, or nil when absent.
     def public_certificate
       @attributes[:public_certificate]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def public_certificate=(value)
       @attributes[:public_certificate] = value
     end
 
-    # string - MD5 hash of private key used for message security.
+    # MD5 hash of private key used for message security.
+    # @return [String, nil] the field value, or nil when absent.
     def private_key_md5
       @attributes[:private_key_md5]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key_md5=(value)
       @attributes[:private_key_md5] = value
     end
 
-    # string - Subject of public certificate used for message security.
+    # Subject of public certificate used for message security.
+    # @return [String, nil] the field value, or nil when absent.
     def public_certificate_subject
       @attributes[:public_certificate_subject]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def public_certificate_subject=(value)
       @attributes[:public_certificate_subject] = value
     end
 
-    # string - Issuer of public certificate used for message security.
+    # Issuer of public certificate used for message security.
+    # @return [String, nil] the field value, or nil when absent.
     def public_certificate_issuer
       @attributes[:public_certificate_issuer]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def public_certificate_issuer=(value)
       @attributes[:public_certificate_issuer] = value
     end
 
-    # string - Serial of public certificate used for message security.
+    # Serial of public certificate used for message security.
+    # @return [String, nil] the field value, or nil when absent.
     def public_certificate_serial
       @attributes[:public_certificate_serial]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def public_certificate_serial=(value)
       @attributes[:public_certificate_serial] = value
     end
 
-    # string - Not before value of public certificate used for message security.
+    # Not before value of public certificate used for message security.
+    # @return [String, nil] the field value, or nil when absent.
     def public_certificate_not_before
       @attributes[:public_certificate_not_before]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def public_certificate_not_before=(value)
       @attributes[:public_certificate_not_before] = value
     end
 
-    # string - Not after value of public certificate used for message security.
+    # Not after value of public certificate used for message security.
+    # @return [String, nil] the field value, or nil when absent.
     def public_certificate_not_after
       @attributes[:public_certificate_not_after]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def public_certificate_not_after=(value)
       @attributes[:public_certificate_not_after] = value
     end
 
-    # string - MD5 hash of private key password used for message security.
+    # MD5 hash of private key password used for message security.
+    # @return [String, nil] the field value, or nil when absent.
     def private_key_password_md5
       @attributes[:private_key_password_md5]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key_password_md5=(value)
       @attributes[:private_key_password_md5] = value
     end
 
-    # string - PEM-encoded private key matching public_certificate.
+    # PEM-encoded private key matching public_certificate.
+    # @return [String, nil] the field value, or nil when absent.
     def private_key
       @attributes[:private_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key=(value)
       @attributes[:private_key] = value
     end
 
-    # string - Password for the PEM-encoded private key.
+    # Password for the PEM-encoded private key.
+    # @return [String, nil] the field value, or nil when absent.
     def private_key_password
       @attributes[:private_key_password]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key_password=(value)
       @attributes[:private_key_password] = value
     end
 
-    # string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's certificate and private key. Provide this instead of public_certificate and private_key.
+    # Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's certificate and private key. Provide this instead of public_certificate and private_key.
+    # @return [String, nil] the field value, or nil when absent.
     def pkcs12
       @attributes[:pkcs12]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def pkcs12=(value)
       @attributes[:pkcs12] = value
     end
 
-    # string - Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
+    # Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
+    # @return [String, nil] the field value, or nil when absent.
     def pkcs12_password
       @attributes[:pkcs12_password]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def pkcs12_password=(value)
       @attributes[:pkcs12_password] = value
     end
 
-    # Parameters:
-    #   name - string - The station's formal AS2 name.
-    #   public_certificate - string - Public certificate used for message security.
-    #   private_key - string - PEM-encoded private key matching public_certificate.
-    #   private_key_password - string - Password for the PEM-encoded private key.
-    #   pkcs12 - string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's replacement certificate and private key. Provide this instead of public_certificate and private_key.
-    #   pkcs12_password - string - Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
+    # Update AS2 Station
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name The station's formal AS2 name.
+    # @option params [String] public_certificate Public certificate used for message security.
+    # @option params [String] private_key PEM-encoded private key matching public_certificate.
+    # @option params [String] private_key_password Password for the PEM-encoded private key.
+    # @option params [String] pkcs12 Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's replacement certificate and private key. Provide this instead of public_certificate and private_key.
+    # @option params [String] pkcs12_password Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -208,7 +296,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete AS2 Station
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -221,12 +315,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -239,16 +340,18 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
+    # List AS2 Stations
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::As2Station objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id` and `name`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -263,17 +366,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - As2 Station ID.
+    # Show AS2 Station
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::As2Station.
+    # @param id [Integer] As2 Station ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::As2Station] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -284,23 +390,26 @@ module Files
       As2Station.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   name (required) - string - The station's formal AS2 name.
-    #   workspace_id - int64 - ID of the Workspace associated with this AS2 Station.
-    #   public_certificate - string - Public certificate used for message security.
-    #   private_key - string - PEM-encoded private key matching public_certificate.
-    #   private_key_password - string - Password for the PEM-encoded private key.
-    #   pkcs12 - string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's certificate and private key. Provide this instead of public_certificate and private_key.
-    #   pkcs12_password - string - Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
+    # Create AS2 Station
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::As2Station.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Required. The station's formal AS2 name.
+    # @option params [Integer] workspace_id ID of the Workspace associated with this AS2 Station.
+    # @option params [String] public_certificate Public certificate used for message security.
+    # @option params [String] private_key PEM-encoded private key matching public_certificate.
+    # @option params [String] private_key_password Password for the PEM-encoded private key.
+    # @option params [String] pkcs12 Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's certificate and private key. Provide this instead of public_certificate and private_key.
+    # @option params [String] pkcs12_password Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::As2Station] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
@@ -315,18 +424,21 @@ module Files
       As2Station.new(response.data, options)
     end
 
-    # Parameters:
-    #   name - string - The station's formal AS2 name.
-    #   public_certificate - string - Public certificate used for message security.
-    #   private_key - string - PEM-encoded private key matching public_certificate.
-    #   private_key_password - string - Password for the PEM-encoded private key.
-    #   pkcs12 - string - Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's replacement certificate and private key. Provide this instead of public_certificate and private_key.
-    #   pkcs12_password - string - Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
+    # Update AS2 Station
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::As2Station.
+    # @param id [Integer] As2 Station ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name The station's formal AS2 name.
+    # @option params [String] public_certificate Public certificate used for message security.
+    # @option params [String] private_key PEM-encoded private key matching public_certificate.
+    # @option params [String] private_key_password Password for the PEM-encoded private key.
+    # @option params [String] pkcs12 Base64-encoded PKCS#12 (.pfx or .p12) file containing the identity's replacement certificate and private key. Provide this instead of public_certificate and private_key.
+    # @option params [String] pkcs12_password Password for pkcs12. The file and password are used only for import; the extracted certificate and private key are stored as PEM.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::As2Station] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -343,10 +455,15 @@ module Files
       As2Station.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete AS2 Station
     #
-    # Returns nil.
+    # @param id [Integer] As2 Station ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -357,7 +474,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

@@ -4,70 +4,106 @@ module Files
   # Files::Style is the Ruby SDK's representation of Files.com API Style objects.
   # Each instance keeps its API field values in +attributes+.
   class Style
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Style ID
+    # Style ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - Folder path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # Folder path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # @return [String, nil] the field value, or nil when absent.
     def path
       @attributes[:path]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def path=(value)
       @attributes[:path] = value
     end
 
-    # Image - Logo
+    # Logo
+    # @return [Hash, nil] the field value, or nil when absent.
     def logo
       @attributes[:logo]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def logo=(value)
       @attributes[:logo] = value
     end
 
-    # string - URL to open when a public visitor clicks the logo
+    # URL to open when a public visitor clicks the logo
+    # @return [String, nil] the field value, or nil when absent.
     def logo_click_href
       @attributes[:logo_click_href]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def logo_click_href=(value)
       @attributes[:logo_click_href] = value
     end
 
-    # Image - Logo thumbnail
+    # Logo thumbnail
+    # @return [Hash, nil] the field value, or nil when absent.
     def thumbnail
       @attributes[:thumbnail]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def thumbnail=(value)
       @attributes[:thumbnail] = value
     end
 
-    # file - Logo for custom branding. Required when creating a new style.
+    # Logo for custom branding. Required when creating a new style.
+    # @return [Hash, nil] the field value, or nil when absent.
     def file
       @attributes[:file]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def file=(value)
       @attributes[:file] = value
     end
 
-    # Parameters:
-    #   file - file - Logo for custom branding. Required when creating a new style.
-    #   logo_click_href - string - URL to open when a public visitor clicks the logo.
+    # Update Style
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Object] file Logo for custom branding. Required when creating a new style.
+    # @option params [String] logo_click_href URL to open when a public visitor clicks the logo.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:path] = @attributes[:path]
@@ -82,7 +118,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Style
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:path] = @attributes[:path]
@@ -95,24 +137,33 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes with {#update}.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       update(@attributes)
       true
     end
 
-    # Parameters:
-    #   path (required) - string - Style path.
+    # Show Style
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Style.
+    # @param path [String] Style path.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Style] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
@@ -123,18 +174,22 @@ module Files
       Style.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(path, params = {}, options = {})
       find(path, params, options)
     end
 
-    # Parameters:
-    #   file - file - Logo for custom branding. Required when creating a new style.
-    #   logo_click_href - string - URL to open when a public visitor clicks the logo.
+    # Update Style
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Style.
+    # @param path [String] Style path.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Object] file Logo for custom branding. Required when creating a new style.
+    # @option params [String] logo_click_href URL to open when a public visitor clicks the logo.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Style] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
@@ -146,10 +201,15 @@ module Files
       Style.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Style
     #
-    # Returns nil.
+    # @param path [String] Style path.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
@@ -160,7 +220,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(path, params = {}, options = {})
       delete(path, params, options)
       nil

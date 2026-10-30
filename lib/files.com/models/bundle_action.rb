@@ -4,95 +4,116 @@ module Files
   # Files::BundleAction is the Ruby SDK's representation of Files.com API BundleAction objects.
   # Each instance keeps its API field values in +attributes+.
   class BundleAction
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # string - Type of action
+    # Type of action
+    # @return [String, nil] the field value, or nil when absent.
     def action
       @attributes[:action]
     end
 
-    # BundleRegistration - Object that contains bundle registration information
+    # Object that contains bundle registration information
+    # @return [Hash, nil] the field value, or nil when absent.
     def bundle_registration
       @attributes[:bundle_registration]
     end
 
-    # date-time - Action occurrence date/time
+    # Action occurrence date/time
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # string - The destination path for this bundle action, if applicable
+    # The destination path for this bundle action, if applicable
+    # @return [String, nil] the field value, or nil when absent.
     def destination
       @attributes[:destination]
     end
 
-    # string - Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # Path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # @return [String, nil] the field value, or nil when absent.
     def path
       @attributes[:path]
     end
 
-    # string - The source path for this bundle action, if applicable
+    # The source path for this bundle action, if applicable
+    # @return [String, nil] the field value, or nil when absent.
     def source
       @attributes[:source]
     end
 
-    # int64 - Identifier of the associated bundle registration
+    # Identifier of the associated bundle registration
+    # @return [Integer, nil] the field value, or nil when absent.
     def bundle_registration_id
       @attributes[:bundle_registration_id]
     end
 
-    # int64 - Workspace ID. `0` means the default workspace.
+    # Workspace ID. `0` means the default workspace.
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
-    # string - Name of the registrant who performed the action
+    # Name of the registrant who performed the action
+    # @return [String, nil] the field value, or nil when absent.
     def bundle_registration_name
       @attributes[:bundle_registration_name]
     end
 
-    # string - Email of the registrant
+    # Email of the registrant
+    # @return [String, nil] the field value, or nil when absent.
     def bundle_registration_email
       @attributes[:bundle_registration_email]
     end
 
-    # string - IP address of the registrant
+    # IP address of the registrant
+    # @return [String, nil] the field value, or nil when absent.
     def bundle_registration_ip
       @attributes[:bundle_registration_ip]
     end
 
-    # int64 - Id of associated form field set
+    # Id of associated form field set
+    # @return [Integer, nil] the field value, or nil when absent.
     def form_field_set_id
       @attributes[:form_field_set_id]
     end
 
-    # object - Data for form field set with form field ids as keys and user data as values
+    # Data for form field set with form field ids as keys and user data as values
+    # @return [Hash, nil] the field value, or nil when absent.
     def form_field_data
       @attributes[:form_field_data]
     end
 
-    # Parameters:
-    #   user_id - int64 - User ID.  Provide a value of `0` to operate the current session's user.
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `created_at` or `bundle_registration_id`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at`, `bundle_id` or `bundle_registration_id`. Valid field combinations are `[ bundle_id, created_at ]`, `[ bundle_registration_id, created_at ]`, `[ bundle_id, bundle_registration_id ]` or `[ bundle_id, bundle_registration_id, created_at ]`.
-    #   filter_gt - object - If set, return records where the specified field is greater than the supplied value. Valid fields are `created_at`.
-    #   filter_gteq - object - If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at`.
-    #   filter_lt - object - If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
-    #   filter_lteq - object - If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at`.
-    #   bundle_id - int64 - Bundle ID
-    #   bundle_registration_id - int64 - Bundle Registration ID
+    # List Bundle Actions
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::BundleAction objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] user_id User ID.  Provide a value of `0` to operate the current session's user.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `created_at` or `bundle_registration_id`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at`, `bundle_id` or `bundle_registration_id`. Valid field combinations are `[ bundle_id, created_at ]`, `[ bundle_registration_id, created_at ]`, `[ bundle_id, bundle_registration_id ]` or `[ bundle_id, bundle_registration_id, created_at ]`.
+    # @option params [Hash] filter_gt If set, return records where the specified field is greater than the supplied value. Valid fields are `created_at`.
+    # @option params [Hash] filter_gteq If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at`.
+    # @option params [Hash] filter_lt If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
+    # @option params [Hash] filter_lteq If set, return records where the specified field is less than or equal the supplied value. Valid fields are `created_at`.
+    # @option params [Integer] bundle_id Bundle ID
+    # @option params [Integer] bundle_registration_id Bundle Registration ID
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
@@ -114,6 +135,7 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end

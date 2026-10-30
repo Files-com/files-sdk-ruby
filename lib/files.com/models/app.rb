@@ -4,129 +4,158 @@ module Files
   # Files::App is the Ruby SDK's representation of Files.com API App objects.
   # Each instance keeps its API field values in +attributes+.
   class App
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # string - The type of the App
+    # The type of the App
+    # @return [String, nil] the field value, or nil when absent.
     def app_type
       @attributes[:app_type]
     end
 
-    # object - Collection of named links to documentation
+    # Collection of named links to documentation
+    # @return [Hash, nil] the field value, or nil when absent.
     def documentation_links
       @attributes[:documentation_links]
     end
 
-    # string - Long description for the in-App landing page
+    # Long description for the in-App landing page
+    # @return [String, nil] the field value, or nil when absent.
     def extended_description
       @attributes[:extended_description]
     end
 
-    # string - Long form description of the App
+    # Long form description of the App
+    # @return [String, nil] the field value, or nil when absent.
     def extended_description_for_marketing_site
       @attributes[:extended_description_for_marketing_site]
     end
 
-    # string - Link to external homepage
+    # Link to external homepage
+    # @return [String, nil] the field value, or nil when absent.
     def external_homepage_url
       @attributes[:external_homepage_url]
     end
 
-    # boolean - Is featured on the App listing?
+    # Is featured on the App listing?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def featured
       @attributes[:featured]
     end
 
-    # string - Associated Folder Behavior type, if any
+    # Associated Folder Behavior type, if any
+    # @return [String, nil] the field value, or nil when absent.
     def folder_behavior_type
       @attributes[:folder_behavior_type]
     end
 
-    # string - App icon
+    # App icon
+    # @return [String, nil] the field value, or nil when absent.
     def icon_url
       @attributes[:icon_url]
     end
 
-    # string - Logo thumbnail for the App
+    # Logo thumbnail for the App
+    # @return [String, nil] the field value, or nil when absent.
     def logo_thumbnail_url
       @attributes[:logo_thumbnail_url]
     end
 
-    # string - Full size logo for the App
+    # Full size logo for the App
+    # @return [String, nil] the field value, or nil when absent.
     def logo_url
       @attributes[:logo_url]
     end
 
-    # string - Marketing introdution of the App
+    # Marketing introdution of the App
+    # @return [String, nil] the field value, or nil when absent.
     def marketing_intro
       @attributes[:marketing_intro]
     end
 
-    # string - Marketing video page
+    # Marketing video page
+    # @return [String, nil] the field value, or nil when absent.
     def marketing_youtube_url
       @attributes[:marketing_youtube_url]
     end
 
-    # string - Name of the App
+    # Name of the App
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
-    # string - Package manager install command
+    # Package manager install command
+    # @return [String, nil] the field value, or nil when absent.
     def package_manager_install_command
       @attributes[:package_manager_install_command]
     end
 
-    # string - Associated Remote Server type, if any
+    # Associated Remote Server type, if any
+    # @return [String, nil] the field value, or nil when absent.
     def remote_server_type
       @attributes[:remote_server_type]
     end
 
-    # array(string) - Screenshots of the App
+    # Screenshots of the App
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def screenshot_list_urls
       @attributes[:screenshot_list_urls]
     end
 
-    # string - Link to SDK installation instructions
+    # Link to SDK installation instructions
+    # @return [String, nil] the field value, or nil when absent.
     def sdk_installation_instructions_link
       @attributes[:sdk_installation_instructions_link]
     end
 
-    # string - Short description of the App
+    # Short description of the App
+    # @return [String, nil] the field value, or nil when absent.
     def short_description
       @attributes[:short_description]
     end
 
-    # string - Associated SSO Strategy type, if any
+    # Associated SSO Strategy type, if any
+    # @return [String, nil] the field value, or nil when absent.
     def sso_strategy_type
       @attributes[:sso_strategy_type]
     end
 
-    # string - Associated SIEM type, if any
+    # Associated SIEM type, if any
+    # @return [String, nil] the field value, or nil when absent.
     def siem_type
       @attributes[:siem_type]
     end
 
-    # string - Tutorial video page
+    # Tutorial video page
+    # @return [String, nil] the field value, or nil when absent.
     def tutorial_youtube_url
       @attributes[:tutorial_youtube_url]
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name` and `app_type`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `name` and `app_type`. Valid field combinations are `[ name, app_type ]`.
-    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
+    # List Apps
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::App objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name` and `app_type`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `name` and `app_type`. Valid field combinations are `[ name, app_type ]`.
+    # @option params [Hash] filter_prefix If set, return records where the specified field is prefixed by the supplied value. Valid fields are `name`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -142,6 +171,7 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end

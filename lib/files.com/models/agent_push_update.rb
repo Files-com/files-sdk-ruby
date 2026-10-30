@@ -4,39 +4,51 @@ module Files
   # Files::AgentPushUpdate is the Ruby SDK's representation of Files.com API AgentPushUpdate objects.
   # Each instance keeps its API field values in +attributes+.
   class AgentPushUpdate
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # string - Pushed agent version
+    # Pushed agent version
+    # @return [String, nil] the field value, or nil when absent.
     def version
       @attributes[:version]
     end
 
-    # string - Update accepted or reason
+    # Update accepted or reason
+    # @return [String, nil] the field value, or nil when absent.
     def message
       @attributes[:message]
     end
 
-    # string - Installed agent version
+    # Installed agent version
+    # @return [String, nil] the field value, or nil when absent.
     def current_version
       @attributes[:current_version]
     end
 
-    # string - Pending agent version or null
+    # Pending agent version or null
+    # @return [String, nil] the field value, or nil when absent.
     def pending_version
       @attributes[:pending_version]
     end
 
-    # string - Last error message or null
+    # Last error message or null
+    # @return [String, nil] the field value, or nil when absent.
     def last_error
       @attributes[:last_error]
     end
 
-    # string - Error code
+    # Error code
+    # @return [String, nil] the field value, or nil when absent.
     def error
       @attributes[:error]
     end

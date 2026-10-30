@@ -39,6 +39,12 @@ module Files
     # are +params+ plus its cursor, and a check to pass on to Api.send_request,
     # so a rejected page leaves the caller's options as they were. +params+
     # itself is copied, not changed.
+    # @param resource_wrapper [Class] generated model class for the returned records.
+    # @param params [Hash] list parameters; per_page defaults to 1,000.
+    # @yield [params, check_page] requests a page and validates its response.
+    # @yieldparam params [Hash] parameters for this page.
+    # @yieldparam check_page [Proc] response validation to pass to {Files::Api.send_request}.
+    # @yieldreturn [Array(Files::Response, Hash)] response and request options.
     def initialize(resource_wrapper, params, &request)
       @resource_wrapper = resource_wrapper
       @params = params.dup
@@ -49,6 +55,9 @@ module Files
 
     # Yields each record on this page and returns the block's results. Without
     # a block, returns an Enumerator.
+    # @yield [record] each model on this page.
+    # @yieldparam record [Object] an instance of the generated model class.
+    # @return [Array, Enumerator] block results, or an enumerator when no block is given.
     def each(&block)
       return enum_for(:each) unless block
 
@@ -59,6 +68,10 @@ module Files
     # those pages as iteration reaches them. Without a block, returns a lazy
     # Enumerator, so methods such as +first+ request only the pages they need.
     # This does not change where +next_page+ continues.
+    # @yield [record] each model on this and all subsequent pages.
+    # @yieldparam record [Object] an instance of the generated model class.
+    # @return [Enumerator::Lazy, nil] a lazy enumerator without a block; nil after yielding all records.
+    # @raise [Files::Error] if a page request fails or the API repeats a cursor.
     def auto_paging_each(&block)
       return enum_for(:auto_paging_each).lazy unless block
 
@@ -74,6 +87,7 @@ module Files
     # Whether +next_page+ has another page to return, as reported by the page
     # +next_page+ returned last (the first page, before any call). When stepping
     # with <tt>page = page.next_page</tt>, that is this page.
+    # @return [Boolean] whether another page is available.
     def has_next_page?
       page
       !@progress.next_cursor.nil?
@@ -82,6 +96,8 @@ module Files
     # Requests the page after the last one +next_page+ returned, starting after
     # the first page, so repeated calls on any page of this list walk forward.
     # Once there are no more pages, returns an empty page without a request.
+    # @return [Files::List] the next page, or an empty page after the last one.
+    # @raise [Files::Error] if a page request fails or the API repeats a cursor.
     def next_page
       page
       return with_page(Page.new([], nil, nil)) unless @progress.next_cursor

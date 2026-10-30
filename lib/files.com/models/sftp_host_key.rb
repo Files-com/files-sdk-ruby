@@ -4,90 +4,134 @@ module Files
   # Files::SftpHostKey is the Ruby SDK's representation of Files.com API SftpHostKey objects.
   # Each instance keeps its API field values in +attributes+.
   class SftpHostKey
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # boolean - If true, use this SFTP Host Key.
+    # If true, use this SFTP Host Key.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def active
       @attributes[:active]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def active=(value)
       @attributes[:active] = value
     end
 
-    # int64 - Custom Domain ID. If set, this key is used only for that Custom Domain.
+    # Custom Domain ID. If set, this key is used only for that Custom Domain.
+    # @return [Integer, nil] the field value, or nil when absent.
     def custom_domain_id
       @attributes[:custom_domain_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def custom_domain_id=(value)
       @attributes[:custom_domain_id] = value
     end
 
-    # int64 - SFTP Host Key ID
+    # SFTP Host Key ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - The friendly name of this SFTP Host Key.
+    # The friendly name of this SFTP Host Key.
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # string - SSH key type
+    # SSH key type
+    # @return [String, nil] the field value, or nil when absent.
     def key_type
       @attributes[:key_type]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def key_type=(value)
       @attributes[:key_type] = value
     end
 
-    # string - MD5 Fingerprint of the public key
+    # MD5 Fingerprint of the public key
+    # @return [String, nil] the field value, or nil when absent.
     def fingerprint_md5
       @attributes[:fingerprint_md5]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def fingerprint_md5=(value)
       @attributes[:fingerprint_md5] = value
     end
 
-    # string - SHA256 Fingerprint of the public key
+    # SHA256 Fingerprint of the public key
+    # @return [String, nil] the field value, or nil when absent.
     def fingerprint_sha256
       @attributes[:fingerprint_sha256]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def fingerprint_sha256=(value)
       @attributes[:fingerprint_sha256] = value
     end
 
-    # string - The private key data.
+    # The private key data.
+    # @return [String, nil] the field value, or nil when absent.
     def private_key
       @attributes[:private_key]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def private_key=(value)
       @attributes[:private_key] = value
     end
 
-    # Parameters:
-    #   active - boolean - If true, use this SFTP Host Key.
-    #   custom_domain_id - int64 - Custom Domain ID. If set, this key is used only for that Custom Domain.
-    #   name - string - The friendly name of this SFTP Host Key.
-    #   private_key - string - The private key data.
+    # Update SFTP Host Key
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Boolean] active If true, use this SFTP Host Key.
+    # @option params [Integer] custom_domain_id Custom Domain ID. If set, this key is used only for that Custom Domain.
+    # @option params [String] name The friendly name of this SFTP Host Key.
+    # @option params [String] private_key The private key data.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -105,7 +149,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete SFTP Host Key
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -118,12 +168,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -136,14 +193,16 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # List SFTP Host Keys
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::SftpHostKey objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -156,17 +215,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Sftp Host Key ID.
+    # Show SFTP Host Key
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::SftpHostKey.
+    # @param id [Integer] Sftp Host Key ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::SftpHostKey] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -177,20 +239,23 @@ module Files
       SftpHostKey.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   active - boolean - If true, use this SFTP Host Key.
-    #   custom_domain_id - int64 - Custom Domain ID. If set, this key is used only for that Custom Domain.
-    #   name - string - The friendly name of this SFTP Host Key.
-    #   private_key - string - The private key data.
+    # Create SFTP Host Key
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::SftpHostKey.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Boolean] active If true, use this SFTP Host Key.
+    # @option params [Integer] custom_domain_id Custom Domain ID. If set, this key is used only for that Custom Domain.
+    # @option params [String] name The friendly name of this SFTP Host Key.
+    # @option params [String] private_key The private key data.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::SftpHostKey] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: active must be a single value, not #{params[:active].class}") if [ Array, Hash ].any? { |klass| params[:active].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: custom_domain_id must be an Integer") if !params[:custom_domain_id].nil? and !params[:custom_domain_id].is_a?(Integer)
@@ -201,16 +266,19 @@ module Files
       SftpHostKey.new(response.data, options)
     end
 
-    # Parameters:
-    #   active - boolean - If true, use this SFTP Host Key.
-    #   custom_domain_id - int64 - Custom Domain ID. If set, this key is used only for that Custom Domain.
-    #   name - string - The friendly name of this SFTP Host Key.
-    #   private_key - string - The private key data.
+    # Update SFTP Host Key
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::SftpHostKey.
+    # @param id [Integer] Sftp Host Key ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Boolean] active If true, use this SFTP Host Key.
+    # @option params [Integer] custom_domain_id Custom Domain ID. If set, this key is used only for that Custom Domain.
+    # @option params [String] name The friendly name of this SFTP Host Key.
+    # @option params [String] private_key The private key data.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::SftpHostKey] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -225,10 +293,15 @@ module Files
       SftpHostKey.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete SFTP Host Key
     #
-    # Returns nil.
+    # @param id [Integer] Sftp Host Key ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -239,7 +312,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

@@ -826,6 +826,52 @@ rescue Files::Error => e
 end
 ```
 
+## File Actions
+
+A `Files::FileAction` reports the status of a file copy or move. `Files::File.copy` and
+`Files::File.move` return this object when the API accepts the operation.
+
+Call `wait_for_completion` on the action when your next step requires the operation to finish.
+The method polls its File Migration immediately. By default, it waits 1 second before each later
+poll. It returns the completed `Files::FileMigration`. An action already marked `completed`
+without a migration ID returns `nil`.
+
+```ruby title="Waiting for a Copy"
+action = Files::File.copy("reports/october.csv", {
+  destination: "archive/october.csv"
+})
+migration = action.wait_for_completion(interval: 1, timeout: 60)
+```
+
+### Progress and Errors
+
+Pass a block to receive each observed migration. Raise an exception from the block to stop
+waiting. The exception propagates unchanged, and the operation continues on Files.com.
+
+`interval` and `timeout` use seconds and must be finite numbers greater than zero. The default
+`timeout: nil` waits without a polling deadline. A timeout limits polling and the delay between
+requests. An in-flight request keeps its configured HTTP timeouts and retries, so it can finish
+after the polling deadline.
+
+A failed or cancelled migration raises `Files::FileActionError` with the remote failure message
+when available. The same error class covers a polling timeout or status data that cannot confirm
+completion. Inspect `error.action` and `error.migration` for the original action and the last
+observed migration. An API request error keeps its normal SDK error class.
+
+```ruby title="Monitoring a Move"
+action = Files::File.move("reports/october.csv", {
+  destination: "archive/october.csv"
+})
+begin
+  action.wait_for_completion(timeout: 60) do |migration|
+    puts "#{migration.status}: #{migration.files_moved} files processed"
+  end
+rescue Files::FileActionError => error
+  warn error.message
+  warn error.migration&.failure_message
+end
+```
+
 ## Mock Server
 
 Files.com publishes a mock Files.com API server, which is useful for testing your use of the Files.com
@@ -912,3 +958,21 @@ bundle exec puma
 ## Simulation mode
 FILES_MOCK_MODE=simulation bundle exec puma
 ```
+
+## Native Ruby API Reference
+
+The SDK's source includes YARD documentation for API models, fields, operation
+parameters and return values, together with the File, Dir and pagination helpers.
+The generated Markdown resource reference is in `docs/`.
+
+To build the native HTML reference from this SDK checkout:
+
+```shell
+bundle install
+bundle exec rake yard
+```
+
+Open `doc/index.html` in a browser, or use `bundle exec yard server` to browse the
+reference locally. YARD is a development dependency; using the SDK does not
+require it. The normal `build.sh` also generates the reference. `bundle exec rake
+build` generates it before packaging and includes `doc/` in the gem.

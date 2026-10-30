@@ -4,94 +4,117 @@ module Files
   # Files::FileUploadPart is the Ruby SDK's representation of Files.com API FileUploadPart objects.
   # Each instance keeps its API field values in +attributes+.
   class FileUploadPart
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # object - Content-Type and File to send
+    # Content-Type and File to send
+    # @return [Hash, nil] the field value, or nil when absent.
     def send
       @attributes[:send]
     end
 
-    # string - Type of upload
+    # Type of upload
+    # @return [String, nil] the field value, or nil when absent.
     def action
       @attributes[:action]
     end
 
-    # boolean - If `true`, this file exists and you may wish to ask the user for overwrite confirmation
+    # If `true`, this file exists and you may wish to ask the user for overwrite confirmation
+    # @return [Boolean, nil] the field value, or nil when absent.
     def ask_about_overwrites
       @attributes[:ask_about_overwrites]
     end
 
-    # int64 - Number of parts in the upload
+    # Number of parts in the upload
+    # @return [Integer, nil] the field value, or nil when absent.
     def available_parts
       @attributes[:available_parts]
     end
 
-    # string - Date/time of when this Upload part expires and the URL cannot be used any more
+    # Date/time of when this Upload part expires and the URL cannot be used any more
+    # @return [String, nil] the field value, or nil when absent.
     def expires
       @attributes[:expires]
     end
 
-    # object - Additional upload headers to provide as part of the upload
+    # Additional upload headers to provide as part of the upload
+    # @return [Hash, nil] the field value, or nil when absent.
     def headers
       @attributes[:headers]
     end
 
-    # string - HTTP Method to use for uploading the part, usually `PUT`
+    # HTTP Method to use for uploading the part, usually `PUT`
+    # @return [String, nil] the field value, or nil when absent.
     def http_method
       @attributes[:http_method]
     end
 
-    # int64 - Size in bytes for this part
+    # Size in bytes for this part
+    # @return [Integer, nil] the field value, or nil when absent.
     def next_partsize
       @attributes[:next_partsize]
     end
 
-    # boolean - If `true`, multiple parts may be uploaded in parallel.  If `false`, be sure to only upload one part at a time, in order.
+    # If `true`, multiple parts may be uploaded in parallel.  If `false`, be sure to only upload one part at a time, in order.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def parallel_parts
       @attributes[:parallel_parts]
     end
 
-    # boolean - If `true`, parts may be retried. If `false`, a part cannot be retried and the upload should be restarted.
+    # If `true`, parts may be retried. If `false`, a part cannot be retried and the upload should be restarted.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def retry_parts
       @attributes[:retry_parts]
     end
 
-    # object - Additional HTTP parameters to send with the upload
+    # Additional HTTP parameters to send with the upload
+    # @return [Hash, nil] the field value, or nil when absent.
     def parameters
       @attributes[:parameters]
     end
 
-    # int64 - Number of this upload part
+    # Number of this upload part
+    # @return [Integer, nil] the field value, or nil when absent.
     def part_number
       @attributes[:part_number]
     end
 
-    # int64 - Size in bytes for the next upload part
+    # Size in bytes for the next upload part
+    # @return [Integer, nil] the field value, or nil when absent.
     def partsize
       @attributes[:partsize]
     end
 
-    # string - New file path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # New file path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # @return [String, nil] the field value, or nil when absent.
     def path
       @attributes[:path]
     end
 
-    # string - Reference name for this upload part
+    # Reference name for this upload part
+    # @return [String, nil] the field value, or nil when absent.
     def ref
       @attributes[:ref]
     end
 
-    # string - URI to upload this part to
+    # URI to upload this part to
+    # @return [String, nil] the field value, or nil when absent.
     def upload_uri
       @attributes[:upload_uri]
     end
 
-    # DirectConnectionInfo - Optional direct connection information for direct Agent transfer attempts
+    # Optional direct connection information for direct Agent transfer attempts
+    # @return [Hash, nil] the field value, or nil when absent.
     def direct_connection_info
       @attributes[:direct_connection_info]
     end

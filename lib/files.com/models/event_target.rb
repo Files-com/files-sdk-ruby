@@ -4,102 +4,148 @@ module Files
   # Files::EventTarget is the Ruby SDK's representation of Files.com API EventTarget objects.
   # Each instance keeps its API field values in +attributes+.
   class EventTarget
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Event Target ID
+    # Event Target ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - Event Target name.
+    # Event Target name.
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # string - Event Target type.
+    # Event Target type.
+    # @return [String, nil] the field value, or nil when absent.
     def target_type
       @attributes[:target_type]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def target_type=(value)
       @attributes[:target_type] = value
     end
 
-    # int64 - Workspace ID. 0 means the default workspace or site-wide.
+    # Workspace ID. 0 means the default workspace or site-wide.
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # boolean - If true, this default-workspace target can receive events from all workspaces.
+    # If true, this default-workspace target can receive events from all workspaces.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def apply_to_all_workspaces
       @attributes[:apply_to_all_workspaces]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def apply_to_all_workspaces=(value)
       @attributes[:apply_to_all_workspaces] = value
     end
 
-    # boolean - Whether this Event Target can receive events.
+    # Whether this Event Target can receive events.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def enabled
       @attributes[:enabled]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def enabled=(value)
       @attributes[:enabled] = value
     end
 
-    # object - Event Target configuration. Fields depend on target_type.
+    # Event Target configuration. Fields depend on target_type.
+    # @return [Hash, nil] the field value, or nil when absent.
     def config
       @attributes[:config]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def config=(value)
       @attributes[:config] = value
     end
 
-    # object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
+    # Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
+    # @return [Hash, nil] the field value, or nil when absent.
     def delivery_policy
       @attributes[:delivery_policy]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def delivery_policy=(value)
       @attributes[:delivery_policy] = value
     end
 
-    # date-time - Event Target create date/time.
+    # Event Target create date/time.
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # date-time - Event Target update date/time.
+    # Event Target update date/time.
+    # @return [String, nil] the field value, or nil when absent.
     def updated_at
       @attributes[:updated_at]
     end
 
-    # Parameters:
-    #   name - string - Event Target name.
-    #   workspace_id - int64 - Workspace ID. 0 means the default workspace or site-wide.
-    #   apply_to_all_workspaces - boolean - If true, this default-workspace target can receive events from all workspaces.
-    #   enabled - boolean - Whether this Event Target can receive events.
-    #   config - object - Event Target configuration. Fields depend on target_type.
-    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
+    # Update Event Target
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Event Target name.
+    # @option params [Integer] workspace_id Workspace ID. 0 means the default workspace or site-wide.
+    # @option params [Boolean] apply_to_all_workspaces If true, this default-workspace target can receive events from all workspaces.
+    # @option params [Boolean] enabled Whether this Event Target can receive events.
+    # @option params [Hash] config Event Target configuration. Fields depend on target_type.
+    # @option params [Hash] delivery_policy Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -119,7 +165,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Event Target
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -132,12 +184,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -150,16 +209,18 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`, `enabled` or `workspace_id`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `enabled`, `target_type` or `workspace_id`. Valid field combinations are `[ enabled, target_type ]`, `[ workspace_id, enabled ]` or `[ workspace_id, enabled, target_type ]`.
+    # List Event Targets
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::EventTarget objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `name`, `enabled` or `workspace_id`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `enabled`, `target_type` or `workspace_id`. Valid field combinations are `[ enabled, target_type ]`, `[ workspace_id, enabled ]` or `[ workspace_id, enabled, target_type ]`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -174,17 +235,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Event Target ID.
+    # Show Event Target
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::EventTarget.
+    # @param id [Integer] Event Target ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::EventTarget] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -195,23 +259,26 @@ module Files
       EventTarget.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   name (required) - string - Event Target name.
-    #   workspace_id - int64 - Workspace ID. 0 means the default workspace or site-wide.
-    #   apply_to_all_workspaces - boolean - If true, this default-workspace target can receive events from all workspaces.
-    #   enabled - boolean - Whether this Event Target can receive events.
-    #   config (required) - object - Event Target configuration. Fields depend on target_type.
-    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
-    #   target_type (required) - string - Event Target type.
+    # Create Event Target
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::EventTarget.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Required. Event Target name.
+    # @option params [Integer] workspace_id Workspace ID. 0 means the default workspace or site-wide.
+    # @option params [Boolean] apply_to_all_workspaces If true, this default-workspace target can receive events from all workspaces.
+    # @option params [Boolean] enabled Whether this Event Target can receive events.
+    # @option params [Hash] config Required. Event Target configuration. Fields depend on target_type.
+    # @option params [Hash] delivery_policy Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
+    # @option params [String] target_type Required. Event Target type.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::EventTarget] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
@@ -228,18 +295,21 @@ module Files
       EventTarget.new(response.data, options)
     end
 
-    # Parameters:
-    #   name - string - Event Target name.
-    #   workspace_id - int64 - Workspace ID. 0 means the default workspace or site-wide.
-    #   apply_to_all_workspaces - boolean - If true, this default-workspace target can receive events from all workspaces.
-    #   enabled - boolean - Whether this Event Target can receive events.
-    #   config - object - Event Target configuration. Fields depend on target_type.
-    #   delivery_policy - object - Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
+    # Update Event Target
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::EventTarget.
+    # @param id [Integer] Event Target ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Event Target name.
+    # @option params [Integer] workspace_id Workspace ID. 0 means the default workspace or site-wide.
+    # @option params [Boolean] apply_to_all_workspaces If true, this default-workspace target can receive events from all workspaces.
+    # @option params [Boolean] enabled Whether this Event Target can receive events.
+    # @option params [Hash] config Event Target configuration. Fields depend on target_type.
+    # @option params [Hash] delivery_policy Event Target delivery policy. Email and folder targets support batch_interval in seconds, between 600 and 86400. Slack and Teams support delivery_mode (immediate or subfolder_summary), summary_path (empty string means root), and summary_delay (15–300 seconds, default 60). The summary applies to matching file activity under summary_path; other matching events retain immediate delivery.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::EventTarget] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -256,10 +326,15 @@ module Files
       EventTarget.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Event Target
     #
-    # Returns nil.
+    # @param id [Integer] Event Target ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -270,7 +345,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

@@ -4,267 +4,389 @@ module Files
   # Files::Expectation is the Ruby SDK's representation of Files.com API Expectation objects.
   # Each instance keeps its API field values in +attributes+.
   class Expectation
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Expectation ID
+    # Expectation ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # int64 - Workspace ID. `0` means the default workspace.
+    # Workspace ID. `0` means the default workspace.
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # string - Expectation name.
+    # Expectation name.
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # string - Expectation description.
+    # Expectation description.
+    # @return [String, nil] the field value, or nil when absent.
     def description
       @attributes[:description]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def description=(value)
       @attributes[:description] = value
     end
 
-    # string - Path scope for the expectation. Supports workspace-relative presentation. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # Path scope for the expectation. Supports workspace-relative presentation. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # @return [String, nil] the field value, or nil when absent.
     def path
       @attributes[:path]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def path=(value)
       @attributes[:path] = value
     end
 
-    # string - Source glob used to select candidate files.
+    # Source glob used to select candidate files.
+    # @return [String, nil] the field value, or nil when absent.
     def source
       @attributes[:source]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def source=(value)
       @attributes[:source] = value
     end
 
-    # string - Optional source exclusion glob.
+    # Optional source exclusion glob.
+    # @return [String, nil] the field value, or nil when absent.
     def exclude_pattern
       @attributes[:exclude_pattern]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def exclude_pattern=(value)
       @attributes[:exclude_pattern] = value
     end
 
-    # boolean - If true, the expectation is disabled.
+    # If true, the expectation is disabled.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def disabled
       @attributes[:disabled]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def disabled=(value)
       @attributes[:disabled] = value
     end
 
-    # int64 - Criteria schema version for this expectation.
+    # Criteria schema version for this expectation.
+    # @return [Integer, nil] the field value, or nil when absent.
     def expectations_version
       @attributes[:expectations_version]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def expectations_version=(value)
       @attributes[:expectations_version] = value
     end
 
-    # string - How this expectation opens windows.
+    # How this expectation opens windows.
+    # @return [String, nil] the field value, or nil when absent.
     def trigger
       @attributes[:trigger]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def trigger=(value)
       @attributes[:trigger] = value
     end
 
-    # string - If trigger is `daily`, this specifies how often to run the expectation.
+    # If trigger is `daily`, this specifies how often to run the expectation.
+    # @return [String, nil] the field value, or nil when absent.
     def interval
       @attributes[:interval]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def interval=(value)
       @attributes[:interval] = value
     end
 
-    # int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
+    # If trigger is `daily`, this selects the day number inside the chosen interval.
+    # @return [Integer, nil] the field value, or nil when absent.
     def recurring_day
       @attributes[:recurring_day]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def recurring_day=(value)
       @attributes[:recurring_day] = value
     end
 
-    # array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    # If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def recurring_days
       @attributes[:recurring_days]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def recurring_days=(value)
       @attributes[:recurring_days] = value
     end
 
-    # int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
+    # If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
+    # @return [Integer, nil] the field value, or nil when absent.
     def schedule_id
       @attributes[:schedule_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def schedule_id=(value)
       @attributes[:schedule_id] = value
     end
 
-    # array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def schedule_days_of_week
       @attributes[:schedule_days_of_week]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def schedule_days_of_week=(value)
       @attributes[:schedule_days_of_week] = value
     end
 
-    # array(string) - Times of day in HH:MM format for the Expectation schedule.
+    # Times of day in HH:MM format for the Expectation schedule.
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def schedule_times_of_day
       @attributes[:schedule_times_of_day]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<String>, nil] the new field value.
+    # @return [Array<String>, nil] the assigned value.
     def schedule_times_of_day=(value)
       @attributes[:schedule_times_of_day] = value
     end
 
-    # string - Time zone used by the Expectation schedule.
+    # Time zone used by the Expectation schedule.
+    # @return [String, nil] the field value, or nil when absent.
     def schedule_time_zone
       @attributes[:schedule_time_zone]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def schedule_time_zone=(value)
       @attributes[:schedule_time_zone] = value
     end
 
-    # string - Optional holiday region used by the Expectation schedule.
+    # Optional holiday region used by the Expectation schedule.
+    # @return [String, nil] the field value, or nil when absent.
     def holiday_region
       @attributes[:holiday_region]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def holiday_region=(value)
       @attributes[:holiday_region] = value
     end
 
-    # int64 - How many seconds before the due boundary the window starts.
+    # How many seconds before the due boundary the window starts.
+    # @return [Integer, nil] the field value, or nil when absent.
     def lookback_interval
       @attributes[:lookback_interval]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def lookback_interval=(value)
       @attributes[:lookback_interval] = value
     end
 
-    # int64 - How many seconds a schedule-driven window may remain eligible to close as late.
+    # How many seconds a schedule-driven window may remain eligible to close as late.
+    # @return [Integer, nil] the field value, or nil when absent.
     def late_acceptance_interval
       @attributes[:late_acceptance_interval]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def late_acceptance_interval=(value)
       @attributes[:late_acceptance_interval] = value
     end
 
-    # int64 - How many quiet seconds are required before final closure.
+    # How many quiet seconds are required before final closure.
+    # @return [Integer, nil] the field value, or nil when absent.
     def inactivity_interval
       @attributes[:inactivity_interval]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def inactivity_interval=(value)
       @attributes[:inactivity_interval] = value
     end
 
-    # int64 - Hard-stop duration in seconds for unscheduled expectations.
+    # Hard-stop duration in seconds for unscheduled expectations.
+    # @return [Integer, nil] the field value, or nil when absent.
     def max_open_interval
       @attributes[:max_open_interval]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def max_open_interval=(value)
       @attributes[:max_open_interval] = value
     end
 
-    # object - Versioned success criteria definition for the expectation. Criteria v2 supports optional FTS content validation.
+    # Versioned success criteria definition for the expectation. Criteria v2 supports optional FTS content validation.
+    # @return [Hash, nil] the field value, or nil when absent.
     def criteria
       @attributes[:criteria]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def criteria=(value)
       @attributes[:criteria] = value
     end
 
-    # date-time - Last time this expectation was evaluated.
+    # Last time this expectation was evaluated.
+    # @return [String, nil] the field value, or nil when absent.
     def last_evaluated_at
       @attributes[:last_evaluated_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_evaluated_at=(value)
       @attributes[:last_evaluated_at] = value
     end
 
-    # date-time - Last time this expectation closed successfully.
+    # Last time this expectation closed successfully.
+    # @return [String, nil] the field value, or nil when absent.
     def last_success_at
       @attributes[:last_success_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_success_at=(value)
       @attributes[:last_success_at] = value
     end
 
-    # date-time - Last time this expectation closed with a failure result.
+    # Last time this expectation closed with a failure result.
+    # @return [String, nil] the field value, or nil when absent.
     def last_failure_at
       @attributes[:last_failure_at]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_failure_at=(value)
       @attributes[:last_failure_at] = value
     end
 
-    # string - Most recent terminal result for this expectation.
+    # Most recent terminal result for this expectation.
+    # @return [String, nil] the field value, or nil when absent.
     def last_result
       @attributes[:last_result]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def last_result=(value)
       @attributes[:last_result] = value
     end
 
-    # date-time - Creation time.
+    # Creation time.
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # date-time - Last update time.
+    # Last update time.
+    # @return [String, nil] the field value, or nil when absent.
     def updated_at
       @attributes[:updated_at]
     end
 
     # Manually open an Expectation window
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def trigger_evaluation(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -277,28 +399,34 @@ module Files
       [ response, options ]
     end
 
-    # Parameters:
-    #   name - string - Expectation name.
-    #   description - string - Expectation description.
-    #   path - string - Path scope for the expectation. Supports workspace-relative presentation.
-    #   source - string - Source glob used to select candidate files.
-    #   exclude_pattern - string - Optional source exclusion glob.
-    #   disabled - boolean - If true, the expectation is disabled.
-    #   trigger - string - How this expectation opens windows.
-    #   interval - string - If trigger is `daily`, this specifies how often to run the expectation.
-    #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
-    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
-    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
-    #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the Expectation schedule.
-    #   schedule_time_zone - string - Time zone used by the Expectation schedule.
-    #   holiday_region - string - Optional holiday region used by the Expectation schedule.
-    #   lookback_interval - int64 - How many seconds before the due boundary the window starts.
-    #   late_acceptance_interval - int64 - How many seconds a schedule-driven window may remain eligible to close as late.
-    #   inactivity_interval - int64 - How many quiet seconds are required before final closure.
-    #   max_open_interval - int64 - Hard-stop duration in seconds for unscheduled expectations.
-    #   criteria - object - Versioned success criteria definition for the expectation, including optional Files Transform Script content validation in criteria v2.
-    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    # Update Expectation
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Expectation name.
+    # @option params [String] description Expectation description.
+    # @option params [String] path Path scope for the expectation. Supports workspace-relative presentation.
+    # @option params [String] source Source glob used to select candidate files.
+    # @option params [String] exclude_pattern Optional source exclusion glob.
+    # @option params [Boolean] disabled If true, the expectation is disabled.
+    # @option params [String] trigger How this expectation opens windows.
+    # @option params [String] interval If trigger is `daily`, this specifies how often to run the expectation.
+    # @option params [Integer] recurring_day If trigger is `daily`, this selects the day number inside the chosen interval.
+    # @option params [Array<Integer>] recurring_days If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
+    # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the Expectation schedule.
+    # @option params [String] schedule_time_zone Time zone used by the Expectation schedule.
+    # @option params [String] holiday_region Optional holiday region used by the Expectation schedule.
+    # @option params [Integer] lookback_interval How many seconds before the due boundary the window starts.
+    # @option params [Integer] late_acceptance_interval How many seconds a schedule-driven window may remain eligible to close as late.
+    # @option params [Integer] inactivity_interval How many quiet seconds are required before final closure.
+    # @option params [Integer] max_open_interval Hard-stop duration in seconds for unscheduled expectations.
+    # @option params [Hash] criteria Versioned success criteria definition for the expectation, including optional Files Transform Script content validation in criteria v2.
+    # @option params [Integer] workspace_id Workspace ID. `0` means the default workspace.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -333,7 +461,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Expectation
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -346,12 +480,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -364,16 +505,18 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `name` or `disabled`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `disabled` and `workspace_id`. Valid field combinations are `[ workspace_id, disabled ]`.
+    # List Expectations
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::Expectation objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `workspace_id`, `name` or `disabled`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `disabled` and `workspace_id`. Valid field combinations are `[ workspace_id, disabled ]`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -388,17 +531,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Expectation ID.
+    # Show Expectation
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Expectation.
+    # @param id [Integer] Expectation ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Expectation] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -409,37 +555,40 @@ module Files
       Expectation.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   name - string - Expectation name.
-    #   description - string - Expectation description.
-    #   path - string - Path scope for the expectation. Supports workspace-relative presentation.
-    #   source - string - Source glob used to select candidate files.
-    #   exclude_pattern - string - Optional source exclusion glob.
-    #   disabled - boolean - If true, the expectation is disabled.
-    #   trigger - string - How this expectation opens windows.
-    #   interval - string - If trigger is `daily`, this specifies how often to run the expectation.
-    #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
-    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
-    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
-    #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the Expectation schedule.
-    #   schedule_time_zone - string - Time zone used by the Expectation schedule.
-    #   holiday_region - string - Optional holiday region used by the Expectation schedule.
-    #   lookback_interval - int64 - How many seconds before the due boundary the window starts.
-    #   late_acceptance_interval - int64 - How many seconds a schedule-driven window may remain eligible to close as late.
-    #   inactivity_interval - int64 - How many quiet seconds are required before final closure.
-    #   max_open_interval - int64 - Hard-stop duration in seconds for unscheduled expectations.
-    #   criteria - object - Versioned success criteria definition for the expectation, including optional Files Transform Script content validation in criteria v2.
-    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    # Create Expectation
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Expectation.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Expectation name.
+    # @option params [String] description Expectation description.
+    # @option params [String] path Path scope for the expectation. Supports workspace-relative presentation.
+    # @option params [String] source Source glob used to select candidate files.
+    # @option params [String] exclude_pattern Optional source exclusion glob.
+    # @option params [Boolean] disabled If true, the expectation is disabled.
+    # @option params [String] trigger How this expectation opens windows.
+    # @option params [String] interval If trigger is `daily`, this specifies how often to run the expectation.
+    # @option params [Integer] recurring_day If trigger is `daily`, this selects the day number inside the chosen interval.
+    # @option params [Array<Integer>] recurring_days If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
+    # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the Expectation schedule.
+    # @option params [String] schedule_time_zone Time zone used by the Expectation schedule.
+    # @option params [String] holiday_region Optional holiday region used by the Expectation schedule.
+    # @option params [Integer] lookback_interval How many seconds before the due boundary the window starts.
+    # @option params [Integer] late_acceptance_interval How many seconds a schedule-driven window may remain eligible to close as late.
+    # @option params [Integer] inactivity_interval How many quiet seconds are required before final closure.
+    # @option params [Integer] max_open_interval Hard-stop duration in seconds for unscheduled expectations.
+    # @option params [Hash] criteria Versioned success criteria definition for the expectation, including optional Files Transform Script content validation in criteria v2.
+    # @option params [Integer] workspace_id Workspace ID. `0` means the default workspace.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Expectation] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
@@ -469,10 +618,13 @@ module Files
 
     # Manually open an Expectation window
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::ExpectationEvaluation.
+    # @param id [Integer] Expectation ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::ExpectationEvaluation] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.trigger_evaluation(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -483,33 +635,36 @@ module Files
       ExpectationEvaluation.new(response.data, options)
     end
 
-    # Parameters:
-    #   name - string - Expectation name.
-    #   description - string - Expectation description.
-    #   path - string - Path scope for the expectation. Supports workspace-relative presentation.
-    #   source - string - Source glob used to select candidate files.
-    #   exclude_pattern - string - Optional source exclusion glob.
-    #   disabled - boolean - If true, the expectation is disabled.
-    #   trigger - string - How this expectation opens windows.
-    #   interval - string - If trigger is `daily`, this specifies how often to run the expectation.
-    #   recurring_day - int64 - If trigger is `daily`, this selects the day number inside the chosen interval.
-    #   recurring_days - array(int64) - If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
-    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
-    #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
-    #   schedule_times_of_day - array(string) - Times of day in HH:MM format for the Expectation schedule.
-    #   schedule_time_zone - string - Time zone used by the Expectation schedule.
-    #   holiday_region - string - Optional holiday region used by the Expectation schedule.
-    #   lookback_interval - int64 - How many seconds before the due boundary the window starts.
-    #   late_acceptance_interval - int64 - How many seconds a schedule-driven window may remain eligible to close as late.
-    #   inactivity_interval - int64 - How many quiet seconds are required before final closure.
-    #   max_open_interval - int64 - Hard-stop duration in seconds for unscheduled expectations.
-    #   criteria - object - Versioned success criteria definition for the expectation, including optional Files Transform Script content validation in criteria v2.
-    #   workspace_id - int64 - Workspace ID. `0` means the default workspace.
+    # Update Expectation
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Expectation.
+    # @param id [Integer] Expectation ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] name Expectation name.
+    # @option params [String] description Expectation description.
+    # @option params [String] path Path scope for the expectation. Supports workspace-relative presentation.
+    # @option params [String] source Source glob used to select candidate files.
+    # @option params [String] exclude_pattern Optional source exclusion glob.
+    # @option params [Boolean] disabled If true, the expectation is disabled.
+    # @option params [String] trigger How this expectation opens windows.
+    # @option params [String] interval If trigger is `daily`, this specifies how often to run the expectation.
+    # @option params [Integer] recurring_day If trigger is `daily`, this selects the day number inside the chosen interval.
+    # @option params [Array<Integer>] recurring_days If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
+    # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the Expectation's schedule fields.
+    # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the Expectation schedule.
+    # @option params [String] schedule_time_zone Time zone used by the Expectation schedule.
+    # @option params [String] holiday_region Optional holiday region used by the Expectation schedule.
+    # @option params [Integer] lookback_interval How many seconds before the due boundary the window starts.
+    # @option params [Integer] late_acceptance_interval How many seconds a schedule-driven window may remain eligible to close as late.
+    # @option params [Integer] inactivity_interval How many quiet seconds are required before final closure.
+    # @option params [Integer] max_open_interval Hard-stop duration in seconds for unscheduled expectations.
+    # @option params [Hash] criteria Versioned success criteria definition for the expectation, including optional Files Transform Script content validation in criteria v2.
+    # @option params [Integer] workspace_id Workspace ID. `0` means the default workspace.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Expectation] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -541,10 +696,15 @@ module Files
       Expectation.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Expectation
     #
-    # Returns nil.
+    # @param id [Integer] Expectation ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -555,7 +715,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

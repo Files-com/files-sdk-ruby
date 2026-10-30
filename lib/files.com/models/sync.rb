@@ -4,305 +4,441 @@ module Files
   # Files::Sync is the Ruby SDK's representation of Files.com API Sync objects.
   # Each instance keeps its API field values in +attributes+.
   class Sync
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Sync ID
+    # Sync ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - Name for this sync job
+    # Name for this sync job
+    # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
     end
 
-    # string - Description for this sync job
+    # Description for this sync job
+    # @return [String, nil] the field value, or nil when absent.
     def description
       @attributes[:description]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def description=(value)
       @attributes[:description] = value
     end
 
-    # int64 - Site ID this sync belongs to
+    # Site ID this sync belongs to
+    # @return [Integer, nil] the field value, or nil when absent.
     def site_id
       @attributes[:site_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def site_id=(value)
       @attributes[:site_id] = value
     end
 
-    # int64 - Workspace ID this sync belongs to
+    # Workspace ID this sync belongs to
+    # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
       @attributes[:workspace_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def workspace_id=(value)
       @attributes[:workspace_id] = value
     end
 
-    # int64 - User who created or owns this sync
+    # User who created or owns this sync
+    # @return [Integer, nil] the field value, or nil when absent.
     def user_id
       @attributes[:user_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def user_id=(value)
       @attributes[:user_id] = value
     end
 
-    # string - Absolute source path for the sync
+    # Absolute source path for the sync
+    # @return [String, nil] the field value, or nil when absent.
     def src_path
       @attributes[:src_path]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def src_path=(value)
       @attributes[:src_path] = value
     end
 
-    # string - Absolute destination path for the sync
+    # Absolute destination path for the sync
+    # @return [String, nil] the field value, or nil when absent.
     def dest_path
       @attributes[:dest_path]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def dest_path=(value)
       @attributes[:dest_path] = value
     end
 
-    # int64 - Remote server ID for the source (if remote)
+    # Remote server ID for the source (if remote)
+    # @return [Integer, nil] the field value, or nil when absent.
     def src_remote_server_id
       @attributes[:src_remote_server_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def src_remote_server_id=(value)
       @attributes[:src_remote_server_id] = value
     end
 
-    # int64 - Remote server ID for the destination (if remote)
+    # Remote server ID for the destination (if remote)
+    # @return [Integer, nil] the field value, or nil when absent.
     def dest_remote_server_id
       @attributes[:dest_remote_server_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def dest_remote_server_id=(value)
       @attributes[:dest_remote_server_id] = value
     end
 
-    # int64 - Source site ID if syncing from a child or partner site
+    # Source site ID if syncing from a child or partner site
+    # @return [Integer, nil] the field value, or nil when absent.
     def src_site_id
       @attributes[:src_site_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def src_site_id=(value)
       @attributes[:src_site_id] = value
     end
 
-    # int64 - Destination site ID if syncing to a child or partner site
+    # Destination site ID if syncing to a child or partner site
+    # @return [Integer, nil] the field value, or nil when absent.
     def dest_site_id
       @attributes[:dest_site_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def dest_site_id=(value)
       @attributes[:dest_site_id] = value
     end
 
-    # boolean - Is this a two-way sync?
+    # Is this a two-way sync?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def two_way
       @attributes[:two_way]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def two_way=(value)
       @attributes[:two_way] = value
     end
 
-    # boolean - Keep files after copying?
+    # Keep files after copying?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def keep_after_copy
       @attributes[:keep_after_copy]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def keep_after_copy=(value)
       @attributes[:keep_after_copy] = value
     end
 
-    # boolean - Delete empty folders after sync?
+    # Delete empty folders after sync?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def delete_empty_folders
       @attributes[:delete_empty_folders]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def delete_empty_folders=(value)
       @attributes[:delete_empty_folders] = value
     end
 
-    # boolean - Is this sync disabled?
+    # Is this sync disabled?
+    # @return [Boolean, nil] the field value, or nil when absent.
     def disabled
       @attributes[:disabled]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def disabled=(value)
       @attributes[:disabled] = value
     end
 
-    # string - Trigger type: daily, custom_schedule, or manual
+    # Trigger type: daily, custom_schedule, or manual
+    # @return [String, nil] the field value, or nil when absent.
     def trigger
       @attributes[:trigger]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def trigger=(value)
       @attributes[:trigger] = value
     end
 
-    # string - Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
+    # Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
+    # @return [String, nil] the field value, or nil when absent.
     def trigger_file
       @attributes[:trigger_file]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def trigger_file=(value)
       @attributes[:trigger_file] = value
     end
 
-    # boolean - If true, the trigger file will be sent at the end of a successful sync even when no files were transferred.
+    # If true, the trigger file will be sent at the end of a successful sync even when no files were transferred.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def always_write_trigger_file
       @attributes[:always_write_trigger_file]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def always_write_trigger_file=(value)
       @attributes[:always_write_trigger_file] = value
     end
 
-    # array(string) - Array of glob patterns to include
+    # Array of glob patterns to include
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def include_patterns
       @attributes[:include_patterns]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<String>, nil] the new field value.
+    # @return [Array<String>, nil] the assigned value.
     def include_patterns=(value)
       @attributes[:include_patterns] = value
     end
 
-    # array(string) - Array of glob patterns to exclude
+    # Array of glob patterns to exclude
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def exclude_patterns
       @attributes[:exclude_patterns]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<String>, nil] the new field value.
+    # @return [Array<String>, nil] the assigned value.
     def exclude_patterns=(value)
       @attributes[:exclude_patterns] = value
     end
 
-    # date-time - When this sync was created
+    # When this sync was created
+    # @return [String, nil] the field value, or nil when absent.
     def created_at
       @attributes[:created_at]
     end
 
-    # date-time - When this sync was last updated
+    # When this sync was last updated
+    # @return [String, nil] the field value, or nil when absent.
     def updated_at
       @attributes[:updated_at]
     end
 
-    # int64 - Frequency in minutes between syncs. If set, this value must be greater than or equal to the `remote_sync_interval` value for the site's plan. If left blank, the plan's `remote_sync_interval` will be used. This setting is only used if `trigger` is empty.
+    # Frequency in minutes between syncs. If set, this value must be greater than or equal to the `remote_sync_interval` value for the site's plan. If left blank, the plan's `remote_sync_interval` will be used. This setting is only used if `trigger` is empty.
+    # @return [Integer, nil] the field value, or nil when absent.
     def sync_interval_minutes
       @attributes[:sync_interval_minutes]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def sync_interval_minutes=(value)
       @attributes[:sync_interval_minutes] = value
     end
 
-    # string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    # If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    # @return [String, nil] the field value, or nil when absent.
     def interval
       @attributes[:interval]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def interval=(value)
       @attributes[:interval] = value
     end
 
-    # int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    # If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    # @return [Integer, nil] the field value, or nil when absent.
     def recurring_day
       @attributes[:recurring_day]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def recurring_day=(value)
       @attributes[:recurring_day] = value
     end
 
-    # array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    # If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def recurring_days
       @attributes[:recurring_days]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def recurring_days=(value)
       @attributes[:recurring_days] = value
     end
 
-    # int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
+    # If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
+    # @return [Integer, nil] the field value, or nil when absent.
     def schedule_id
       @attributes[:schedule_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def schedule_id=(value)
       @attributes[:schedule_id] = value
     end
 
-    # array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
+    # If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def schedule_days_of_week
       @attributes[:schedule_days_of_week]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def schedule_days_of_week=(value)
       @attributes[:schedule_days_of_week] = value
     end
 
-    # array(string) - Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
+    # Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def schedule_times_of_day
       @attributes[:schedule_times_of_day]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<String>, nil] the new field value.
+    # @return [Array<String>, nil] the assigned value.
     def schedule_times_of_day=(value)
       @attributes[:schedule_times_of_day] = value
     end
 
-    # string - Time zone for the schedule. If not set, times are interpreted as UTC.
+    # Time zone for the schedule. If not set, times are interpreted as UTC.
+    # @return [String, nil] the field value, or nil when absent.
     def schedule_time_zone
       @attributes[:schedule_time_zone]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def schedule_time_zone=(value)
       @attributes[:schedule_time_zone] = value
     end
 
-    # string - Skip the sync if there is a formal, observed holiday for this region.
+    # Skip the sync if there is a formal, observed holiday for this region.
+    # @return [String, nil] the field value, or nil when absent.
     def holiday_region
       @attributes[:holiday_region]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def holiday_region=(value)
       @attributes[:holiday_region] = value
     end
 
-    # SyncRun - The latest run of this sync
+    # The latest run of this sync
+    # @return [Hash, nil] the field value, or nil when absent.
     def latest_sync_run
       @attributes[:latest_sync_run]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
     def latest_sync_run=(value)
       @attributes[:latest_sync_run] = value
     end
 
     # Dry Run Sync
     #
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def dry_run(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -317,7 +453,11 @@ module Files
 
     # Manually Run Sync
     #
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def manual_run(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -330,30 +470,36 @@ module Files
       [ response, options ]
     end
 
-    # Parameters:
-    #   delete_empty_folders - boolean - Delete empty folders after sync?
-    #   description - string - Description for this sync job
-    #   dest_path - string - Absolute destination path for the sync
-    #   dest_remote_server_id - int64 - Remote server ID for the destination (if remote)
-    #   disabled - boolean - Is this sync disabled?
-    #   exclude_patterns - array(string) - Array of glob patterns to exclude
-    #   holiday_region - string - Skip the sync if there is a formal, observed holiday for this region.
-    #   include_patterns - array(string) - Array of glob patterns to include
-    #   interval - string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    #   keep_after_copy - boolean - Keep files after copying?
-    #   name - string - Name for this sync job
-    #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
-    #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
-    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
-    #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
-    #   schedule_time_zone - string - Time zone for the schedule. If not set, times are interpreted as UTC.
-    #   schedule_times_of_day - array(string) - Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
-    #   src_path - string - Absolute source path for the sync
-    #   src_remote_server_id - int64 - Remote server ID for the source (if remote)
-    #   sync_interval_minutes - int64 - Frequency in minutes between syncs. If set, this value must be greater than or equal to the `remote_sync_interval` value for the site's plan. If left blank, the plan's `remote_sync_interval` will be used. This setting is only used if `trigger` is empty.
-    #   trigger - string - Trigger type: daily, custom_schedule, or manual
-    #   trigger_file - string - Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
-    #   always_write_trigger_file - boolean - If true, the trigger file will be sent at the end of a successful sync even when no files were transferred.
+    # Update Sync
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Boolean] delete_empty_folders Delete empty folders after sync?
+    # @option params [String] description Description for this sync job
+    # @option params [String] dest_path Absolute destination path for the sync
+    # @option params [Integer] dest_remote_server_id Remote server ID for the destination (if remote)
+    # @option params [Boolean] disabled Is this sync disabled?
+    # @option params [Array<String>] exclude_patterns Array of glob patterns to exclude
+    # @option params [String] holiday_region Skip the sync if there is a formal, observed holiday for this region.
+    # @option params [Array<String>] include_patterns Array of glob patterns to include
+    # @option params [String] interval If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    # @option params [Boolean] keep_after_copy Keep files after copying?
+    # @option params [String] name Name for this sync job
+    # @option params [Integer] recurring_day If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    # @option params [Array<Integer>] recurring_days If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
+    # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
+    # @option params [String] schedule_time_zone Time zone for the schedule. If not set, times are interpreted as UTC.
+    # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
+    # @option params [String] src_path Absolute source path for the sync
+    # @option params [Integer] src_remote_server_id Remote server ID for the source (if remote)
+    # @option params [Integer] sync_interval_minutes Frequency in minutes between syncs. If set, this value must be greater than or equal to the `remote_sync_interval` value for the site's plan. If left blank, the plan's `remote_sync_interval` will be used. This setting is only used if `trigger` is empty.
+    # @option params [String] trigger Trigger type: daily, custom_schedule, or manual
+    # @option params [String] trigger_file Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
+    # @option params [Boolean] always_write_trigger_file If true, the trigger file will be sent at the end of a successful sync even when no files were transferred.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def update(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -390,7 +536,13 @@ module Files
       [ response, options ]
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Sync
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -403,12 +555,19 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
     def save
       if @attributes[:id]
         update(@attributes)
@@ -421,16 +580,18 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `workspace_id` or `name`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`, `disabled`, `src_remote_server_id` or `dest_remote_server_id`. Valid field combinations are `[ workspace_id, disabled ]`, `[ workspace_id, src_remote_server_id ]`, `[ workspace_id, dest_remote_server_id ]`, `[ disabled, src_remote_server_id ]`, `[ disabled, dest_remote_server_id ]`, `[ workspace_id, disabled, src_remote_server_id ]` or `[ workspace_id, disabled, dest_remote_server_id ]`.
+    # List Syncs
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::Sync objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `workspace_id` or `name`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `workspace_id`, `disabled`, `src_remote_server_id` or `dest_remote_server_id`. Valid field combinations are `[ workspace_id, disabled ]`, `[ workspace_id, src_remote_server_id ]`, `[ workspace_id, dest_remote_server_id ]`, `[ disabled, src_remote_server_id ]`, `[ disabled, dest_remote_server_id ]`, `[ workspace_id, disabled, src_remote_server_id ]` or `[ workspace_id, disabled, dest_remote_server_id ]`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -445,17 +606,20 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   id (required) - int64 - Sync ID.
+    # Show Sync
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Sync.
+    # @param id [Integer] Sync ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Sync] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.find(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -466,40 +630,43 @@ module Files
       Sync.new(response.data, options)
     end
 
+    # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
     end
 
-    # Parameters:
-    #   delete_empty_folders - boolean - Delete empty folders after sync?
-    #   description - string - Description for this sync job
-    #   dest_path - string - Absolute destination path for the sync
-    #   dest_remote_server_id - int64 - Remote server ID for the destination (if remote)
-    #   disabled - boolean - Is this sync disabled?
-    #   exclude_patterns - array(string) - Array of glob patterns to exclude
-    #   holiday_region - string - Skip the sync if there is a formal, observed holiday for this region.
-    #   include_patterns - array(string) - Array of glob patterns to include
-    #   interval - string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    #   keep_after_copy - boolean - Keep files after copying?
-    #   name - string - Name for this sync job
-    #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
-    #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
-    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
-    #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
-    #   schedule_time_zone - string - Time zone for the schedule. If not set, times are interpreted as UTC.
-    #   schedule_times_of_day - array(string) - Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
-    #   src_path - string - Absolute source path for the sync
-    #   src_remote_server_id - int64 - Remote server ID for the source (if remote)
-    #   sync_interval_minutes - int64 - Frequency in minutes between syncs. If set, this value must be greater than or equal to the `remote_sync_interval` value for the site's plan. If left blank, the plan's `remote_sync_interval` will be used. This setting is only used if `trigger` is empty.
-    #   trigger - string - Trigger type: daily, custom_schedule, or manual
-    #   trigger_file - string - Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
-    #   always_write_trigger_file - boolean - If true, the trigger file will be sent at the end of a successful sync even when no files were transferred.
-    #   workspace_id - int64 - Workspace ID this sync belongs to
+    # Create Sync
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Sync.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Boolean] delete_empty_folders Delete empty folders after sync?
+    # @option params [String] description Description for this sync job
+    # @option params [String] dest_path Absolute destination path for the sync
+    # @option params [Integer] dest_remote_server_id Remote server ID for the destination (if remote)
+    # @option params [Boolean] disabled Is this sync disabled?
+    # @option params [Array<String>] exclude_patterns Array of glob patterns to exclude
+    # @option params [String] holiday_region Skip the sync if there is a formal, observed holiday for this region.
+    # @option params [Array<String>] include_patterns Array of glob patterns to include
+    # @option params [String] interval If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    # @option params [Boolean] keep_after_copy Keep files after copying?
+    # @option params [String] name Name for this sync job
+    # @option params [Integer] recurring_day If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    # @option params [Array<Integer>] recurring_days If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
+    # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
+    # @option params [String] schedule_time_zone Time zone for the schedule. If not set, times are interpreted as UTC.
+    # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
+    # @option params [String] src_path Absolute source path for the sync
+    # @option params [Integer] src_remote_server_id Remote server ID for the source (if remote)
+    # @option params [Integer] sync_interval_minutes Frequency in minutes between syncs. If set, this value must be greater than or equal to the `remote_sync_interval` value for the site's plan. If left blank, the plan's `remote_sync_interval` will be used. This setting is only used if `trigger` is empty.
+    # @option params [String] trigger Trigger type: daily, custom_schedule, or manual
+    # @option params [String] trigger_file Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
+    # @option params [Boolean] always_write_trigger_file If true, the trigger file will be sent at the end of a successful sync even when no files were transferred.
+    # @option params [Integer] workspace_id Workspace ID this sync belongs to
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Sync] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: delete_empty_folders must be a single value, not #{params[:delete_empty_folders].class}") if [ Array, Hash ].any? { |klass| params[:delete_empty_folders].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
@@ -532,10 +699,13 @@ module Files
 
     # Dry Run Sync
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns nil.
+    # @param id [Integer] Sync ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.dry_run(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -548,10 +718,13 @@ module Files
 
     # Manually Run Sync
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns nil.
+    # @param id [Integer] Sync ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.manual_run(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -562,35 +735,38 @@ module Files
       nil
     end
 
-    # Parameters:
-    #   delete_empty_folders - boolean - Delete empty folders after sync?
-    #   description - string - Description for this sync job
-    #   dest_path - string - Absolute destination path for the sync
-    #   dest_remote_server_id - int64 - Remote server ID for the destination (if remote)
-    #   disabled - boolean - Is this sync disabled?
-    #   exclude_patterns - array(string) - Array of glob patterns to exclude
-    #   holiday_region - string - Skip the sync if there is a formal, observed holiday for this region.
-    #   include_patterns - array(string) - Array of glob patterns to include
-    #   interval - string - If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
-    #   keep_after_copy - boolean - Keep files after copying?
-    #   name - string - Name for this sync job
-    #   recurring_day - int64 - If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
-    #   recurring_days - array(int64) - If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
-    #   schedule_id - int64 - If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
-    #   schedule_days_of_week - array(int64) - If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
-    #   schedule_time_zone - string - Time zone for the schedule. If not set, times are interpreted as UTC.
-    #   schedule_times_of_day - array(string) - Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
-    #   src_path - string - Absolute source path for the sync
-    #   src_remote_server_id - int64 - Remote server ID for the source (if remote)
-    #   sync_interval_minutes - int64 - Frequency in minutes between syncs. If set, this value must be greater than or equal to the `remote_sync_interval` value for the site's plan. If left blank, the plan's `remote_sync_interval` will be used. This setting is only used if `trigger` is empty.
-    #   trigger - string - Trigger type: daily, custom_schedule, or manual
-    #   trigger_file - string - Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
-    #   always_write_trigger_file - boolean - If true, the trigger file will be sent at the end of a successful sync even when no files were transferred.
+    # Update Sync
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Sync.
+    # @param id [Integer] Sync ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Boolean] delete_empty_folders Delete empty folders after sync?
+    # @option params [String] description Description for this sync job
+    # @option params [String] dest_path Absolute destination path for the sync
+    # @option params [Integer] dest_remote_server_id Remote server ID for the destination (if remote)
+    # @option params [Boolean] disabled Is this sync disabled?
+    # @option params [Array<String>] exclude_patterns Array of glob patterns to exclude
+    # @option params [String] holiday_region Skip the sync if there is a formal, observed holiday for this region.
+    # @option params [Array<String>] include_patterns Array of glob patterns to include
+    # @option params [String] interval If trigger is `daily`, this specifies how often to run this sync.  One of: `day`, `week`, `week_end`, `month`, `month_end`, `quarter`, `quarter_end`, `year`, `year_end`
+    # @option params [Boolean] keep_after_copy Keep files after copying?
+    # @option params [String] name Name for this sync job
+    # @option params [Integer] recurring_day If trigger type is `daily`, this specifies a day number to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    # @option params [Array<Integer>] recurring_days If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
+    # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
+    # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
+    # @option params [String] schedule_time_zone Time zone for the schedule. If not set, times are interpreted as UTC.
+    # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
+    # @option params [String] src_path Absolute source path for the sync
+    # @option params [Integer] src_remote_server_id Remote server ID for the source (if remote)
+    # @option params [Integer] sync_interval_minutes Frequency in minutes between syncs. If set, this value must be greater than or equal to the `remote_sync_interval` value for the site's plan. If left blank, the plan's `remote_sync_interval` will be used. This setting is only used if `trigger` is empty.
+    # @option params [String] trigger Trigger type: daily, custom_schedule, or manual
+    # @option params [String] trigger_file Some MFT services request an empty file (known as a trigger file) to signal the sync is complete and they can begin further processing. If trigger_file is set, a zero-byte file will be sent at the end of the sync.
+    # @option params [Boolean] always_write_trigger_file If true, the trigger file will be sent at the end of a successful sync even when no files were transferred.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Sync] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.update(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -624,10 +800,15 @@ module Files
       Sync.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Sync
     #
-    # Returns nil.
+    # @param id [Integer] Sync ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -638,7 +819,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil

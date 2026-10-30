@@ -4,131 +4,195 @@ module Files
   # Files::Permission is the Ruby SDK's representation of Files.com API Permission objects.
   # Each instance keeps its API field values in +attributes+.
   class Permission
-    attr_reader :options, :attributes
+    # @return [Hash] request configuration retained for later operations on this record.
+    attr_reader :options
+    # @return [Hash] API field values keyed by Symbol.
+    attr_reader :attributes
 
+    # Builds a local record without sending an API request.
+    # @param attributes [Hash] API field values keyed by Symbol.
+    # @param options [Hash] request configuration; see {Files::Api.send_request}.
     def initialize(attributes = {}, options = {})
       @attributes = attributes || {}
       @options = options || {}
     end
 
-    # int64 - Permission ID
+    # Permission ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def id
       @attributes[:id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def id=(value)
       @attributes[:id] = value
     end
 
-    # string - Folder path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # Folder path. This must be slash-delimited, but it must neither start nor end with a slash. Maximum of 5000 characters.
+    # @return [String, nil] the field value, or nil when absent.
     def path
       @attributes[:path]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def path=(value)
       @attributes[:path] = value
     end
 
-    # int64 - User ID
+    # User ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def user_id
       @attributes[:user_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def user_id=(value)
       @attributes[:user_id] = value
     end
 
-    # string - Username (if applicable)
+    # Username (if applicable)
+    # @return [String, nil] the field value, or nil when absent.
     def username
       @attributes[:username]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def username=(value)
       @attributes[:username] = value
     end
 
-    # int64 - Group ID
+    # Group ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def group_id
       @attributes[:group_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def group_id=(value)
       @attributes[:group_id] = value
     end
 
-    # string - Group name (if applicable)
+    # Group name (if applicable)
+    # @return [String, nil] the field value, or nil when absent.
     def group_name
       @attributes[:group_name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def group_name=(value)
       @attributes[:group_name] = value
     end
 
-    # array(int64) - Group IDs when this Permission requires membership in every listed group.
+    # Group IDs when this Permission requires membership in every listed group.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
     def group_ids
       @attributes[:group_ids]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
     def group_ids=(value)
       @attributes[:group_ids] = value
     end
 
-    # array(string) - Group names when this permission requires multiple groups
+    # Group names when this permission requires multiple groups
+    # @return [Array<String>, nil] the field value, or nil when absent.
     def group_names
       @attributes[:group_names]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<String>, nil] the new field value.
+    # @return [Array<String>, nil] the assigned value.
     def group_names=(value)
       @attributes[:group_names] = value
     end
 
-    # int64 - Partner ID (if applicable)
+    # Partner ID (if applicable)
+    # @return [Integer, nil] the field value, or nil when absent.
     def partner_id
       @attributes[:partner_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def partner_id=(value)
       @attributes[:partner_id] = value
     end
 
-    # string - Partner name (if applicable)
+    # Partner name (if applicable)
+    # @return [String, nil] the field value, or nil when absent.
     def partner_name
       @attributes[:partner_name]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def partner_name=(value)
       @attributes[:partner_name] = value
     end
 
-    # string - Permission type.  See the table referenced in the documentation for an explanation of each permission.
+    # Permission type.  See the table referenced in the documentation for an explanation of each permission.
+    # @return [String, nil] the field value, or nil when absent.
     def permission
       @attributes[:permission]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
     def permission=(value)
       @attributes[:permission] = value
     end
 
-    # boolean - Whether this Permission applies to subfolders. Must be true for `admin` Permissions.
+    # Whether this Permission applies to subfolders. Must be true for `admin` Permissions.
+    # @return [Boolean, nil] the field value, or nil when absent.
     def recursive
       @attributes[:recursive]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
     def recursive=(value)
       @attributes[:recursive] = value
     end
 
-    # int64 - Site ID
+    # Site ID
+    # @return [Integer, nil] the field value, or nil when absent.
     def site_id
       @attributes[:site_id]
     end
 
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
     def site_id=(value)
       @attributes[:site_id] = value
     end
 
-    # Returns the [response, options] pair from Files::Api.send_request.
+    # Delete Permission
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def delete(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
@@ -141,12 +205,20 @@ module Files
       [ response, options ]
     end
 
-    # Alias for #delete. Returns nil.
+    # Calls {#delete} and discards its response.
+    # @param (see #delete)
+    # @option (see #delete)
+    # @raise (see #delete)
+    # @return [nil]
     def destroy(params = {})
       delete(params)
       nil
     end
 
+    # Persists local attributes by creating or updating this record.
+    # @return [true] after the request succeeds.
+    # @raise [Files::Error] if the API request fails.
+    # @raise [Files::NotImplementedError] if this record already has an id; updates are unsupported.
     def save
       if @attributes[:id]
         raise NotImplementedError.new("The Permission object doesn't support updates.")
@@ -159,22 +231,24 @@ module Files
       true
     end
 
-    # Parameters:
-    #   cursor - string - Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    #   per_page - int64 - Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    #   sort_by - object - If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `group_id`, `path`, `user_id`, `partner_id` or `id`.
-    #   filter - object - If set, return records where the specified field is equal to the supplied value. Valid fields are `path`, `group_id`, `partner_id` or `user_id`. Valid field combinations are `[ group_id, path ]`, `[ partner_id, path ]`, `[ user_id, path ]`, `[ user_id, group_id ]`, `[ user_id, group_id, path ]`, `[ user_id, group_id, partner_id ]` or `[ user_id, group_id, partner_id, path ]`.
-    #   filter_prefix - object - If set, return records where the specified field is prefixed by the supplied value. Valid fields are `path`.
-    #   path - string - Permission path.  If provided, will scope all permissions(including upward) to this path.
-    #   include_groups - boolean - If searching by user or group, also include user's permissions that are inherited from its groups?
-    #   group_id - string
-    #   partner_id - string
-    #   user_id - string
+    # List Permissions
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::List of Files::Permission objects.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `site_id`, `group_id`, `path`, `user_id`, `partner_id` or `id`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `path`, `group_id`, `partner_id` or `user_id`. Valid field combinations are `[ group_id, path ]`, `[ partner_id, path ]`, `[ user_id, path ]`, `[ user_id, group_id ]`, `[ user_id, group_id, path ]`, `[ user_id, group_id, partner_id ]` or `[ user_id, group_id, partner_id, path ]`.
+    # @option params [Hash] filter_prefix If set, return records where the specified field is prefixed by the supplied value. Valid fields are `path`.
+    # @option params [String] path Permission path.  If provided, will scope all permissions(including upward) to this path.
+    # @option params [Boolean] include_groups If searching by user or group, also include user's permissions that are inherited from its groups?
+    # @option params [String] group_id
+    # @option params [String] partner_id
+    # @option params [String] user_id
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.list(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
@@ -195,26 +269,29 @@ module Files
       end
     end
 
+    # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
     end
 
-    # Parameters:
-    #   path (required) - string - Folder path
-    #   group_id - int64 - Group ID. Provide `group_name` or `group_id`
-    #   group_ids - string - Group IDs when the Permission requires membership in every listed group. If sent as a string, it should be comma-delimited.
-    #   permission - string - Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
-    #   recursive - boolean - Apply to subfolders recursively? Must be true for `admin` Permissions.
-    #   partner_id - int64 - Partner ID if this Permission belongs to a partner.
-    #   user_id - int64 - User ID.  Provide `username` or `user_id`
-    #   username - string - User username.  Provide `username` or `user_id`
-    #   group_name - string - Group name.  Provide `group_name` or `group_id`
-    #   site_id - int64 - Site ID. If not provided, will default to current site. Used when creating a permission for a child site.
+    # Create Permission
     #
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
-    #
-    # Returns a Files::Permission.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] path Required. Folder path
+    # @option params [Integer] group_id Group ID. Provide `group_name` or `group_id`
+    # @option params [String] group_ids Group IDs when the Permission requires membership in every listed group. If sent as a string, it should be comma-delimited.
+    # @option params [String] permission Permission type.  Can be `admin`, `full`, `readonly`, `writeonly`, `list`, or `history`
+    # @option params [Boolean] recursive Apply to subfolders recursively? Must be true for `admin` Permissions.
+    # @option params [Integer] partner_id Partner ID if this Permission belongs to a partner.
+    # @option params [Integer] user_id User ID.  Provide `username` or `user_id`
+    # @option params [String] username User username.  Provide `username` or `user_id`
+    # @option params [String] group_name Group name.  Provide `group_name` or `group_id`
+    # @option params [Integer] site_id Site ID. If not provided, will default to current site. Used when creating a permission for a child site.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Permission] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.create(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_id must be an Integer") if !params[:group_id].nil? and !params[:group_id].is_a?(Integer)
@@ -232,10 +309,15 @@ module Files
       Permission.new(response.data, options)
     end
 
-    # params:: Hash of API operation parameter values.
-    # options:: Hash of optional request configuration passed to Files::Api.send_request.
+    # Delete Permission
     #
-    # Returns nil.
+    # @param id [Integer] Permission ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
     def self.delete(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
@@ -246,7 +328,7 @@ module Files
       nil
     end
 
-    # Alias for ::delete. Returns nil.
+    # (see .delete)
     def self.destroy(id, params = {}, options = {})
       delete(id, params, options)
       nil
