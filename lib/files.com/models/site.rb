@@ -619,6 +619,12 @@ module Files
       @attributes[:immutable_files_set_at]
     end
 
+    # Administrator access to user-owned Remote Servers in every Workspace: always_visible (default), never_visible, user_choice_default_visible, or user_choice_default_personal. Forced modes override owner preferences; choice modes use the preference or their default.
+    # @return [String, nil] the field value, or nil when absent.
+    def integration_centric_remote_server_admin_access
+      @attributes[:integration_centric_remote_server_admin_access]
+    end
+
     # Include password in emails to new users?
     # @return [Boolean, nil] the field value, or nil when absent.
     def include_password_in_welcome_email
@@ -1319,6 +1325,7 @@ module Files
     # @option params [Integer] as2_message_retention_days Number of days to retain AS2 messages (incoming and outgoing).
     # @option params [Boolean] file_activity_events_enabled If true, file operations produce file_action.activity.v1 EventChannel events in all workspaces. Defaults to false; subscription filters and workspace access still control delivery.
     # @option params [String] username_display How usernames are displayed in the web UI. Can be `username_only`, `full_name_only`, `full_name_username`, `full_name_company`, or `full_name_username_company`.
+    # @option params [String] integration_centric_remote_server_admin_access Administrator access to user-owned Remote Servers in every Workspace: always_visible (default), never_visible, user_choice_default_visible, or user_choice_default_personal. Forced modes override owner preferences; choice modes use the preference or their default.
     # @option params [Integer] session_expiry_minutes Session expiry in minutes
     # @option params [Boolean] ssl_required Is SSL required?  Disabling this is insecure.
     # @option params [Boolean] sftp_insecure_ciphers If true, we will allow weak and known insecure ciphers to be used for SFTP connections.  Enabling this setting severely weakens the security of your site and it is not recommend, except as a last resort for compatibility.
@@ -1522,6 +1529,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: as2_message_retention_days must be an Integer") if !params[:as2_message_retention_days].nil? and !params[:as2_message_retention_days].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: file_activity_events_enabled must be a single value, not #{params[:file_activity_events_enabled].class}") if [ Array, Hash ].any? { |klass| params[:file_activity_events_enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: username_display must be an String") if !params[:username_display].nil? and !params[:username_display].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: integration_centric_remote_server_admin_access must be an String") if !params[:integration_centric_remote_server_admin_access].nil? and !params[:integration_centric_remote_server_admin_access].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: session_expiry_minutes must be an Integer") if !params[:session_expiry_minutes].nil? and !params[:session_expiry_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: ssl_required must be a single value, not #{params[:ssl_required].class}") if [ Array, Hash ].any? { |klass| params[:ssl_required].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sftp_insecure_ciphers must be a single value, not #{params[:sftp_insecure_ciphers].class}") if [ Array, Hash ].any? { |klass| params[:sftp_insecure_ciphers].is_a?(klass) }

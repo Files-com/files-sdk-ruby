@@ -342,6 +342,45 @@ module Files
       @attributes[:server_type] = value
     end
 
+    # Owner's preference for administrator access to this user-owned Remote Server. Null uses the Site policy's default. Only the owner may change it when the Site policy allows user choice.
+    # @return [Boolean, nil] the field value, or nil when absent.
+    def site_admin_access
+      @attributes[:site_admin_access]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
+    def site_admin_access=(value)
+      @attributes[:site_admin_access] = value
+    end
+
+    # Whether Site and Workspace Administrators can access this Remote Server under the current Site policy.
+    # @return [Boolean, nil] the field value, or nil when absent.
+    def effective_site_admin_access
+      @attributes[:effective_site_admin_access]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Boolean, nil] the new field value.
+    # @return [Boolean, nil] the assigned value.
+    def effective_site_admin_access=(value)
+      @attributes[:effective_site_admin_access] = value
+    end
+
+    # ID of the user who owns this Remote Server, if any.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def user_id
+      @attributes[:user_id]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
+    def user_id=(value)
+      @attributes[:user_id] = value
+    end
+
     # Workspace ID (0 for default workspace)
     # @return [Integer, nil] the field value, or nil when absent.
     def workspace_id
@@ -1057,19 +1096,6 @@ module Files
       @attributes[:supports_versioning] = value
     end
 
-    # User ID.  Provide a value of `0` to operate the current session's user.
-    # @return [Integer, nil] the field value, or nil when absent.
-    def user_id
-      @attributes[:user_id]
-    end
-
-    # Changes the local field value. Call {#save} to persist changes.
-    # @param value [Integer, nil] the new field value.
-    # @return [Integer, nil] the assigned value.
-    def user_id=(value)
-      @attributes[:user_id] = value
-    end
-
     # Password, if needed.
     # @return [String, nil] the field value, or nil when absent.
     def password
@@ -1473,6 +1499,7 @@ module Files
     # @option params [String] server_certificate Remote server certificate
     # @option params [String] server_host_key Pinned SSH host key or OpenSSH host certificate for SFTP. If omitted, Files.com detects and stores a host key, preferring plain keys over certificates. With `server_certificate=require_match` (the default), the server must present the exact pinned key or certificate and prove it holds the matching private key. A pinned certificate is compared in full, so renewal can require updating `server_host_key` even when its underlying key is unchanged. Files.com does not check certificate CA signatures, principals, or validity periods. Certificate expiration alone does not end the pin. Update `server_host_key` to replace the pin.
     # @option params [String] server_type Remote server type.
+    # @option params [Boolean] site_admin_access Owner's preference for administrator access to this user-owned Remote Server. Null uses the Site policy's default. Only the owner may change it when the Site policy allows user choice.
     # @option params [String] sharepoint_client_id SharePoint: Microsoft Entra application client ID for app-only authentication.
     # @option params [String] sharepoint_site_url SharePoint: Site URL to scope app-only authentication to a single site. Leave blank to browse all sites.
     # @option params [String] sharepoint_tenant_id SharePoint: Microsoft Entra tenant ID for app-only authentication.
@@ -1566,6 +1593,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if !params[:server_certificate].nil? and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if !params[:server_host_key].nil? and !params[:server_host_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if !params[:server_type].nil? and !params[:server_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: site_admin_access must be a single value, not #{params[:site_admin_access].class}") if [ Array, Hash ].any? { |klass| params[:site_admin_access].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sharepoint_client_id must be an String") if !params[:sharepoint_client_id].nil? and !params[:sharepoint_client_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sharepoint_site_url must be an String") if !params[:sharepoint_site_url].nil? and !params[:sharepoint_site_url].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sharepoint_tenant_id must be an String") if !params[:sharepoint_tenant_id].nil? and !params[:sharepoint_tenant_id].is_a?(String)
@@ -1803,6 +1831,7 @@ module Files
     # @option params [String] server_certificate Remote server certificate
     # @option params [String] server_host_key Pinned SSH host key or OpenSSH host certificate for SFTP. If omitted, Files.com detects and stores a host key, preferring plain keys over certificates. With `server_certificate=require_match` (the default), the server must present the exact pinned key or certificate and prove it holds the matching private key. A pinned certificate is compared in full, so renewal can require updating `server_host_key` even when its underlying key is unchanged. Files.com does not check certificate CA signatures, principals, or validity periods. Certificate expiration alone does not end the pin. Update `server_host_key` to replace the pin.
     # @option params [String] server_type Remote server type.
+    # @option params [Boolean] site_admin_access Owner's preference for administrator access to this user-owned Remote Server. Null uses the Site policy's default. Only the owner may change it when the Site policy allows user choice.
     # @option params [String] sharepoint_client_id SharePoint: Microsoft Entra application client ID for app-only authentication.
     # @option params [String] sharepoint_site_url SharePoint: Site URL to scope app-only authentication to a single site. Leave blank to browse all sites.
     # @option params [String] sharepoint_tenant_id SharePoint: Microsoft Entra tenant ID for app-only authentication.
@@ -1895,6 +1924,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if !params[:server_certificate].nil? and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if !params[:server_host_key].nil? and !params[:server_host_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if !params[:server_type].nil? and !params[:server_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: site_admin_access must be a single value, not #{params[:site_admin_access].class}") if [ Array, Hash ].any? { |klass| params[:site_admin_access].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sharepoint_client_id must be an String") if !params[:sharepoint_client_id].nil? and !params[:sharepoint_client_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sharepoint_site_url must be an String") if !params[:sharepoint_site_url].nil? and !params[:sharepoint_site_url].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sharepoint_tenant_id must be an String") if !params[:sharepoint_tenant_id].nil? and !params[:sharepoint_tenant_id].is_a?(String)
@@ -2008,6 +2038,7 @@ module Files
     # @option params [String] server_certificate Remote server certificate
     # @option params [String] server_host_key Pinned SSH host key or OpenSSH host certificate for SFTP. If omitted, Files.com detects and stores a host key, preferring plain keys over certificates. With `server_certificate=require_match` (the default), the server must present the exact pinned key or certificate and prove it holds the matching private key. A pinned certificate is compared in full, so renewal can require updating `server_host_key` even when its underlying key is unchanged. Files.com does not check certificate CA signatures, principals, or validity periods. Certificate expiration alone does not end the pin. Update `server_host_key` to replace the pin.
     # @option params [String] server_type Remote server type.
+    # @option params [Boolean] site_admin_access Owner's preference for administrator access to this user-owned Remote Server. Null uses the Site policy's default. Only the owner may change it when the Site policy allows user choice.
     # @option params [String] sharepoint_client_id SharePoint: Microsoft Entra application client ID for app-only authentication.
     # @option params [String] sharepoint_site_url SharePoint: Site URL to scope app-only authentication to a single site. Leave blank to browse all sites.
     # @option params [String] sharepoint_tenant_id SharePoint: Microsoft Entra tenant ID for app-only authentication.
@@ -2101,6 +2132,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: server_certificate must be an String") if !params[:server_certificate].nil? and !params[:server_certificate].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_host_key must be an String") if !params[:server_host_key].nil? and !params[:server_host_key].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: server_type must be an String") if !params[:server_type].nil? and !params[:server_type].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: site_admin_access must be a single value, not #{params[:site_admin_access].class}") if [ Array, Hash ].any? { |klass| params[:site_admin_access].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sharepoint_client_id must be an String") if !params[:sharepoint_client_id].nil? and !params[:sharepoint_client_id].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sharepoint_site_url must be an String") if !params[:sharepoint_site_url].nil? and !params[:sharepoint_site_url].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sharepoint_tenant_id must be an String") if !params[:sharepoint_tenant_id].nil? and !params[:sharepoint_tenant_id].is_a?(String)

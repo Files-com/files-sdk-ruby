@@ -30,6 +30,19 @@ module Files
       @attributes[:id] = value
     end
 
+    # Workspace ID
+    # @return [Integer, nil] the field value, or nil when absent.
+    def workspace_id
+      @attributes[:workspace_id]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
+    def workspace_id=(value)
+      @attributes[:workspace_id] = value
+    end
+
     # Type of event being recorded.
     # @return [String, nil] the field value, or nil when absent.
     def event_type
@@ -109,8 +122,8 @@ module Files
     # @param params [Hash] API parameters, keyed by Symbol.
     # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
     # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`, `status` or `event_type`.
-    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at` and `status`. Valid field combinations are `[ status, created_at ]`.
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`, `status`, `event_type` or `workspace_id`.
+    # @option params [Hash] filter If set, return records where the specified field is equal to the supplied value. Valid fields are `created_at`, `status` or `workspace_id`. Valid field combinations are `[ status, created_at ]`.
     # @option params [Hash] filter_gt If set, return records where the specified field is greater than the supplied value. Valid fields are `created_at`.
     # @option params [Hash] filter_gteq If set, return records where the specified field is greater than or equal the supplied value. Valid fields are `created_at`.
     # @option params [Hash] filter_lt If set, return records where the specified field is less than the supplied value. Valid fields are `created_at`.
