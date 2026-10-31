@@ -1665,7 +1665,7 @@ module Files
     # Update File/Folder Metadata
     #
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [Hash] custom_metadata Custom metadata map of keys and values. Limited to 32 keys, 256 characters per key and 1024 characters per value.
+    # @option params [Hash] custom_metadata Custom metadata map. Replaces existing metadata; an empty map clears it. Requires Full or Admin permission. Uploaders with Write permission can supply custom metadata when completing an upload instead.
     # @option params [String] provided_mtime Modified time of file.
     # @option params [String] priority_color Priority/Bookmark color of file.
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
@@ -2069,7 +2069,7 @@ module Files
     #
     # @param path [String] Path to operate on.
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [Hash] custom_metadata Custom metadata map of keys and values. Limited to 32 keys, 256 characters per key and 1024 characters per value.
+    # @option params [Hash] custom_metadata Custom metadata map. Replaces existing metadata; an empty map clears it. Requires Full or Admin permission. Uploaders with Write permission can supply custom metadata when completing an upload instead.
     # @option params [String] provided_mtime Modified time of file.
     # @option params [String] priority_color Priority/Bookmark color of file.
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
