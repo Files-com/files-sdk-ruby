@@ -43,7 +43,7 @@ module Files
       @attributes[:workspace_id] = value
     end
 
-    # The station's formal AS2 name.
+    # The station's formal AS2 name, unique across all Workspaces on the Site.
     # @return [String, nil] the field value, or nil when absent.
     def name
       @attributes[:name]
@@ -267,7 +267,7 @@ module Files
     # Update AS2 Station
     #
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] name The station's formal AS2 name.
+    # @option params [String] name The station's formal AS2 name, unique across all Workspaces on the Site.
     # @option params [String] public_certificate Public certificate used for message security.
     # @option params [String] private_key PEM-encoded private key matching public_certificate.
     # @option params [String] private_key_password Password for the PEM-encoded private key.
@@ -398,7 +398,7 @@ module Files
     # Create AS2 Station
     #
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] name Required. The station's formal AS2 name.
+    # @option params [String] name Required. The station's formal AS2 name, unique across all Workspaces on the Site.
     # @option params [Integer] workspace_id ID of the Workspace associated with this AS2 Station.
     # @option params [String] public_certificate Public certificate used for message security.
     # @option params [String] private_key PEM-encoded private key matching public_certificate.
@@ -428,7 +428,7 @@ module Files
     #
     # @param id [Integer] As2 Station ID.
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] name The station's formal AS2 name.
+    # @option params [String] name The station's formal AS2 name, unique across all Workspaces on the Site.
     # @option params [String] public_certificate Public certificate used for message security.
     # @option params [String] private_key PEM-encoded private key matching public_certificate.
     # @option params [String] private_key_password Password for the PEM-encoded private key.
