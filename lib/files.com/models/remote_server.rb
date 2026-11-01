@@ -368,7 +368,7 @@ module Files
       @attributes[:effective_site_admin_access] = value
     end
 
-    # ID of the user who owns this Remote Server, if any.
+    # ID of the Integration-Centric user who owns this personal Remote Server, if any. Connections created by Site and Workspace Administrators have no owner.
     # @return [Integer, nil] the field value, or nil when absent.
     def user_id
       @attributes[:user_id]
