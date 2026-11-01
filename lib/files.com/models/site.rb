@@ -403,6 +403,18 @@ module Files
       @attributes[:legacy_checksums_mode]
     end
 
+    # Allow legacy app pairing in all workspaces? Disabled for new sites; existing sites remain enabled until changed. Disabling blocks new pairing exchanges without revoking existing app credentials or affecting OAuth sign-in. Site administrators can re-enable it.
+    # @return [Boolean, nil] the field value, or nil when absent.
+    def legacy_pairing_enabled
+      @attributes[:legacy_pairing_enabled]
+    end
+
+    # Time of the last completed legacy app pairing across all workspaces. Failed or incomplete attempts do not count. Read-only; empty until a pairing completes after tracking begins.
+    # @return [String, nil] the field value, or nil when absent.
+    def last_pairing_at
+      @attributes[:last_pairing_at]
+    end
+
     # If true, we will migrate all remote server syncs to the new Sync model.
     # @return [Boolean, nil] the field value, or nil when absent.
     def migrate_remote_server_sync_to_sync
@@ -635,108 +647,6 @@ module Files
     # @return [String, nil] the field value, or nil when absent.
     def language
       @attributes[:language]
-    end
-
-    # Base DN for looking up users in LDAP server
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_base_dn
-      @attributes[:ldap_base_dn]
-    end
-
-    # Domain name that will be appended to usernames
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_domain
-      @attributes[:ldap_domain]
-    end
-
-    # Main LDAP setting: is LDAP enabled?
-    # @return [Boolean, nil] the field value, or nil when absent.
-    def ldap_enabled
-      @attributes[:ldap_enabled]
-    end
-
-    # Should we sync groups from LDAP server?
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_group_action
-      @attributes[:ldap_group_action]
-    end
-
-    # Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_group_exclusion
-      @attributes[:ldap_group_exclusion]
-    end
-
-    # Comma or newline separated list of group names (with optional wildcards) to include when syncing.
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_group_inclusion
-      @attributes[:ldap_group_inclusion]
-    end
-
-    # LDAP host
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_host
-      @attributes[:ldap_host]
-    end
-
-    # LDAP backup host
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_host_2
-      @attributes[:ldap_host_2]
-    end
-
-    # LDAP backup host
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_host_3
-      @attributes[:ldap_host_3]
-    end
-
-    # LDAP port
-    # @return [Integer, nil] the field value, or nil when absent.
-    def ldap_port
-      @attributes[:ldap_port]
-    end
-
-    # Use secure LDAP?
-    # @return [Boolean, nil] the field value, or nil when absent.
-    def ldap_secure
-      @attributes[:ldap_secure]
-    end
-
-    # How to validate the LDAP server certificate. `require_match` validates the certificate chain and hostname; `allow_any` disables certificate validation.
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_server_certificate
-      @attributes[:ldap_server_certificate]
-    end
-
-    # LDAP type
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_type
-      @attributes[:ldap_type]
-    end
-
-    # Should we sync users from LDAP server?
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_user_action
-      @attributes[:ldap_user_action]
-    end
-
-    # Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_user_include_groups
-      @attributes[:ldap_user_include_groups]
-    end
-
-    # Username for signing in to LDAP server.
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_username
-      @attributes[:ldap_username]
-    end
-
-    # LDAP username field
-    # @return [String, nil] the field value, or nil when absent.
-    def ldap_username_field
-      @attributes[:ldap_username_field]
     end
 
     # Login help text
@@ -1327,6 +1237,7 @@ module Files
     # @option params [String] username_display How usernames are displayed in the web UI. Can be `username_only`, `full_name_only`, `full_name_username`, `full_name_company`, or `full_name_username_company`.
     # @option params [String] integration_centric_remote_server_admin_access Administrator access to user-owned Remote Servers in every Workspace: always_visible (default), never_visible, user_choice_default_visible, or user_choice_default_personal. Forced modes override owner preferences; choice modes use the preference or their default.
     # @option params [Integer] session_expiry_minutes Session expiry in minutes
+    # @option params [Boolean] legacy_pairing_enabled Allow legacy app pairing in all workspaces? Disabled for new sites; existing sites remain enabled until changed. Disabling blocks new pairing exchanges without revoking existing app credentials or affecting OAuth sign-in. Site administrators can re-enable it.
     # @option params [Boolean] ssl_required Is SSL required?  Disabling this is insecure.
     # @option params [Boolean] sftp_insecure_ciphers If true, we will allow weak and known insecure ciphers to be used for SFTP connections.  Enabling this setting severely weakens the security of your site and it is not recommend, except as a last resort for compatibility.
     # @option params [Boolean] sftp_insecure_diffie_hellman If true, we will allow weak Diffie Hellman parameters to be used within ciphers for SFTP that are otherwise on our secure list.  This has the effect of making the cipher weaker than our normal threshold for security, but is required to support certain legacy or broken SSH and MFT clients.  Enabling this weakens security, but not nearly as much as enabling the full `sftp_insecure_ciphers` option.
@@ -1435,23 +1346,6 @@ module Files
     # @option params [String] smtp_username SMTP server username
     # @option params [Integer] smtp_port SMTP server port
     # @option params [String] smtp_ssl Custom SMTP encryption mode: if_available (default) uses STARTTLS when offered and otherwise sends credentials and messages unencrypted. A certificate-verified STARTTLS connection automatically changes if_available to require unless smtp_ssl is managed by a parent policy. require requires STARTTLS before authentication; require_implicit uses TLS from connection start; never disables TLS. TLS verifies the server certificate against smtp_address. Encryption is never automatically downgraded.
-    # @option params [Boolean] ldap_enabled Main LDAP setting: is LDAP enabled?
-    # @option params [String] ldap_type LDAP type
-    # @option params [String] ldap_host LDAP host
-    # @option params [String] ldap_host_2 LDAP backup host
-    # @option params [String] ldap_host_3 LDAP backup host
-    # @option params [Integer] ldap_port LDAP port
-    # @option params [Boolean] ldap_secure Use secure LDAP?
-    # @option params [String] ldap_server_certificate How to validate the LDAP server certificate. `require_match` validates the certificate chain and hostname; `allow_any` disables certificate validation.
-    # @option params [String] ldap_username Username for signing in to LDAP server.
-    # @option params [String] ldap_username_field LDAP username field
-    # @option params [String] ldap_domain Domain name that will be appended to usernames
-    # @option params [String] ldap_user_action Should we sync users from LDAP server?
-    # @option params [String] ldap_group_action Should we sync groups from LDAP server?
-    # @option params [String] ldap_user_include_groups Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
-    # @option params [String] ldap_group_exclusion Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
-    # @option params [String] ldap_group_inclusion Comma or newline separated list of group names (with optional wildcards) to include when syncing.
-    # @option params [String] ldap_base_dn Base DN for looking up users in LDAP server
     # @option params [Boolean] uploads_via_email_authentication Require email authentication, virus, and spam checks for incoming emails to Inboxes and Incoming Email Automations in every Workspace on this site?
     # @option params [Hash] bundle_watermark_value Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
     # @option params [Object] icon16_file
@@ -1469,8 +1363,6 @@ module Files
     # @option params [Object] login_page_background_image_file
     # @option params [Boolean] login_page_background_image_delete If true, will delete the file stored in login_page_background_image
     # @option params [Boolean] disable_2fa_with_delay If set to true, we will begin the process of disabling 2FA on this site.
-    # @option params [String] ldap_password_change New LDAP password.
-    # @option params [String] ldap_password_change_confirmation Confirm new LDAP password.
     # @option params [Boolean] redirect_old_subdomain If true, and if changing the site subdomain, then create a redirect from the previous Files.com subdomain to the new Files.com subdomain.
     # @option params [String] smtp_password Password for SMTP server.
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
@@ -1531,6 +1423,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: username_display must be an String") if !params[:username_display].nil? and !params[:username_display].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: integration_centric_remote_server_admin_access must be an String") if !params[:integration_centric_remote_server_admin_access].nil? and !params[:integration_centric_remote_server_admin_access].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: session_expiry_minutes must be an Integer") if !params[:session_expiry_minutes].nil? and !params[:session_expiry_minutes].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: legacy_pairing_enabled must be a single value, not #{params[:legacy_pairing_enabled].class}") if [ Array, Hash ].any? { |klass| params[:legacy_pairing_enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be a single value, not #{params[:ssl_required].class}") if [ Array, Hash ].any? { |klass| params[:ssl_required].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sftp_insecure_ciphers must be a single value, not #{params[:sftp_insecure_ciphers].class}") if [ Array, Hash ].any? { |klass| params[:sftp_insecure_ciphers].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sftp_insecure_diffie_hellman must be a single value, not #{params[:sftp_insecure_diffie_hellman].class}") if [ Array, Hash ].any? { |klass| params[:sftp_insecure_diffie_hellman].is_a?(klass) }
@@ -1639,23 +1532,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: smtp_username must be an String") if !params[:smtp_username].nil? and !params[:smtp_username].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: smtp_port must be an Integer") if !params[:smtp_port].nil? and !params[:smtp_port].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: smtp_ssl must be an String") if !params[:smtp_ssl].nil? and !params[:smtp_ssl].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_enabled must be a single value, not #{params[:ldap_enabled].class}") if [ Array, Hash ].any? { |klass| params[:ldap_enabled].is_a?(klass) }
-      raise InvalidParameterError.new("Bad parameter: ldap_type must be an String") if !params[:ldap_type].nil? and !params[:ldap_type].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_host must be an String") if !params[:ldap_host].nil? and !params[:ldap_host].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_host_2 must be an String") if !params[:ldap_host_2].nil? and !params[:ldap_host_2].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_host_3 must be an String") if !params[:ldap_host_3].nil? and !params[:ldap_host_3].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_port must be an Integer") if !params[:ldap_port].nil? and !params[:ldap_port].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: ldap_secure must be a single value, not #{params[:ldap_secure].class}") if [ Array, Hash ].any? { |klass| params[:ldap_secure].is_a?(klass) }
-      raise InvalidParameterError.new("Bad parameter: ldap_server_certificate must be an String") if !params[:ldap_server_certificate].nil? and !params[:ldap_server_certificate].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_username must be an String") if !params[:ldap_username].nil? and !params[:ldap_username].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_username_field must be an String") if !params[:ldap_username_field].nil? and !params[:ldap_username_field].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_domain must be an String") if !params[:ldap_domain].nil? and !params[:ldap_domain].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_user_action must be an String") if !params[:ldap_user_action].nil? and !params[:ldap_user_action].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_group_action must be an String") if !params[:ldap_group_action].nil? and !params[:ldap_group_action].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_user_include_groups must be an String") if !params[:ldap_user_include_groups].nil? and !params[:ldap_user_include_groups].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_group_exclusion must be an String") if !params[:ldap_group_exclusion].nil? and !params[:ldap_group_exclusion].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_group_inclusion must be an String") if !params[:ldap_group_inclusion].nil? and !params[:ldap_group_inclusion].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_base_dn must be an String") if !params[:ldap_base_dn].nil? and !params[:ldap_base_dn].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: uploads_via_email_authentication must be a single value, not #{params[:uploads_via_email_authentication].class}") if [ Array, Hash ].any? { |klass| params[:uploads_via_email_authentication].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: bundle_watermark_value must be an Hash") if !params[:bundle_watermark_value].nil? and !params[:bundle_watermark_value].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: icon16_delete must be a single value, not #{params[:icon16_delete].class}") if [ Array, Hash ].any? { |klass| params[:icon16_delete].is_a?(klass) }
@@ -1666,8 +1542,6 @@ module Files
       raise InvalidParameterError.new("Bad parameter: bundle_watermark_attachment_delete must be a single value, not #{params[:bundle_watermark_attachment_delete].class}") if [ Array, Hash ].any? { |klass| params[:bundle_watermark_attachment_delete].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: login_page_background_image_delete must be a single value, not #{params[:login_page_background_image_delete].class}") if [ Array, Hash ].any? { |klass| params[:login_page_background_image_delete].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: disable_2fa_with_delay must be a single value, not #{params[:disable_2fa_with_delay].class}") if [ Array, Hash ].any? { |klass| params[:disable_2fa_with_delay].is_a?(klass) }
-      raise InvalidParameterError.new("Bad parameter: ldap_password_change must be an String") if !params[:ldap_password_change].nil? and !params[:ldap_password_change].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: ldap_password_change_confirmation must be an String") if !params[:ldap_password_change_confirmation].nil? and !params[:ldap_password_change_confirmation].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: redirect_old_subdomain must be a single value, not #{params[:redirect_old_subdomain].class}") if [ Array, Hash ].any? { |klass| params[:redirect_old_subdomain].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: smtp_password must be an String") if !params[:smtp_password].nil? and !params[:smtp_password].is_a?(String)
 

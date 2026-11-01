@@ -87,6 +87,8 @@
   "desktop_app_session_ip_pinning": true,
   "desktop_app_session_lifetime": 1,
   "legacy_checksums_mode": true,
+  "legacy_pairing_enabled": true,
+  "last_pairing_at": "2000-01-01T01:00:00Z",
   "migrate_remote_server_sync_to_sync": true,
   "mcp_dcr_enabled": true,
   "mobile_app": true,
@@ -138,23 +140,6 @@
   "integration_centric_remote_server_admin_access": "example",
   "include_password_in_welcome_email": true,
   "language": "en",
-  "ldap_base_dn": "example",
-  "ldap_domain": "mysite.com",
-  "ldap_enabled": true,
-  "ldap_group_action": "disabled",
-  "ldap_group_exclusion": "example",
-  "ldap_group_inclusion": "example",
-  "ldap_host": "ldap.site.com",
-  "ldap_host_2": "ldap2.site.com",
-  "ldap_host_3": "ldap3.site.com",
-  "ldap_port": 1,
-  "ldap_secure": true,
-  "ldap_server_certificate": "require_match",
-  "ldap_type": "open_ldap",
-  "ldap_user_action": "disabled",
-  "ldap_user_include_groups": "example",
-  "ldap_username": "[ldap username]",
-  "ldap_username_field": "sAMAccountName",
   "login_help_text": "Login page help text.",
   "logo": {
     "name": "My logo",
@@ -441,6 +426,8 @@
 * `desktop_app_session_ip_pinning` (boolean): Is desktop app session IP pinning enabled?
 * `desktop_app_session_lifetime` (int64): Desktop app session lifetime (in hours)
 * `legacy_checksums_mode` (boolean): Use legacy checksums mode?
+* `legacy_pairing_enabled` (boolean): Allow legacy app pairing in all workspaces? Disabled for new sites; existing sites remain enabled until changed. Disabling blocks new pairing exchanges without revoking existing app credentials or affecting OAuth sign-in. Site administrators can re-enable it.
+* `last_pairing_at` (date-time): Time of the last completed legacy app pairing across all workspaces. Failed or incomplete attempts do not count. Read-only; empty until a pairing completes after tracking begins.
 * `migrate_remote_server_sync_to_sync` (boolean): If true, we will migrate all remote server syncs to the new Sync model.
 * `mcp_dcr_enabled` (boolean): Is OAuth DCR (dynamic client registration) for MCP enabled?
 * `mobile_app` (boolean): Is the mobile app enabled?
@@ -480,23 +467,6 @@
 * `integration_centric_remote_server_admin_access` (string): Administrator access to user-owned Remote Servers in every Workspace: always_visible (default), never_visible, user_choice_default_visible, or user_choice_default_personal. Forced modes override owner preferences; choice modes use the preference or their default.
 * `include_password_in_welcome_email` (boolean): Include password in emails to new users?
 * `language` (string): Site default language
-* `ldap_base_dn` (string): Base DN for looking up users in LDAP server
-* `ldap_domain` (string): Domain name that will be appended to usernames
-* `ldap_enabled` (boolean): Main LDAP setting: is LDAP enabled?
-* `ldap_group_action` (string): Should we sync groups from LDAP server?
-* `ldap_group_exclusion` (string): Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
-* `ldap_group_inclusion` (string): Comma or newline separated list of group names (with optional wildcards) to include when syncing.
-* `ldap_host` (string): LDAP host
-* `ldap_host_2` (string): LDAP backup host
-* `ldap_host_3` (string): LDAP backup host
-* `ldap_port` (int64): LDAP port
-* `ldap_secure` (boolean): Use secure LDAP?
-* `ldap_server_certificate` (string): How to validate the LDAP server certificate. `require_match` validates the certificate chain and hostname; `allow_any` disables certificate validation.
-* `ldap_type` (string): LDAP type
-* `ldap_user_action` (string): Should we sync users from LDAP server?
-* `ldap_user_include_groups` (string): Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
-* `ldap_username` (string): Username for signing in to LDAP server.
-* `ldap_username_field` (string): LDAP username field
 * `login_help_text` (string): Login help text
 * `logo` (Image): Branded logo
 * `login_page_background_image` (Image): Branded login page background
@@ -659,6 +629,7 @@ Files::Site.update(
   username_display: "username_only", 
   integration_centric_remote_server_admin_access: "example", 
   session_expiry_minutes: 1, 
+  legacy_pairing_enabled: false, 
   ssl_required: false, 
   sftp_insecure_ciphers: false, 
   sftp_insecure_diffie_hellman: false, 
@@ -767,23 +738,6 @@ Files::Site.update(
   smtp_username: "mail", 
   smtp_port: 1, 
   smtp_ssl: "require", 
-  ldap_enabled: false, 
-  ldap_type: "open_ldap", 
-  ldap_host: "ldap.site.com", 
-  ldap_host_2: "ldap2.site.com", 
-  ldap_host_3: "ldap3.site.com", 
-  ldap_port: 1, 
-  ldap_secure: false, 
-  ldap_server_certificate: "require_match", 
-  ldap_username: "[ldap username]", 
-  ldap_username_field: "sAMAccountName", 
-  ldap_domain: "mysite.com", 
-  ldap_user_action: "disabled", 
-  ldap_group_action: "disabled", 
-  ldap_user_include_groups: "example", 
-  ldap_group_exclusion: "example", 
-  ldap_group_inclusion: "example", 
-  ldap_base_dn: "example", 
   uploads_via_email_authentication: false, 
   bundle_watermark_value: {"gravity":"SouthWest","max_height_or_width":20,"transparency":25}, 
   icon16_delete: false, 
@@ -852,6 +806,7 @@ Files::Site.update(
 * `username_display` (string): How usernames are displayed in the web UI. Can be `username_only`, `full_name_only`, `full_name_username`, `full_name_company`, or `full_name_username_company`.
 * `integration_centric_remote_server_admin_access` (string): Administrator access to user-owned Remote Servers in every Workspace: always_visible (default), never_visible, user_choice_default_visible, or user_choice_default_personal. Forced modes override owner preferences; choice modes use the preference or their default.
 * `session_expiry_minutes` (int64): Session expiry in minutes
+* `legacy_pairing_enabled` (boolean): Allow legacy app pairing in all workspaces? Disabled for new sites; existing sites remain enabled until changed. Disabling blocks new pairing exchanges without revoking existing app credentials or affecting OAuth sign-in. Site administrators can re-enable it.
 * `ssl_required` (boolean): Is SSL required?  Disabling this is insecure.
 * `sftp_insecure_ciphers` (boolean): If true, we will allow weak and known insecure ciphers to be used for SFTP connections.  Enabling this setting severely weakens the security of your site and it is not recommend, except as a last resort for compatibility.
 * `sftp_insecure_diffie_hellman` (boolean): If true, we will allow weak Diffie Hellman parameters to be used within ciphers for SFTP that are otherwise on our secure list.  This has the effect of making the cipher weaker than our normal threshold for security, but is required to support certain legacy or broken SSH and MFT clients.  Enabling this weakens security, but not nearly as much as enabling the full `sftp_insecure_ciphers` option.
@@ -960,23 +915,6 @@ Files::Site.update(
 * `smtp_username` (string): SMTP server username
 * `smtp_port` (int64): SMTP server port
 * `smtp_ssl` (string): Custom SMTP encryption mode: if_available (default) uses STARTTLS when offered and otherwise sends credentials and messages unencrypted. A certificate-verified STARTTLS connection automatically changes if_available to require unless smtp_ssl is managed by a parent policy. require requires STARTTLS before authentication; require_implicit uses TLS from connection start; never disables TLS. TLS verifies the server certificate against smtp_address. Encryption is never automatically downgraded.
-* `ldap_enabled` (boolean): Main LDAP setting: is LDAP enabled?
-* `ldap_type` (string): LDAP type
-* `ldap_host` (string): LDAP host
-* `ldap_host_2` (string): LDAP backup host
-* `ldap_host_3` (string): LDAP backup host
-* `ldap_port` (int64): LDAP port
-* `ldap_secure` (boolean): Use secure LDAP?
-* `ldap_server_certificate` (string): How to validate the LDAP server certificate. `require_match` validates the certificate chain and hostname; `allow_any` disables certificate validation.
-* `ldap_username` (string): Username for signing in to LDAP server.
-* `ldap_username_field` (string): LDAP username field
-* `ldap_domain` (string): Domain name that will be appended to usernames
-* `ldap_user_action` (string): Should we sync users from LDAP server?
-* `ldap_group_action` (string): Should we sync groups from LDAP server?
-* `ldap_user_include_groups` (string): Comma or newline separated list of group names (with optional wildcards) - if provided, only users in these groups will be added or synced.
-* `ldap_group_exclusion` (string): Comma or newline separated list of group names (with optional wildcards) to exclude when syncing.
-* `ldap_group_inclusion` (string): Comma or newline separated list of group names (with optional wildcards) to include when syncing.
-* `ldap_base_dn` (string): Base DN for looking up users in LDAP server
 * `uploads_via_email_authentication` (boolean): Require email authentication, virus, and spam checks for incoming emails to Inboxes and Incoming Email Automations in every Workspace on this site?
 * `bundle_watermark_value` (object): Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
 * `icon16_file` (file): 
@@ -994,7 +932,5 @@ Files::Site.update(
 * `login_page_background_image_file` (file): 
 * `login_page_background_image_delete` (boolean): If true, will delete the file stored in login_page_background_image
 * `disable_2fa_with_delay` (boolean): If set to true, we will begin the process of disabling 2FA on this site.
-* `ldap_password_change` (string): New LDAP password.
-* `ldap_password_change_confirmation` (string): Confirm new LDAP password.
 * `redirect_old_subdomain` (boolean): If true, and if changing the site subdomain, then create a redirect from the previous Files.com subdomain to the new Files.com subdomain.
 * `smtp_password` (string): Password for SMTP server.
