@@ -115,6 +115,12 @@ module Files
       @attributes[:allow_user_level_allowed_ip_override]
     end
 
+    # Allow per-user overrides of the FTP TLS session reuse requirement?
+    # @return [Boolean, nil] the field value, or nil when absent.
+    def allow_user_level_ftp_tls_session_reuse_override
+      @attributes[:allow_user_level_ftp_tls_session_reuse_override]
+    end
+
     # Allow the site-wide FTP SSL requirement to be overriden on a per-user-basis?
     # @return [Boolean, nil] the field value, or nil when absent.
     def allow_user_level_ssl_override
@@ -1012,6 +1018,12 @@ module Files
       @attributes[:snapshot_sharing_enabled]
     end
 
+    # Require TLS-protected FTP data connections to reuse the control connection TLS session? Applies to all workspaces.
+    # @return [Boolean, nil] the field value, or nil when absent.
+    def ftp_tls_session_reuse_required
+      @attributes[:ftp_tls_session_reuse_required]
+    end
+
     # Is SSL required?  Disabling this is insecure.
     # @return [Boolean, nil] the field value, or nil when absent.
     def ssl_required
@@ -1256,6 +1268,7 @@ module Files
     # @option params [Integer] session_expiry_minutes Session expiry in minutes
     # @option params [Boolean] legacy_pairing_enabled Allow legacy app pairing in all workspaces? Disabled for new sites; existing sites remain enabled until changed. Disabling blocks new pairing exchanges without revoking existing app credentials or affecting OAuth sign-in. Site administrators can re-enable it.
     # @option params [Boolean] ssl_required Is SSL required?  Disabling this is insecure.
+    # @option params [Boolean] ftp_tls_session_reuse_required Require TLS-protected FTP data connections to reuse the control connection TLS session? Applies to all workspaces.
     # @option params [Boolean] sftp_insecure_ciphers If true, we will allow weak and known insecure ciphers to be used for SFTP connections.  Enabling this setting severely weakens the security of your site and it is not recommend, except as a last resort for compatibility.
     # @option params [Boolean] sftp_insecure_diffie_hellman If true, we will allow weak Diffie Hellman parameters to be used within ciphers for SFTP that are otherwise on our secure list.  This has the effect of making the cipher weaker than our normal threshold for security, but is required to support certain legacy or broken SSH and MFT clients.  Enabling this weakens security, but not nearly as much as enabling the full `sftp_insecure_ciphers` option.
     # @option params [Boolean] disable_files_certificate_generation If set, Files.com will not set the CAA records required to generate future SSL certificates for this domain.
@@ -1270,6 +1283,7 @@ module Files
     # @option params [Boolean] allow_user_level_2fa_override Allow the site-wide two-factor authentication requirement to be overriden on a per-user-basis?
     # @option params [Boolean] allow_user_level_allowed_ip_override Allow the site-wide allowed IP restriction to be overriden on a per-user-basis?
     # @option params [Boolean] allow_user_level_ssl_override Allow the site-wide FTP SSL requirement to be overriden on a per-user-basis?
+    # @option params [Boolean] allow_user_level_ftp_tls_session_reuse_override Allow per-user overrides of the FTP TLS session reuse requirement?
     # @option params [Boolean] enforce_parent_site_user_ip_restrictions Require Parent Site users entering this Child Site to match its allowed IP addresses in addition to their existing IP restrictions. Applies to all Workspaces. Defaults to false.
     # @option params [String] disallowed_countries Comma separated list of disallowed Country codes
     # @option params [Integer] days_to_retain_backups Number of days to keep deleted files
@@ -1442,6 +1456,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: session_expiry_minutes must be an Integer") if !params[:session_expiry_minutes].nil? and !params[:session_expiry_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: legacy_pairing_enabled must be a single value, not #{params[:legacy_pairing_enabled].class}") if [ Array, Hash ].any? { |klass| params[:legacy_pairing_enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be a single value, not #{params[:ssl_required].class}") if [ Array, Hash ].any? { |klass| params[:ssl_required].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ftp_tls_session_reuse_required must be a single value, not #{params[:ftp_tls_session_reuse_required].class}") if [ Array, Hash ].any? { |klass| params[:ftp_tls_session_reuse_required].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sftp_insecure_ciphers must be a single value, not #{params[:sftp_insecure_ciphers].class}") if [ Array, Hash ].any? { |klass| params[:sftp_insecure_ciphers].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: sftp_insecure_diffie_hellman must be a single value, not #{params[:sftp_insecure_diffie_hellman].class}") if [ Array, Hash ].any? { |klass| params[:sftp_insecure_diffie_hellman].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: disable_files_certificate_generation must be a single value, not #{params[:disable_files_certificate_generation].class}") if [ Array, Hash ].any? { |klass| params[:disable_files_certificate_generation].is_a?(klass) }
@@ -1456,6 +1471,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: allow_user_level_2fa_override must be a single value, not #{params[:allow_user_level_2fa_override].class}") if [ Array, Hash ].any? { |klass| params[:allow_user_level_2fa_override].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: allow_user_level_allowed_ip_override must be a single value, not #{params[:allow_user_level_allowed_ip_override].class}") if [ Array, Hash ].any? { |klass| params[:allow_user_level_allowed_ip_override].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: allow_user_level_ssl_override must be a single value, not #{params[:allow_user_level_ssl_override].class}") if [ Array, Hash ].any? { |klass| params[:allow_user_level_ssl_override].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: allow_user_level_ftp_tls_session_reuse_override must be a single value, not #{params[:allow_user_level_ftp_tls_session_reuse_override].class}") if [ Array, Hash ].any? { |klass| params[:allow_user_level_ftp_tls_session_reuse_override].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: enforce_parent_site_user_ip_restrictions must be a single value, not #{params[:enforce_parent_site_user_ip_restrictions].class}") if [ Array, Hash ].any? { |klass| params[:enforce_parent_site_user_ip_restrictions].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: disallowed_countries must be an String") if !params[:disallowed_countries].nil? and !params[:disallowed_countries].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: days_to_retain_backups must be an Integer") if !params[:days_to_retain_backups].nil? and !params[:days_to_retain_backups].is_a?(Integer)

@@ -1011,6 +1011,19 @@ module Files
       @attributes[:skip_welcome_screen] = value
     end
 
+    # FTP TLS session reuse requirement: use_system_setting, always_require, or never_require
+    # @return [String, nil] the field value, or nil when absent.
+    def ftp_tls_session_reuse_required
+      @attributes[:ftp_tls_session_reuse_required]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [String, nil] the new field value.
+    # @return [String, nil] the assigned value.
+    def ftp_tls_session_reuse_required=(value)
+      @attributes[:ftp_tls_session_reuse_required] = value
+    end
+
     # SSL required setting
     # @return [String, nil] the field value, or nil when absent.
     def ssl_required
@@ -1429,6 +1442,7 @@ module Files
     # @option params [Boolean] site_admin Is the user an administrator for this site?
     # @option params [Boolean] skip_welcome_screen Skip Welcome page in the UI?
     # @option params [String] ssl_required SSL required setting
+    # @option params [String] ftp_tls_session_reuse_required FTP TLS session reuse requirement: use_system_setting, always_require, or never_require
     # @option params [Integer] sso_strategy_id SSO (Single Sign On) strategy ID for the user, if applicable.
     # @option params [String] require_2fa 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
     # @option params [String] tags Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
@@ -1507,6 +1521,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: site_admin must be a single value, not #{params[:site_admin].class}") if [ Array, Hash ].any? { |klass| params[:site_admin].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: skip_welcome_screen must be a single value, not #{params[:skip_welcome_screen].class}") if [ Array, Hash ].any? { |klass| params[:skip_welcome_screen].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if !params[:ssl_required].nil? and !params[:ssl_required].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ftp_tls_session_reuse_required must be an String") if !params[:ftp_tls_session_reuse_required].nil? and !params[:ftp_tls_session_reuse_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if !params[:sso_strategy_id].nil? and !params[:sso_strategy_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if !params[:require_2fa].nil? and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
@@ -1707,6 +1722,7 @@ module Files
     # @option params [Boolean] site_admin Is the user an administrator for this site?
     # @option params [Boolean] skip_welcome_screen Skip Welcome page in the UI?
     # @option params [String] ssl_required SSL required setting
+    # @option params [String] ftp_tls_session_reuse_required FTP TLS session reuse requirement: use_system_setting, always_require, or never_require
     # @option params [Integer] sso_strategy_id SSO (Single Sign On) strategy ID for the user, if applicable.
     # @option params [String] require_2fa 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
     # @option params [String] tags Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
@@ -1780,6 +1796,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: site_admin must be a single value, not #{params[:site_admin].class}") if [ Array, Hash ].any? { |klass| params[:site_admin].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: skip_welcome_screen must be a single value, not #{params[:skip_welcome_screen].class}") if [ Array, Hash ].any? { |klass| params[:skip_welcome_screen].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if !params[:ssl_required].nil? and !params[:ssl_required].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ftp_tls_session_reuse_required must be an String") if !params[:ftp_tls_session_reuse_required].nil? and !params[:ftp_tls_session_reuse_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if !params[:sso_strategy_id].nil? and !params[:sso_strategy_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if !params[:require_2fa].nil? and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
@@ -1915,6 +1932,7 @@ module Files
     # @option params [Boolean] site_admin Is the user an administrator for this site?
     # @option params [Boolean] skip_welcome_screen Skip Welcome page in the UI?
     # @option params [String] ssl_required SSL required setting
+    # @option params [String] ftp_tls_session_reuse_required FTP TLS session reuse requirement: use_system_setting, always_require, or never_require
     # @option params [Integer] sso_strategy_id SSO (Single Sign On) strategy ID for the user, if applicable.
     # @option params [String] require_2fa 2FA required setting. `use_system_setting` uses the site-wide setting, including SSO exemptions. `always_require` and `never_require` override the site-wide setting when user-level overrides are allowed.
     # @option params [String] tags Comma-separated list of Tags for this user. Tags are used for other features, such as UserLifecycleRules, which can target specific tags.  Tags must only contain lowercase letters, numbers, and hyphens.
@@ -1993,6 +2011,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: site_admin must be a single value, not #{params[:site_admin].class}") if [ Array, Hash ].any? { |klass| params[:site_admin].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: skip_welcome_screen must be a single value, not #{params[:skip_welcome_screen].class}") if [ Array, Hash ].any? { |klass| params[:skip_welcome_screen].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ssl_required must be an String") if !params[:ssl_required].nil? and !params[:ssl_required].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: ftp_tls_session_reuse_required must be an String") if !params[:ftp_tls_session_reuse_required].nil? and !params[:ftp_tls_session_reuse_required].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: sso_strategy_id must be an Integer") if !params[:sso_strategy_id].nil? and !params[:sso_strategy_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: require_2fa must be an String") if !params[:require_2fa].nil? and !params[:require_2fa].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: tags must be an String") if !params[:tags].nil? and !params[:tags].is_a?(String)
