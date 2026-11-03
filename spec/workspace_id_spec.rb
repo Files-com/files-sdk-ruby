@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative "support/stubbed_api"
 
 RSpec.describe "Workspace scoping" do
   around do |example|
@@ -10,7 +11,23 @@ RSpec.describe "Workspace scoping" do
   end
 
   describe Files::ApiClient do
+    include StubbedApi
+
     let(:client) { described_class.new }
+
+    # The X-Files-Workspace-Id of each request to list folders sent through the SDK's own connection, as Faraday's
+    # adapter received it.
+    def sent_workspace_ids(**options)
+      sent = []
+      stubbed = stubbed_api_client do |stub|
+        stub.get("/api/rest/v1/folders") do |env|
+          sent << env.request_headers["X-Files-Workspace-Id"]
+          json_response(200, [])
+        end
+      end
+      stubbed.execute_request(:get, "/folders", api_key: "api-key", **options)
+      sent
+    end
 
     it "includes the configured workspace ID header" do
       headers = client.send(:request_headers, "api-key", nil, :get, 123)
@@ -26,26 +43,14 @@ RSpec.describe "Workspace scoping" do
 
     it "falls back to the configured workspace ID" do
       Files.workspace_id = 123
-      response = double(status: 204, body: "", headers: {})
-      conn = double
-      client = described_class.new(conn)
 
-      expect(client).to receive(:request_headers).with("api-key", nil, :get, 123).and_return({})
-      expect(conn).to receive(:run_request).and_return(response)
-
-      client.execute_request(:get, "/folders", api_key: "api-key")
+      expect(sent_workspace_ids).to eq([ "123" ])
     end
 
     it "lets a per-request workspace ID override the configured workspace ID" do
       Files.workspace_id = 123
-      response = double(status: 204, body: "", headers: {})
-      conn = double
-      client = described_class.new(conn)
 
-      expect(client).to receive(:request_headers).with("api-key", nil, :get, 456).and_return({})
-      expect(conn).to receive(:run_request).and_return(response)
-
-      client.execute_request(:get, "/folders", api_key: "api-key", workspace_id: 456)
+      expect(sent_workspace_ids(workspace_id: 456)).to eq([ "456" ])
     end
   end
 

@@ -57,12 +57,68 @@ module Files
     # Downloads a remote file to a local file, replacing its contents.
     # @param path [String] remote file path.
     # @param local_path [String, nil] local destination; defaults to the remote basename.
+    # @param transfer [Boolean, Hash, Files::Transfer::Options, Files::Transfer::Job, nil] adaptive options or a shared job.
+    # @param progress [#call, nil] progress callback; requires transfer.
     # @return [void]
     # @raise [Files::InvalidParameterError] if the default name is unsafe on Windows; supply local_path explicitly.
     # @raise [StandardError] if the transfer or local write fails.
-    def self.download_file(path, local_path = nil)
+    # With transfer:, the download is adaptive, and can report progress (see #download_file).
+    def self.download_file(path, local_path = nil, progress: nil, transfer: nil)
       local_path ||= default_local_path(path)
+      return new(path).download_file(local_path, progress: progress, transfer: transfer) if transfer
+      raise InvalidParameterError, "Bad parameter: progress needs transfer" if progress
+
       new(path).download_file(local_path)
+    end
+
+    # Continues a download a Files::Transfer::PausedError stopped, in the same process, from its checkpoint: into the
+    # local file it was writing, or into destination, the same IO it was writing. options are the API options, which a
+    # checkpoint never keeps; progress and transfer: are as for #download_file, transfer: true for the defaults, with
+    # written_bytes counting the bytes from before the pause. One resume at a time can use a checkpoint, and once a
+    # resume has started its transfer the checkpoint is spent, however it ends; a pause gives a new one. Raises
+    # Files::Transfer::CheckpointError, before anything is sent, written or truncated, when the destination or the bytes
+    # already written to it changed or cannot be read back, and Files::Transfer::VersionChangedError when the remote
+    # file did.
+    def self.resume_download(checkpoint, destination = nil, options = {}, progress: nil, transfer: true)
+      raise InvalidParameterError, "Bad parameter: checkpoint must be a Files::Transfer::Checkpoint" unless checkpoint.is_a?(Transfer::Checkpoint)
+
+      Transfer::Job.using(transfer) { |job| Transfer::DownloadCoordinator.resume(job, checkpoint, destination, options, progress: progress) }
+    end
+
+    # Continues an upload a Files::Transfer::PausedError stopped, in the same process, from its checkpoint, sending only
+    # the parts storage had not acknowledged. options are the API options, which a checkpoint never keeps; progress and
+    # transfer: are as for upload_file, with progress counting the acknowledged bytes from before the pause. One resume
+    # at a time can use a checkpoint, and once a resume has started its transfer the checkpoint is spent, however it
+    # ends; a pause gives a new one. Raises Files::Transfer::CheckpointError, before anything is sent, when the local
+    # file changed. Returns what upload_file returns.
+    def self.resume_upload(checkpoint, options = {}, progress: nil, transfer: true)
+      raise InvalidParameterError, "Bad parameter: checkpoint must be a Files::Transfer::Checkpoint" unless checkpoint.is_a?(Transfer::Checkpoint)
+
+      Transfer::Job.using(transfer) { |job| Transfer::UploadCoordinator.resume(job, checkpoint, options, progress: progress) }
+    end
+
+    # Uploads what io, a caller's IO or StringIO, holds from where it stands to destination, and returns what
+    # upload_file returns. With size, an Integer, and transfer: (as for upload_file), the upload is adaptive: exactly
+    # size bytes are read on this thread with read(length), part by part in order, through as many reads as it takes,
+    # each part only once buffer_bytes can hold it, and a copy of what each read returns, taken before the next read,
+    # is kept until storage acknowledges the part, so a retry sends the same bytes even when io's reads reuse one
+    # String; io's Strings are never changed. io ending before size bytes raises
+    # Files::Transfer::SourceChangedError, and nothing past them is read. Without size or transfer:, io is read to its
+    # end and uploaded a part at a time, as upload_chunks does. io is never rewound or closed. A paused stream upload
+    # cannot be resumed: its PausedError has no checkpoint. progress is as for upload_file, with total_bytes size (nil
+    # when it is not given).
+    def self.upload_io(io, destination, options = {}, size: nil, params: {}, progress: nil, transfer: nil)
+      raise InvalidParameterError, "Bad parameter: size must be a non-negative Integer" unless size.nil? || (size.is_a?(Integer) && size >= 0)
+
+      return Transfer::Job.using(transfer) { |job| Transfer::UploadCoordinator.upload_io(job, io, size, destination, options, params: params, progress: progress) } if transfer && size
+
+      params = params.dup
+      params[:size] ||= size if size
+      report = progress && ->(part) { progress.call(part.merge(total_bytes: size)) }
+      upload, etags, bytes = upload_chunks(io, destination, options, params: params, progress: report)
+      raise InvalidParameterError, "Bad parameter: io held #{bytes} bytes, not size #{size}" if size && bytes != size
+
+      create(destination, { action: "end", etags: etags, ref: upload.ref, size: bytes }, options)
     end
 
     private_class_method def self.default_local_path(path)
@@ -90,6 +146,11 @@ module Files
       PathUtil.normalize("_", root, id.to_s, relative_path)
     end
 
+    # The transfer: keyword to pass on, only when the caller gave one.
+    private_class_method def self.transfer_keywords(transfer)
+      transfer ? { transfer: transfer } : {}
+    end
+
     # Uploads a local file into the RemoteServers destination namespace.
     # @param path [String] local file path.
     # @param remote_server_id [Integer] destination ID.
@@ -97,10 +158,11 @@ module Files
     # @param options [Hash] request configuration; see {Files::Api.send_request}.
     # @param params [Hash] upload API parameters.
     # @param progress [#call, nil] receives the acknowledged-part Hash described by {.upload_file}.
+    # @param transfer [Boolean, Hash, Files::Transfer::Options, Files::Transfer::Job, nil] adaptive options or a shared job.
     # @return [Files::File] the completed upload.
-    def self.upload_to_remote_server(path, remote_server_id, destination = nil, options = {}, params: {}, progress: nil)
+    def self.upload_to_remote_server(path, remote_server_id, destination = nil, options = {}, params: {}, progress: nil, transfer: nil)
       destination ||= ::File.basename(path)
-      upload_file(path, underscore_destination_path("RemoteServers", remote_server_id, destination), options, params: params, progress: progress)
+      upload_file(path, underscore_destination_path("RemoteServers", remote_server_id, destination), options, params: params, progress: progress, **transfer_keywords(transfer))
     end
 
     # Copies a remote file into the RemoteServers destination namespace.
@@ -132,10 +194,11 @@ module Files
     # @param options [Hash] request configuration; see {Files::Api.send_request}.
     # @param params [Hash] upload API parameters.
     # @param progress [#call, nil] receives the acknowledged-part Hash described by {.upload_file}.
+    # @param transfer [Boolean, Hash, Files::Transfer::Options, Files::Transfer::Job, nil] adaptive options or a shared job.
     # @return [Files::File] the completed upload.
-    def self.upload_to_snapshot(path, snapshot_id, destination = nil, options = {}, params: {}, progress: nil)
+    def self.upload_to_snapshot(path, snapshot_id, destination = nil, options = {}, params: {}, progress: nil, transfer: nil)
       destination ||= ::File.basename(path)
-      upload_file(path, underscore_destination_path("Snapshots", snapshot_id, destination), options, params: params, progress: progress)
+      upload_file(path, underscore_destination_path("Snapshots", snapshot_id, destination), options, params: params, progress: progress, **transfer_keywords(transfer))
     end
 
     # Copies a remote file into the Snapshots destination namespace.
@@ -167,10 +230,11 @@ module Files
     # @param options [Hash] request configuration; see {Files::Api.send_request}.
     # @param params [Hash] upload API parameters.
     # @param progress [#call, nil] receives the acknowledged-part Hash described by {.upload_file}.
+    # @param transfer [Boolean, Hash, Files::Transfer::Options, Files::Transfer::Job, nil] adaptive options or a shared job.
     # @return [Files::File] the completed upload.
-    def self.upload_to_child_site(path, site_id, destination = nil, options = {}, params: {}, progress: nil)
+    def self.upload_to_child_site(path, site_id, destination = nil, options = {}, params: {}, progress: nil, transfer: nil)
       destination ||= ::File.basename(path)
-      upload_file(path, underscore_destination_path("Sites", site_id, destination), options, params: params, progress: progress)
+      upload_file(path, underscore_destination_path("Sites", site_id, destination), options, params: params, progress: progress, **transfer_keywords(transfer))
     end
 
     # Copies a remote file into the Sites destination namespace.
@@ -336,10 +400,11 @@ module Files
     end
 
     # Uploads what io holds to path, a part at a time as the API grants each, and returns the last part, the parts'
-    # ETags and the bytes sent. Each part is filled from as many reads as it takes (read_part). With progress, a
-    # callable, each part's response must be a success (2xx) before the part counts as acknowledged; progress is then
-    # called with total_bytes (nil: unknown here), acknowledged_bytes (this call's bytes so far), part_number and
-    # part_bytes. Anything it raises ends the upload there, with no later part planned or sent.
+    # ETags and the bytes sent. Each part is filled from as many reads as it takes (read_part). Each part's response
+    # must be a success (2xx) before the part counts as acknowledged; any other status raises APIError before another
+    # part is planned or the upload is ended. With progress, a callable, progress is then called with total_bytes (nil:
+    # unknown here), acknowledged_bytes (this call's bytes so far), part_number and part_bytes. Anything it raises ends
+    # the upload there, with no later part planned or sent.
     # @param io [#read, #eof?] source, read from its current position.
     # @param path [String] remote destination path.
     # @param options [Hash] request configuration; see {Files::Api.send_request}.
@@ -360,7 +425,7 @@ module Files
         bytes_written += buf.length
         method = upload.http_method.downcase.to_sym
         response = client(options).remote_request(method, upload.upload_uri, { 'Content-Length': buf.length.to_s, 'Content-Type': 'application/octet-stream' }, buf)
-        raise APIError.new("Transfer request failed", http_status: response.status), cause: nil if progress && !response.status.between?(200, 299)
+        raise APIError.new("Transfer request failed", http_status: response.status), cause: nil unless response.status.between?(200, 299)
 
         etags << { etag: response.headers["ETag"], part: upload.part_number }
         progress&.call({ total_bytes: nil, acknowledged_bytes: bytes_written, part_number: upload.part_number, part_bytes: buf.length })
@@ -390,15 +455,27 @@ module Files
 
     # With progress, a callable, it is called after each part is acknowledged, as upload_chunks reports it, with
     # total_bytes the local file's size.
+    #
+    # With transfer: (true, a Hash of Files::Transfer::Options, an Options or a shared Files::Transfer::Job), the
+    # upload is adaptive: its parts are sent concurrently, as many at once as the link sustains within those options,
+    # and progress is called on this thread once for each part storage acknowledged, in the order they were. A
+    # Files::Transfer::Control in the options can cancel or pause it. Without transfer:, parts go one at a time, as
+    # they always have. See docs/file.md.
     # @param path [String] local file path.
     # @param destination [String, nil] remote path; defaults to the local basename.
     # @param options [Hash] request configuration; see {Files::Api.send_request}.
     # @param params [Hash] upload API parameters.
     # @param progress [#call, nil] called with total_bytes, acknowledged_bytes, part_number and part_bytes keys.
     #   Counts are bytes; part_number is the API part number. Raising stops the upload before any later part.
+    # @param transfer [Boolean, Hash, Files::Transfer::Options, Files::Transfer::Job, nil] adaptive options or a shared job.
     # @return [Files::File] the completed upload.
     # @raise [StandardError] if reading, a request or the progress callback fails; the local file is still closed.
-    def self.upload_file(path, destination = nil, options = {}, params: {}, progress: nil)
+    def self.upload_file(path, destination = nil, options = {}, params: {}, progress: nil, transfer: nil)
+      if transfer
+        destination ||= ::File.basename(path)
+        return Transfer::Job.using(transfer) { |job| Transfer::UploadCoordinator.upload(job, path, destination, options, params: params, progress: progress) }
+      end
+
       local_file = ::File.open(path, 'r')
       destination ||= File.basename(path)
       params[:size] ||= local_file.size
@@ -607,9 +684,18 @@ module Files
 
     # Downloads this remote file to a local file, replacing its contents.
     # @param output_file [String] local destination path.
+    # @param transfer [Boolean, Hash, Files::Transfer::Options, Files::Transfer::Job, nil] adaptive options or a shared job.
+    # @param progress [#call, nil] progress callback; requires transfer.
     # @return [void]
     # @raise [StandardError] if the transfer or local write fails.
-    def download_file(output_file)
+    # With transfer: (as for File.upload_file), the download is adaptive: when storage binds the file's version, its
+    # ranges are fetched concurrently and written in order, and progress, a callable, is called on this thread after
+    # each write with total_bytes (nil until known), written_bytes, elapsed_seconds and bytes_per_second. Anything it
+    # raises ends the download. progress needs transfer:. See docs/file.md.
+    def download_file(output_file, progress: nil, transfer: nil)
+      return Transfer::Job.using(transfer) { |job| Transfer::DownloadCoordinator.download_file(job, self, output_file, progress: progress) } if transfer
+      raise InvalidParameterError, "Bad parameter: progress needs transfer" if progress
+
       ::File.open(output_file, 'wb') do |file|
         download_content(file)
       end
@@ -619,9 +705,19 @@ module Files
     # @param io [#write, #<<] destination stream.
     # @param range [Array<Integer>] optional inclusive start and end byte offsets.
     #   Applied by the Net::HTTP adapter; other adapters fetch the whole response.
+    # @param transfer [Boolean, Hash, Files::Transfer::Options, Files::Transfer::Job, nil] adaptive options or a shared job.
+    # @param progress [#call, nil] progress callback; requires transfer.
     # @return [void]
     # @raise [StandardError] if the transfer or destination fails.
-    def download_content(io, range: [])
+    # With transfer:, as for #download_file, into io; it cannot be combined with range.
+    def download_content(io, range: [], progress: nil, transfer: nil)
+      if transfer
+        raise InvalidParameterError, "Bad parameter: range cannot be combined with transfer" unless range.nil? || range.empty?
+
+        return Transfer::Job.using(transfer) { |job| Transfer::DownloadCoordinator.download_content(job, self, io, progress: progress) }
+      end
+      raise InvalidParameterError, "Bad parameter: progress needs transfer" if progress
+
       Files::ApiClient.download_client.stream_download(download_uri_with_load, io, range)
     end
 
@@ -758,7 +854,11 @@ module Files
     # @param options [Hash] keyword arguments for {#download_content}, such as range.
     # @return [Files::SizableIO] the pipe reader; the caller owns closing it.
     # @raise [StandardError] if the download fails while the reader is being prepared.
+    # Never adaptive: transfer: and progress: are refused here, before any pipe or download thread exists.
     def read_io(**options)
+      raise InvalidParameterError, "Bad parameter: read_io cannot transfer adaptively; use #download_content with transfer:" if options[:transfer]
+      raise InvalidParameterError, "Bad parameter: progress needs transfer" if options[:progress]
+
       @read_io ||= begin
         r, w = SizableIO.pipe
         Thread.new do
@@ -994,8 +1094,15 @@ module Files
       raise NotImplementedError
     end
 
-    def upload_file(local_file)
-      File.upload_file(local_file.path, params: @attributes)
+    # Uploads local_file, an opened local file, to this record's path with this record's API options, and returns
+    # what File.upload_file returns. It reads local_file's path through its own handle and leaves local_file open.
+    # Only the record's mkdir_parents and with_rename go to begin_upload, never its other attributes, such as its size
+    # or download_uri. transfer: is as for File.upload_file.
+    def upload_file(local_file, transfer: nil)
+      params = @attributes.slice(:mkdir_parents, :with_rename)
+      return File.upload_file(local_file.path, path, @options, params: params, transfer: transfer) if transfer
+
+      File.upload_file(local_file.path, path, @options, params: params)
     end
 
     # Buffers bytes, or uses a readable IO as the upload source.

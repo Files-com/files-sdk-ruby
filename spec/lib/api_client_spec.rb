@@ -583,11 +583,133 @@ RSpec.describe Files::ApiClient do
   end
 
   describe "User-Agent" do
-    it "reports the SDK version the package declares" do
-      package_version = Gem::Specification.load(File.expand_path("../../files.com.gemspec", __dir__)).version.to_s
-      user_agent = described_class.new.send(:request_headers, nil, nil, :get, nil)["User-Agent"]
+    around do |example|
+      original = [ Files.app_info, Files.default_headers, Files.api_key ]
+      example.run
+    ensure
+      Files.app_info, Files.default_headers, Files.api_key = original
+    end
 
-      expect(user_agent).to match(/\AFiles\.com Ruby SDK v#{Regexp.escape(package_version)}(?: |\z)/)
+    let(:user_agents) { [] }
+    let(:client) do
+      sent = user_agents
+      stubbed_api_client do |stub|
+        stub.get("/api/rest/v1/workspaces/1") do |env|
+          sent << env.request_headers["User-Agent"]
+          json_response(200, { id: 1 })
+        end
+      end
+    end
+    let(:identity) { "Files.com Ruby SDK v#{Files::VERSION}" }
+
+    def find_workspace(options = {})
+      Files::Workspace.find(1, {}, { api_key: "key", client: client }.merge(options))
+    end
+
+    # identity followed by the one comment the SDK's own User-Agent ends with: a coarse operating system family and the
+    # Ruby runtime, with its version when it can carry it.
+    def sdk_user_agent(identity)
+      /\A#{Regexp.escape(identity)}(?<metadata> \(files-sdk-meta\/1; os=(?<os>[a-z][a-z0-9-]{0,15}); runtime=ruby(?:\/(?<version>[0-9][A-Za-z0-9.+_-]{0,47}))?\))\z/
+    end
+
+    it "names the package's version, then this Ruby and its operating system's family in one comment, on API requests" do
+      package_version = Gem::Specification.load(File.expand_path("../../files.com.gemspec", __dir__)).version.to_s
+
+      find_workspace
+
+      user_agent = user_agents.first
+      parts = sdk_user_agent("Files.com Ruby SDK v#{package_version}").match(user_agent)
+      expect(parts).not_to be_nil, "#{user_agent.inspect} is not the SDK's identity followed by its metadata comment"
+      expect(user_agent.bytesize).to be <= 190
+      expect(parts[:metadata].bytesize).to be <= 128
+      family = { /android/ => "android", /darwin/ => "macos", /linux/ => "linux", /mswin|mingw/ => "windows" }.find { |pattern, _| RbConfig::CONFIG["host_os"].match?(pattern) }&.last
+      expect(parts[:os]).to eq(family) if family
+      expect(parts[:version]).to eq(RUBY_VERSION) if RUBY_ENGINE == "ruby"
+    end
+
+    it "sends a User-Agent the caller sets exactly as given, however much it looks like the SDK's own" do
+      sdk_shaped = "Files.com Ruby SDK v0.0.1 (files-sdk-meta/1; os=linux; runtime=ruby/1.0)"
+
+      Files.default_headers = { "User-Agent" => sdk_shaped }
+      find_workspace
+      Files.default_headers = -> { { "User-Agent" => "Reporter from a Proc" } }
+      find_workspace
+      find_workspace("User-Agent" => "Reporter for one request")
+
+      expect(user_agents).to eq([ sdk_shaped, "Reporter from a Proc", "Reporter for one request" ])
+    end
+
+    it "keeps app info where it was, and adds no comment after app info that is not printable ASCII or leaves it no room" do
+      Files.app_info = { name: "Reporter", version: "2.1", url: "https://reporter.example" }
+      find_workspace
+      Files.app_info = { name: "Café" }
+      find_workspace
+      Files.app_info = { name: "R" * 160 }
+      find_workspace
+
+      expect(user_agents[0]).to match(sdk_user_agent("#{identity} Reporter/2.1 (https://reporter.example)"))
+      expect(user_agents[1..]).to eq([ "#{identity} Café", "#{identity} #{'R' * 160}" ])
+    end
+
+    it "gives a transfer's API requests the app info and default headers the transfer began with, whatever changes after" do
+      Files.app_info = { name: "Reporter", version: "2.1" }
+      began_with_app_info = described_class.transfer_settings
+      Files.app_info = nil
+      Files.default_headers = { "User-Agent" => "Captured reporter" }
+      began_with_headers = described_class.transfer_settings
+      Files.app_info = { name: "Later" }
+      Files.default_headers = {}
+
+      [ began_with_app_info, began_with_headers ].each { |settings| client.execute_request(:get, "/workspaces/1", api_key: "key", settings: settings) }
+      find_workspace
+
+      expect(user_agents[0]).to match(sdk_user_agent("#{identity} Reporter/2.1"))
+      expect(user_agents[1]).to eq("Captured reporter")
+      expect(user_agents[2]).to match(sdk_user_agent("#{identity} Later"))
+    end
+
+    it "leaves out a runtime version it cannot carry, and then the whole comment, rather than shorten the SDK's identity" do
+      sdk = "Files.com Ruby SDK v1.2.3"
+      with_metadata = lambda do |name = sdk, **facts|
+        described_class.user_agent_with_metadata(name, **{ host_os: "linux-gnu", ruby_engine: "ruby", ruby_version: "3.4.4" }.merge(facts))
+      end
+      # sdk, padded to bytes.
+      padded = ->(bytes) { sdk + ("0" * (bytes - sdk.bytesize)) }
+
+      expect(with_metadata.call).to eq("#{sdk} (files-sdk-meta/1; os=linux; runtime=ruby/3.4.4)")
+      { "darwin24" => "macos", "mingw32" => "windows", "linux-android" => "android", "freebsd14.1" => "freebsd", "solaris2.11" => "other", "" => "unknown" }.each do |host_os, family|
+        expect(with_metadata.call(host_os: host_os)).to eq("#{sdk} (files-sdk-meta/1; os=#{family}; runtime=ruby/3.4.4)")
+      end
+      [ "3.5.0 dev", "", nil ].each do |version|
+        expect(with_metadata.call(ruby_version: version)).to eq("#{sdk} (files-sdk-meta/1; os=linux; runtime=ruby)")
+      end
+      # Another engine's RUBY_VERSION is the language it follows, not its own.
+      expect(with_metadata.call(ruby_engine: "jruby", ruby_version: "3.1.4")).to eq("#{sdk} (files-sdk-meta/1; os=linux; runtime=ruby)")
+      expect(with_metadata.call(padded.call(141))).to eq("#{padded.call(141)} (files-sdk-meta/1; os=linux; runtime=ruby/3.4.4)")
+      expect(with_metadata.call(padded.call(142))).to eq("#{padded.call(142)} (files-sdk-meta/1; os=linux; runtime=ruby)")
+      expect(with_metadata.call(padded.call(147))).to eq("#{padded.call(147)} (files-sdk-meta/1; os=linux; runtime=ruby)")
+      expect(with_metadata.call(padded.call(148))).to eq(padded.call(148))
+      expect(with_metadata.call("#{sdk} Café")).to eq("#{sdk} Café")
+    end
+
+    it "sends a transfer request with only the User-Agent it is given, and no API credential" do
+      Files.api_key = "library-wide-key"
+      url = "https://storage.example.test/part?X-Amz-Signature=signed"
+      sent = []
+      connection = Faraday.new do |builder|
+        builder.adapter :test do |stub|
+          stub.put(url) do |env|
+            sent << env.request_headers
+            [ 200, { "ETag" => "\"part\"" }, "" ]
+          end
+        end
+      end
+
+      described_class.new(connection).remote_request(:put, url, { "User-Agent" => "Storage client" }, "part")
+
+      expect(sent.size).to eq(1)
+      expect(sent.first["User-Agent"]).to eq("Storage client")
+      expect(sent.first.keys.map(&:downcase)).not_to include("x-filesapi-key", "x-filesapi-auth", "x-files-client-user-agent")
     end
   end
 

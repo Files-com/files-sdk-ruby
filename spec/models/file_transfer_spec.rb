@@ -221,13 +221,18 @@ RSpec.describe Files::File, "transfers" do
       expect(requests.map(&:first)).to eq(%i[begin part])
     end
 
-    it "uploads as before when a part's non-success status is returned and no progress is given" do
+    it "refuses a part answered with a non-success status it returns, before ending the upload, when no progress is given" do
       requests = []
       client = upload_api(requests, partsize: 4, part_response: ->(_number) { [ 302, {}, "" ] })
 
-      with_local_file("abcdefghij") { |path| described_class.upload_file(path, "report.bin", { client: client }) }
-
-      expect(requests.map(&:first)).to eq(%i[begin part begin part begin part end])
+      with_local_file("abcdefghij") do |path|
+        expect { described_class.upload_file(path, "report.bin", { client: client }) }
+          .to raise_error(Files::APIError, "Transfer request failed") { |error|
+            expect(error.http_status).to eq(302)
+            expect(error.full_message).not_to include("storage.example.test")
+          }
+      end
+      expect(requests.map(&:first)).to eq(%i[begin part])
     end
 
     it "stops at a part answered 500, reporting nothing and not ending the upload" do
@@ -251,6 +256,26 @@ RSpec.describe Files::File, "transfers" do
         expect(ObjectSpace.each_object(::File).select { |file| !file.closed? && file.path == path }).to be_empty
       end
       expect(requests.map(&:first)).to eq(%i[begin part])
+    end
+  end
+
+  describe ".upload_io" do
+    it "uploads a stream without a size one part at a time, to its end, and ends the upload with what it read" do
+      requests = []
+      reader = short_reader("abcdefghij", max_read: 3)
+
+      described_class.upload_io(reader, "report.bin", { client: upload_api(requests, partsize: 4) }, transfer: true)
+
+      expect(parts_sent(requests)).to eq([ [ 1, "abcd" ], [ 2, "efgh" ], [ 3, "ij" ] ])
+      expect(requests.last[0..1]).to match([ :end, hash_including("action" => "end", "size" => "10") ])
+    end
+
+    it "refuses a size that is not a non-negative Integer before sending anything" do
+      requests = []
+
+      expect { described_class.upload_io(StringIO.new("ab"), "report.bin", { client: upload_api(requests, partsize: 4) }, size: -1, transfer: true) }
+        .to raise_error(Files::InvalidParameterError)
+      expect(requests).to be_empty
     end
   end
 
@@ -372,6 +397,17 @@ RSpec.describe Files::File, "transfers" do
       expect(sink.string).to be_empty
     end
 
+    it "refuses a response from the Files.com web app before writing any of it, and closes the caller's IO" do
+      page = "<html>Sign in</html>"
+      server = serve(response("200 OK", { "X-Files-Frontend-App" => "true", "Content-Length" => page.bytesize }, page))
+
+      expect { remote_file(server).download_content(sink) }.to raise_error(Files::Transfer::FrontendResponseError) { |error|
+        expect(error.full_message).not_to include("/objects/", "X-Amz", "fixture-signature")
+      }
+      expect(sink.string).to be_empty
+      expect(sink).to be_closed
+    end
+
     it "raises the caller IO's own write error, even when closing that IO fails too" do
       write_error = IOError.new("destination is full")
       failing_sink = Class.new(StringIO) do
@@ -437,6 +473,19 @@ RSpec.describe Files::File, "transfers" do
       file.read_io
       server_gate.close if drop_connection
       file
+    end
+
+    it "refuses transfer: and progress: before it opens a pipe or starts a download" do
+      requests = []
+      server = serve { |_client| requests << :download }
+      file = remote_file(server)
+      pipes = open_pipes.size
+
+      expect { file.read_io(transfer: true) }.to raise_error(Files::InvalidParameterError, /read_io cannot transfer adaptively/)
+      expect { file.read_io(progress: ->(_report) {}) }.to raise_error(Files::InvalidParameterError)
+      expect(open_pipes.size).to be <= pipes
+      expect(server.requests).to be_empty
+      expect(requests).to be_empty
     end
 
     {

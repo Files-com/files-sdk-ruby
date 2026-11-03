@@ -8,7 +8,10 @@ module Files
     # region_http_pairs the request used, only after the request, and that
     # check, succeed; the caller's options are not changed. An options base_url
     # sends the request there instead of to Files.base_url, and an options
-    # region_http_pairs is used instead of the client's.
+    # region_http_pairs is used instead of the client's. An options
+    # request_settings, which an adaptive transfer fixes as it begins
+    # (ApiClient.transfer_settings), is used instead of the library-wide
+    # settings; it is never sent as a header, nor kept in the returned options.
     #
     # @param path [String] API endpoint path.
     # @param verb [Symbol] HTTP method.
@@ -36,6 +39,7 @@ module Files
       region_http_pairs = headers.delete(:region_http_pairs)
       session_id = headers.delete(:session_id)
       workspace_id = headers.delete(:workspace_id)
+      settings = headers.delete(:request_settings)
       if session = headers.delete(:session)
         session.save unless session.id
         session_id = session.id
@@ -45,6 +49,7 @@ module Files
       # Only an origin or pairs the request carries are passed on; without them the client uses its own as before.
       request_options[:base_url] = base_url unless base_url.nil?
       request_options[:region_http_pairs] = region_http_pairs unless region_http_pairs.nil?
+      request_options[:settings] = settings unless settings.nil?
       regional_base_url = nil
       resp, api_key, session_id = client.execute_request(verb, path, **request_options) do |origin, used_region_http_pairs|
         regional_base_url = origin
