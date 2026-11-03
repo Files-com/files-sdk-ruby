@@ -4,6 +4,7 @@ module Files
   class SizableIO < IO
     def self.pipe
       r, w = super
+      w.binmode
 
       w.instance_variable_set(:@read_io, r)
 

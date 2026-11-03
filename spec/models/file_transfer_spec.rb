@@ -404,6 +404,23 @@ RSpec.describe Files::File, "transfers" do
   end
 
   describe "#read_io" do
+    it "preserves UTF-8 character reads when UTF-8 encoding defaults are set" do
+      original_encodings = [ Encoding.default_external, Encoding.default_internal ]
+      Encoding.default_external = Encoding::UTF_8
+      Encoding.default_internal = Encoding::UTF_8
+      text = "caf\u00e9\r\n\u65e5\u672c"
+      server = serve(fixed_length(text.b))
+      reader = remote_file(server).read_io
+
+      expect(reader.each_char.to_a).to eq(text.each_char.to_a)
+    ensure
+      begin
+        reader&.close
+      ensure
+        Encoding.default_external, Encoding.default_internal = original_encodings
+      end
+    end
+
     def open_pipes
       ObjectSpace.each_object(Files::SizableIO).reject(&:closed?)
     end
