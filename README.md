@@ -750,6 +750,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`TwoFactorAuthenticationUnsubscribedRecipientError`|  `ProcessingFailureError` |
 |`UpdatesNotAllowedForRemotesError`|  `ProcessingFailureError` |
 |`DuplicateShareRecipientError`|  `RateLimitedError` |
+|`FilesNativeStorageOverloadedError`|  `RateLimitedError` |
 |`ReauthenticationRateLimitedError`|  `RateLimitedError` |
 |`TooManyConcurrentLoginsError`|  `RateLimitedError` |
 |`TooManyConcurrentRequestsError`|  `RateLimitedError` |

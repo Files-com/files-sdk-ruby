@@ -247,6 +247,7 @@ module Files
 
   class RateLimitedError < APIError; end
   class DuplicateShareRecipientError < RateLimitedError; end
+  class FilesNativeStorageOverloadedError < RateLimitedError; end
   class ReauthenticationRateLimitedError < RateLimitedError; end
   class TooManyConcurrentLoginsError < RateLimitedError; end
   class TooManyConcurrentRequestsError < RateLimitedError; end

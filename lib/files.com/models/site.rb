@@ -1182,6 +1182,23 @@ module Files
       UsageSnapshot.new(response.data, options)
     end
 
+    # Extend the Automations conversion window by up to six weeks beyond its originally announced end date
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] end_date Required. New conversion-window end date in YYYY-MM-DD format, in Eastern Time (EST/EDT). Must be a Tuesday, Wednesday, or Thursday. Can only extend the current end date, within six weeks of the originally announced end date.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.extend_automation_migration_window(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: end_date must be an String") if !params[:end_date].nil? and !params[:end_date].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: end_date") if params[:end_date].nil?
+
+      Api.send_request("/site/extend_automation_migration_window", :post, params, options)
+      nil
+    end
+
     # Update Site Settings
     #
     # @param params [Hash] API parameters, keyed by Symbol.

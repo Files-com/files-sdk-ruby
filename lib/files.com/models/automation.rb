@@ -82,6 +82,19 @@ module Files
       @attributes[:automation] = value
     end
 
+    # ID of this v1 Automation's converted v2 copy, when present.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def converted_automation_id
+      @attributes[:converted_automation_id]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
+    def converted_automation_id=(value)
+      @attributes[:converted_automation_id] = value
+    end
+
     # Indicates if the automation has been deleted.
     # @return [Boolean, nil] the field value, or nil when absent.
     def deleted
@@ -301,6 +314,19 @@ module Files
     # @return [String, nil] the assigned value.
     def name=(value)
       @attributes[:name] = value
+    end
+
+    # ID of the retained v1 Automation for a converted Automation. Re-enable that v1 Automation to pause this copy and revert the conversion.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def original_automation_id
+      @attributes[:original_automation_id]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
+    def original_automation_id=(value)
+      @attributes[:original_automation_id] = value
     end
 
     # If true, existing files will be overwritten with new files on Move/Copy automations.  Note: by default files will not be overwritten on Copy automations if they appear to be the same file size as the newly incoming file.  Use the `always_overwrite_size_matching_files` option in conjunction with `overwrite_files` to override this behavior and overwrite files no matter what.

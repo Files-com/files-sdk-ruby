@@ -2372,6 +2372,7 @@ module Files
     # @param params [Hash] API parameters, keyed by Symbol.
     # @option params [Array<String>] paths Required. Paths to include in the ZIP.
     # @option params [String] destination Required. Destination file path for the ZIP.
+    # @option params [String] archive_format Archive format to create.
     # @option params [Boolean] overwrite Overwrite existing file in the destination?
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::FileAction] the returned record.
@@ -2381,6 +2382,7 @@ module Files
     def self.zip(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if !params[:paths].nil? and !params[:paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: archive_format must be an String") if !params[:archive_format].nil? and !params[:archive_format].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: paths") if params[:paths].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
