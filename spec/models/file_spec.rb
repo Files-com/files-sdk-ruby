@@ -15,13 +15,23 @@ RSpec.describe Files::File, :with_test_folder do
     end
 
     context "stream failure" do
-      let(:expired_download) { "https://s3.amazonaws.com/objects.brickftp.com/metadata/37868/52f55a21-1685-46aa-aaff-99ca8b172c00?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIEWLY3MN4YGZQOWA%2F20210621%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210621T202802Z&X-Amz-Expires=60&X-Amz-SignedHeaders=host&response-cache-control=no-cache%2C%20no-store&response-content-disposition=attachment%3B%20filename%3D%22write-as-io.txt%22&response-content-type=text%2Fplain&X-Amz-Signature=83d5b5789cbd2282bfea6e560e4319385135204dc0df3217930f96905c9cb18f" }
+      it "raises the download failure while preparing the reader" do
+        path = test_folder.join("[[strange stuff]]#yes.text").to_s
+        uri = URI("#{MockServerFixture.origin}/__files_mock/v1/faults")
+        rule = { operation: "transfers.download", match: { path: path }, status: 403 }
+        response = Net::HTTP.start(uri.hostname, uri.port, open_timeout: 5, read_timeout: 10) do |http|
+          http.post(uri.request_uri, JSON.generate(rule), "Content-Type" => "application/json")
+        end
+        expect(response.code).to eq("201")
+        fault_id = JSON.parse(response.body).fetch("id")
 
-      # The download URL is a real, expired S3 URL outside the simulator, so CI never requests it.
-      it "waits for io to be ready", skip: ENV.fetch("GITLAB", nil) do
-        file = Files::File.new
-        allow(file).to receive(:download_uri_with_load).and_return(expired_download)
+        file = Files::File.find(path, {}, options)
         expect { file.read_io }.to raise_error('403 "Forbidden"')
+        downloads = MockServerFixture.journal(MockServerFixture.origin).select do |entry|
+          entry["operation"] == "transfers.download" && entry["fault_id"] == fault_id
+        end
+        expect(downloads.size).to eq(1)
+        expect(downloads.first).to include("status" => 403)
       end
     end
   end
