@@ -68,7 +68,7 @@ module Files
       list(params, options)
     end
 
-    # List all possible public SmartFile IP addresses
+    # List all possible public IP addresses
     #
     # @param params [Hash] API parameters, keyed by Symbol.
     # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
@@ -78,13 +78,13 @@ module Files
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.get_smartfile_reserved(params = {}, options = {})
+    def self.get_reserved(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
 
       list_options = options.dup
       List.new(PublicIpAddress, params) do |page_params, &check_page|
-        response, page_options = Api.send_request("/ip_addresses/smartfile-reserved", :get, page_params, list_options, &check_page)
+        response, page_options = Api.send_request("/ip_addresses/reserved", :get, page_params, list_options, &check_page)
         list_options = list_options.merge(page_options)
         [ response, page_options ]
       end
@@ -112,7 +112,7 @@ module Files
       end
     end
 
-    # List all possible public IP addresses
+    # List all possible public SmartFile IP addresses
     #
     # @param params [Hash] API parameters, keyed by Symbol.
     # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
@@ -122,13 +122,13 @@ module Files
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.get_reserved(params = {}, options = {})
+    def self.get_smartfile_reserved(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
 
       list_options = options.dup
       List.new(PublicIpAddress, params) do |page_params, &check_page|
-        response, page_options = Api.send_request("/ip_addresses/reserved", :get, page_params, list_options, &check_page)
+        response, page_options = Api.send_request("/ip_addresses/smartfile-reserved", :get, page_params, list_options, &check_page)
         list_options = list_options.merge(page_options)
         [ response, page_options ]
       end

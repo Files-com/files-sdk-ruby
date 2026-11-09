@@ -220,23 +220,6 @@ module Files
       PartnerSiteRequest.new(response.data, options)
     end
 
-    # Reject partner site request
-    #
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] pairing_key Required. Pairing key for the partner site request
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [nil]
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.reject(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: pairing_key must be an String") if !params[:pairing_key].nil? and !params[:pairing_key].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: pairing_key") if params[:pairing_key].nil?
-
-      Api.send_request("/partner_site_requests/reject", :post, params, options)
-      nil
-    end
-
     # Approve partner site request
     #
     # @param params [Hash] API parameters, keyed by Symbol.
@@ -253,6 +236,23 @@ module Files
       raise MissingParameterError.new("Parameter missing: pairing_key") if params[:pairing_key].nil?
 
       Api.send_request("/partner_site_requests/approve", :post, params, options)
+      nil
+    end
+
+    # Reject partner site request
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] pairing_key Required. Pairing key for the partner site request
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.reject(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: pairing_key must be an String") if !params[:pairing_key].nil? and !params[:pairing_key].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: pairing_key") if params[:pairing_key].nil?
+
+      Api.send_request("/partner_site_requests/reject", :post, params, options)
       nil
     end
 

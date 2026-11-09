@@ -388,10 +388,10 @@ Files::User.create(
 
 ---
 
-## Unlock user who has been locked out due to failed logins
+## Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
 
 ```
-Files::User.unlock(id)
+Files::User.user_2fa_reset(id)
 ```
 
 ### Parameters
@@ -414,10 +414,10 @@ Files::User.resend_welcome_email(id)
 
 ---
 
-## Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
+## Unlock user who has been locked out due to failed logins
 
 ```
-Files::User.user_2fa_reset(id)
+Files::User.unlock(id)
 ```
 
 ### Parameters
@@ -592,12 +592,12 @@ Files::User.delete(id,
 
 ---
 
-## Unlock user who has been locked out due to failed logins
+## Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
 
 ```
 user = Files::User.find(id)
 
-user.unlock
+user.user_2fa_reset
 ```
 
 ### Parameters
@@ -622,12 +622,12 @@ user.resend_welcome_email
 
 ---
 
-## Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
+## Unlock user who has been locked out due to failed logins
 
 ```
 user = Files::User.find(id)
 
-user.user_2fa_reset
+user.unlock
 ```
 
 ### Parameters

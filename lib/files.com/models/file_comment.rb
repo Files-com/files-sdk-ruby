@@ -150,9 +150,9 @@ module Files
     def self.list_for(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       list_options = options.dup

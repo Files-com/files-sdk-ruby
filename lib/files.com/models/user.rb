@@ -1323,21 +1323,21 @@ module Files
       @attributes[:convert_to_partner_user] = value
     end
 
-    # Unlock user who has been locked out due to failed logins
+    # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
     #
     # @param params [Hash] API parameters, keyed by Symbol.
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def unlock(params = {})
+    def user_2fa_reset(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      response, options = Api.send_request("/users/#{@attributes[:id]}/unlock", :post, params, @options)
+      response, options = Api.send_request("/users/#{@attributes[:id]}/2fa/reset", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
@@ -1361,21 +1361,21 @@ module Files
       [ response, options ]
     end
 
-    # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
+    # Unlock user who has been locked out due to failed logins
     #
     # @param params [Hash] API parameters, keyed by Symbol.
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def user_2fa_reset(params = {})
+    def unlock(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      response, options = Api.send_request("/users/#{@attributes[:id]}/2fa/reset", :post, params, @options)
+      response, options = Api.send_request("/users/#{@attributes[:id]}/unlock", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
@@ -1812,7 +1812,7 @@ module Files
       User.new(response.data, options)
     end
 
-    # Unlock user who has been locked out due to failed logins
+    # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
     #
     # @param id [Integer] User ID.
     # @param params [Hash] API parameters, keyed by Symbol.
@@ -1821,13 +1821,13 @@ module Files
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.unlock(id, params = {}, options = {})
+    def self.user_2fa_reset(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/users/#{params[:id]}/unlock", :post, params, options)
+      Api.send_request("/users/#{params[:id]}/2fa/reset", :post, params, options)
       nil
     end
 
@@ -1850,7 +1850,7 @@ module Files
       nil
     end
 
-    # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods
+    # Unlock user who has been locked out due to failed logins
     #
     # @param id [Integer] User ID.
     # @param params [Hash] API parameters, keyed by Symbol.
@@ -1859,13 +1859,13 @@ module Files
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.user_2fa_reset(id, params = {}, options = {})
+    def self.unlock(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      Api.send_request("/users/#{params[:id]}/2fa/reset", :post, params, options)
+      Api.send_request("/users/#{params[:id]}/unlock", :post, params, options)
       nil
     end
 

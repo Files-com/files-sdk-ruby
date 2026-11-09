@@ -71,10 +71,10 @@ Files::ExpectationIncident.find(id)
 
 ---
 
-## Resolve an expectation incident
+## Acknowledge an expectation incident
 
 ```
-Files::ExpectationIncident.resolve(id)
+Files::ExpectationIncident.acknowledge(id)
 ```
 
 ### Parameters
@@ -100,10 +100,10 @@ Files::ExpectationIncident.snooze(id,
 
 ---
 
-## Acknowledge an expectation incident
+## Resolve an expectation incident
 
 ```
-Files::ExpectationIncident.acknowledge(id)
+Files::ExpectationIncident.resolve(id)
 ```
 
 ### Parameters
@@ -113,12 +113,12 @@ Files::ExpectationIncident.acknowledge(id)
 
 ---
 
-## Resolve an expectation incident
+## Acknowledge an expectation incident
 
 ```
 expectation_incident = Files::ExpectationIncident.find(id)
 
-expectation_incident.resolve
+expectation_incident.acknowledge
 ```
 
 ### Parameters
@@ -146,12 +146,12 @@ expectation_incident.snooze(
 
 ---
 
-## Acknowledge an expectation incident
+## Resolve an expectation incident
 
 ```
 expectation_incident = Files::ExpectationIncident.find(id)
 
-expectation_incident.acknowledge
+expectation_incident.resolve
 ```
 
 ### Parameters

@@ -166,6 +166,33 @@ module Files
       list(params, options)
     end
 
+    # List Metadata Categories by Path
+    #
+    # @param path [String] Path to operate on.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.list_for(path, params = {}, options = {})
+      params = (params || {}).dup
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+
+      list_options = options.dup
+      List.new(MetadataCategory, params) do |page_params, &check_page|
+        response, page_options = Api.send_request("/metadata_categories/list_by_path/#{page_params[:path]}", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
+      end
+    end
+
     # Show Metadata Category
     #
     # @param id [Integer] Metadata Category ID.
@@ -188,33 +215,6 @@ module Files
     # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
-    end
-
-    # List Metadata Categories by Path
-    #
-    # @param path [String] Path to operate on.
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.list_for(path, params = {}, options = {})
-      params = (params || {}).dup
-      params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
-
-      list_options = options.dup
-      List.new(MetadataCategory, params) do |page_params, &check_page|
-        response, page_options = Api.send_request("/metadata_categories/list_by_path/#{page_params[:path]}", :get, page_params, list_options, &check_page)
-        list_options = list_options.merge(page_options)
-        [ response, page_options ]
-      end
     end
 
     # Create Metadata Category

@@ -432,25 +432,6 @@ module Files
       @attributes[:latest_sync_run] = value
     end
 
-    # Dry Run Sync
-    #
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @return [Array(Files::Response, Hash)] the response and persisted request options.
-    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def dry_run(params = {})
-      params = (params || {}).dup
-      params[:id] = @attributes[:id]
-      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
-
-      response, options = Api.send_request("/syncs/#{@attributes[:id]}/dry_run", :post, params, @options)
-      @options = @options.merge(options)
-      [ response, options ]
-    end
-
     # Manually Run Sync
     #
     # @param params [Hash] API parameters, keyed by Symbol.
@@ -466,6 +447,25 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/syncs/#{@attributes[:id]}/manual_run", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
+    end
+
+    # Dry Run Sync
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def dry_run(params = {})
+      params = (params || {}).dup
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+
+      response, options = Api.send_request("/syncs/#{@attributes[:id]}/dry_run", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
@@ -697,25 +697,6 @@ module Files
       Sync.new(response.data, options)
     end
 
-    # Dry Run Sync
-    #
-    # @param id [Integer] Sync ID.
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [nil]
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.dry_run(id, params = {}, options = {})
-      params = (params || {}).dup
-      params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
-
-      Api.send_request("/syncs/#{params[:id]}/dry_run", :post, params, options)
-      nil
-    end
-
     # Manually Run Sync
     #
     # @param id [Integer] Sync ID.
@@ -732,6 +713,25 @@ module Files
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       Api.send_request("/syncs/#{params[:id]}/manual_run", :post, params, options)
+      nil
+    end
+
+    # Dry Run Sync
+    #
+    # @param id [Integer] Sync ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [nil]
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.dry_run(id, params = {}, options = {})
+      params = (params || {}).dup
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+
+      Api.send_request("/syncs/#{params[:id]}/dry_run", :post, params, options)
       nil
     end
 

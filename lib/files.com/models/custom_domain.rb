@@ -303,28 +303,6 @@ module Files
       find(id, params, options)
     end
 
-    # Allocate dedicated IP addresses to this Custom Domain
-    #
-    # @param id [Integer] Custom Domain ID.
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [Integer] count Required. Number of dedicated IP addresses to allocate.
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [Files::CustomDomain] the returned record.
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.create_allocate_ip(id, params = {}, options = {})
-      params = (params || {}).dup
-      params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: count must be an Integer") if !params[:count].nil? and !params[:count].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
-      raise MissingParameterError.new("Parameter missing: count") if params[:count].nil?
-
-      response, options = Api.send_request("/custom_domains/#{params[:id]}/allocate_ips", :post, params, options) { |reply| reply.require_object("CustomDomain") }
-      CustomDomain.new(response.data, options)
-    end
-
     # Create Custom Domain
     #
     # @param params [Hash] API parameters, keyed by Symbol.
@@ -349,6 +327,28 @@ module Files
       raise MissingParameterError.new("Parameter missing: domain") if params[:domain].nil?
 
       response, options = Api.send_request("/custom_domains", :post, params, options) { |reply| reply.require_object("CustomDomain") }
+      CustomDomain.new(response.data, options)
+    end
+
+    # Allocate dedicated IP addresses to this Custom Domain
+    #
+    # @param id [Integer] Custom Domain ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Integer] count Required. Number of dedicated IP addresses to allocate.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::CustomDomain] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.create_allocate_ip(id, params = {}, options = {})
+      params = (params || {}).dup
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: count must be an Integer") if !params[:count].nil? and !params[:count].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: count") if params[:count].nil?
+
+      response, options = Api.send_request("/custom_domains/#{params[:id]}/allocate_ips", :post, params, options) { |reply| reply.require_object("CustomDomain") }
       CustomDomain.new(response.data, options)
     end
 

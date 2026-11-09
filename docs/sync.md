@@ -217,10 +217,10 @@ Files::Sync.create(
 
 ---
 
-## Dry Run Sync
+## Manually Run Sync
 
 ```
-Files::Sync.dry_run(id)
+Files::Sync.manual_run(id)
 ```
 
 ### Parameters
@@ -230,10 +230,10 @@ Files::Sync.dry_run(id)
 
 ---
 
-## Manually Run Sync
+## Dry Run Sync
 
 ```
-Files::Sync.manual_run(id)
+Files::Sync.dry_run(id)
 ```
 
 ### Parameters
@@ -316,12 +316,12 @@ Files::Sync.delete(id)
 
 ---
 
-## Dry Run Sync
+## Manually Run Sync
 
 ```
 sync = Files::Sync.find(id)
 
-sync.dry_run
+sync.manual_run
 ```
 
 ### Parameters
@@ -331,12 +331,12 @@ sync.dry_run
 
 ---
 
-## Manually Run Sync
+## Dry Run Sync
 
 ```
 sync = Files::Sync.find(id)
 
-sync.manual_run
+sync.dry_run
 ```
 
 ### Parameters

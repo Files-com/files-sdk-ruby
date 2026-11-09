@@ -221,7 +221,7 @@ module Files
     # @option params [Boolean] recursive Whether the behavior should apply to child folders. This is only configurable for behavior types whose recursion mode is `sometimes`; `always` behaviors stay recursive and `never` behaviors stay non-recursive.
     # @option params [String] name Name for this behavior.
     # @option params [String] description Description for this behavior.
-    # @option params [Hash, String, Integer] attachment_delete If `true`, delete the file stored in `attachment`.
+    # @option params [Boolean] attachment_delete If `true`, delete the file stored in `attachment`.
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
@@ -236,6 +236,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: attachment_delete must be a single value, not #{params[:attachment_delete].class}") if [ Array, Hash ].any? { |klass| params[:attachment_delete].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/behaviors/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Behavior") }
@@ -319,30 +320,6 @@ module Files
       list(params, options)
     end
 
-    # Show Behavior
-    #
-    # @param id [Integer] Behavior ID.
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [Files::Behavior] the returned record.
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.find(id, params = {}, options = {})
-      params = (params || {}).dup
-      params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
-
-      response, options = Api.send_request("/behaviors/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Behavior") }
-      Behavior.new(response.data, options)
-    end
-
-    # (see .find)
-    def self.get(id, params = {}, options = {})
-      find(id, params, options)
-    end
-
     # List Behaviors by Path
     #
     # @param path [String] Path to operate on.
@@ -360,11 +337,11 @@ module Files
     def self.list_for(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: filter must be an Hash") if !params[:filter].nil? and !params[:filter].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ancestor_behaviors must be a single value, not #{params[:ancestor_behaviors].class}") if [ Array, Hash ].any? { |klass| params[:ancestor_behaviors].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
@@ -374,6 +351,30 @@ module Files
         list_options = list_options.merge(page_options)
         [ response, page_options ]
       end
+    end
+
+    # Show Behavior
+    #
+    # @param id [Hash, String, Integer] Behavior ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::Behavior] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.find(id, params = {}, options = {})
+      params = (params || {}).dup
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be one of Hash, String, Integer") if !params[:id].nil? and [ Hash, String, Integer ].none? { |klass| params[:id].is_a?(klass) }
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+
+      response, options = Api.send_request("/behaviors/#{params[:id]}", :get, params, options) { |reply| reply.require_object("Behavior") }
+      Behavior.new(response.data, options)
+    end
+
+    # (see .find)
+    def self.get(id, params = {}, options = {})
+      find(id, params, options)
     end
 
     # Create Behavior
@@ -444,7 +445,7 @@ module Files
     # @option params [Boolean] recursive Whether the behavior should apply to child folders. This is only configurable for behavior types whose recursion mode is `sometimes`; `always` behaviors stay recursive and `never` behaviors stay non-recursive.
     # @option params [String] name Name for this behavior.
     # @option params [String] description Description for this behavior.
-    # @option params [Hash, String, Integer] attachment_delete If `true`, delete the file stored in `attachment`.
+    # @option params [Boolean] attachment_delete If `true`, delete the file stored in `attachment`.
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::Behavior] the returned record.
     # @raise [Files::MissingParameterError] if a required parameter is missing.
@@ -459,7 +460,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: description must be an String") if !params[:description].nil? and !params[:description].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: attachment_delete must be one of Hash, String, Integer") if !params[:attachment_delete].nil? and [ Hash, String, Integer ].none? { |klass| params[:attachment_delete].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: attachment_delete must be a single value, not #{params[:attachment_delete].class}") if [ Array, Hash ].any? { |klass| params[:attachment_delete].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/behaviors/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Behavior") }

@@ -215,11 +215,11 @@ module Files
     def self.get_folder(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
       raise InvalidParameterError.new("Bad parameter: mine must be a single value, not #{params[:mine].class}") if [ Array, Hash ].any? { |klass| params[:mine].is_a?(klass) }
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
 
       list_options = options.dup

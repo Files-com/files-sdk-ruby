@@ -598,6 +598,19 @@ Files::File.delete(path,
 
 ---
 
+## List the contents of a ZIP file
+
+```
+Files::File.zip_list_contents(path)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+
+
+---
+
 ## Find File/Folder by Path
 
 ```
@@ -617,61 +630,11 @@ Files::File.find(path,
 
 ---
 
-## List the contents of a ZIP file
+## Create a ZIP from one or more paths and save it to a destination path
 
 ```
-Files::File.zip_list_contents(path)
-```
-
-### Parameters
-
-* `path` (string): Required - Path to operate on.
-
-
----
-
-## Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
-
-```
-Files::File.begin_delete(path, 
-  recursive: false
-)
-```
-
-### Parameters
-
-* `path` (string): Required - Path to operate on.
-* `recursive` (boolean): If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
-
-
----
-
-## Copy File/Folder
-
-```
-Files::File.copy(path, 
-  destination: "destination", 
-  copy_behaviors: false, 
-  structure: false, 
-  overwrite: false
-)
-```
-
-### Parameters
-
-* `path` (string): Required - Path to operate on.
-* `destination` (string): Required - Copy destination path.
-* `copy_behaviors` (boolean): If copying a folder, also copy supported behaviors, email notification subscriptions, and per-folder branding to the destination folder tree?
-* `structure` (boolean): Copy structure only?
-* `overwrite` (boolean): Overwrite existing file(s) in the destination?
-
-
----
-
-## Move File/Folder
-
-```
-Files::File.move(path, 
+Files::File.zip(
+  paths: "paths", 
   destination: "destination", 
   overwrite: false
 )
@@ -679,9 +642,79 @@ Files::File.move(path,
 
 ### Parameters
 
+* `paths` (array(string)): Required - Paths to include in the ZIP.
+* `destination` (string): Required - Destination file path for the ZIP.
+* `archive_format` (string): Archive format to create.
+* `overwrite` (boolean): Overwrite existing file in the destination?
+
+
+---
+
+## Extract a ZIP file to a destination folder
+
+```
+Files::File.unzip(path, 
+  destination: "destination", 
+  overwrite: false
+)
+```
+
+### Parameters
+
+* `path` (string): Required - ZIP file path to extract.
+* `destination` (string): Required - Destination folder path for extracted files.
+* `filename` (string): Optional single entry filename to extract.
+* `overwrite` (boolean): Overwrite existing files in the destination?
+
+
+---
+
+## Encrypt a file with GPG and save it to a destination path
+
+```
+Files::File.gpg_encrypt(path, 
+  destination: "destination", 
+  gpg_key_partner_id: 1, 
+  signing_key_id: 1, 
+  armor: false, 
+  overwrite: false
+)
+```
+
+### Parameters
+
 * `path` (string): Required - Path to operate on.
-* `destination` (string): Required - Move destination path.
-* `overwrite` (boolean): Overwrite existing file(s) in the destination?
+* `destination` (string): Required - Destination file path for the encrypted file.
+* `gpg_key_ids` (array(int64)): GPG Key IDs to encrypt with.
+* `gpg_key_partner_id` (int64): Partner ID whose GPG keys should be used for encryption.
+* `signing_key_id` (int64): Optional GPG Key ID to sign with.
+* `armor` (boolean): Output ASCII-armored encrypted data.
+* `overwrite` (boolean): Overwrite existing file in the destination?
+
+
+---
+
+## Decrypt a GPG-encrypted file and save it to a destination path
+
+```
+Files::File.gpg_decrypt(path, 
+  destination: "destination", 
+  gpg_key_partner_id: 1, 
+  use_all_private_keys: false, 
+  ignore_mdc_error: false, 
+  overwrite: false
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `destination` (string): Required - Destination file path for the decrypted file.
+* `gpg_key_ids` (array(int64)): GPG Key IDs to decrypt with. If omitted, every accessible private GPG key in the source workspace is used.
+* `gpg_key_partner_id` (int64): Partner ID whose GPG keys should be used for decryption.
+* `use_all_private_keys` (boolean): Use every accessible private GPG key in the source workspace for decryption.
+* `ignore_mdc_error` (boolean): Ignore errors from the MDC (modification detection code) check.
+* `overwrite` (boolean): Overwrite existing file in the destination?
 
 
 ---
@@ -713,14 +746,11 @@ Files::File.transform(path,
 
 ---
 
-## Decrypt a GPG-encrypted file and save it to a destination path
+## Move File/Folder
 
 ```
-Files::File.gpg_decrypt(path, 
+Files::File.move(path, 
   destination: "destination", 
-  gpg_key_partner_id: 1, 
-  use_all_private_keys: false, 
-  ignore_mdc_error: false, 
   overwrite: false
 )
 ```
@@ -728,24 +758,19 @@ Files::File.gpg_decrypt(path,
 ### Parameters
 
 * `path` (string): Required - Path to operate on.
-* `destination` (string): Required - Destination file path for the decrypted file.
-* `gpg_key_ids` (array(int64)): GPG Key IDs to decrypt with. If omitted, every accessible private GPG key in the source workspace is used.
-* `gpg_key_partner_id` (int64): Partner ID whose GPG keys should be used for decryption.
-* `use_all_private_keys` (boolean): Use every accessible private GPG key in the source workspace for decryption.
-* `ignore_mdc_error` (boolean): Ignore errors from the MDC (modification detection code) check.
-* `overwrite` (boolean): Overwrite existing file in the destination?
+* `destination` (string): Required - Move destination path.
+* `overwrite` (boolean): Overwrite existing file(s) in the destination?
 
 
 ---
 
-## Encrypt a file with GPG and save it to a destination path
+## Copy File/Folder
 
 ```
-Files::File.gpg_encrypt(path, 
+Files::File.copy(path, 
   destination: "destination", 
-  gpg_key_partner_id: 1, 
-  signing_key_id: 1, 
-  armor: false, 
+  copy_behaviors: false, 
+  structure: false, 
   overwrite: false
 )
 ```
@@ -753,51 +778,26 @@ Files::File.gpg_encrypt(path,
 ### Parameters
 
 * `path` (string): Required - Path to operate on.
-* `destination` (string): Required - Destination file path for the encrypted file.
-* `gpg_key_ids` (array(int64)): GPG Key IDs to encrypt with.
-* `gpg_key_partner_id` (int64): Partner ID whose GPG keys should be used for encryption.
-* `signing_key_id` (int64): Optional GPG Key ID to sign with.
-* `armor` (boolean): Output ASCII-armored encrypted data.
-* `overwrite` (boolean): Overwrite existing file in the destination?
+* `destination` (string): Required - Copy destination path.
+* `copy_behaviors` (boolean): If copying a folder, also copy supported behaviors, email notification subscriptions, and per-folder branding to the destination folder tree?
+* `structure` (boolean): Copy structure only?
+* `overwrite` (boolean): Overwrite existing file(s) in the destination?
 
 
 ---
 
-## Extract a ZIP file to a destination folder
+## Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
 
 ```
-Files::File.unzip(path, 
-  destination: "destination", 
-  overwrite: false
+Files::File.begin_delete(path, 
+  recursive: false
 )
 ```
 
 ### Parameters
 
-* `path` (string): Required - ZIP file path to extract.
-* `destination` (string): Required - Destination folder path for extracted files.
-* `filename` (string): Optional single entry filename to extract.
-* `overwrite` (boolean): Overwrite existing files in the destination?
-
-
----
-
-## Create a ZIP from one or more paths and save it to a destination path
-
-```
-Files::File.zip(
-  paths: "paths", 
-  destination: "destination", 
-  overwrite: false
-)
-```
-
-### Parameters
-
-* `paths` (array(string)): Required - Paths to include in the ZIP.
-* `destination` (string): Required - Destination file path for the ZIP.
-* `archive_format` (string): Archive format to create.
-* `overwrite` (boolean): Overwrite existing file in the destination?
+* `path` (string): Required - Path to operate on.
+* `recursive` (boolean): If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
 
 
 ---
@@ -913,54 +913,12 @@ file.zip_list_contents
 
 ---
 
-## Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
+## Extract a ZIP file to a destination folder
 
 ```
 file = Files::File.find(path)
 
-file.begin_delete(
-  recursive: false
-)
-```
-
-### Parameters
-
-* `path` (string): Required - Path to operate on.
-* `recursive` (boolean): If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
-
-
----
-
-## Copy File/Folder
-
-```
-file = Files::File.find(path)
-
-file.copy(
-  destination: "destination",
-  copy_behaviors: false,
-  structure: false,
-  overwrite: false
-)
-```
-
-### Parameters
-
-* `path` (string): Required - Path to operate on.
-* `destination` (string): Required - Copy destination path.
-* `copy_behaviors` (boolean): If copying a folder, also copy supported behaviors, email notification subscriptions, and per-folder branding to the destination folder tree?
-* `structure` (boolean): Copy structure only?
-* `overwrite` (boolean): Overwrite existing file(s) in the destination?
-
-
----
-
-## Move File/Folder
-
-```
-file = Files::File.find(path)
-
-file.move(
+file.unzip(
   destination: "destination",
   overwrite: false
 )
@@ -968,9 +926,64 @@ file.move(
 
 ### Parameters
 
+* `path` (string): Required - ZIP file path to extract.
+* `destination` (string): Required - Destination folder path for extracted files.
+* `filename` (string): Optional single entry filename to extract.
+* `overwrite` (boolean): Overwrite existing files in the destination?
+
+
+---
+
+## Encrypt a file with GPG and save it to a destination path
+
+```
+file = Files::File.find(path)
+
+file.gpg_encrypt(
+  destination: "destination",
+  gpg_key_partner_id: 1,
+  signing_key_id: 1,
+  armor: false,
+  overwrite: false
+)
+```
+
+### Parameters
+
 * `path` (string): Required - Path to operate on.
-* `destination` (string): Required - Move destination path.
-* `overwrite` (boolean): Overwrite existing file(s) in the destination?
+* `destination` (string): Required - Destination file path for the encrypted file.
+* `gpg_key_ids` (array(int64)): GPG Key IDs to encrypt with.
+* `gpg_key_partner_id` (int64): Partner ID whose GPG keys should be used for encryption.
+* `signing_key_id` (int64): Optional GPG Key ID to sign with.
+* `armor` (boolean): Output ASCII-armored encrypted data.
+* `overwrite` (boolean): Overwrite existing file in the destination?
+
+
+---
+
+## Decrypt a GPG-encrypted file and save it to a destination path
+
+```
+file = Files::File.find(path)
+
+file.gpg_decrypt(
+  destination: "destination",
+  gpg_key_partner_id: 1,
+  use_all_private_keys: false,
+  ignore_mdc_error: false,
+  overwrite: false
+)
+```
+
+### Parameters
+
+* `path` (string): Required - Path to operate on.
+* `destination` (string): Required - Destination file path for the decrypted file.
+* `gpg_key_ids` (array(int64)): GPG Key IDs to decrypt with. If omitted, every accessible private GPG key in the source workspace is used.
+* `gpg_key_partner_id` (int64): Partner ID whose GPG keys should be used for decryption.
+* `use_all_private_keys` (boolean): Use every accessible private GPG key in the source workspace for decryption.
+* `ignore_mdc_error` (boolean): Ignore errors from the MDC (modification detection code) check.
+* `overwrite` (boolean): Overwrite existing file in the destination?
 
 
 ---
@@ -1004,16 +1017,13 @@ file.transform(
 
 ---
 
-## Decrypt a GPG-encrypted file and save it to a destination path
+## Move File/Folder
 
 ```
 file = Files::File.find(path)
 
-file.gpg_decrypt(
+file.move(
   destination: "destination",
-  gpg_key_partner_id: 1,
-  use_all_private_keys: false,
-  ignore_mdc_error: false,
   overwrite: false
 )
 ```
@@ -1021,26 +1031,21 @@ file.gpg_decrypt(
 ### Parameters
 
 * `path` (string): Required - Path to operate on.
-* `destination` (string): Required - Destination file path for the decrypted file.
-* `gpg_key_ids` (array(int64)): GPG Key IDs to decrypt with. If omitted, every accessible private GPG key in the source workspace is used.
-* `gpg_key_partner_id` (int64): Partner ID whose GPG keys should be used for decryption.
-* `use_all_private_keys` (boolean): Use every accessible private GPG key in the source workspace for decryption.
-* `ignore_mdc_error` (boolean): Ignore errors from the MDC (modification detection code) check.
-* `overwrite` (boolean): Overwrite existing file in the destination?
+* `destination` (string): Required - Move destination path.
+* `overwrite` (boolean): Overwrite existing file(s) in the destination?
 
 
 ---
 
-## Encrypt a file with GPG and save it to a destination path
+## Copy File/Folder
 
 ```
 file = Files::File.find(path)
 
-file.gpg_encrypt(
+file.copy(
   destination: "destination",
-  gpg_key_partner_id: 1,
-  signing_key_id: 1,
-  armor: false,
+  copy_behaviors: false,
+  structure: false,
   overwrite: false
 )
 ```
@@ -1048,33 +1053,28 @@ file.gpg_encrypt(
 ### Parameters
 
 * `path` (string): Required - Path to operate on.
-* `destination` (string): Required - Destination file path for the encrypted file.
-* `gpg_key_ids` (array(int64)): GPG Key IDs to encrypt with.
-* `gpg_key_partner_id` (int64): Partner ID whose GPG keys should be used for encryption.
-* `signing_key_id` (int64): Optional GPG Key ID to sign with.
-* `armor` (boolean): Output ASCII-armored encrypted data.
-* `overwrite` (boolean): Overwrite existing file in the destination?
+* `destination` (string): Required - Copy destination path.
+* `copy_behaviors` (boolean): If copying a folder, also copy supported behaviors, email notification subscriptions, and per-folder branding to the destination folder tree?
+* `structure` (boolean): Copy structure only?
+* `overwrite` (boolean): Overwrite existing file(s) in the destination?
 
 
 ---
 
-## Extract a ZIP file to a destination folder
+## Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
 
 ```
 file = Files::File.find(path)
 
-file.unzip(
-  destination: "destination",
-  overwrite: false
+file.begin_delete(
+  recursive: false
 )
 ```
 
 ### Parameters
 
-* `path` (string): Required - ZIP file path to extract.
-* `destination` (string): Required - Destination folder path for extracted files.
-* `filename` (string): Optional single entry filename to extract.
-* `overwrite` (boolean): Overwrite existing files in the destination?
+* `path` (string): Required - Path to operate on.
+* `recursive` (boolean): If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
 
 
 ---

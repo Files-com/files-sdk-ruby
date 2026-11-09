@@ -1845,75 +1845,92 @@ module Files
       [ response, options ]
     end
 
-    # Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
+    # Extract a ZIP file to a destination folder
     #
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [Boolean] recursive If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
+    # @option params [String] destination Required. Destination folder path for extracted files.
+    # @option params [String] filename Optional single entry filename to extract.
+    # @option params [Boolean] overwrite Overwrite existing files in the destination?
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def begin_delete(params = {})
-      params = (params || {}).dup
-      params[:path] = @attributes[:path]
-      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
-      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
-
-      response, options = Api.send_request("/file_actions/delete/#{@attributes[:path]}", :post, params, @options)
-      @options = @options.merge(options)
-      [ response, options ]
-    end
-
-    # Copy File/Folder
-    #
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] destination Required. Copy destination path.
-    # @option params [Boolean] copy_behaviors If copying a folder, also copy supported behaviors, email notification subscriptions, and per-folder branding to the destination folder tree?
-    # @option params [Boolean] structure Copy structure only?
-    # @option params [Boolean] overwrite Overwrite existing file(s) in the destination?
-    # @return [Array(Files::Response, Hash)] the response and persisted request options.
-    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def copy(params = {})
+    def unzip(params = {})
       params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: copy_behaviors must be a single value, not #{params[:copy_behaviors].class}") if [ Array, Hash ].any? { |klass| params[:copy_behaviors].is_a?(klass) }
-      raise InvalidParameterError.new("Bad parameter: structure must be a single value, not #{params[:structure].class}") if [ Array, Hash ].any? { |klass| params[:structure].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: filename must be an String") if !params[:filename].nil? and !params[:filename].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/copy/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/unzip", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
 
-    # Move File/Folder
+    # Encrypt a file with GPG and save it to a destination path
     #
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] destination Required. Move destination path.
-    # @option params [Boolean] overwrite Overwrite existing file(s) in the destination?
+    # @option params [String] destination Required. Destination file path for the encrypted file.
+    # @option params [Array<Integer>] gpg_key_ids GPG Key IDs to encrypt with.
+    # @option params [Integer] gpg_key_partner_id Partner ID whose GPG keys should be used for encryption.
+    # @option params [Integer] signing_key_id Optional GPG Key ID to sign with.
+    # @option params [Boolean] armor Output ASCII-armored encrypted data.
+    # @option params [Boolean] overwrite Overwrite existing file in the destination?
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def move(params = {})
+    def gpg_encrypt(params = {})
       params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: signing_key_id must be an Integer") if !params[:signing_key_id].nil? and !params[:signing_key_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: armor must be a single value, not #{params[:armor].class}") if [ Array, Hash ].any? { |klass| params[:armor].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/move/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/gpg_encrypt/#{@attributes[:path]}", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
+    end
+
+    # Decrypt a GPG-encrypted file and save it to a destination path
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] destination Required. Destination file path for the decrypted file.
+    # @option params [Array<Integer>] gpg_key_ids GPG Key IDs to decrypt with. If omitted, every accessible private GPG key in the source workspace is used.
+    # @option params [Integer] gpg_key_partner_id Partner ID whose GPG keys should be used for decryption.
+    # @option params [Boolean] use_all_private_keys Use every accessible private GPG key in the source workspace for decryption.
+    # @option params [Boolean] ignore_mdc_error Ignore errors from the MDC (modification detection code) check.
+    # @option params [Boolean] overwrite Overwrite existing file in the destination?
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def gpg_decrypt(params = {})
+      params = (params || {}).dup
+      params[:path] = @attributes[:path]
+      raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: use_all_private_keys must be a single value, not #{params[:use_all_private_keys].class}") if [ Array, Hash ].any? { |klass| params[:use_all_private_keys].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ignore_mdc_error must be a single value, not #{params[:ignore_mdc_error].class}") if [ Array, Hash ].any? { |klass| params[:ignore_mdc_error].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+      raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
+
+      response, options = Api.send_request("/file_actions/gpg_decrypt/#{@attributes[:path]}", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
@@ -1954,92 +1971,75 @@ module Files
       [ response, options ]
     end
 
-    # Decrypt a GPG-encrypted file and save it to a destination path
+    # Move File/Folder
     #
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] destination Required. Destination file path for the decrypted file.
-    # @option params [Array<Integer>] gpg_key_ids GPG Key IDs to decrypt with. If omitted, every accessible private GPG key in the source workspace is used.
-    # @option params [Integer] gpg_key_partner_id Partner ID whose GPG keys should be used for decryption.
-    # @option params [Boolean] use_all_private_keys Use every accessible private GPG key in the source workspace for decryption.
-    # @option params [Boolean] ignore_mdc_error Ignore errors from the MDC (modification detection code) check.
-    # @option params [Boolean] overwrite Overwrite existing file in the destination?
+    # @option params [String] destination Required. Move destination path.
+    # @option params [Boolean] overwrite Overwrite existing file(s) in the destination?
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def gpg_decrypt(params = {})
+    def move(params = {})
       params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: use_all_private_keys must be a single value, not #{params[:use_all_private_keys].class}") if [ Array, Hash ].any? { |klass| params[:use_all_private_keys].is_a?(klass) }
-      raise InvalidParameterError.new("Bad parameter: ignore_mdc_error must be a single value, not #{params[:ignore_mdc_error].class}") if [ Array, Hash ].any? { |klass| params[:ignore_mdc_error].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/gpg_decrypt/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/move/#{@attributes[:path]}", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
 
-    # Encrypt a file with GPG and save it to a destination path
+    # Copy File/Folder
     #
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] destination Required. Destination file path for the encrypted file.
-    # @option params [Array<Integer>] gpg_key_ids GPG Key IDs to encrypt with.
-    # @option params [Integer] gpg_key_partner_id Partner ID whose GPG keys should be used for encryption.
-    # @option params [Integer] signing_key_id Optional GPG Key ID to sign with.
-    # @option params [Boolean] armor Output ASCII-armored encrypted data.
-    # @option params [Boolean] overwrite Overwrite existing file in the destination?
+    # @option params [String] destination Required. Copy destination path.
+    # @option params [Boolean] copy_behaviors If copying a folder, also copy supported behaviors, email notification subscriptions, and per-folder branding to the destination folder tree?
+    # @option params [Boolean] structure Copy structure only?
+    # @option params [Boolean] overwrite Overwrite existing file(s) in the destination?
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def gpg_encrypt(params = {})
+    def copy(params = {})
       params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: signing_key_id must be an Integer") if !params[:signing_key_id].nil? and !params[:signing_key_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: armor must be a single value, not #{params[:armor].class}") if [ Array, Hash ].any? { |klass| params[:armor].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: copy_behaviors must be a single value, not #{params[:copy_behaviors].class}") if [ Array, Hash ].any? { |klass| params[:copy_behaviors].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: structure must be a single value, not #{params[:structure].class}") if [ Array, Hash ].any? { |klass| params[:structure].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/gpg_encrypt/#{@attributes[:path]}", :post, params, @options)
+      response, options = Api.send_request("/file_actions/copy/#{@attributes[:path]}", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
 
-    # Extract a ZIP file to a destination folder
+    # Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
     #
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] destination Required. Destination folder path for extracted files.
-    # @option params [String] filename Optional single entry filename to extract.
-    # @option params [Boolean] overwrite Overwrite existing files in the destination?
+    # @option params [Boolean] recursive If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def unzip(params = {})
+    def begin_delete(params = {})
       params = (params || {}).dup
       params[:path] = @attributes[:path]
       raise MissingParameterError.new("Current object doesn't have a path") unless @attributes[:path]
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filename must be an String") if !params[:filename].nil? and !params[:filename].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
-      raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/unzip", :post, params, @options)
+      response, options = Api.send_request("/file_actions/delete/#{@attributes[:path]}", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
@@ -2224,6 +2224,27 @@ module Files
       nil
     end
 
+    # List the contents of a ZIP file
+    #
+    # @param path [String] Path to operate on.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Array<Files::ZipListEntry>] the returned records.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.zip_list_contents(path, params = {}, options = {})
+      params = (params || {}).dup
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+
+      response, options = Api.send_request("/file_actions/zip_list/#{params[:path]}", :get, params, options) { |reply| reply.require_list("ZipListEntry") }
+      response.data.map do |entity_data|
+        ZipListEntry.new(entity_data, options)
+      end
+    end
+
     # Find File/Folder by Path
     #
     # @param path [String] Path to operate on.
@@ -2254,97 +2275,117 @@ module Files
       find(path, params, options)
     end
 
-    # List the contents of a ZIP file
+    # Create a ZIP from one or more paths and save it to a destination path
     #
-    # @param path [String] Path to operate on.
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [Array<Files::ZipListEntry>] the returned records.
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.zip_list_contents(path, params = {}, options = {})
-      params = (params || {}).dup
-      params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
-
-      response, options = Api.send_request("/file_actions/zip_list/#{params[:path]}", :get, params, options) { |reply| reply.require_list("ZipListEntry") }
-      response.data.map do |entity_data|
-        ZipListEntry.new(entity_data, options)
-      end
-    end
-
-    # Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
-    #
-    # @param path [String] Path to operate on.
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [Boolean] recursive If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
+    # @option params [Array<String>] paths Required. Paths to include in the ZIP.
+    # @option params [String] destination Required. Destination file path for the ZIP.
+    # @option params [String] archive_format Archive format to create.
+    # @option params [Boolean] overwrite Overwrite existing file in the destination?
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::FileAction] the returned record.
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.begin_delete(path, params = {}, options = {})
-      params = (params || {}).dup
-      params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
-      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+    def self.zip(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if !params[:paths].nil? and !params[:paths].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: archive_format must be an String") if !params[:archive_format].nil? and !params[:archive_format].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
+      raise MissingParameterError.new("Parameter missing: paths") if params[:paths].nil?
+      raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/delete/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
+      response, options = Api.send_request("/file_actions/zip", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
-    # Copy File/Folder
+    # Extract a ZIP file to a destination folder
     #
-    # @param path [String] Path to operate on.
+    # @param path [String] ZIP file path to extract.
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] destination Required. Copy destination path.
-    # @option params [Boolean] copy_behaviors If copying a folder, also copy supported behaviors, email notification subscriptions, and per-folder branding to the destination folder tree?
-    # @option params [Boolean] structure Copy structure only?
-    # @option params [Boolean] overwrite Overwrite existing file(s) in the destination?
+    # @option params [String] destination Required. Destination folder path for extracted files.
+    # @option params [String] filename Optional single entry filename to extract.
+    # @option params [Boolean] overwrite Overwrite existing files in the destination?
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::FileAction] the returned record.
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.copy(path, params = {}, options = {})
+    def self.unzip(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: copy_behaviors must be a single value, not #{params[:copy_behaviors].class}") if [ Array, Hash ].any? { |klass| params[:copy_behaviors].is_a?(klass) }
-      raise InvalidParameterError.new("Bad parameter: structure must be a single value, not #{params[:structure].class}") if [ Array, Hash ].any? { |klass| params[:structure].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: filename must be an String") if !params[:filename].nil? and !params[:filename].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/copy/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
+      response, options = Api.send_request("/file_actions/unzip", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
-    # Move File/Folder
+    # Encrypt a file with GPG and save it to a destination path
     #
     # @param path [String] Path to operate on.
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] destination Required. Move destination path.
-    # @option params [Boolean] overwrite Overwrite existing file(s) in the destination?
+    # @option params [String] destination Required. Destination file path for the encrypted file.
+    # @option params [Array<Integer>] gpg_key_ids GPG Key IDs to encrypt with.
+    # @option params [Integer] gpg_key_partner_id Partner ID whose GPG keys should be used for encryption.
+    # @option params [Integer] signing_key_id Optional GPG Key ID to sign with.
+    # @option params [Boolean] armor Output ASCII-armored encrypted data.
+    # @option params [Boolean] overwrite Overwrite existing file in the destination?
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::FileAction] the returned record.
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.move(path, params = {}, options = {})
+    def self.gpg_encrypt(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: signing_key_id must be an Integer") if !params[:signing_key_id].nil? and !params[:signing_key_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: armor must be a single value, not #{params[:armor].class}") if [ Array, Hash ].any? { |klass| params[:armor].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/move/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
+      response, options = Api.send_request("/file_actions/gpg_encrypt/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
+      FileAction.new(response.data, options)
+    end
+
+    # Decrypt a GPG-encrypted file and save it to a destination path
+    #
+    # @param path [String] Path to operate on.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] destination Required. Destination file path for the decrypted file.
+    # @option params [Array<Integer>] gpg_key_ids GPG Key IDs to decrypt with. If omitted, every accessible private GPG key in the source workspace is used.
+    # @option params [Integer] gpg_key_partner_id Partner ID whose GPG keys should be used for decryption.
+    # @option params [Boolean] use_all_private_keys Use every accessible private GPG key in the source workspace for decryption.
+    # @option params [Boolean] ignore_mdc_error Ignore errors from the MDC (modification detection code) check.
+    # @option params [Boolean] overwrite Overwrite existing file in the destination?
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::FileAction] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.gpg_decrypt(path, params = {}, options = {})
+      params = (params || {}).dup
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: use_all_private_keys must be a single value, not #{params[:use_all_private_keys].class}") if [ Array, Hash ].any? { |klass| params[:use_all_private_keys].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: ignore_mdc_error must be a single value, not #{params[:ignore_mdc_error].class}") if [ Array, Hash ].any? { |klass| params[:ignore_mdc_error].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+      raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
+
+      response, options = Api.send_request("/file_actions/gpg_decrypt/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
@@ -2384,117 +2425,76 @@ module Files
       FileAction.new(response.data, options)
     end
 
-    # Decrypt a GPG-encrypted file and save it to a destination path
+    # Move File/Folder
     #
     # @param path [String] Path to operate on.
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] destination Required. Destination file path for the decrypted file.
-    # @option params [Array<Integer>] gpg_key_ids GPG Key IDs to decrypt with. If omitted, every accessible private GPG key in the source workspace is used.
-    # @option params [Integer] gpg_key_partner_id Partner ID whose GPG keys should be used for decryption.
-    # @option params [Boolean] use_all_private_keys Use every accessible private GPG key in the source workspace for decryption.
-    # @option params [Boolean] ignore_mdc_error Ignore errors from the MDC (modification detection code) check.
-    # @option params [Boolean] overwrite Overwrite existing file in the destination?
+    # @option params [String] destination Required. Move destination path.
+    # @option params [Boolean] overwrite Overwrite existing file(s) in the destination?
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::FileAction] the returned record.
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.gpg_decrypt(path, params = {}, options = {})
+    def self.move(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: use_all_private_keys must be a single value, not #{params[:use_all_private_keys].class}") if [ Array, Hash ].any? { |klass| params[:use_all_private_keys].is_a?(klass) }
-      raise InvalidParameterError.new("Bad parameter: ignore_mdc_error must be a single value, not #{params[:ignore_mdc_error].class}") if [ Array, Hash ].any? { |klass| params[:ignore_mdc_error].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/gpg_decrypt/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
+      response, options = Api.send_request("/file_actions/move/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
-    # Encrypt a file with GPG and save it to a destination path
+    # Copy File/Folder
     #
     # @param path [String] Path to operate on.
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] destination Required. Destination file path for the encrypted file.
-    # @option params [Array<Integer>] gpg_key_ids GPG Key IDs to encrypt with.
-    # @option params [Integer] gpg_key_partner_id Partner ID whose GPG keys should be used for encryption.
-    # @option params [Integer] signing_key_id Optional GPG Key ID to sign with.
-    # @option params [Boolean] armor Output ASCII-armored encrypted data.
-    # @option params [Boolean] overwrite Overwrite existing file in the destination?
+    # @option params [String] destination Required. Copy destination path.
+    # @option params [Boolean] copy_behaviors If copying a folder, also copy supported behaviors, email notification subscriptions, and per-folder branding to the destination folder tree?
+    # @option params [Boolean] structure Copy structure only?
+    # @option params [Boolean] overwrite Overwrite existing file(s) in the destination?
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::FileAction] the returned record.
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.gpg_encrypt(path, params = {}, options = {})
+    def self.copy(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: gpg_key_ids must be an Array") if !params[:gpg_key_ids].nil? and !params[:gpg_key_ids].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: gpg_key_partner_id must be an Integer") if !params[:gpg_key_partner_id].nil? and !params[:gpg_key_partner_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: signing_key_id must be an Integer") if !params[:signing_key_id].nil? and !params[:signing_key_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: armor must be a single value, not #{params[:armor].class}") if [ Array, Hash ].any? { |klass| params[:armor].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: copy_behaviors must be a single value, not #{params[:copy_behaviors].class}") if [ Array, Hash ].any? { |klass| params[:copy_behaviors].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: structure must be a single value, not #{params[:structure].class}") if [ Array, Hash ].any? { |klass| params[:structure].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
       raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/gpg_encrypt/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
+      response, options = Api.send_request("/file_actions/copy/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 
-    # Extract a ZIP file to a destination folder
+    # Delete File/Folder and return its File Action.  A pending or processing deletion continues in the background after this returns; check its File Migration for completion.  Waiting for the File Migration does not cancel the deletion
     #
-    # @param path [String] ZIP file path to extract.
+    # @param path [String] Path to operate on.
     # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] destination Required. Destination folder path for extracted files.
-    # @option params [String] filename Optional single entry filename to extract.
-    # @option params [Boolean] overwrite Overwrite existing files in the destination?
+    # @option params [Boolean] recursive If true, will recursively delete folders.  Otherwise, will error on non-empty folders.
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::FileAction] the returned record.
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.unzip(path, params = {}, options = {})
+    def self.begin_delete(path, params = {}, options = {})
       params = (params || {}).dup
       params[:path] = path
       raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: filename must be an String") if !params[:filename].nil? and !params[:filename].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
       raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
-      raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
 
-      response, options = Api.send_request("/file_actions/unzip", :post, params, options) { |reply| reply.require_object("FileAction") }
-      FileAction.new(response.data, options)
-    end
-
-    # Create a ZIP from one or more paths and save it to a destination path
-    #
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [Array<String>] paths Required. Paths to include in the ZIP.
-    # @option params [String] destination Required. Destination file path for the ZIP.
-    # @option params [String] archive_format Archive format to create.
-    # @option params [Boolean] overwrite Overwrite existing file in the destination?
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [Files::FileAction] the returned record.
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.zip(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: paths must be an Array") if !params[:paths].nil? and !params[:paths].is_a?(Array)
-      raise InvalidParameterError.new("Bad parameter: destination must be an String") if !params[:destination].nil? and !params[:destination].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: archive_format must be an String") if !params[:archive_format].nil? and !params[:archive_format].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: overwrite must be a single value, not #{params[:overwrite].class}") if [ Array, Hash ].any? { |klass| params[:overwrite].is_a?(klass) }
-      raise MissingParameterError.new("Parameter missing: paths") if params[:paths].nil?
-      raise MissingParameterError.new("Parameter missing: destination") if params[:destination].nil?
-
-      response, options = Api.send_request("/file_actions/zip", :post, params, options) { |reply| reply.require_object("FileAction") }
+      response, options = Api.send_request("/file_actions/delete/#{params[:path]}", :post, params, options) { |reply| reply.require_object("FileAction") }
       FileAction.new(response.data, options)
     end
 

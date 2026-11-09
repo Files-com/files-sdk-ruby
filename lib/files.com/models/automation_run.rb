@@ -155,25 +155,6 @@ module Files
       @attributes[:status_messages_url]
     end
 
-    # Cancel Automation Run
-    #
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @return [Array(Files::Response, Hash)] the response and persisted request options.
-    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def cancel(params = {})
-      params = (params || {}).dup
-      params[:id] = @attributes[:id]
-      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
-
-      response, options = Api.send_request("/automation_runs/#{@attributes[:id]}/cancel", :post, params, @options)
-      @options = @options.merge(options)
-      [ response, options ]
-    end
-
     # Re-run Automation from Node
     #
     # @param params [Hash] API parameters, keyed by Symbol.
@@ -192,6 +173,25 @@ module Files
       raise MissingParameterError.new("Parameter missing: node_id") if params[:node_id].nil?
 
       response, options = Api.send_request("/automation_runs/#{@attributes[:id]}/rerun", :post, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
+    end
+
+    # Cancel Automation Run
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def cancel(params = {})
+      params = (params || {}).dup
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+
+      response, options = Api.send_request("/automation_runs/#{@attributes[:id]}/cancel", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
@@ -278,25 +278,6 @@ module Files
       AutomationExecutionNode.new(response.data, options)
     end
 
-    # Cancel Automation Run
-    #
-    # @param id [Integer] Automation Run ID.
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [Files::AutomationRun] the returned record.
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.cancel(id, params = {}, options = {})
-      params = (params || {}).dup
-      params[:id] = id
-      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
-
-      response, options = Api.send_request("/automation_runs/#{params[:id]}/cancel", :post, params, options) { |reply| reply.require_object("AutomationRun") }
-      AutomationRun.new(response.data, options)
-    end
-
     # Re-run Automation from Node
     #
     # @param id [Integer] Automation Run ID.
@@ -316,6 +297,25 @@ module Files
       raise MissingParameterError.new("Parameter missing: node_id") if params[:node_id].nil?
 
       response, options = Api.send_request("/automation_runs/#{params[:id]}/rerun", :post, params, options) { |reply| reply.require_object("AutomationRun") }
+      AutomationRun.new(response.data, options)
+    end
+
+    # Cancel Automation Run
+    #
+    # @param id [Integer] Automation Run ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::AutomationRun] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.cancel(id, params = {}, options = {})
+      params = (params || {}).dup
+      params[:id] = id
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+
+      response, options = Api.send_request("/automation_runs/#{params[:id]}/cancel", :post, params, options) { |reply| reply.require_object("AutomationRun") }
       AutomationRun.new(response.data, options)
     end
   end

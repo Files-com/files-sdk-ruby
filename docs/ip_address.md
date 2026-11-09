@@ -35,10 +35,10 @@ Files::IpAddress.list
 
 ---
 
-## List all possible public SmartFile IP addresses
+## List all possible public IP addresses
 
 ```
-Files::IpAddress.get_smartfile_reserved
+Files::IpAddress.get_reserved
 ```
 
 ### Parameters
@@ -63,10 +63,10 @@ Files::IpAddress.get_exavault_reserved
 
 ---
 
-## List all possible public IP addresses
+## List all possible public SmartFile IP addresses
 
 ```
-Files::IpAddress.get_reserved
+Files::IpAddress.get_smartfile_reserved
 ```
 
 ### Parameters

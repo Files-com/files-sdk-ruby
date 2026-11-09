@@ -126,19 +126,6 @@ Files::AutomationRun.find_node(id,
 
 ---
 
-## Cancel Automation Run
-
-```
-Files::AutomationRun.cancel(id)
-```
-
-### Parameters
-
-* `id` (int64): Required - Automation Run ID.
-
-
----
-
 ## Re-run Automation from Node
 
 ```
@@ -158,9 +145,7 @@ Files::AutomationRun.rerun(id,
 ## Cancel Automation Run
 
 ```
-automation_run = Files::AutomationRun.find(id)
-
-automation_run.cancel
+Files::AutomationRun.cancel(id)
 ```
 
 ### Parameters
@@ -184,3 +169,18 @@ automation_run.rerun(
 
 * `id` (int64): Required - Automation Run ID.
 * `node_id` (string): Required - Node ID at which execution should resume.
+
+
+---
+
+## Cancel Automation Run
+
+```
+automation_run = Files::AutomationRun.find(id)
+
+automation_run.cancel
+```
+
+### Parameters
+
+* `id` (int64): Required - Automation Run ID.

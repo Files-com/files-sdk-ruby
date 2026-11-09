@@ -107,21 +107,21 @@ module Files
       @attributes[:updated_at]
     end
 
-    # Resolve an expectation incident
+    # Acknowledge an expectation incident
     #
     # @param params [Hash] API parameters, keyed by Symbol.
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def resolve(params = {})
+    def acknowledge(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      response, options = Api.send_request("/expectation_incidents/#{@attributes[:id]}/resolve", :post, params, @options)
+      response, options = Api.send_request("/expectation_incidents/#{@attributes[:id]}/acknowledge", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
@@ -148,21 +148,21 @@ module Files
       [ response, options ]
     end
 
-    # Acknowledge an expectation incident
+    # Resolve an expectation incident
     #
     # @param params [Hash] API parameters, keyed by Symbol.
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def acknowledge(params = {})
+    def resolve(params = {})
       params = (params || {}).dup
       params[:id] = @attributes[:id]
       raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      response, options = Api.send_request("/expectation_incidents/#{@attributes[:id]}/acknowledge", :post, params, @options)
+      response, options = Api.send_request("/expectation_incidents/#{@attributes[:id]}/resolve", :post, params, @options)
       @options = @options.merge(options)
       [ response, options ]
     end
@@ -222,7 +222,7 @@ module Files
       find(id, params, options)
     end
 
-    # Resolve an expectation incident
+    # Acknowledge an expectation incident
     #
     # @param id [Integer] Expectation Incident ID.
     # @param params [Hash] API parameters, keyed by Symbol.
@@ -231,13 +231,13 @@ module Files
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.resolve(id, params = {}, options = {})
+    def self.acknowledge(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      response, options = Api.send_request("/expectation_incidents/#{params[:id]}/resolve", :post, params, options) { |reply| reply.require_object("ExpectationIncident") }
+      response, options = Api.send_request("/expectation_incidents/#{params[:id]}/acknowledge", :post, params, options) { |reply| reply.require_object("ExpectationIncident") }
       ExpectationIncident.new(response.data, options)
     end
 
@@ -263,7 +263,7 @@ module Files
       ExpectationIncident.new(response.data, options)
     end
 
-    # Acknowledge an expectation incident
+    # Resolve an expectation incident
     #
     # @param id [Integer] Expectation Incident ID.
     # @param params [Hash] API parameters, keyed by Symbol.
@@ -272,13 +272,13 @@ module Files
     # @raise [Files::MissingParameterError] if a required parameter is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
     # @raise [Files::Error] if the API request fails.
-    def self.acknowledge(id, params = {}, options = {})
+    def self.resolve(id, params = {}, options = {})
       params = (params || {}).dup
       params[:id] = id
       raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
-      response, options = Api.send_request("/expectation_incidents/#{params[:id]}/acknowledge", :post, params, options) { |reply| reply.require_object("ExpectationIncident") }
+      response, options = Api.send_request("/expectation_incidents/#{params[:id]}/resolve", :post, params, options) { |reply| reply.require_object("ExpectationIncident") }
       ExpectationIncident.new(response.data, options)
     end
   end

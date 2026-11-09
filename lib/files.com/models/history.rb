@@ -101,141 +101,6 @@ module Files
       @attributes[:interface]
     end
 
-    # List history for specific file
-    #
-    # @param path [String] Path to operate on.
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
-    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
-    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
-    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.list_for_file(path, params = {}, options = {})
-      params = (params || {}).dup
-      params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: display must be an String") if !params[:display].nil? and !params[:display].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
-
-      list_options = options.dup
-      List.new(Action, params) do |page_params, &check_page|
-        response, page_options = Api.send_request("/history/files/#{page_params[:path]}", :get, page_params, list_options, &check_page)
-        list_options = list_options.merge(page_options)
-        [ response, page_options ]
-      end
-    end
-
-    # List history for specific folder
-    #
-    # @param path [String] Path to operate on.
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
-    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
-    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
-    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.list_for_folder(path, params = {}, options = {})
-      params = (params || {}).dup
-      params[:path] = path
-      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: display must be an String") if !params[:display].nil? and !params[:display].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
-      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
-
-      list_options = options.dup
-      List.new(Action, params) do |page_params, &check_page|
-        response, page_options = Api.send_request("/history/folders/#{page_params[:path]}", :get, page_params, list_options, &check_page)
-        list_options = list_options.merge(page_options)
-        [ response, page_options ]
-      end
-    end
-
-    # List history for specific user
-    #
-    # @param user_id [Integer] User ID.
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
-    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
-    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
-    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.list_for_user(user_id, params = {}, options = {})
-      params = (params || {}).dup
-      params[:user_id] = user_id
-      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: display must be an String") if !params[:display].nil? and !params[:display].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
-      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
-      raise MissingParameterError.new("Parameter missing: user_id") if params[:user_id].nil?
-
-      list_options = options.dup
-      List.new(Action, params) do |page_params, &check_page|
-        response, page_options = Api.send_request("/history/users/#{page_params[:user_id]}", :get, page_params, list_options, &check_page)
-        list_options = list_options.merge(page_options)
-        [ response, page_options ]
-      end
-    end
-
-    # List site login history
-    #
-    # @param params [Hash] API parameters, keyed by Symbol.
-    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
-    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
-    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
-    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
-    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
-    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
-    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
-    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
-    # @raise [Files::MissingParameterError] if a required parameter is missing.
-    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
-    # @raise [Files::Error] if the API request fails.
-    def self.list_logins(params = {}, options = {})
-      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: display must be an String") if !params[:display].nil? and !params[:display].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
-
-      list_options = options.dup
-      List.new(Action, params) do |page_params, &check_page|
-        response, page_options = Api.send_request("/history/login", :get, page_params, list_options, &check_page)
-        list_options = list_options.merge(page_options)
-        [ response, page_options ]
-      end
-    end
-
     # List site full action history
     #
     # @param params [Hash] API parameters, keyed by Symbol.
@@ -273,6 +138,141 @@ module Files
     # (see .list)
     def self.all(params = {}, options = {})
       list(params, options)
+    end
+
+    # List site login history
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
+    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
+    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.list_logins(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: display must be an String") if !params[:display].nil? and !params[:display].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+
+      list_options = options.dup
+      List.new(Action, params) do |page_params, &check_page|
+        response, page_options = Api.send_request("/history/login", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
+      end
+    end
+
+    # List history for specific user
+    #
+    # @param user_id [Integer] User ID.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
+    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
+    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.list_for_user(user_id, params = {}, options = {})
+      params = (params || {}).dup
+      params[:user_id] = user_id
+      raise InvalidParameterError.new("Bad parameter: user_id must be an Integer") if !params[:user_id].nil? and !params[:user_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: display must be an String") if !params[:display].nil? and !params[:display].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise MissingParameterError.new("Parameter missing: user_id") if params[:user_id].nil?
+
+      list_options = options.dup
+      List.new(Action, params) do |page_params, &check_page|
+        response, page_options = Api.send_request("/history/users/#{page_params[:user_id]}", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
+      end
+    end
+
+    # List history for specific folder
+    #
+    # @param path [String] Path to operate on.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
+    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
+    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.list_for_folder(path, params = {}, options = {})
+      params = (params || {}).dup
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: display must be an String") if !params[:display].nil? and !params[:display].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+
+      list_options = options.dup
+      List.new(Action, params) do |page_params, &check_page|
+        response, page_options = Api.send_request("/history/folders/#{page_params[:path]}", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
+      end
+    end
+
+    # List history for specific file
+    #
+    # @param path [String] Path to operate on.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] start_at Leave blank or set to a date/time to filter earlier entries.
+    # @option params [String] end_at Leave blank or set to a date/time to filter later entries.
+    # @option params [String] display Display format. Leave blank or set to `full` or `parent`.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [Hash] sort_by If set, sort records by the specified field in either `asc` or `desc` direction. Valid fields are `created_at`.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.list_for_file(path, params = {}, options = {})
+      params = (params || {}).dup
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: start_at must be an String") if !params[:start_at].nil? and !params[:start_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: end_at must be an String") if !params[:end_at].nil? and !params[:end_at].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: display must be an String") if !params[:display].nil? and !params[:display].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: sort_by must be an Hash") if !params[:sort_by].nil? and !params[:sort_by].is_a?(Hash)
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+
+      list_options = options.dup
+      List.new(Action, params) do |page_params, &check_page|
+        response, page_options = Api.send_request("/history/files/#{page_params[:path]}", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
+      end
     end
   end
 end
