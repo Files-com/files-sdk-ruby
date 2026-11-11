@@ -45,6 +45,24 @@ app, such as a sign-in page, rather than from file storage. It raises
 `Files::Transfer::FrontendResponseError` before any of it is written, and
 closes the IO as a refused transfer does.
 
+A 400 or 403 that says the download URL has expired (as described under
+[Retries and expiry](#retries-and-expiry), whatever expiry the URL states) is
+not raised while a renewal is left: the URL is looked up again by the file's
+path, with the options the record was made with, and the same range is
+requested again, with nothing of the refusal written and the IO left open.
+A download renews its URL at most twice, and each renewal is one of its
+`Files.max_network_retries` retries, which the connection's own retries share,
+so with `Files.max_network_retries = 0` nothing is renewed. A record made
+from a URL alone, without a path, cannot renew it. The same holds for
+`download_file`, `read_io` and the reads that use it, and for a
+`download_client` of your own, whether its connection raises a refusal or
+returns it. Over the SDK's own download connection (Net::HTTP), only the
+first 4 KiB and one byte more of such a refusal are read; a `download_client`
+with an adapter of its own may already have read the whole of it, as it
+always did, and only its first 4 KiB are judged.
+A renewed URL, for a download or an upload part, whose own signature says it
+has expired raises `Files::APIError` without being sent.
+
 ## Uploads
 
 `upload_file` sends a file one part at a time, as the API grants each. A part
@@ -54,6 +72,17 @@ failed` and the status in `http_status`, before another part is planned or the
 upload is finalized. This holds with or without `progress:`, and for
 `upload_chunks` and `Files::File#write` and `#close`. (Before, without
 `progress:`, a part answered with another status was treated as uploaded.)
+
+A part whose URL storage says has expired, with a 400 or 403 as described
+under [Retries and expiry](#retries-and-expiry), is renewed instead, at most
+twice, each renewal one of the part's `Files.max_network_retries` retries,
+which its connection retries share: `begin_upload` is asked for the same part
+of the same upload (by its `ref`, the first part's too), and the same bytes are
+sent again, never read again from the source. A part whose instructions say
+`retry_parts: false` is not renewed, and renewed instructions that change its
+`ref`, number, size, method, `headers`, `parameters` or `send`, or say
+`retry_parts: false`, raise
+`Files::APIError` before anything is sent with them.
 
 ## Adaptive transfers
 
@@ -334,7 +363,15 @@ A signed URL within five seconds of its expiry, by the API's `expires` or the
 URL's own signature parameters, is renewed before it is sent, at most twice;
 one still expired after that fails the transfer without being sent. A URL
 that expires after its request was sent is renewed and sent again only as one
-of the part's retries, and never for `retry_parts: false`. An upload's renewal
+of the part's retries, and never for `retry_parts: false`. So is a URL
+storage refuses with a 400 or 403 that says it has expired, whatever expiry
+the URL states, within the same renewals: S3's `Request has expired`,
+`<Code>ExpiredToken</Code>` (Amazon and Google) or Azure's `Signature not
+valid in the specified time frame`, found without regard to case in the first
+4 KiB of the body, or a Files.com JSON error of at most 4 KiB whose `type` is
+`download_request_expired` or `upload_request_expired`. A body that begins as
+JSON (`{`, `[` or `"`) is judged by that `type` alone, never by text inside
+it. An upload's renewal
 must keep the part's reference, number, size (the SDK's own, for parts it
 sizes, with the same S3 upload), method, headers and retry rules.
 Each request goes to the URL it was admitted for, whose origin's `Retry-After`

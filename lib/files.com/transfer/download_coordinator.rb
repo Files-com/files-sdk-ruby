@@ -22,7 +22,7 @@ module Files
     # until its whole body has arrived and been checked. Every request, the opening one and a proof included, waits
     # while a throttle's Retry-After holds its destination back for the job (Holds), and publishes one it gets before
     # its request permit is given back. A range goes to the URL it was admitted for, even once that has been renewed,
-    # and a 403 for it is judged by that URL's own expiry.
+    # and a 403 for it is judged by that URL's own expiry, or by storage's word that it expired.
     #
     # Without a strong ETag, storage's whole response is streamed instead, as one request. A retry of it starts again
     # from the first byte: the destination, a local file or an IO that can seek back, is truncated to where it started
@@ -417,8 +417,8 @@ module Files
       # request under one of the job's request permits and only once no throttle holds its destination back. A
       # throttle it gets holds the destination back for every transfer of the job, from before its permit is given back
       # (fetch_once). An expired URL is renewed before it is sent, at most twice; a renewal after storage refused an
-      # expired URL is one of the retries. Returns :bound when ranges remain, or :done. What ends it stops the transfer
-      # as it is found (stop!, refusal).
+      # expired URL, or said it expired (StorageRetry.expired_response?), counts as a retry and as one of those two.
+      # Returns :bound when ranges remain, or :done. What ends it stops the transfer as it is found (stop!, refusal).
       def fetch_head
         attempts = 0
         renewals = 0
@@ -455,15 +455,25 @@ module Files
           return :done if response.status == 416 && @written.zero? && response.header("content-range").to_s.strip == "bytes */0"
           raise refusal(VersionChangedError.new) if response.status == 412
 
-          decision, delay = if response.status == 403 && StorageRetry.expired?(@current[2])
+          said_expired = StorageRetry.expired_response?(response.status, response.body, truncated: response.truncated)
+          decision, delay = if said_expired || (response.status == 403 && StorageRetry.expired?(@current[2]))
                               [ :renew, 0.0 ]
                             else
                               StorageRetry.classify(response.status, response.headers, response.body, truncated: response.truncated)
                             end
           raise refusal(refused(response)) if decision == :refuse || attempts >= @max_retries
 
+          # Storage said the URL expired while the expiry it states is still to come, or it states none: the check
+          # before the next send would not renew it, so it is renewed here, within the same renewals.
+          renew_now = said_expired && !StorageRetry.expired?(@current[2])
+          raise refusal(refused(response)) if renew_now && renewals >= RENEWALS
+
           attempts += 1
           retry_head(delay)
+          next unless renew_now
+
+          renewals += 1
+          renew_url
         end
       end
 
@@ -696,9 +706,9 @@ module Files
 
       # On a worker thread, to the URL and generation the range was admitted for (target), even when the URL has been
       # renewed since. A 403 renews it when that URL's own expiry has passed, or when a newer URL has been published
-      # since; any other 403 refuses it. timing starts with the send and ends once the range's whole body has arrived and
-      # been checked; the range's bytes are charged to the buffer budget already, and read straight into one String of
-      # its length.
+      # since, and a 400 or 403 when storage says the URL expired (StorageRetry.expired_response?); any other 403
+      # refuses it. timing starts with the send and ends once the range's whole body has arrived and been checked; the
+      # range's bytes are charged to the buffer budget already, and read straight into one String of its length.
       def attempt_item(piece, target, connections, timing = nil)
         url, generation, expires_at = target
         piece.generation = generation
@@ -708,6 +718,7 @@ module Files
         return [ :fail, refusal(FrontendResponseError.new) ] if StorageRetry.frontend?(response.headers)
         return [ :fail, refusal(VersionChangedError.new) ] if response.status == 412
         return [ :renew, refusal(refused(response)) ] if response.status == 403 && (StorageRetry.expired?(expires_at) || generation < @current[1])
+        return [ :renew, refusal(refused(response)) ] if StorageRetry.expired_response?(response.status, response.body, truncated: response.truncated)
 
         decision, delay = StorageRetry.classify(response.status, response.headers, response.body, truncated: response.truncated)
         case decision

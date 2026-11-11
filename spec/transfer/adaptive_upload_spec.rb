@@ -936,6 +936,57 @@ RSpec.describe Files::File, "adaptive uploads" do
         expect(ends(api).size).to eq(sends - 1)
       end
     end
+
+    # Storage's word that a part's URL, which states no expiry, has expired: the first answer to the part.
+    expired = "<Error><Code>AccessDenied</Code><Message>Request has expired</Message></Error>"
+    [
+      [ "S3's Request has expired", 403, %(<?xml version="1.0" encoding="UTF-8"?>\n#{expired}), :renews ],
+      [ "ExpiredToken", 400, "<Error><Code>ExpiredToken</Code><Message>The provided token has expired.</Message></Error>", :renews ],
+      [ "Azure's expired signature", 403, "<Error><Code>AuthenticationFailed</Code><AuthenticationErrorDetail>SIGNATURE NOT VALID IN THE SPECIFIED TIME FRAME</AuthenticationErrorDetail></Error>", :renews ],
+      [ "upload_request_expired", 403, '{"type":"upload_request_expired","http-code":403}', :renews ],
+      [ "download_request_expired", 400, '{"type":"download_request_expired"}', :renews ],
+      [ "an expiry in the first 4 KiB of a body past 64 KiB", 403, expired.ljust(70_000), :renews ],
+      [ "an expiry past the first 4 KiB", 403, "#{' ' * 4096}#{expired}", :refuses ],
+      [ "upload_request_expired past 4 KiB", 403, '{"type":"upload_request_expired"}'.ljust(4097), :refuses ],
+      [ "AccessDenied", 403, "<Error><Code>AccessDenied</Code><Message>Access Denied</Message></Error>", :refuses ],
+      [ "SignatureDoesNotMatch", 403, "<Error><Code>SignatureDoesNotMatch</Code><Message>The signature has expired or does not match</Message></Error>", :refuses ],
+      [ "another Files.com error", 403, '{"type":"not-authorized/expired","error":"Upload request expired"}', :refuses ],
+      # JSON is judged by its type alone, never by an expiry's words inside it, even when it is not well formed.
+      [ "another JSON type saying Request has expired", 403, '{"type":"not_authorized","error":"Request has expired"}', :refuses ],
+      [ "another JSON type holding ExpiredToken", 400, '{"type":"other","data":"<Code>ExpiredToken</Code>"}', :refuses ],
+      [ "a JSON array saying Request has expired", 403, '[{"Message":"Request has expired"}]', :refuses ],
+      [ "a JSON string saying Request has expired", 403, '"Request has expired"', :refuses ],
+      [ "malformed JSON saying Request has expired", 403, '  {"error":"Request has expired"', :refuses ],
+      [ "an expiry on a success", 200, expired, :acknowledged ],
+      [ "an expiry for a part that may not be retried", 403, expired, :refuses, { retry_parts: false } ]
+    ].each do |name, status, body, outcome, grant = {}|
+      it "#{outcome == :renews ? 'renews' : 'does not renew'} a part's URL when storage answers #{name}" do
+        Files.max_network_retries = 1
+        lock = Mutex.new
+        answered = 0
+        headers = { "Content-Length" => body.bytesize }
+        headers["ETag"] = "\"etag-1\"" if status == 200
+        store = storage_server(part: lambda { |number, _request|
+          first = lock.synchronize { (answered += 1) == 1 }
+          first ? TransferServer.response("#{status} Answer", headers, body) : acknowledged(number)
+        }
+                              )
+        api = api_server(store, grant: ->(_number, _params) { grant })
+
+        with_local_file(data.byteslice(0, 4)) do |path|
+          if outcome == :refuses
+            expect { upload(path, transfer: { concurrency: 1 }) }.to raise_error(Files::APIError) { |error| expect(error.http_status).to eq(status) }
+          else
+            upload(path, transfer: { concurrency: 1 })
+          end
+        end
+        sends = outcome == :renews ? 2 : 1
+        expect(parts_sent(store).map(&:body)).to eq([ data.byteslice(0, 4) ] * sends)
+        expect(begins(api).size).to eq(sends)
+        expect(begins(api).drop(1).map { |params| params.values_at("part", "parts", "ref") }).to eq([ %w[1 1 upload-ref] ] * (sends - 1))
+        expect(ends(api).size).to eq(outcome == :refuses ? 0 : 1)
+      end
+    end
   end
 
   describe "stopping" do

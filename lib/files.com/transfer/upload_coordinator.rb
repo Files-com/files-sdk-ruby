@@ -582,6 +582,7 @@ module Files
           return [ :fail, Files::APIError.new(ACK_FAILURE, http_status: response.status) ]
         end
         return [ :renew, refused(response) ] if response.status == 403 && StorageRetry.expired?(grant.expires_at)
+        return [ :renew, refused(response) ] if StorageRetry.expired_response?(response.status, response.body, truncated: response.truncated)
 
         decision, delay = StorageRetry.classify(response.status, response.headers, response.body, truncated: response.truncated)
         case decision

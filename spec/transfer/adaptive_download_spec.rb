@@ -595,6 +595,72 @@ RSpec.describe Files::File, "adaptive downloads" do
       expect(writes).to eq(([ 65_536 ] * 10) + [ 1000 ])
       expect(recorder).not_to be_closed
     end
+
+    # Storage's word that a URL expired, though the URL says it lives another hour: the opening request renews it
+    # itself, at most twice, as storage keeps saying so; any other 403 refuses it unrenewed.
+    it "renews a URL storage says expired before its stated expiry for the opening request, at most twice, and refuses other denials" do
+      Files.max_network_retries = 3
+      denial = lambda do |message|
+        body = "<Error><Code>AccessDenied</Code><Message>#{message}</Message></Error>"
+        ->(_request, _default) { TransferServer.response("403 Forbidden", { "Content-Type" => "application/xml", "Content-Length" => body.bytesize }, body) }
+      end
+      signed = "/objects/report.bin?X-Amz-Date=#{Time.now.utc.strftime('%Y%m%dT%H%M%SZ')}&X-Amz-Expires=3600"
+      expired = storage_server(answer: denial.call("Request has expired"))
+      store = storage_server
+      api = api_server(store)
+
+      described_class.new(path: "report.bin", download_uri: expired.url(signed)).download_content(sink, transfer: transfer)
+      expect(sink.string).to eq(payload)
+      expect([ expired.requests.size, api.requests.size ]).to eq([ 1, 1 ])
+
+      api = api_server(expired)
+      always = StringIO.new("".b)
+      expect { described_class.new(path: "report.bin", download_uri: expired.url(signed)).download_content(always, transfer: transfer) }
+        .to raise_error(Files::APIError, "Transfer request failed") { |error| expect(error.http_status).to eq(403) }
+      expect([ expired.requests.size, api.requests.size, always.string ]).to eq([ 4, 2, "" ])
+      expect(always).to be_closed
+
+      denied = storage_server(answer: denial.call("Access Denied"))
+      api = api_server(store)
+      expect { described_class.new(path: "report.bin", download_uri: denied.url(signed)).download_content(StringIO.new("".b), transfer: transfer) }
+        .to raise_error(Files::APIError) { |error| expect(error.http_status).to eq(403) }
+      expect([ denied.requests.size, api.requests.size ]).to eq([ 1, 0 ])
+    end
+
+    # Four ranges sent at once with a URL storage then says expired: the first refusal renews it, and the others,
+    # refused only once that renewal has begun, go again with the URL it published, without another. Each range is
+    # written once.
+    it "renews once for ranges storage says were sent to an expired URL, and writes each range once" do
+      Files.max_network_retries = 1
+      body = JSON.generate(type: "download_request_expired", 'http-code': 400)
+      refusal = TransferServer.response("400 Bad Request", { "Content-Type" => "application/json", "Content-Length" => body.bytesize }, body)
+      lock = Mutex.new
+      refusals = 0
+      api = nil
+      expired = storage_server(hold: 4, answer: lambda { |request, default|
+        next default if request.headers["range"].start_with?("bytes=0-")
+
+        wait_until { api.requests.any? } unless lock.synchronize { (refusals += 1) == 1 }
+        refusal
+      }
+      )
+      store = storage_server
+      api = api_server(store)
+      signed = "/objects/report.bin?X-Amz-Date=#{Time.now.utc.strftime('%Y%m%dT%H%M%SZ')}&X-Amz-Expires=3600"
+
+      Files::Transfer::Job.open(**transfer, concurrency: 4) do |job|
+        described_class.new(path: "report.bin", download_uri: expired.url(signed)).download_content(sink, transfer: job)
+        refused = ranges(expired).drop(1)
+        expect(refused.size).to be >= 4
+        expect(job.diagnostics[:retries]).to eq(refused.size)
+        expect(job.held_bytes).to eq(0)
+      end
+
+      expect(sink.string).to eq(payload)
+      expect(api.requests.size).to eq(1)
+      expect(ranges(store).tally.values.uniq).to eq([ 1 ])
+      expect(ranges(store)).to include(*ranges(expired).drop(1))
+    end
   end
 
   describe "without a bound version" do

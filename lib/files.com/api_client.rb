@@ -376,6 +376,7 @@ module Files
       else
         response = remote_request(:get, uri)
         reject_frontend_response(response.headers.key?(Transfer::StorageRetry::FRONTEND_HEADER), io)
+        reject_returned_refusal(response, io) unless response.success?
         io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
         io.write(response.body)
       end
@@ -437,10 +438,49 @@ module Files
     end
 
     private def reject_unsuccessful_download(response, io)
-      response.error! unless response.is_a?(Net::HTTPSuccess)
+      return if response.is_a?(Net::HTTPSuccess)
+
+      renew_expired_download!(response)
+      response.error!
     rescue Net::HTTPExceptions => e
       close_destination_after_failure(io, e)
       raise
+    end
+
+    # A 400 or 403 that storage says came because the URL expired raises Transfer::UrlExpired, leaving the destination
+    # as it was, when the download may renew its URL (Transfer::Attempts). Only as much of its body is read as that takes,
+    # the first EXPIRY_SCAN_BYTES and one byte more; the connection is then closed. A body that fails to arrive, or ends
+    # short of its Content-Length, is judged by what did, as a body cut short: its provider text counts, its JSON does not.
+    private def renew_expired_download!(response)
+      status = response.code.to_i
+      return unless [ 400, 403 ].include?(status) && Transfer::Attempts.current&.renewable?
+
+      wanted = Transfer::StorageRetry::EXPIRY_SCAN_BYTES + 1
+      expected = expected_download_bytes(response)
+      kept = String.new(encoding: Encoding::BINARY)
+      truncated = true
+      begin
+        catch(:judged) do
+          response.read_body do |chunk|
+            kept << chunk.b.byteslice(0, wanted - kept.bytesize)
+            throw :judged if kept.bytesize >= wanted
+          end
+          truncated = !expected.nil? && kept.bytesize != expected
+        end
+      rescue StandardError
+        nil
+      end
+      Transfer::Attempts.renew_if_expired!(status, kept, truncated: truncated)
+    end
+
+    # A refusal that a connection without Faraday's raise_error middleware returns: storage's word that the URL expired
+    # renews it (Transfer::Attempts), and any other refusal, or one that cannot be renewed, raises APIError with its
+    # status, before anything of its body is written, closing the destination as a refused transfer does.
+    private def reject_returned_refusal(response, io)
+      Transfer::Attempts.renew_if_expired!(response.status, response.body)
+      error = APIError.new("Transfer request failed", http_status: response.status)
+      close_destination_after_failure(io, error)
+      raise error, cause: nil
     end
 
     # A response carrying X-Files-Frontend-App came from the Files.com web app, such as a sign-in page, not from file
@@ -657,8 +697,11 @@ module Files
         end
 
         single_attempt = is_transfer && Thread.current[:files_api_client_single_attempt]
-        if !single_attempt && self.class.should_retry?(e, num_retries)
+        # A transfer's content request without transfer: counts its retries with its URL's renewals (Transfer::Attempts).
+        attempts = Transfer::Attempts.current if is_transfer && !single_attempt
+        if !single_attempt && self.class.should_retry?(e, attempts ? attempts.retries : num_retries)
           num_retries += 1
+          attempts&.retried
           wait_seconds = self.class.sleep_time(num_retries)
           log_retry(context, num_retries, e, wait_seconds) unless is_transfer
           sleep wait_seconds
@@ -666,6 +709,7 @@ module Files
         end
         raise if single_attempt
 
+        Transfer::Attempts.renew_if_expired!(e.response[:status], e.response[:body]) if attempts && e.respond_to?(:response) && e.response
         Util.log_debug("Transfer error details", error_message: e.message) if is_transfer
 
         case e

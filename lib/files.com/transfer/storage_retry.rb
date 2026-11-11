@@ -13,7 +13,8 @@ module Files
     # destination back for every request of the job (Holds). Anything else is refused: 501, the other 4xx,
     # 3xx (redirects are never followed) and a success that does not acknowledge the part. Each retry is a new
     # admission, within the caller's Files.max_network_retries, and never for a part whose instructions say
-    # retry_parts: false.
+    # retry_parts: false. A 400 or 403 that says its URL has expired (expired_response?) is renewed instead, as one of
+    # those retries, as is a 403 for a URL whose stated expiry has passed.
     module StorageRetry
       THROTTLE_STATUSES = [ 429, 503 ].freeze
       RETRY_STATUSES = [ 500, 502, 504 ].freeze
@@ -37,6 +38,17 @@ module Files
       # Characters XML never allows: the C0 controls other than tab, newline and carriage return.
       XML_FORBIDDEN = /[\x00-\x08\x0B\x0C\x0E-\x1F]/n
       SIGNATURE_PARAMS = [ %w[x-amz-date x-amz-expires], %w[x-files-date x-files-expires], %w[x-goog-date x-goog-expires] ].freeze
+      # The most of a refused response's body looked at for storage's word that its signed URL has expired.
+      EXPIRY_SCAN_BYTES = 4096
+      # What storage says, in its XML error, when a signed URL has expired, even while the expiry the URL states is
+      # still to come, or when it states none: Amazon S3 and storage compatible with it ("Request has expired"), Amazon
+      # and Google (ExpiredToken) and Azure ("Signature not valid in the specified time frame"). Matched without regard
+      # to case, as the Python and .NET SDKs match them.
+      EXPIRY_MARKERS = [ "request has expired", "<code>expiredtoken</code>", "signature not valid in the specified time frame" ].freeze
+      # The type of the JSON error Files.com answers an expired download or upload URL of its own with.
+      EXPIRED_TYPES = %w[download_request_expired upload_request_expired].freeze
+      # A body that begins, after JSON's white space, as a JSON object, array or string, well formed or not.
+      JSON_START = /\A[ \t\r\n]*[\[{"]/
 
       # [:throttle, seconds], [:retry, seconds] or [:refuse] for a response that is not a success. headers are
       # lowercase names, each with its values. truncated says the body is only the first part of a longer one, which a
@@ -50,6 +62,27 @@ module Files
         return [ :retry, RETRY_DELAY ] if status == 400 && !truncated && request_timeout?(body)
 
         [ :refuse ]
+      end
+
+      # Whether storage refused a request because the signed URL it was sent to has expired, whatever expiry the URL
+      # states: a 400 or 403 whose whole body, within EXPIRY_SCAN_BYTES, is a JSON object whose type is one of
+      # EXPIRED_TYPES, or, when the body does not begin as JSON (JSON_START), whose first EXPIRY_SCAN_BYTES hold one of
+      # EXPIRY_MARKERS. A marker counts in a body truncated past them; JSON only when all of it was seen, and by its type
+      # alone, never by text inside it. Any other refusal, such as a 403 that denies access, is not.
+      def self.expired_response?(status, body, truncated: false)
+        return false unless [ 400, 403 ].include?(status) && body.is_a?(String)
+
+        scanned = body.byteslice(0, EXPIRY_SCAN_BYTES).b
+        unless scanned.match?(JSON_START)
+          lowered = scanned.downcase
+          return EXPIRY_MARKERS.any? { |marker| lowered.include?(marker) }
+        end
+        return false if truncated || body.bytesize > EXPIRY_SCAN_BYTES
+
+        error = JSON.parse(scanned.force_encoding(Encoding::UTF_8))
+        error.is_a?(Hash) && EXPIRED_TYPES.include?(error["type"])
+      rescue JSON::ParserError, EncodingError
+        false
       end
 
       # Seconds to wait, never negative and never shortened. Infinity when the value cannot be scheduled.

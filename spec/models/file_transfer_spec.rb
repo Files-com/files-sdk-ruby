@@ -60,9 +60,10 @@ RSpec.describe Files::File, "transfers" do
   # report.bin grants the parts it asks for, partsize bytes each, at https://storage.example.test/parts/<number>; each
   # part request is answered by part_response (200 with an ETag unless given), and the end of the upload with 201.
   # requests keeps every request in order, with its parameters or body and its headers. A planning request past the
-  # tenth fails, so an upload that never ends stops.
-  def upload_api(requests, partsize:, part_response: nil)
-    stubbed_api_client do |stub|
+  # tenth fails, so an upload that never ends stops. grant, given a begin_upload's parameters, adds to each part it
+  # grants; raise_errors: false gives a connection that returns error responses.
+  def upload_api(requests, partsize:, part_response: nil, grant: ->(_params) { {} }, raise_errors: true)
+    stubbed_api_client(raise_errors: raise_errors) do |stub|
       stub.post("/api/rest/v1/file_actions/begin_upload/report.bin") do |env|
         params = Faraday::Utils.parse_nested_query(env.body)
         requests << [ :begin, params, env.request_headers ]
@@ -70,7 +71,7 @@ RSpec.describe Files::File, "transfers" do
 
         first = Integer(params.fetch("part"))
         json_response(200, (first...(first + Integer(params.fetch("parts")))).map do |number|
-          { part_number: number, partsize: partsize, ref: "upload-ref", http_method: "PUT", upload_uri: "https://storage.example.test/parts/#{number}" }
+          { part_number: number, partsize: partsize, ref: "upload-ref", http_method: "PUT", upload_uri: "https://storage.example.test/parts/#{number}" }.merge(grant.call(params))
         end
         )
       end
@@ -88,6 +89,32 @@ RSpec.describe Files::File, "transfers" do
 
   def parts_sent(requests)
     requests.select { |kind, *| kind == :part }.map { |_, number, body| [ number, body ] }
+  end
+
+  # Storage that answers its first requests with refusals, in turn, and then with the payload, or the range asked for;
+  # and the API, made Files.base_url, whose every lookup of report.bin gives that storage's URL again, renewed.
+  def expiring_storage(*refusals)
+    remaining = refusals.dup
+    store = TransferServer.new(concurrent: true) do |request|
+      next remaining.shift unless remaining.empty?
+      next fixed_length(payload) unless (range = request.headers["range"])
+
+      first, last = range.delete_prefix("bytes=").split("-").map(&:to_i)
+      body = payload.byteslice(first..last)
+      response("206 Partial Content", { "Content-Range" => "bytes #{first}-#{last}/#{payload.bytesize}", "Content-Length" => body.bytesize }, body)
+    end
+    api = TransferServer.new(concurrent: true) do |_request|
+      body = JSON.generate(path: "report.bin", type: "file", download_uri: store.url("/objects/report.bin?renewed=1"))
+      response("200 OK", { "Content-Type" => "application/json", "Content-Length" => body.bytesize }, body)
+    end
+    servers.push(store, api)
+    Files.base_url = api.url("")
+    [ store, api ]
+  end
+
+  def storage_refusal(message)
+    body = "<Error><Code>AccessDenied</Code><Message>#{message}</Message></Error>"
+    response("403 Forbidden", { "Content-Type" => "application/xml", "Content-Length" => body.bytesize }, body)
   end
 
   # A source that has only read, eof? and close: it gives its data at most max_read bytes a read, then, at its end,
@@ -257,6 +284,57 @@ RSpec.describe Files::File, "transfers" do
       end
       expect(requests.map(&:first)).to eq(%i[begin part])
     end
+
+    # Part 1's answers before it is acknowledged, Files.max_network_retries, what the first and the renewed instructions
+    # add, and the requests for part 1 and begin_upload, with the error when the upload fails. A renewal asks for the same
+    # part of the same upload and sends the same bytes; part 1's is a renewal, not a new upload.
+    expired = [ 403, { "Content-Type" => "application/xml" }, "<Error><Code>AccessDenied</Code><Message>Request has expired</Message></Error>" ]
+    denied = [ 403, { "Content-Type" => "application/xml" }, "<Error><Code>AccessDenied</Code><Message>Access Denied</Message></Error>" ]
+    failed = [ 500, {}, "" ]
+    [
+      [ "renews a part's URL storage says expired", [ expired ], 3, {}, {}, 2, 2, nil ],
+      [ "renews it at most twice", [ expired ] * 3, 3, {}, {}, 3, 3, Files::APIConnectionError ],
+      [ "counts a renewal as one of the retries a failed send also takes", [ expired, failed ], 1, {}, {}, 2, 2, Files::APIConnectionError ],
+      [ "does not renew it without a retry left", [ expired ], 0, {}, {}, 1, 1, Files::APIConnectionError ],
+      [ "does not renew a part whose instructions say retry_parts: false", [ expired ], 3, { retry_parts: false }, {}, 1, 1, Files::APIConnectionError ],
+      [ "stops before renewed instructions that say retry_parts: false", [ expired ], 3, {}, { retry_parts: false }, 1, 2, Files::APIError ],
+      [ "stops before renewed instructions for another size", [ expired ], 3, {}, { partsize: 5 }, 1, 2, Files::APIError ],
+      [ "stops before renewed instructions that send the part another way", [ expired ], 3, {}, { parameters: { "acl" => "private" }, send: { "file" => "file" } }, 1, 2, Files::APIError ],
+      [ "does not renew another denial", [ denied ], 3, {}, {}, 1, 1, Files::APIConnectionError ]
+    ].each do |name, answers, retries, first, renewed, sends, begins, error|
+      it name do
+        Files.max_network_retries = retries
+        requests = []
+        remaining = answers.dup
+        part_response = ->(number) { number == 1 && remaining.any? ? remaining.shift : [ 200, { "ETag" => "\"etag-#{number}\"" }, "" ] }
+        client = upload_api(requests, partsize: 4, part_response: part_response, grant: ->(params) { params["parts"] == "1" ? renewed : first })
+
+        with_local_file("abcdefghij") do |path|
+          if error
+            expect { described_class.upload_file(path, "report.bin", { client: client }) }.to raise_error(error)
+          else
+            described_class.upload_file(path, "report.bin", { client: client })
+          end
+        end
+        expect(parts_sent(requests).select { |number, _| number == 1 }).to eq([ [ 1, "abcd" ] ] * sends)
+        planned = requests.select { |kind, *| kind == :begin }.map { |_, params| params.values_at("part", "parts", "ref") }
+        expect(planned.select { |part, *| part == "1" }).to eq([ [ "1", "5", nil ], *([ %w[1 1 upload-ref] ] * (begins - 1)) ])
+        ended = requests.select { |kind, *| kind == :end }
+        expect(ended.map { |_, params| params["etags"].map { |etag| etag["part"] } }).to eq(error ? [] : [ %w[1 2 3] ])
+      end
+    end
+
+    it "renews a part's URL through a client whose connection returns refusals" do
+      Files.max_network_retries = 1
+      requests = []
+      answers = [ [ 403, { "Content-Type" => "application/json" }, '{"type":"upload_request_expired"}' ] ]
+      client = upload_api(requests, partsize: 4, raise_errors: false, part_response: ->(number) { answers.shift || [ 200, { "ETag" => "\"etag-#{number}\"" }, "" ] })
+
+      with_local_file("abcd") { |path| described_class.upload_file(path, "report.bin", { client: client }) }
+
+      expect(parts_sent(requests)).to eq([ [ 1, "abcd" ], [ 1, "abcd" ] ])
+      expect(requests.map(&:first)).to eq(%i[begin part begin part end])
+    end
   end
 
   describe ".upload_io" do
@@ -378,6 +456,95 @@ RSpec.describe Files::File, "transfers" do
       expect { remote_file(server).download_content(sink) }.to raise_error(EOFError)
       expect(server.requests.size).to eq(1)
       expect(sink.string).to eq(first_chunk)
+    end
+
+    it "fetches the same range again from a URL renewed by its path when storage says the URL expired, writing none of the refusal" do
+      Files.max_network_retries = 3
+      store, api = expiring_storage(storage_refusal("Request has expired"))
+
+      remote_file(store).download_content(sink, range: [ 100, 199 ])
+
+      expect(sink.string).to eq(payload.byteslice(100, 100))
+      expect(sink).not_to be_closed
+      expect(store.requests.map { |request| [ request.target.include?("renewed=1"), request.headers["range"] ] }).to eq([ [ false, "bytes=100-199" ], [ true, "bytes=100-199" ] ])
+      expect(api.requests.size).to eq(1)
+    end
+
+    # A 403 with body, declaring declared bytes of it, which can be more than it sends before the connection closes.
+    refused = lambda do |body, declared: body.bytesize|
+      type = body.start_with?("{") ? "application/json" : "application/xml"
+      TransferServer.response("403 Forbidden", { "Content-Type" => type, "Content-Length" => declared }, body)
+    end
+    expired_text = "<Error><Code>AccessDenied</Code><Message>Request has expired</Message></Error>"
+    expired_json = '{"type":"download_request_expired"}'
+
+    [
+      [ "complete Files.com JSON", refused.call(expired_json) ],
+      [ "provider text cut short of its Content-Length", refused.call(expired_text, declared: expired_text.bytesize + 16) ]
+    ].each do |name, refusal|
+      it "renews the URL storage refused with #{name}" do
+        Files.max_network_retries = 1
+        store, api = expiring_storage(refusal)
+
+        remote_file(store).download_content(sink)
+
+        expect([ sink.string, store.requests.size, api.requests.size ]).to eq([ payload, 2, 1 ])
+      end
+    end
+
+    # Files.max_network_retries, storage's refusals, the record's path, and the requests for the file and its URL.
+    [
+      [ "renews the URL at most twice", 3, [ refused.call(expired_text) ] * 3, "report.bin", 3, 2 ],
+      [ "does not renew the URL without a retry left", 0, [ refused.call(expired_text) ], "report.bin", 1, 0 ],
+      [ "does not renew a file's URL without its path", 3, [ refused.call(expired_text) ], nil, 1, 0 ],
+      [ "does not renew the URL for another denial", 3, [ refused.call(expired_text.sub("Request has expired", "Access Denied")) ], "report.bin", 1, 0 ],
+      [ "does not renew the URL for Files.com JSON cut short of its Content-Length", 3, [ refused.call(expired_json, declared: expired_json.bytesize + 16) ], "report.bin", 1, 0 ]
+    ].each do |name, retries, refusals, path, sends, lookups|
+      it "#{name}, raising the refusal and closing the IO with nothing written" do
+        Files.max_network_retries = retries
+        store, api = expiring_storage(*refusals)
+
+        expect { described_class.new(path: path, download_uri: store.url(signed_target)).download_content(sink) }.to raise_error(Net::HTTPClientException, '403 "Forbidden"')
+        expect([ store.requests.size, api.requests.size, sink.string, sink.closed? ]).to eq([ sends, lookups, "", true ])
+      end
+    end
+
+    # Through a download_client whose connection returns refusals: Files.max_network_retries, the refusals, and the
+    # requests for the file and its URL.
+    [
+      [ "without a retry left", 0, [ refused.call(expired_json) ], 1, 0 ],
+      [ "once its renewals are spent", 3, [ refused.call(expired_json) ] * 3, 3, 2 ],
+      [ "for another denial", 3, [ refused.call(expired_text.sub("Request has expired", "Access Denied")) ], 1, 0 ]
+    ].each do |name, retries, refusals, sends, lookups|
+      it "raises a refusal a download_client returns #{name}, closing the IO with nothing written" do
+        Files.max_network_retries = retries
+        store, api = expiring_storage(*refusals)
+        connection = Files::ApiClient.build_default_conn
+        connection.builder.delete(Faraday::Response::RaiseError)
+        Thread.current[:files_api_client_download_client] = Files::ApiClient.new(connection)
+
+        expect { remote_file(store).download_content(sink) }.to raise_error(Files::APIError, "Transfer request failed") { |error| expect(error.http_status).to eq(403) }
+        expect([ store.requests.size, api.requests.size, sink.string, sink.closed? ]).to eq([ sends, lookups, "", true ])
+      ensure
+        Thread.current[:files_api_client_download_client] = nil
+      end
+    end
+
+    [ true, false ].each do |raise_errors|
+      it "renews the URL through a download_client whose connection #{raise_errors ? 'raises' : 'returns'} the refusal" do
+        Files.max_network_retries = 1
+        json = '{"type":"download_request_expired"}'
+        store, api = expiring_storage(response("403 Forbidden", { "Content-Type" => "application/json", "Content-Length" => json.bytesize }, json))
+        connection = Files::ApiClient.build_default_conn
+        connection.builder.delete(Faraday::Response::RaiseError) unless raise_errors
+        Thread.current[:files_api_client_download_client] = Files::ApiClient.new(connection)
+
+        remote_file(store).download_content(sink)
+
+        expect([ sink.string, store.requests.size, api.requests.size ]).to eq([ payload, 2, 1 ])
+      ensure
+        Thread.current[:files_api_client_download_client] = nil
+      end
     end
 
     it "raises for a refused transfer with an empty body and closes the caller's IO, without revealing the signed URL" do
@@ -582,6 +749,18 @@ RSpec.describe Files::File, "transfers" do
       server.close # returns once the server has stopped writing
 
       expect(sent_everything).to be(false)
+    end
+
+    it "reads a file whose URL storage said expired from the URL renewed for it" do
+      Files.max_network_retries = 1
+      store, api = expiring_storage(storage_refusal("Request has expired"))
+
+      reader = remote_file(store).read_io
+
+      expect(reader.read.b).to eq(payload)
+      expect([ store.requests.size, api.requests.size ]).to eq([ 2, 1 ])
+    ensure
+      reader&.close
     end
 
     it "raises a refused transfer and closes the pipe it created" do

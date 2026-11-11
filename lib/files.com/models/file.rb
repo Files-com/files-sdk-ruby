@@ -402,7 +402,8 @@ module Files
     # Uploads what io holds to path, a part at a time as the API grants each, and returns the last part, the parts'
     # ETags and the bytes sent. Each part is filled from as many reads as it takes (read_part). Each part's response
     # must be a success (2xx) before the part counts as acknowledged; any other status raises APIError before another
-    # part is planned or the upload is ended. With progress, a callable, progress is then called with total_bytes (nil:
+    # part is planned or the upload is ended, except a refusal storage says came because the part's URL expired, which
+    # renews it and sends the same bytes again while it may (send_part). With progress, a callable, progress is then called with total_bytes (nil:
     # unknown here), acknowledged_bytes (this call's bytes so far), part_number and part_bytes. Anything it raises ends
     # the upload there, with no later part planned or sent.
     # @param io [#read, #eof?] source, read from its current position.
@@ -423,14 +424,45 @@ module Files
         upload = begin_upload.is_a?(Enumerable) ? begin_upload.shift : begin_upload
         buf = read_part(io, upload.partsize)
         bytes_written += buf.length
-        method = upload.http_method.downcase.to_sym
-        response = client(options).remote_request(method, upload.upload_uri, { 'Content-Length': buf.length.to_s, 'Content-Type': 'application/octet-stream' }, buf)
+        upload, response = send_part(upload, buf, path, params, options)
         raise APIError.new("Transfer request failed", http_status: response.status), cause: nil unless response.status.between?(200, 299)
 
         etags << { etag: response.headers["ETag"], part: upload.part_number }
         progress&.call({ total_bytes: nil, acknowledged_bytes: bytes_written, part_number: upload.part_number, part_bytes: buf.length })
         return upload, etags, bytes_written if io.eof?
       end
+    end
+
+    # Sends buf, a part's bytes, as upload, its FileUploadPart, says, through the options' client, and returns the part,
+    # as renewed if it was, and storage's response. The part's connection retries and the renewals of its URL share
+    # Files.max_network_retries (Transfer::Attempts). When storage says the part's URL has expired, while a renewal is
+    # left and the part's instructions do not say retry_parts: false, the URL is renewed with begin_upload for the same
+    # ref and part, the first part's included, and the same bytes are sent again. Renewed instructions that change the
+    # part's ref, number, size, method, headers, parameters or send, or say retry_parts: false, stop the upload before
+    # they are used.
+    private_class_method def self.send_part(upload, buf, path, params, options)
+      attempts = Transfer::Attempts.new(replay: upload.retry_parts != false)
+      loop do
+        response = attempts.use do
+          sent = client(options).remote_request(upload.http_method.downcase.to_sym, upload.upload_uri, { 'Content-Length': buf.length.to_s, 'Content-Type': 'application/octet-stream' }, buf)
+          Transfer::Attempts.renew_if_expired!(sent.status, sent.body) unless sent.status.between?(200, 299)
+          sent
+        end
+        return upload, response
+      rescue Transfer::UrlExpired
+        upload = renewed_part(upload, path, params, options)
+        attempts.renewed(upload.upload_uri, upload.expires)
+      end
+    end
+
+    private_class_method def self.renewed_part(upload, path, params, options)
+      granted = File.begin_upload(path, params.merge(ref: upload.ref, parts: 1, part: upload.part_number), options)
+      granted = granted.is_a?(Enumerable) ? granted.to_a : [ granted ]
+      renewed = granted.first if granted.size == 1
+      identity = ->(part) { [ part.ref, part.part_number, part.partsize, part.http_method.to_s.downcase, *part.attributes.values_at(:headers, :parameters, :send) ] }
+      raise APIError, "The renewed upload instructions changed" unless renewed && identity.call(renewed) == identity.call(upload) && renewed.retry_parts != false
+
+      renewed
     end
 
     # The next part's bytes from io: as many reads as it takes to fill length bytes. A read that gives nothing (nil or
@@ -718,7 +750,17 @@ module Files
       end
       raise InvalidParameterError, "Bad parameter: progress needs transfer" if progress
 
-      Files::ApiClient.download_client.stream_download(download_uri_with_load, io, range)
+      # Storage's word that the URL expired renews it by the file's path and options, as download_uri_with_load looks it
+      # up, and fetches the same range again, before anything of the refusal is written (Transfer::Attempts). A record
+      # without a path has nothing to renew it by.
+      attempts = Transfer::Attempts.new(replay: !path.to_s.empty?)
+      loop do
+        uri = download_uri_with_load
+        return attempts.use { Files::ApiClient.download_client.stream_download(uri, io, range) }
+      rescue Transfer::UrlExpired
+        @attributes = File.download(path, {}, @options).attributes
+        attempts.renewed(download_uri)
+      end
     end
 
     # Forwards to the download reader.
