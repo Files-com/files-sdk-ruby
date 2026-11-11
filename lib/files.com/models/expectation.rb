@@ -264,6 +264,19 @@ module Files
       @attributes[:lookback_interval] = value
     end
 
+    # Calendar-based replacement due times. Matching dates replace all normal times; holiday exclusions still apply. Calendars specifying different times on the same date conflict.
+    # @return [Array<Hash>, nil] the field value, or nil when absent.
+    def schedule_time_exceptions
+      @attributes[:schedule_time_exceptions]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Hash>, nil] the new field value.
+    # @return [Array<Hash>, nil] the assigned value.
+    def schedule_time_exceptions=(value)
+      @attributes[:schedule_time_exceptions] = value
+    end
+
     # How many seconds a schedule-driven window may remain eligible to close as late.
     # @return [Integer, nil] the field value, or nil when absent.
     def late_acceptance_interval
@@ -417,6 +430,7 @@ module Files
     # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the Expectation schedule.
     # @option params [String] schedule_time_zone Time zone used by the Expectation schedule.
     # @option params [String] holiday_region Optional holiday region used by the Expectation schedule.
+    # @option params [Array<Hash>] schedule_time_exceptions Calendar-based replacement due times. Matching dates replace all normal times; holiday exclusions still apply. Calendars specifying different times on the same date conflict.
     # @option params [Integer] lookback_interval How many seconds before the due boundary the window starts.
     # @option params [Integer] late_acceptance_interval How many seconds a schedule-driven window may remain eligible to close as late.
     # @option params [Integer] inactivity_interval How many quiet seconds are required before final closure.
@@ -447,6 +461,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: schedule_time_exceptions must be an Array") if !params[:schedule_time_exceptions].nil? and !params[:schedule_time_exceptions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: lookback_interval must be an Integer") if !params[:lookback_interval].nil? and !params[:lookback_interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: late_acceptance_interval must be an Integer") if !params[:late_acceptance_interval].nil? and !params[:late_acceptance_interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: inactivity_interval must be an Integer") if !params[:inactivity_interval].nil? and !params[:inactivity_interval].is_a?(Integer)
@@ -578,6 +593,7 @@ module Files
     # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the Expectation schedule.
     # @option params [String] schedule_time_zone Time zone used by the Expectation schedule.
     # @option params [String] holiday_region Optional holiday region used by the Expectation schedule.
+    # @option params [Array<Hash>] schedule_time_exceptions Calendar-based replacement due times. Matching dates replace all normal times; holiday exclusions still apply. Calendars specifying different times on the same date conflict.
     # @option params [Integer] lookback_interval How many seconds before the due boundary the window starts.
     # @option params [Integer] late_acceptance_interval How many seconds a schedule-driven window may remain eligible to close as late.
     # @option params [Integer] inactivity_interval How many quiet seconds are required before final closure.
@@ -605,6 +621,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: schedule_time_exceptions must be an Array") if !params[:schedule_time_exceptions].nil? and !params[:schedule_time_exceptions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: lookback_interval must be an Integer") if !params[:lookback_interval].nil? and !params[:lookback_interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: late_acceptance_interval must be an Integer") if !params[:late_acceptance_interval].nil? and !params[:late_acceptance_interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: inactivity_interval must be an Integer") if !params[:inactivity_interval].nil? and !params[:inactivity_interval].is_a?(Integer)
@@ -654,6 +671,7 @@ module Files
     # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the Expectation schedule.
     # @option params [String] schedule_time_zone Time zone used by the Expectation schedule.
     # @option params [String] holiday_region Optional holiday region used by the Expectation schedule.
+    # @option params [Array<Hash>] schedule_time_exceptions Calendar-based replacement due times. Matching dates replace all normal times; holiday exclusions still apply. Calendars specifying different times on the same date conflict.
     # @option params [Integer] lookback_interval How many seconds before the due boundary the window starts.
     # @option params [Integer] late_acceptance_interval How many seconds a schedule-driven window may remain eligible to close as late.
     # @option params [Integer] inactivity_interval How many quiet seconds are required before final closure.
@@ -684,6 +702,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: schedule_time_exceptions must be an Array") if !params[:schedule_time_exceptions].nil? and !params[:schedule_time_exceptions].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: lookback_interval must be an Integer") if !params[:lookback_interval].nil? and !params[:lookback_interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: late_acceptance_interval must be an Integer") if !params[:late_acceptance_interval].nil? and !params[:late_acceptance_interval].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: inactivity_interval must be an Integer") if !params[:inactivity_interval].nil? and !params[:inactivity_interval].is_a?(Integer)
