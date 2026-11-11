@@ -441,7 +441,6 @@ module Files
     # @param params [Hash] API parameters, keyed by Symbol.
     # @option params [String] expires_at API Key expiration date
     # @option params [String] name Internal name for the API Key.  For your use.
-    # @option params [String] permission_set Permissions for this API Key. Keys with the `desktop_app` permission set only have the ability to do the functions provided in our Desktop App (File and Share Link operations). Keys with the `mobile_app` permission set can only perform the functions provided by our Mobile App (File and Share Link operations). Keys with the `office_integration` permission set are auto generated, and automatically expire, to allow users to interact with office integration platforms. Keys with the `files_only` permission set can use only the files, folders, and file_actions endpoints, excluding the GPG Encrypt and GPG Decrypt file actions, where they perform file operations as a full-access file user in the key's workspace scope, along with `GET /file_migrations/{id}` and `GET /api_key`. On the migration lookup, any key with a `path` can read only migrations it started. Without a `path`, user-owned keys retain user-scoped access; site-wide Workspace-bound keys can read only migrations whose source and destination are both in their Workspace. Every `files_only` key is Workspace-bound, including Workspace `0`, as is a full-access key in a named Workspace. A full-access site-wide key in the default Workspace retains Site-wide migration access. Migrations outside the caller's visibility return `not-found`. Keys with `files_only` cannot use site admin, workspace admin, folder admin, group admin, partner admin, or billing privileges from the owning user. Both GPG file actions and every other endpoint deny them with `not-authorized/api-key-only-for-file-operations`. Folder-configured GPG encryption and decryption still apply to files uploaded with a `files_only` key.
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::ApiKey] the returned record.
     # @raise [Files::MissingParameterError] if a required parameter is missing.
@@ -450,7 +449,6 @@ module Files
     def self.update_current(params = {}, options = {})
       raise InvalidParameterError.new("Bad parameter: expires_at must be an String") if !params[:expires_at].nil? and !params[:expires_at].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
-      raise InvalidParameterError.new("Bad parameter: permission_set must be an String") if !params[:permission_set].nil? and !params[:permission_set].is_a?(String)
 
       response, options = Api.send_request("/api_key", :patch, params, options) { |reply| reply.require_object("ApiKey") }
       ApiKey.new(response.data, options)
