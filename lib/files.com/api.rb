@@ -44,6 +44,7 @@ module Files
       workspace_id = headers.delete(:workspace_id)
       settings = headers.delete(:request_settings)
       check_response = headers.delete(:check_response)
+      headers.delete(:check_download_modification_time)
       if session = headers.delete(:session)
         session.save unless session.id
         session_id = session.id

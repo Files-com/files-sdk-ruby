@@ -280,12 +280,12 @@ module Files
       end
 
       # Opens local_path only once the job gives the download a file slot.
-      def self.download_file(job, file, local_path, progress: nil)
-        new(job, file, -> { FileSink.new(::File.open(local_path, "wb"), local_path) }, progress: progress).run
+      def self.download_file(job, file, local_path, progress: nil, check_download_modification_time: nil)
+        new(job, file, -> { FileSink.new(::File.open(local_path, "wb"), local_path) }, progress: progress, check_download_modification_time: check_download_modification_time).run
       end
 
-      def self.download_content(job, file, io, progress: nil)
-        new(job, file, -> { IoSink.new(io) }, progress: progress).run
+      def self.download_content(job, file, io, progress: nil, check_download_modification_time: nil)
+        new(job, file, -> { IoSink.new(io) }, progress: progress, check_download_modification_time: check_download_modification_time).run
       end
 
       def self.resume(job, checkpoint, destination, options, progress: nil)
@@ -305,7 +305,7 @@ module Files
 
       # Fixes, on the caller's thread, the file's path and any download URL its record holds, the API context from its
       # options, and the transport for its content requests, which refuses a client whose adapter cannot stream.
-      def initialize(job, file, open_sink, checkpoint: nil, lease: nil, progress: nil)
+      def initialize(job, file, open_sink, checkpoint: nil, lease: nil, progress: nil, check_download_modification_time: nil)
         super(job)
         @path = Checkpoint.frozen(file.path)
         @download_uri = Checkpoint.frozen(file.download_uri)
@@ -322,6 +322,7 @@ module Files
         @digest = OpenSSL::Digest.new('SHA256')
         @total = nil
         @version = nil
+        @download_date = DownloadDate.new(enabled: DownloadDate.enabled(@options, check_download_modification_time))
         @generation = 0
         @open = {}
         @next_number = 0
@@ -492,7 +493,11 @@ module Files
           first = @mode == :proof ? @total - 1 : @written
           headers["Range"] = "bytes=#{first}-#{@mode == :proof ? first : first + @range_bytes - 1}"
         end
-        headers["If-Match"] = @version if @version
+        if @version
+          headers["If-Match"] = @version
+        elsif @download_date.header
+          headers["If-Unmodified-Since"] = @download_date.header
+        end
         reservation = reserve(@mode == :proof ? 1 : @range_bytes) unless @mode == :whole
         begin
           check_control! unless @job.acquire_request(@control, @url) == :running
@@ -533,6 +538,7 @@ module Files
       # Inside the response, before anything of it is written.
       def head_response(http)
         raise refusal(FrontendResponseError.new) if http.key?(StorageRetry::FRONTEND_HEADER)
+        raise refusal(VersionChangedError.new) if @version.nil? && !@download_date.accept?(http["last-modified"])
 
         case http.code
         when "206"

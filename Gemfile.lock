@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    files.com (1.1.827)
+    files.com (1.1.828)
       addressable (>= 2.9.1)
       base64 (~> 0.2)
       bigdecimal

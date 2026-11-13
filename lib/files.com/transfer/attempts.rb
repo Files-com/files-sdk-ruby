@@ -20,7 +20,7 @@ module Files
       # The error for a renewal that gives a URL whose own signature says it has expired: such a URL is not sent.
       EXPIRED = "The transfer URL the API returned has expired, and renewing it did not give one still valid"
 
-      attr_reader :retries
+      attr_reader :retries, :download_date
 
       def self.current
         Thread.current[:files_transfer_attempts]
@@ -35,7 +35,8 @@ module Files
         raise UrlExpired, "The transfer URL expired", cause: nil
       end
 
-      def initialize(replay: true)
+      def initialize(replay: true, check_download_modification_time: nil)
+        @download_date = DownloadDate.new(enabled: check_download_modification_time.nil? ? true : check_download_modification_time)
         @retries = 0
         @renewals = 0
         @replay = replay

@@ -43,14 +43,19 @@ module Files
     # client its own pairs, in the same form. The client keeps a frozen copy of them, and [] allows none. A request's own
     # region_http_pairs option, such as the one a returned record keeps, takes precedence over both. Plain HTTP is for
     # your own development servers only (see Files.region_http_pairs=).
-    def initialize(conn = nil, logger: USE_GLOBAL, log_level: USE_GLOBAL, workspace_id: USE_GLOBAL, region_http_pairs: USE_GLOBAL)
+    def initialize(conn = nil, logger: USE_GLOBAL, log_level: USE_GLOBAL, workspace_id: USE_GLOBAL, region_http_pairs: USE_GLOBAL, check_download_modification_time: USE_GLOBAL)
       self.conn = conn || self.class.default_conn
       @logger = logger
       @log_level = log_level.equal?(USE_GLOBAL) ? log_level : Util.normalize_log_level(log_level)
+      @check_download_modification_time = check_download_modification_time
       @workspace_id = workspace_id
       @region_http_pairs = region_http_pairs.equal?(USE_GLOBAL) ? region_http_pairs : Util.checked_region_http_pairs(region_http_pairs)
       @system_profiler = SystemProfiler.new
       @last_request_metrics = nil
+    end
+
+    def check_download_modification_time
+      @check_download_modification_time.equal?(USE_GLOBAL) ? Files.check_download_modification_time : @check_download_modification_time
     end
 
     def self.active_client
@@ -374,9 +379,13 @@ module Files
       if conn.adapter == Faraday::Adapter::NetHttp
         stream_download_with_net_http(URI(uri), io, range)
       else
-        response = remote_request(:get, uri)
+        headers = {}
+        date = Transfer::Attempts.current&.download_date
+        headers["If-Unmodified-Since"] = date.header if date&.header
+        response = remote_request(:get, uri, headers)
         reject_frontend_response(response.headers.key?(Transfer::StorageRetry::FRONTEND_HEADER), io)
         reject_returned_refusal(response, io) unless response.success?
+        reject_changed_download(response.headers["last-modified"], io)
         io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
         io.write(response.body)
       end
@@ -390,6 +399,8 @@ module Files
     # the body into io a second time.
     private def stream_download_with_net_http(uri, io, range)
       request = Net::HTTP::Get.new(uri)
+      date = Transfer::Attempts.current&.download_date
+      request["If-Unmodified-Since"] = date.header if date&.header
       request["Range"] = "bytes=#{range[0]}-#{range[1]}" unless range.empty?
 
       failure = nil
@@ -407,6 +418,7 @@ module Files
     private def write_download_body(response, io)
       reject_unsuccessful_download(response, io)
       reject_frontend_response(response.key?(Transfer::StorageRetry::FRONTEND_HEADER), io)
+      reject_changed_download(response["last-modified"], io)
       io.fulfill_content_length(response.content_length) if io.respond_to?(:fulfill_content_length)
 
       expected_bytes = expected_download_bytes(response)
@@ -489,6 +501,15 @@ module Files
       return unless frontend
 
       error = Transfer::FrontendResponseError.new
+      close_destination_after_failure(io, error)
+      raise error
+    end
+
+    private def reject_changed_download(modified, io)
+      date = Transfer::Attempts.current&.download_date
+      return unless date && !date.accept?(modified)
+
+      error = Transfer::VersionChangedError.new
       close_destination_after_failure(io, error)
       raise error
     end

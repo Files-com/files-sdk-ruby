@@ -103,7 +103,7 @@ RSpec.describe Files::File, "adaptive downloads" do
     it "stops with VersionChangedError when storage no longer has the version, keeping what was written and closing the IO" do
       store = storage_server(answer: ->(request, default) { request.headers["if-match"] ? TransferServer.response("412 Precondition Failed", { "Content-Length" => 0 }) : default })
 
-      expect { remote_file(store).download_content(sink, transfer: transfer) }.to raise_error(Files::Transfer::VersionChangedError)
+      expect { remote_file(store).download_content(sink, transfer: transfer, check_download_modification_time: false) }.to raise_error(Files::Transfer::VersionChangedError)
       expect(sink.string).to eq(payload.byteslice(0, 65_536))
       expect(sink).to be_closed
     end
@@ -664,6 +664,121 @@ RSpec.describe Files::File, "adaptive downloads" do
   end
 
   describe "without a bound version" do
+    it "keeps its disabled snapshot through a global change and does not send the local setting as an API header" do
+      original = Files.check_download_modification_time
+      Files.check_download_modification_time = false
+      Files.max_network_retries = 1
+      baseline = "Wed, 21 Oct 2015 07:28:00 GMT"
+      store = storage_server(answer: lambda { |_request, _default|
+        first = store.requests.size == 1
+        Files.check_download_modification_time = true
+        modified = first ? baseline : "Wed, 21 Oct 2015 07:28:01 GMT"
+        TransferServer.response("200 OK", { "Content-Length" => payload.bytesize, "Last-Modified" => modified }, first ? payload.byteslice(0, 4096) : payload)
+      }
+                            )
+      api = api_server(store)
+      Dir.mktmpdir do |dir|
+        remote = described_class.new({ path: "report.bin" }, { check_download_modification_time: false })
+        local = File.join(dir, "snapshot.bin")
+        remote.download_file(local, transfer: transfer)
+        expect(File.binread(local)).to eq(payload)
+      end
+      expect(store.requests.map { |request| request.headers["if-unmodified-since"] }).to eq([ nil, nil ])
+      expect(api.requests).not_to be_empty
+      expect(api.requests).to all(satisfy { |request| !request.headers.key?("check_download_modification_time") })
+    ensure
+      Files.check_download_modification_time = original
+    end
+
+    [ [ false, nil ], [ true, false ], [ false, true ] ].each do |client_check, local_check|
+      it "resolves client and local timestamp checks once (#{client_check}, #{local_check.inspect})" do
+        baseline = "Wed, 21 Oct 2015 07:28:00 GMT"
+        newer = "Wed, 21 Oct 2015 07:28:01 GMT"
+        store = storage_server(etag: "W/\"v1\"", answer: lambda { |_request, default|
+          modified = store.requests.size == 1 ? baseline : newer
+          default.sub("\r\n", "\r\nLast-Modified: #{modified}\r\n")
+        }
+        )
+        client = Files::ApiClient.new(check_download_modification_time: client_check)
+        remote = described_class.new({ path: "report.bin", download_uri: store.url("/objects/report.bin") }, { client: client })
+        guarded = local_check.nil? ? client_check : local_check
+        download = -> { remote.download_content(sink, transfer: transfer, check_download_modification_time: local_check) }
+        if guarded
+          expect(&download).to raise_error(Files::Transfer::VersionChangedError)
+        else
+          download.call
+          expect(sink.string).to eq(payload)
+        end
+        expect(store.requests.map { |request| request.headers["if-unmodified-since"] }).to eq([ nil, guarded ? baseline : nil ])
+      end
+    end
+
+    [ "Wed, 21 Oct 2015 07:28:00 GMT", "invalid date", nil ].each do |modified|
+      it "uses one valid Last-Modified for the fallback without binding ranges (#{modified.inspect})" do
+        store = storage_server(etag: "W/\"v1\"", answer: lambda { |_request, default|
+          modified ? default.sub("\r\n", "\r\nLast-Modified: #{modified}\r\n") : default
+        }
+        )
+        remote_file(store).download_content(sink, transfer: transfer)
+        expect(sink.string).to eq(payload)
+        expect(ranges(store)).to eq([ "bytes=0-65535", nil ])
+        expected = modified&.start_with?("Wed,") ? modified : nil
+        expect(store.requests.map { |request| request.headers["if-unmodified-since"] }).to eq([ nil, expected ])
+      end
+    end
+
+    [ false, true ].each do |ignored|
+      it "refuses a newer date before fallback bytes are written, conditional ignored=#{ignored}" do
+        baseline = "Wed, 21 Oct 2015 07:28:00 GMT"
+        newer = "Wed, 21 Oct 2015 07:28:01 GMT"
+        store = storage_server(etag: "W/\"v1\"", answer: lambda { |request, default|
+          if store.requests.size == 1
+            default.sub("\r\n", "\r\nLast-Modified: #{baseline}\r\n")
+          elsif !ignored && request.headers["if-unmodified-since"] == baseline
+            TransferServer.response("412 Precondition Failed", { "Content-Length" => 0 })
+          else
+            default.sub("\r\n", "\r\nLast-Modified: #{newer}\r\n")
+          end
+        }
+        )
+        expect { remote_file(store).download_content(sink, transfer: transfer) }.to raise_error(Files::Transfer::VersionChangedError)
+        expect(sink.string).to be_empty
+        expect(store.requests.map { |request| request.headers["if-unmodified-since"] }).to eq([ nil, baseline ])
+      end
+    end
+
+    it "retains its date through a short response, retry and URL renewal" do
+      Files.max_network_retries = 2
+      baseline = "Wed, 21 Oct 2015 07:28:00 GMT"
+      store = storage_server(answer: lambda { |_request, _default|
+        count = store.requests.size
+        if count == 2
+          TransferServer.response("403 Forbidden", { "Content-Length" => 34 }, "<Error>Request has expired</Error>")
+        else
+          TransferServer.response("200 OK", { "Content-Length" => payload.bytesize, "Last-Modified" => baseline }, count == 1 ? payload.byteslice(0, 4096) : payload)
+        end
+      }
+                            )
+      api_server(store)
+      Dir.mktmpdir do |dir|
+        local = File.join(dir, "date.bin")
+        remote_file(store).download_file(local, transfer: transfer)
+        expect(File.binread(local)).to eq(payload)
+      end
+      expect(store.requests.map { |request| request.headers["if-unmodified-since"] }).to eq([ nil, baseline, baseline ])
+    end
+
+    it "keeps If-Match precedence when later ranges declare newer dates" do
+      store = storage_server(answer: lambda { |request, default|
+        modified = request.headers["if-match"] ? "Wed, 21 Oct 2015 07:28:01 GMT" : "Wed, 21 Oct 2015 07:28:00 GMT"
+        default.sub("\r\n", "\r\nLast-Modified: #{modified}\r\n")
+      }
+                            )
+      remote_file(store).download_content(sink, transfer: transfer)
+      expect(sink.string).to eq(payload)
+      expect(store.requests.drop(1)).to all(satisfy { |request| request.headers["if-match"] == "\"v1\"" && !request.headers.key?("if-unmodified-since") })
+    end
+
     it "streams the whole response once when the opening range has a weak ETag" do
       store = storage_server(etag: "W/\"v1\"")
 

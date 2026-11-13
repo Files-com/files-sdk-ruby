@@ -977,3 +977,19 @@ Open `doc/index.html` in a browser, or use `bundle exec yard server` to browse t
 reference locally. YARD is a development dependency; using the SDK does not
 require it. The normal `build.sh` also generates the reference. `bundle exec rake
 build` generates it before packaging and includes `doc/` in the gem.
+
+### Modification dates during downloads
+
+`Files.check_download_modification_time` defaults to `true`; an `ApiClient` can set its own value. A download's keyword or record option overrides the client/global default:
+
+```ruby
+client = Files::ApiClient.new(check_download_modification_time: false)
+file = Files::File.new("remote.bin", { client: client })
+file.download_file("local.bin", check_download_modification_time: true)
+```
+
+`download_content` accepts the same keyword. `Files::File.open` takes the setting in its existing options hash. Each logical download/read handle snapshots the value once.
+
+Disabling this option suppresses automatic date preconditions and newer-date checks. Source changes detectable only by timestamps can then go undetected; strong ETag/version, size, byte and HTTP error checks remain enabled.
+
+When storage supplies a valid `Last-Modified` HTTP date, downloads keep that first date and send it as `If-Unmodified-Since` on subsequent requests, retries and signed URL renewals when no stronger version protection applies. A `412` response, or a successful response with a newer valid date, stops that attempt before its body is used. Missing or invalid dates remain compatible. This check has one-second precision: it cannot detect preserved timestamps, same-second edits or changes during one response, and it does not establish a strong version, enable parallel downloads or authorize persistent resume. Files dated in the future can be refused even when unchanged; correct the source machine's clock and file modification time before retrying. Adaptive downloads fail on a source change and can leave a partial local file; retry the complete download after the source is stable. An interrupted whole response retries only when its destination can start over; an IO that already received bytes and cannot restart fails instead of replaying them. The ordinary download helpers stream one response and renew expired URLs before writing a refusal's bytes. Returning a download URL alone does not send a content request.

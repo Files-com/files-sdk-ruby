@@ -63,8 +63,9 @@ module Files
     # @raise [Files::InvalidParameterError] if the default name is unsafe on Windows; supply local_path explicitly.
     # @raise [StandardError] if the transfer or local write fails.
     # With transfer:, the download is adaptive, and can report progress (see #download_file).
-    def self.download_file(path, local_path = nil, progress: nil, transfer: nil)
+    def self.download_file(path, local_path = nil, progress: nil, transfer: nil, check_download_modification_time: nil)
       local_path ||= default_local_path(path)
+      return new(path, { check_download_modification_time: check_download_modification_time }).download_file(local_path, progress: progress, transfer: transfer) unless check_download_modification_time.nil?
       return new(path).download_file(local_path, progress: progress, transfer: transfer) if transfer
       raise InvalidParameterError, "Bad parameter: progress needs transfer" if progress
 
@@ -326,6 +327,7 @@ module Files
     # @yieldparam file [Files::File] remote file wrapper.
     # @return [Files::File] the wrapper, including when a block was given.
     def self.open(path, mode = "r", options = {}, &block)
+      options = options.merge(check_download_modification_time: Transfer::DownloadDate.enabled(options)) if mode.start_with?("r")
       file = new(path, mode, options)
       if block
         yield file
@@ -751,12 +753,13 @@ module Files
     # ranges are fetched concurrently and written in order, and progress, a callable, is called on this thread after
     # each write with total_bytes (nil until known), written_bytes, elapsed_seconds and bytes_per_second. Anything it
     # raises ends the download. progress needs transfer:. See docs/file.md.
-    def download_file(output_file, progress: nil, transfer: nil)
-      return Transfer::Job.using(transfer) { |job| Transfer::DownloadCoordinator.download_file(job, self, output_file, progress: progress) } if transfer
+    def download_file(output_file, progress: nil, transfer: nil, check_download_modification_time: nil)
+      check_download_modification_time = Transfer::DownloadDate.enabled(@options, check_download_modification_time)
+      return Transfer::Job.using(transfer) { |job| Transfer::DownloadCoordinator.download_file(job, self, output_file, progress: progress, check_download_modification_time: check_download_modification_time) } if transfer
       raise InvalidParameterError, "Bad parameter: progress needs transfer" if progress
 
       ::File.open(output_file, 'wb') do |file|
-        download_content(file)
+        download_content(file, check_download_modification_time: check_download_modification_time)
       end
     end
 
@@ -769,18 +772,18 @@ module Files
     # @return [void]
     # @raise [StandardError] if the transfer or destination fails.
     # With transfer:, as for #download_file, into io; it cannot be combined with range.
-    def download_content(io, range: [], progress: nil, transfer: nil)
+    def download_content(io, range: [], progress: nil, transfer: nil, check_download_modification_time: nil)
       if transfer
         raise InvalidParameterError, "Bad parameter: range cannot be combined with transfer" unless range.nil? || range.empty?
 
-        return Transfer::Job.using(transfer) { |job| Transfer::DownloadCoordinator.download_content(job, self, io, progress: progress) }
+        return Transfer::Job.using(transfer) { |job| Transfer::DownloadCoordinator.download_content(job, self, io, progress: progress, check_download_modification_time: check_download_modification_time) }
       end
       raise InvalidParameterError, "Bad parameter: progress needs transfer" if progress
 
       # Storage's word that the URL expired renews it by the file's path and options, as download_uri_with_load looks it
       # up, and fetches the same range again, before anything of the refusal is written (Transfer::Attempts). A record
       # without a path has nothing to renew it by.
-      attempts = Transfer::Attempts.new(replay: !path.to_s.empty?)
+      attempts = Transfer::Attempts.new(replay: !path.to_s.empty?, check_download_modification_time: Transfer::DownloadDate.enabled(@options, check_download_modification_time))
       loop do
         uri = download_uri_with_load
         return attempts.use { Files::ApiClient.download_client.stream_download(uri, io, range) }
@@ -929,6 +932,7 @@ module Files
       raise InvalidParameterError, "Bad parameter: progress needs transfer" if options[:progress]
 
       @read_io ||= begin
+        options = { **options, check_download_modification_time: Transfer::DownloadDate.enabled(@options, options[:check_download_modification_time]) }
         r, w = SizableIO.pipe
         Thread.new do
           download_content(w, **options)

@@ -40,6 +40,7 @@ require "files.com/transfer/policy"
 require "files.com/transfer/controller"
 require "files.com/transfer/budgets"
 require "files.com/transfer/storage_retry"
+require "files.com/transfer/download_date"
 require "files.com/transfer/attempts"
 require "files.com/transfer/http_transport"
 require "files.com/transfer/checkpoint"
@@ -212,6 +213,7 @@ module Files
   @workspace_id = nil
   @default_headers = nil
 
+  @check_download_modification_time = true
   @max_network_retries = 3
   @max_network_retry_delay = 2
   @initial_network_retry_delay = 0.5
@@ -220,6 +222,7 @@ module Files
   @read_timeout = 60
 
   class << self
+    attr_accessor :check_download_modification_time
     attr_accessor :api_key, :base_url, :default_headers, :initial_network_retry_delay, :language, :max_network_retry_delay, :proxy, :session_id, :workspace_id
     attr_reader :open_timeout, :read_timeout, :region_handler, :region_http_pairs, :region_policy
   end
