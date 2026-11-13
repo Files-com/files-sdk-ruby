@@ -84,6 +84,38 @@ sent again, never read again from the source. A part whose instructions say
 `retry_parts: false`, raise
 `Files::APIError` before anything is sent with them.
 
+### Completing an upload
+
+Every upload helper (`upload_file`, `upload_io`, the `upload_to_*`
+destinations, `#upload_file`, `#close` and the adaptive uploads and
+resumes) ends its upload with `async_finalize: true`, so Files.com can
+complete an upload to a remote server mount or a Files.com Agent in the
+background. Other uploads, and servers that predate the flag, answer with
+the file at once, as before. While Files.com answers `202` that it is
+still completing the upload, the helper sends the same final request again
+after each answer, waiting one second after the first, two after the second
+and three after each later one, with the same parameters, credentials, origin,
+workspace and settings, and returns the file once Files.com answers with
+it. `Files::File.create` itself sends only what you give it, and `#close`'s
+keywords can set `async_finalize` too.
+
+`progress` is called once for each of those answers, with the last part's
+report but `part_bytes: 0`, and `finalizing: true` and
+`finalization_progress`, Files.com's percentage (0 to 100) or `nil` when it
+gave none. Such a report acknowledges no part: `total_bytes`,
+`acknowledged_bytes` and `part_number` stay as the last part's report gave
+them. Pending at 100 is still pending: only the returned file means the
+upload completed.
+
+An error answer from Files.com (4xx) to a later request is the upload's
+outcome and is raised as it is. A `202` that is not a pending answer for
+the upload, and a later request that still fails after the client's
+retries (a network failure, 429 or 5xx), raise `Files::APIConnectionError`:
+Files.com took the final request, so the outcome is unknown and it may
+still complete the upload. Whatever `progress` raises for a pending answer
+is raised as it is, and nothing more is sent. As before, a final request
+whose answer is lost raises `Files::APIConnectionError` and is not polled.
+
 ## Adaptive transfers
 
 Adaptive transfers send a file's parts, or fetch its ranges, several at once,
@@ -254,7 +286,10 @@ before the pause, but its `elapsed_seconds` and `bytes_per_second` cover only
 the resume call and the parts it acknowledged. The upload is finalized only
 after every part is acknowledged and the local file still has the size and
 modification time it had when opened; a change raises
-`Files::Transfer::SourceChangedError`. A part whose instructions say
+`Files::Transfer::SourceChangedError`. While Files.com completes the upload
+in the background, `progress` also gets one finalizing report for each of
+its pending answers, as for uploads without `transfer:` (see Completing an
+upload). A part whose instructions say
 `parallel_parts: false` makes the file send one part at a time. Even with a
 direct destination, parts go to the `upload_uri` the API gave.
 
@@ -389,7 +424,11 @@ pause happened first is the one raised, and nothing is finalized after it.
 That holds while a transfer opens its file or destination, while a resume
 checks them, while a download looks up its URL or waits for its opening
 request too, and to its end: a cancellation from a download's last `progress`
-call is raised, not a success.
+call is raised, not a success. Once Files.com has answered an upload's final
+request that it is still completing it, a cancellation, a pause or the job's
+closing stops only the wait for its outcome, at once: it raises
+`Files::Transfer::CancelledError`, `Files::Transfer::PausedError` without a
+checkpoint, or `Files::Error`, and Files.com may still complete the upload.
 
 `PausedError#checkpoint` resumes with `Files::File.resume_upload(checkpoint,
 options)` or `Files::File.resume_download(checkpoint, io, options)`, passing

@@ -12,6 +12,9 @@ module Files
     # request_settings, which an adaptive transfer fixes as it begins
     # (ApiClient.transfer_settings), is used instead of the library-wide
     # settings; it is never sent as a header, nor kept in the returned options.
+    # An options check_response, a callable, is given the successful response
+    # before the block, and can reject it the same way; it too is never sent as
+    # a header, nor kept in the returned options.
     #
     # @param path [String] API endpoint path.
     # @param verb [Symbol] HTTP method.
@@ -40,6 +43,7 @@ module Files
       session_id = headers.delete(:session_id)
       workspace_id = headers.delete(:workspace_id)
       settings = headers.delete(:request_settings)
+      check_response = headers.delete(:check_response)
       if session = headers.delete(:session)
         session.save unless session.id
         session_id = session.id
@@ -55,6 +59,7 @@ module Files
         regional_base_url = origin
         region_http_pairs = used_region_http_pairs
       end
+      check_response&.call(resp)
       yield resp if block_given?
       options[:client] = client
       options[:api_key] = api_key

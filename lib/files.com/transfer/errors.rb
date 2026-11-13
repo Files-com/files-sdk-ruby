@@ -7,7 +7,8 @@ module Files
   # #download_content (see docs/file.md); without it every transfer works as it always has.
   module Transfer
     # Raised by a transfer whose Control was cancelled, once the requests it had in flight have settled. Nothing is
-    # finalized after it.
+    # finalized after it. After Files.com answered an upload's final request pending, it ends only the wait for the
+    # outcome, and Files.com may still complete the upload.
     class CancelledError < Error
       def initialize(message = "The transfer was cancelled")
         super
@@ -17,7 +18,8 @@ module Files
     # Raised by a transfer whose Control was paused, once the requests it had in flight have settled. checkpoint
     # resumes it in this process with Files::File.resume_upload or Files::File.resume_download; it is nil when what was
     # transferred cannot be continued: a transfer paused before it started, an upload from a caller's stream, which
-    # cannot be read again, or a download into a caller's IO that can neither start over nor report where its bytes
+    # cannot be read again, an upload paused after Files.com answered its final request pending, which Files.com may
+    # still complete, or a download into a caller's IO that can neither start over nor report where its bytes
     # began. A resume paused before its turn, or before it finished checking the local file or destination, gives back
     # the checkpoint it was given, still usable.
     class PausedError < Error

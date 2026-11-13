@@ -58,11 +58,13 @@ RSpec.describe Files::File, "transfers" do
 
   # The API and storage an upload sends through: the SDK's own connection with Faraday test stubs. Each begin_upload of
   # report.bin grants the parts it asks for, partsize bytes each, at https://storage.example.test/parts/<number>; each
-  # part request is answered by part_response (200 with an ETag unless given), and the end of the upload with 201.
-  # requests keeps every request in order, with its parameters or body and its headers. A planning request past the
-  # tenth fails, so an upload that never ends stops. grant, given a begin_upload's parameters, adds to each part it
-  # grants; raise_errors: false gives a connection that returns error responses.
-  def upload_api(requests, partsize:, part_response: nil, grant: ->(_params) { {} }, raise_errors: true)
+  # part request is answered by part_response (200 with an ETag unless given), and each request to end the upload by
+  # end_response, given how many there have been (1 for the first) and the request, or with 201. requests keeps every
+  # request in order, with its parameters or body and its headers; an end request also with its host and the
+  # monotonic time it arrived. A planning request past the tenth, or an end request past the tenth, fails, so an upload
+  # that never ends stops.
+  # grant adds to each part's instructions; raise_errors: false returns error responses from the connection.
+  def upload_api(requests, partsize:, part_response: nil, end_response: nil, grant: ->(_params) { {} }, raise_errors: true)
     stubbed_api_client(raise_errors: raise_errors) do |stub|
       stub.post("/api/rest/v1/file_actions/begin_upload/report.bin") do |env|
         params = Faraday::Utils.parse_nested_query(env.body)
@@ -81,9 +83,26 @@ RSpec.describe Files::File, "transfers" do
         part_response ? part_response.call(number) : [ 200, { "ETag" => "\"etag-#{number}\"" }, "" ]
       end
       stub.post("/api/rest/v1/files/report.bin") do |env|
-        requests << [ :end, Faraday::Utils.parse_nested_query(env.body), env.request_headers ]
-        json_response(201, { path: "report.bin", type: "file" })
+        requests << [ :end, Faraday::Utils.parse_nested_query(env.body), env.url.host, Process.clock_gettime(Process::CLOCK_MONOTONIC), env.request_headers ]
+        count = requests.count { |kind, *| kind == :end }
+        raise "The upload sent more than ten end requests" if count > 10
+
+        end_response ? end_response.call(count, env) : json_response(201, { path: "report.bin", type: "file" })
       end
+    end
+  end
+
+  def ends_sent(requests)
+    requests.select { |kind, *| kind == :end }
+  end
+
+  # Answers the first end requests with pending answers for upload-ref, each with the progress in progresses (nil
+  # leaves it out), and every later one with the File, or with final, given the end request's number, when given.
+  def pending_then_file(*progresses, final: nil)
+    lambda do |count, env|
+      next json_response(202, { status: "pending", ref: "upload-ref", progress: progresses[count - 1] }.compact) if count <= progresses.size
+
+      final ? final.call(count, env) : json_response(201, { path: "report.bin", type: "file", size: 10 })
     end
   end
 
@@ -209,7 +228,7 @@ RSpec.describe Files::File, "transfers" do
       with_local_file("") { |path| described_class.upload_file(path, "report.bin", { client: upload_api(requests, partsize: 4) }) }
 
       expect(parts_sent(requests)).to eq([ [ 1, "" ] ])
-      expect(requests.last[0..1]).to match([ :end, hash_including("action" => "end", "size" => "0") ])
+      expect(requests.last[0..1]).to match([ :end, hash_including("action" => "end", "size" => "0", "async_finalize" => "true") ])
     end
 
     it "reports progress with the local file's size as its total, whatever size its planning parameters carry, and sends progress in no request" do
@@ -345,7 +364,7 @@ RSpec.describe Files::File, "transfers" do
       described_class.upload_io(reader, "report.bin", { client: upload_api(requests, partsize: 4) }, transfer: true)
 
       expect(parts_sent(requests)).to eq([ [ 1, "abcd" ], [ 2, "efgh" ], [ 3, "ij" ] ])
-      expect(requests.last[0..1]).to match([ :end, hash_including("action" => "end", "size" => "10") ])
+      expect(requests.last[0..1]).to match([ :end, hash_including("action" => "end", "size" => "10", "async_finalize" => "true") ])
     end
 
     it "refuses a size that is not a non-negative Integer before sending anything" do
@@ -354,6 +373,176 @@ RSpec.describe Files::File, "transfers" do
       expect { described_class.upload_io(StringIO.new("ab"), "report.bin", { client: upload_api(requests, partsize: 4) }, size: -1, transfer: true) }
         .to raise_error(Files::InvalidParameterError)
       expect(requests).to be_empty
+    end
+  end
+
+  describe "while Files.com completes an upload" do
+    let(:last_part) { { total_bytes: 10, acknowledged_bytes: 10, part_number: 3, part_bytes: 2 } }
+
+    def upload(client, progress: nil)
+      with_local_file("abcdefghij") { |path| described_class.upload_file(path, "report.bin", { client: client }, progress: progress) }
+    end
+
+    it "sends its final request again one, two, then three seconds after each pending answer, identically, until the File, reporting each answer's progress with the last part's bytes" do
+      requests = []
+      reports = []
+      settings = [ Files.default_headers, Files.language ]
+      Files.default_headers = { "X-Fixture-Default" => "first" }
+      # Each finalizing report changes what a request would otherwise take from the library-wide settings.
+      progress = lambda do |report|
+        reports << report
+        next unless report[:finalizing]
+
+        Files.api_key = "changed-api-key"
+        Files.session_id = "changed-session"
+        Files.workspace_id = 9
+        Files.default_headers = { "X-Fixture-Default" => "changed" }
+        Files.language = "changed"
+      end
+
+      file = begin
+        upload(upload_api(requests, partsize: 4, end_response: pending_then_file(nil, 42, 100, 100)), progress: progress)
+      ensure
+        Files.default_headers, Files.language = settings
+      end
+
+      expect([ file.path, file.size ]).to eq([ "report.bin", 10 ])
+      expect(reports.last(5)).to eq([ last_part, *[ nil, 42, 100, 100 ].map { |percent| last_part.merge(part_bytes: 0, finalizing: true, finalization_progress: percent) } ])
+      ends = ends_sent(requests)
+      expect(ends.size).to eq(5)
+      expect(ends.first[1]).to include("action" => "end", "async_finalize" => "true", "ref" => "upload-ref", "size" => "10")
+      expect(ends.map { |_, params, host, _, _| [ params, host ] }.uniq.size).to eq(1)
+      identity = ends.map { |*, headers| headers.to_h.slice("X-FilesAPI-Key", "X-FilesAPI-Auth", "X-Files-Workspace-Id", "X-Fixture-Default", "Accept-Language", "User-Agent") }
+      expect(identity.uniq).to eq([ identity.first ])
+      expect(identity.first).to include("X-FilesAPI-Auth" => "fixture-session", "X-Files-Workspace-Id" => "7", "X-Fixture-Default" => "first")
+      # A pending 100 is still pending, and the waits keep growing to three seconds.
+      gaps = ->(sent) { sent.each_cons(2).map { |(*, before, _), (*, after, _)| after - before } }
+      expect(gaps.call(ends).zip([ 1, 2, 3, 3 ])).to all(satisfy { |gap, wait| gap >= wait - 0.05 && gap < wait + 0.9 })
+
+      # Another upload's finalization starts again from one second.
+      again = []
+      upload(upload_api(again, partsize: 4, end_response: pending_then_file(nil)))
+      expect(gaps.call(ends_sent(again))).to contain_exactly(be_between(0.95, 1.9))
+    end
+
+    it "reports a pending answer with the last part's own byte counts, whatever the callback did to the report it was given" do
+      [ {}, { transfer: { concurrency: 1 } } ].each do |keywords|
+        requests = []
+        given = []
+        # The callback keeps a copy of each report, then rewrites the report it was given in place.
+        progress = lambda do |report|
+          given << report.dup
+          next if report[:finalizing]
+
+          report.delete(:acknowledged_bytes)
+          report[:total_bytes] = -1
+        end
+
+        with_local_file("abcdefghij") do |path|
+          described_class.upload_file(path, "report.bin", { client: upload_api(requests, partsize: 4, end_response: pending_then_file(42)) }, progress: progress, **keywords)
+        end
+
+        last_part, finalizing = given.last(2)
+        expect(finalizing).to eq(last_part.merge(part_bytes: 0, finalizing: true, finalization_progress: 42)), "with #{keywords.inspect}"
+        expect(finalizing.values_at(:total_bytes, :acknowledged_bytes)).to eq([ 10, 10 ])
+      end
+    end
+
+    it "takes only a whole number from 0 to 100 as an answer's progress" do
+      requests = []
+      reports = []
+
+      upload(upload_api(requests, partsize: 4, end_response: pending_then_file(42.5, "42", 101)), progress: ->(report) { reports << report })
+
+      expect(reports.select { |report| report[:finalizing] }.map { |report| report[:finalization_progress] }).to eq([ nil, nil, nil ])
+      expect(ends_sent(requests).size).to eq(4)
+    end
+
+    it "raises an unknown outcome, sending nothing more, for a 202 that is not a pending answer for its ref" do
+      [ { status: "completed", ref: "upload-ref" }, { status: "pending" }, { status: "pending", ref: "another-ref" }, { status: "pending", ref: 7 }, [ "pending" ] ].each do |body|
+        requests = []
+        reports = []
+        client = upload_api(requests, partsize: 4, end_response: ->(_count, _env) { json_response(202, body) })
+
+        expect { upload(client, progress: ->(report) { reports << report }) }.to raise_error(Files::APIConnectionError) { |error| expect(error.http_status).to eq(202) }
+        expect(ends_sent(requests).size).to eq(1), "#{body.inspect} was answered with #{ends_sent(requests).size} end requests"
+        expect(reports.select { |report| report[:finalizing] }).to be_empty
+      end
+    end
+
+    it "raises Files.com's error answer to a later request as the upload's outcome" do
+      requests = []
+      failed = ->(_count, _env) { json_response(422, { error: "The upload could not be completed", type: "processing-failure/file-processing-error" }) }
+
+      expect { upload(upload_api(requests, partsize: 4, end_response: pending_then_file(nil, final: failed))) }
+        .to raise_error(Files::FileProcessingErrorError) { |error| expect([ error.http_status, error.message ]).to eq([ 422, "The upload could not be completed" ]) }
+      expect(ends_sent(requests).size).to eq(2)
+    end
+
+    it "sends a later request that failed again as the client retries, then waits on" do
+      requests = []
+      retries = [ Files.max_network_retries, Files.initial_network_retry_delay, Files.max_network_retry_delay ]
+      Files.max_network_retries = 1
+      Files.initial_network_retry_delay = Files.max_network_retry_delay = 0.01
+      busy = ->(count, _env) { count == 2 ? json_response(503, { error: "Busy", type: "service-unavailable/uploads-unavailable" }) : json_response(201, { path: "report.bin", type: "file", size: 10 }) }
+
+      file = begin
+        upload(upload_api(requests, partsize: 4, end_response: pending_then_file(nil, final: busy)))
+      ensure
+        Files.max_network_retries, Files.initial_network_retry_delay, Files.max_network_retry_delay = retries
+      end
+
+      expect(file.path).to eq("report.bin")
+      expect(ends_sent(requests).map { |_, params, *| params }.uniq.size).to eq(1)
+      expect(ends_sent(requests).size).to eq(3)
+    end
+
+    it "raises an unknown outcome once a later request's retries are spent, whether it was answered 5xx or failed on the network" do
+      retries = [ Files.max_network_retries, Files.initial_network_retry_delay, Files.max_network_retry_delay ]
+      Files.max_network_retries = 1
+      Files.initial_network_retry_delay = Files.max_network_retry_delay = 0.01
+      failures = [ ->(_count, _env) { json_response(500, { error: "Failed", type: "internal-server-error" }) }, ->(_count, _env) { raise Faraday::ConnectionFailed, "connection refused" } ]
+
+      begin
+        failures.each do |failure|
+          requests = []
+          expect { upload(upload_api(requests, partsize: 4, end_response: pending_then_file(nil, final: failure))) }
+            .to raise_error(Files::APIConnectionError, /Files.com may still complete it/)
+          expect(ends_sent(requests).size).to eq(3)
+        end
+      ensure
+        Files.max_network_retries, Files.initial_network_retry_delay, Files.max_network_retry_delay = retries
+      end
+    end
+
+    it "raises what the progress callback raises for a pending answer, sending nothing more" do
+      requests = []
+      stopped = StandardError.new("stopped while Files.com completes the upload")
+
+      expect { upload(upload_api(requests, partsize: 4, end_response: pending_then_file(nil)), progress: ->(report) { raise stopped if report[:finalizing] }) }
+        .to raise_error(StandardError) { |error| expect(error).to equal(stopped) }
+      expect(ends_sent(requests).size).to eq(1)
+    end
+
+    it "does not send a final request again whose answer was lost" do
+      requests = []
+      reports = []
+      lost = ->(_count, _env) { raise Faraday::TimeoutError, "read timeout" }
+
+      expect { upload(upload_api(requests, partsize: 4, end_response: lost), progress: ->(report) { reports << report }) }.to raise_error(Files::APIConnectionError)
+      expect(ends_sent(requests).size).to eq(1)
+      expect(reports.select { |report| report[:finalizing] }).to be_empty
+    end
+
+    it "waits in #close until Files.com completes a pending upload" do
+      requests = []
+      client = upload_api(requests, partsize: 4, end_response: pending_then_file(nil))
+
+      file = described_class.open("report.bin", "w", { client: client }) { |opened| opened.write("abcdefghij") }
+
+      expect(file.size).to eq(10)
+      expect(ends_sent(requests).size).to eq(2)
+      expect(ends_sent(requests).map { |_, params, *| params }.uniq).to match([ hash_including("action" => "end", "async_finalize" => "true", "size" => "10") ])
     end
   end
 

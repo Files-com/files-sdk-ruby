@@ -231,6 +231,8 @@ module Files
         @part_size = nil
         @origin = checkpoint
         @lease = lease
+        @last_report = nil
+        @finalizing = false
         restore(checkpoint) if checkpoint
       end
 
@@ -264,15 +266,79 @@ module Files
       end
 
       # The local file must still be the one opened before the upload ends. A change found, or the finalize request's
-      # failure, stops the transfer as it is met (stop!), so a cancellation or pause after it cannot come first.
+      # failure, stops the transfer as it is met (stop!), so a cancellation or pause after it cannot come first. The
+      # upload ends as Files::UploadFinalization does: while Files.com answers that it is still completing it, progress
+      # gets a finalizing report for each answer (report_finalizing) and the wait before the next request ends at once
+      # with a cancellation, a pause or the job's closing (wait_finalizing).
       def finalize
         @source.check!
         etags = @parts.map { |part| { etag: @accepted.fetch(part.number), part: part.number } }
         params = { action: "end", etags: etags, ref: @ref, size: @source.size }
         params[:provided_mtime] = @source.mtime.to_s if @source.mtime
-        Files::File.create(@destination, params, @options)
+        Files::UploadFinalization.finalize(@destination, params, @options, report: method(:report_finalizing), wait: method(:wait_finalizing))
       rescue StandardError => e
         raise stop!(e)
+      end
+
+      # On the caller's thread, for each answer that Files.com is still completing the upload: progress gets the last
+      # report this call made (or, when it made none, as a resume of an upload whose parts were all acknowledged before
+      # its pause, the upload's total and acknowledged bytes and its last part's number) with part_bytes 0, since it
+      # acknowledges no part, finalizing: true and finalization_progress, Files.com's percentage or nil. From the first
+      # such answer on, the transfer is finalizing (observe_stops), and nothing is reported once it has stopped.
+      def report_finalizing(percent)
+        @finalizing = true
+        finalizing_stop!
+        return unless @progress
+
+        last = @last_report || { total_bytes: @source.size, acknowledged_bytes: @accepted_bytes, part_number: @parts.last&.number }
+        @progress.call(last.merge(part_bytes: 0, finalizing: true, finalization_progress: percent))
+      end
+
+      # On the caller's thread: waits seconds before the next request for the upload's outcome, ending at once when the
+      # transfer is cancelled, paused or its job closes.
+      def wait_finalizing(seconds)
+        deadline = Clock.now + seconds
+        loop do
+          finalizing_stop!
+          remaining = deadline - Clock.now
+          return unless remaining.positive?
+
+          @job.synchronize do
+            observe_stops
+            @job.wait(remaining) if @stop.nil?
+          end
+        end
+      end
+
+      # Raises the first stop recorded, once the transfer is finalizing.
+      def finalizing_stop!
+        stop = @job.synchronize do
+          observe_stops
+          @stop
+        end
+        raise stop if stop
+      end
+
+      # With the lock held. Once Files.com has answered the upload's final request pending, a cancellation, a pause or
+      # the job's closing ends only the client's wait: the final request was sent, and Files.com may still complete the
+      # upload, so a pause gives no checkpoint.
+      def observe_stops
+        return super unless @finalizing
+
+        settle_inbox
+        stop = finalizing_stop
+        @stop ||= stop if stop
+      end
+
+      # With the lock held: the error a cancellation, pause or closed job ends a finalizing transfer with, or nil.
+      def finalizing_stop
+        if @control&.cancelled?
+          CancelledError.new("The transfer was cancelled while Files.com was completing the upload; Files.com may still complete it")
+        elsif @control&.paused?
+          PausedError.new(nil, "The transfer was paused while Files.com was completing the upload, so it cannot be resumed; Files.com may still complete it")
+        elsif @job.closed?
+          Files::Error.new("The transfer job was closed while Files.com was completing the upload; Files.com may still complete it")
+        end
       end
 
       def restore(checkpoint)
@@ -608,13 +674,16 @@ module Files
           bytes_per_second: elapsed.positive? ? (@accepted_bytes - @start_accepted) / elapsed : 0.0 }
       end
 
-      # On the caller's thread. Nothing is reported after a failure or a cancellation.
+      # On the caller's thread. Nothing is reported after a failure or a cancellation. A copy of the last report delivered
+      # is kept for the finalizing reports (report_finalizing), so what the callback does to the Hash it is given cannot
+      # change them.
       def deliver(reports)
         return unless @progress
 
         reports.each do |report|
           break unless @stop.nil? || @stop == :paused
 
+          @last_report = report.dup
           @progress.call(report)
         end
       rescue StandardError => e

@@ -51,8 +51,9 @@ RSpec.describe Files::File, "adaptive uploads" do
 
   # The API, made Files.base_url, for uploads to the names in names. begin_upload grants the parts asked for,
   # partsize bytes each, at /parts/<number> on store, with what grant adds (its params name the upload's "path"); the
-  # end of the upload is answered 201, once finish, when given, returns for its name.
-  def api_server(store, partsize: 4, names: %w[report.bin], grant: ->(_number, _params) { {} }, finish: nil)
+  # end of the upload is answered 201, once finish, when given, returns for its name, or with what end_answer returns,
+  # when given, for the request and how many end requests there have been (1 for the first).
+  def api_server(store, partsize: 4, names: %w[report.bin], grant: ->(_number, _params) { {} }, finish: nil, end_answer: nil)
     api = TransferServer.new(concurrent: true) do |request|
       path = request.target.split("?").first
       begun = path[/\A\/api\/rest\/v1\/file_actions\/begin_upload\/(.+)\z/, 1]
@@ -66,7 +67,9 @@ RSpec.describe Files::File, "adaptive uploads" do
         )
       elsif names.include?(ended)
         finish&.call(ended)
-        json(201, { path: ended, type: "file" })
+        next json(201, { path: ended, type: "file" }) unless end_answer
+
+        end_answer.call(request, api.requests.count { |sent| sent.target.start_with?("/api/rest/v1/files/") })
       else
         TransferServer.response("404 Not Found", { "Content-Length" => 0 })
       end
@@ -1256,6 +1259,111 @@ RSpec.describe Files::File, "adaptive uploads" do
       end
       expect(failure).to be_a(Files::Error)
       expect(job.close).to be(true)
+    end
+  end
+
+  describe "while Files.com completes the upload" do
+    # Answers the first end requests pending for upload-ref, each with the progress in progresses (nil leaves it out),
+    # and every later one with the File.
+    def pending_then_file(*progresses)
+      lambda do |_request, count|
+        next json(202, { status: "pending", ref: "upload-ref", progress: progresses[count - 1] }.compact) if count <= progresses.size
+
+        json(201, { path: "report.bin", type: "file", size: 8 })
+      end
+    end
+
+    it "sends its final request again after each pending answer, with the context it began with, and reports each answer on the caller's thread" do
+      store = storage_server
+      api = api_server(store, end_answer: pending_then_file(nil, 42))
+      reports = []
+      threads = []
+      settings = [ Files.default_headers, Files.language ]
+      Files.default_headers = { "X-Fixture-Default" => "first" }
+      progress = lambda do |report|
+        reports << report
+        threads << Thread.current
+        next unless report[:finalizing]
+
+        Files.default_headers = { "X-Fixture-Default" => "changed" }
+        Files.language = "changed"
+        Files.base_url = "http://127.0.0.1:1"
+        Files.session_id = "changed-session"
+        Files.workspace_id = 9
+      end
+
+      file = begin
+        with_local_file(data.byteslice(0, 8)) { |path| upload(path, progress: progress, transfer: { concurrency: 1 }) }
+      ensure
+        Files.default_headers, Files.language = settings
+      end
+
+      expect([ file.path, file.size ]).to eq([ "report.bin", 8 ])
+      last_part = reports[1]
+      expect(last_part.values_at(:total_bytes, :acknowledged_bytes, :part_number)).to eq([ 8, 8, 2 ])
+      expect(reports.drop(2)).to eq([ nil, 42 ].map { |percent| last_part.merge(part_bytes: 0, finalizing: true, finalization_progress: percent) })
+      expect(threads.uniq).to eq([ Thread.current ])
+      expect(ends(api).size).to eq(3)
+      expect(ends(api).uniq.size).to eq(1)
+      expect(ends(api).first).to include("action" => "end", "async_finalize" => "true", "ref" => "upload-ref", "size" => "8")
+      finalizes = api.requests.select { |request| request.target.start_with?("/api/rest/v1/files/") }
+      expect(finalizes.map { |request| request.headers.values_at("x-filesapi-auth", "x-filesapi-key", "x-files-workspace-id", "x-fixture-default", "accept-language", "user-agent") }.uniq.size).to eq(1)
+      expect(finalizes.first.headers.values_at("x-filesapi-auth", "x-files-workspace-id", "x-fixture-default")).to eq([ "fixture-session", "7", "first" ])
+    end
+
+    it "stops waiting at once for a cancellation after a pending answer, sending nothing more" do
+      store = storage_server
+      control = Files::Transfer::Control.new
+      answered = Queue.new
+      api = api_server(store, end_answer: lambda { |_request, _count|
+        answered << :pending
+        json(202, { status: "pending", ref: "upload-ref" })
+      }
+      )
+      cancelled_at = nil
+      canceller = Thread.new do
+        answered.pop
+        sleep 0.2
+        cancelled_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+        control.cancel
+      end
+
+      Files::Transfer::Job.open(concurrency: 1, control: control) do |job|
+        with_local_file(data.byteslice(0, 8)) do |path|
+          expect { upload(path, transfer: job) }.to raise_error(Files::Transfer::CancelledError, /Files.com may still complete it/)
+        end
+        expect(Process.clock_gettime(Process::CLOCK_MONOTONIC) - cancelled_at).to be < 0.5
+        expect(job.held_bytes).to eq(0)
+      end
+      canceller.join
+      expect(ends(api).size).to eq(1)
+    end
+
+    it "pauses after a pending answer without a checkpoint, sending nothing more" do
+      store = storage_server
+      api = api_server(store, end_answer: pending_then_file(nil))
+      control = Files::Transfer::Control.new
+
+      with_local_file(data.byteslice(0, 8)) do |path|
+        expect { upload(path, progress: ->(report) { control.pause if report[:finalizing] }, transfer: { concurrency: 1, control: control }) }
+          .to raise_error(Files::Transfer::PausedError) { |error|
+            expect(error.checkpoint).to be_nil
+            expect(error.message).to include("Files.com may still complete it")
+          }
+      end
+      expect(ends(api).size).to eq(1)
+    end
+
+    it "raises the progress callback's own error from a finalizing report, sending nothing more" do
+      store = storage_server
+      api = api_server(store, end_answer: pending_then_file(nil))
+      stopped = StandardError.new("stopped while Files.com completes the upload")
+
+      with_local_file(data.byteslice(0, 8)) do |path|
+        expect { upload(path, progress: ->(report) { raise stopped if report[:finalizing] }, transfer: { concurrency: 1 }) }
+          .to raise_error(StandardError) { |error| expect(error).to equal(stopped) }
+      end
+      expect(ends(api).size).to eq(1)
     end
   end
 

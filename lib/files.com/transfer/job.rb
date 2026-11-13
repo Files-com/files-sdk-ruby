@@ -365,8 +365,9 @@ module Files
       # API key; otherwise an options session ID or session, saved first if it has no ID, or Files.session_id, when not
       # empty; otherwise Files.api_key, or none at all), the origin (options[:base_url] or Files.base_url), the
       # region_http_pairs (the options' own, checked, or the client's), the workspace (options[:workspace_id], or the
-      # client's, "" for none) and, as request_settings, copies of the library-wide default headers, language, app info,
-      # timeouts and region policy and handler (ApiClient.transfer_settings). A later change to the caller's options,
+      # client's, "" for none) and, as request_settings, the options' own ApiClient::TransferSettings, as a context fixed
+      # before carries, or else copies of the library-wide default headers, language, app info, timeouts and region
+      # policy and handler (ApiClient.transfer_settings). A later change to the caller's options,
       # even in place, to the thread's client or to any of those settings cannot change what the transfer's API requests
       # send; adopt_context carries what an API request resolved, such as a regional origin, to those after it.
       def self.api_context(options)
@@ -391,7 +392,7 @@ module Files
           context[:region_http_pairs] = client.region_http_pairs
         end
         context[:workspace_id] = client.resolved_workspace_id if context[:workspace_id].nil? && client.respond_to?(:resolved_workspace_id)
-        context[:request_settings] = ApiClient.transfer_settings
+        context[:request_settings] = ApiClient.transfer_settings unless context[:request_settings].is_a?(ApiClient::TransferSettings)
         context
       end
 

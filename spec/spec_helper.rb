@@ -61,6 +61,8 @@ module MockServerFixture
   def self.admit(origin, report, definition_sha256)
     # Once a reset failed or could not be verified, no example is admitted: nothing resets the daemon or makes folders.
     raise_failed_transition
+    return launched_contract(origin, report, definition_sha256) if launcher_instance
+
     instance, epoch, active = report["instance"], report["epoch"], report.dig("profile", "api_scenarios")
     @daemon ||= [ origin, instance ]
     replaced = @daemon != [ origin, instance ]
@@ -81,6 +83,27 @@ module MockServerFixture
       transition(origin, instance, epoch, {}, nil)
       nil
     end
+  end
+
+  # The instance the mock server's with-scenario.rb started, when it runs this suite: it gives FILES_MOCK_INSTANCE and
+  # FILES_MOCK_SCENARIO to its consumer only. Nil otherwise.
+  def self.launcher_instance
+    instance = ENV["FILES_MOCK_INSTANCE"].to_s
+    instance unless instance.empty? || ENV["FILES_MOCK_SCENARIO"].to_s.empty?
+  end
+
+  # Under with-scenario.rb, whose scenario's reset made the daemon's epoch, the run takes that epoch as it is and resets
+  # nothing, then or after the suite: an example runs only on the launcher's instance and only when the epoch serves
+  # exactly the API scenarios contract it names (none, for an example that names none). Returns the contract its
+  # journal checks join, or nil.
+  def self.launched_contract(origin, report, definition_sha256)
+    instance, epoch, active = report["instance"], report["epoch"], report.dig("profile", "api_scenarios")
+    raise "#{origin} answers as instance #{instance.inspect}, not the one with-scenario.rb started; nothing was reset." unless instance == launcher_instance
+
+    wanted = definition_sha256 && API_SCENARIOS.merge("definition_sha256" => definition_sha256)
+    raise "#{origin} serves the API scenarios contract #{active.inspect} at epoch #{epoch.inspect}, which with-scenario.rb's scenario #{ENV["FILES_MOCK_SCENARIO"].inspect} chose, not #{wanted.inspect}; nothing was reset." unless active == wanted
+
+    { origin: origin, instance: instance, epoch: epoch, mode: :launched, identity: active } if wanted
   end
 
   # Resets the daemon from `epoch` with `body` and verifies the next epoch on the same instance: first in the reset's

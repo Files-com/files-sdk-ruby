@@ -106,7 +106,7 @@ module Files
     # Files::Transfer::SourceChangedError, and nothing past them is read. Without size or transfer:, io is read to its
     # end and uploaded a part at a time, as upload_chunks does. io is never rewound or closed. A paused stream upload
     # cannot be resumed: its PausedError has no checkpoint. progress is as for upload_file, with total_bytes size (nil
-    # when it is not given).
+    # when it is not given). The upload ends as upload_file's does, waiting while Files.com completes it.
     def self.upload_io(io, destination, options = {}, size: nil, params: {}, progress: nil, transfer: nil)
       raise InvalidParameterError, "Bad parameter: size must be a non-negative Integer" unless size.nil? || (size.is_a?(Integer) && size >= 0)
 
@@ -114,11 +114,18 @@ module Files
 
       params = params.dup
       params[:size] ||= size if size
-      report = progress && ->(part) { progress.call(part.merge(total_bytes: size)) }
+      # The last report is kept as it was made, whatever the callback does to the Hash it is given.
+      last_report = nil
+      report = progress && lambda do |part|
+        part = part.merge(total_bytes: size)
+        last_report = part.dup
+        progress.call(part)
+      end
       upload, etags, bytes = upload_chunks(io, destination, options, params: params, progress: report)
       raise InvalidParameterError, "Bad parameter: io held #{bytes} bytes, not size #{size}" if size && bytes != size
 
-      create(destination, { action: "end", etags: etags, ref: upload.ref, size: bytes }, options)
+      finalizing = progress && ->(percent) { progress.call(last_report.to_h.merge(part_bytes: 0, finalizing: true, finalization_progress: percent)) }
+      UploadFinalization.finalize(destination, { action: "end", etags: etags, ref: upload.ref, size: bytes }, options, report: finalizing)
     end
 
     private_class_method def self.default_local_path(path)
@@ -488,6 +495,14 @@ module Files
     # With progress, a callable, it is called after each part is acknowledged, as upload_chunks reports it, with
     # total_bytes the local file's size.
     #
+    # The upload's final request lets Files.com complete an upload to a remote server mount or an Agent in the
+    # background (async_finalize: true). While Files.com answers that it is still completing it, the same request is
+    # sent again after each answer (one, two, then three seconds later), until Files.com answers with the file or an
+    # error, and progress is called once for each such answer with the last part's report, but part_bytes 0, since it
+    # acknowledges no part, and finalizing: true and finalization_progress: Files.com's percentage (0 to 100) or nil.
+    # Pending at 100 is still pending: only the returned file means the upload completed. See
+    # Files::UploadFinalization.
+    #
     # With transfer: (true, a Hash of Files::Transfer::Options, an Options or a shared Files::Transfer::Job), the
     # upload is adaptive: its parts are sent concurrently, as many at once as the link sustains within those options,
     # and progress is called on this thread once for each part storage acknowledged, in the order they were. A
@@ -497,11 +512,15 @@ module Files
     # @param destination [String, nil] remote path; defaults to the local basename.
     # @param options [Hash] request configuration; see {Files::Api.send_request}.
     # @param params [Hash] upload API parameters.
-    # @param progress [#call, nil] called with total_bytes, acknowledged_bytes, part_number and part_bytes keys.
-    #   Counts are bytes; part_number is the API part number. Raising stops the upload before any later part.
+    # @param progress [#call, nil] called with total_bytes, acknowledged_bytes, part_number and part_bytes keys, and,
+    #   while Files.com completes the upload, finalizing and finalization_progress keys too.
+    #   Counts are bytes; part_number is the API part number. Raising stops the upload before any later part, or stops
+    #   waiting while Files.com completes it, which it may still do.
     # @param transfer [Boolean, Hash, Files::Transfer::Options, Files::Transfer::Job, nil] adaptive options or a shared job.
     # @return [Files::File] the completed upload.
     # @raise [StandardError] if reading, a request or the progress callback fails; the local file is still closed.
+    # @raise [Files::APIConnectionError] if the upload's outcome is unknown: Files.com took its final request, but an
+    #   answer could not be read or was not one the SDK acts on, or a later request for the outcome kept failing.
     def self.upload_file(path, destination = nil, options = {}, params: {}, progress: nil, transfer: nil)
       if transfer
         destination ||= ::File.basename(path)
@@ -512,7 +531,13 @@ module Files
       destination ||= File.basename(path)
       params[:size] ||= local_file.size
       total_bytes = local_file.size
-      report = progress && ->(part) { progress.call(part.merge(total_bytes: total_bytes)) }
+      # The last report is kept as it was made, whatever the callback does to the Hash it is given.
+      last_report = nil
+      report = progress && lambda do |part|
+        part = part.merge(total_bytes: total_bytes)
+        last_report = part.dup
+        progress.call(part)
+      end
       upload, etags = upload_chunks(local_file, destination, options, params: params, progress: report)
 
       params = {
@@ -523,7 +548,8 @@ module Files
         size: local_file.size
       }
 
-      create(destination, params, options)
+      finalizing = progress && ->(percent) { progress.call(last_report.to_h.merge(part_bytes: 0, finalizing: true, finalization_progress: percent)) }
+      UploadFinalization.finalize(destination, params, options, report: finalizing)
     ensure
       local_file&.close
     end
@@ -655,6 +681,7 @@ module Files
     end
 
     # Flushes buffered data, finalizes any upload, then closes the write buffer.
+    # The upload ends as File.upload_file's does, waiting while Files.com completes it; kwargs can set async_finalize too.
     # @param kwargs [Hash] end-upload API parameters overriding the generated values.
     # @return [nil]
     # @raise [StandardError] if flushing, finalizing or closing fails.
@@ -671,7 +698,7 @@ module Files
         }
         end_options.merge!(kwargs) if kwargs
 
-        file = File.create(path, end_options, @options)
+        file = UploadFinalization.finalize(path, end_options, @options)
         @attributes = file.attributes
         @upload = nil
       end
