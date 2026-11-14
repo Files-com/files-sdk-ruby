@@ -15,8 +15,14 @@ module Files
     # caller's thread it first asks for the opening range (8 MiB, or a quarter of buffer_bytes when that is less) with
     # Accept-Encoding: identity. A 206 with a strong ETag and an exact Content-Range and Content-Length binds the
     # download to that version: every later range is requested with If-Match and must come back as a 206 with the
-    # exact Content-Range, total, length and ETag, and a 412, or a whole response with any other ETag, stops it with
-    # VersionChangedError before anything of it is written. Ranges complete in any order, each read straight into one
+    # exact Content-Range, total, length and ETag, and a 412, or a whole response with any other ETag, ends the attempt
+    # with VersionChangedError before anything of it is written, as do a newer Last-Modified (DownloadDate) and storage's
+    # 409 download_source_changed (StorageRetry.source_changed_response?). Once the requests that attempt has in flight
+    # have settled, a range still arriving stopping at its next chunk (stop_obsolete_read), a local file (download_file) starts over from its first byte, with a URL the API gives anew and the
+    # size, version and date storage answers it with, dropping every byte and claim of the attempt before; an IO does
+    # only while nothing has been written to it. Each restart is one of Files.max_network_retries, counted however far
+    # the attempt got, so a file that keeps changing fails; none is made once they are spent, or after a cancellation or
+    # pause came first. Ranges complete in any order, each read straight into one
     # String of its length, wait in memory within buffer_bytes, and are written to the destination in order on the
     # caller's thread, which progress, when given, is then called on. A range is on the network, for its controller,
     # until its whole body has arrived and been checked. Every request, the opening one and a proof included, waits
@@ -42,6 +48,7 @@ module Files
       RENEWALS = 2
       MISMATCH = "Transfer response did not match the request"
       EXPIRED = "The download URL the API returned has expired, and renewing it did not give one still valid"
+      SOURCE_CHANGED = "The remote file changed during the download: storage answered 409 download_source_changed"
       # The most of a resumed destination's bytes read back at once to check them; never more than a range.
       VERIFY_CHUNK_BYTES = 1024 * 1024
       ControlStop = Class.new(StandardError)
@@ -87,6 +94,11 @@ module Files
         end
 
         def restartable?
+          true
+        end
+
+        # The SDK's own local file, whose bytes nobody has been handed: a changed remote file starts it over.
+        def resettable?
           true
         end
 
@@ -162,6 +174,12 @@ module Files
 
         def restartable?
           !@start.nil? && @io.respond_to?(:seek) && @io.respond_to?(:truncate)
+        end
+
+        # The caller may already have read what was written: a changed remote file starts it over only while nothing
+        # has been.
+        def resettable?
+          false
         end
 
         def restart!
@@ -322,7 +340,8 @@ module Files
         @digest = OpenSSL::Digest.new('SHA256')
         @total = nil
         @version = nil
-        @download_date = DownloadDate.new(enabled: DownloadDate.enabled(@options, check_download_modification_time))
+        @check_dates = DownloadDate.enabled(@options, check_download_modification_time)
+        @download_date = DownloadDate.new(enabled: @check_dates)
         @generation = 0
         @open = {}
         @next_number = 0
@@ -386,15 +405,31 @@ module Files
         @sink.resume_at!(completed)
       end
 
-      # The download, from its URL's lookup to its last write. Any error on the way is raised only when it came before
-      # any cancellation or pause (Coordinator#run), and a cancellation or pause, such as one from the last progress
-      # call, is raised in place of a success.
+      # The download, from its URL's lookup to its last write, started over when the remote file changed (start_over).
+      # Any error on the way is raised only when it came before any cancellation or pause (Coordinator#run), and a
+      # cancellation or pause, such as one from the last progress call, is raised in place of a success.
       def transfer
         @url = @download_uri || load_url
+        @started_at = Clock.now
+        restarts = 0
+        begin
+          fetch_file
+        rescue VersionChangedError => e
+          raise unless restart?(e, restarts)
+
+          restarts += 1
+          start_over
+          retry
+        end
+        nil
+      end
+
+      # One attempt at the whole file, with the URL it has now. It returns, or raises, only once nothing of it is in
+      # flight: the head is fetched on the caller's thread, and pump waits for every range it sent.
+      def fetch_file
         raise stop!(Files::APIError.new("The download URL the API returned is not usable")) unless http_url?(@url)
 
         @current = [ @url, @generation, StorageRetry.expires_at(@url) ].freeze
-        @started_at = Clock.now
         @start_written = @written
         # Every byte of a resumed download was written before its pause: storage proves its version with its last byte.
         @mode = :proof if @version && @written >= @total
@@ -406,7 +441,41 @@ module Files
         @job.synchronize { observe_stops }
         raise_outcome
         @sink.settle!
-        nil
+      end
+
+      # Whether the remote file's change, error, starts the download over: only when it is the transfer's first stop,
+      # with no cancellation, pause or other failure before it, while fewer than Files.max_network_retries restarts were
+      # made, and into a local file, or an IO nothing was written to by this download or the one it resumes.
+      def restart?(error, restarts)
+        return false unless restarts < @max_retries && (@sink.resettable? || (@counted.zero? && @origin.nil?))
+
+        @job.synchronize do
+          observe_stops
+          @stop.equal?(error)
+        end
+      end
+
+      # Discards the attempt that found the change, whose requests have all settled: the ranges it holds and their
+      # bytes, what it wrote to a local file (truncated as the next bytes are written), and its size, version and date,
+      # so that nothing of it can be mixed with, or vouch for, the file as it is now. The URL is asked for again, after
+      # a cancellation or pause made meanwhile, which comes first. A pause then gives a checkpoint that starts over.
+      def start_over
+        @job.synchronize do
+          release_waiting
+          all_items.each { |piece| discard(piece) }
+          @open.clear
+          @completed.clear
+          @stop = nil
+          @job.count_retry
+        end
+        restart_sink if @sink.resettable?
+        @next_write = @next_number
+        @mode = :probe
+        @version = nil
+        @total = nil
+        @download_date = DownloadDate.new(enabled: @check_dates)
+        check_control!
+        renew_url
       end
 
       # A refused transfer or a failed write that ended the download first closes a caller's IO.
@@ -455,6 +524,7 @@ module Files
           raise refusal(FrontendResponseError.new) if StorageRetry.frontend?(response.headers)
           return :done if response.status == 416 && @written.zero? && response.header("content-range").to_s.strip == "bytes */0"
           raise refusal(VersionChangedError.new) if response.status == 412
+          raise refusal(VersionChangedError.new(SOURCE_CHANGED)) if StorageRetry.source_changed_response?(response.status, response.body, truncated: response.truncated)
 
           said_expired = StorageRetry.expired_response?(response.status, response.body, truncated: response.truncated)
           decision, delay = if said_expired || (response.status == 403 && StorageRetry.expired?(@current[2]))
@@ -719,10 +789,11 @@ module Files
         url, generation, expires_at = target
         piece.generation = generation
         headers = { "Range" => "bytes=#{piece.offset}-#{piece.offset + piece.bytesize - 1}", "Accept-Encoding" => "identity", "If-Match" => @version }
-        response = @transport.perform(:get, url, headers, connections, timing: timing) { |http| range_body(http, piece) }
+        response = @transport.perform(:get, url, headers, connections, timing: timing, on_error_chunk: -> { stop_obsolete_read }) { |http| range_body(http, piece) }
         return [ :ok, response.body, piece.bytesize ] if response.status.between?(200, 299)
         return [ :fail, refusal(FrontendResponseError.new) ] if StorageRetry.frontend?(response.headers)
         return [ :fail, refusal(VersionChangedError.new) ] if response.status == 412
+        return [ :fail, refusal(VersionChangedError.new(SOURCE_CHANGED)) ] if StorageRetry.source_changed_response?(response.status, response.body, truncated: response.truncated)
         return [ :renew, refusal(refused(response)) ] if response.status == 403 && (StorageRetry.expired?(expires_at) || generation < @current[1])
         return [ :renew, refusal(refused(response)) ] if StorageRetry.expired_response?(response.status, response.body, truncated: response.truncated)
 
@@ -744,12 +815,23 @@ module Files
         etag = http["etag"]
         raise refusal(VersionChangedError.new) if etag && etag != @version
 
-        read_exact(http, piece.bytesize)
+        read_exact(http, piece.bytesize) { stop_obsolete_read }
       end
 
-      def read_exact(http, length)
+      # On a worker thread, as each chunk arrives of a range's body, or of the body of a refusal or error storage answered
+      # it with: once the remote file's change is the transfer's first stop, the range belongs to a version the download
+      # will not use, so its read ends there, closing only its own connection, rather than running to its end before the
+      # download can start over. A chunk still to come is waited for, within Files.read_timeout. Any other stop, such as a
+      # pause, lets the range complete.
+      def stop_obsolete_read
+        raise Passthrough.new(ControlStop.new), cause: nil if @job.synchronize { @stop.is_a?(VersionChangedError) }
+      end
+
+      # Reads a body of exactly length bytes into one String, calling between, when given, before each chunk is kept.
+      def read_exact(http, length, &between)
         data = String.new(capacity: length, encoding: Encoding::BINARY)
         http.read_body do |chunk|
+          between&.call
           raise refusal(mismatch) if data.bytesize + chunk.bytesize > length
 
           data << chunk

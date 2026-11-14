@@ -52,8 +52,9 @@ module Files
       # the response's body; the block reads it as it arrives. An error from the block is raised as it is, unless it is a
       # network error, which is raised, as one before the response, as a NetworkFailure. timing, when given, is told as
       # the send starts (connection setup included), as the response headers arrive, and once the block, or the read of
-      # any other response's body, has finished.
-      def perform(method, url, headers, connections, body: nil, length: nil, timing: nil, &on_success)
+      # any other response's body, has finished. on_error_chunk, when given, is called as each chunk of any other
+      # response's body arrives, before it is kept; what it raises ends the request there, closing its connection.
+      def perform(method, url, headers, connections, body: nil, length: nil, timing: nil, on_error_chunk: nil, &on_success)
         uri = ::URI.parse(url)
         request = Net::HTTPGenericRequest.new(method.to_s.upcase, !body.nil?, true, uri.request_uri, headers)
         if body.is_a?(String)
@@ -66,7 +67,7 @@ module Files
         timing&.sending
         connection(uri, connections).request(request) do |response|
           timing&.headers
-          kept, truncated = on_success && response.is_a?(Net::HTTPSuccess) ? [ on_success.call(response), false ] : limited_body(response)
+          kept, truncated = on_success && response.is_a?(Net::HTTPSuccess) ? [ on_success.call(response), false ] : limited_body(response, on_error_chunk)
           timing&.body
           result = StorageResponse.new(status: response.code.to_i, headers: response.to_hash, body: kept, truncated: truncated)
         end
@@ -110,11 +111,13 @@ module Files
         http
       end
 
-      # The first ERROR_BODY_BYTES of a response's body, which is read to its end, and whether it had more.
-      private def limited_body(response)
+      # The first ERROR_BODY_BYTES of a response's body, which is read to its end, and whether it had more. on_chunk, when
+      # given, is called as each chunk arrives.
+      private def limited_body(response, on_chunk = nil)
         kept = String.new(encoding: Encoding::BINARY)
         truncated = false
         response.read_body do |chunk|
+          on_chunk&.call
           room = ERROR_BODY_BYTES - kept.bytesize
           truncated ||= chunk.bytesize > room
           kept << chunk.byteslice(0, room) if room.positive?
@@ -206,11 +209,12 @@ module Files
       end
 
       # Faraday's on_data for one request. It runs a success handler in a Fiber that waits for each chunk as it arrives,
-      # and keeps the first 64 KiB of any other response.
+      # and keeps the first 64 KiB of any other response, calling on_error_chunk, when given, as each of its chunks arrives.
       class Reader
-        def initialize(on_success, timing)
+        def initialize(on_success, timing, on_error_chunk = nil)
           @on_success = on_success
           @timing = timing
+          @on_error_chunk = on_error_chunk
           @fiber = nil
           @result = nil
           @kept = String.new(encoding: Encoding::BINARY)
@@ -240,6 +244,7 @@ module Files
           if @fiber
             @fiber.resume(chunk.b) if @fiber.alive? && !chunk.empty?
           else
+            @on_error_chunk&.call
             room = HttpTransport::ERROR_BODY_BYTES - @kept.bytesize
             @truncated ||= chunk.bytesize > room
             @kept << chunk.b.byteslice(0, room) if room.positive?
@@ -284,11 +289,11 @@ module Files
       end
 
       # As HttpTransport#perform, through the client's remote_request.
-      def perform(method, url, headers, _connections, body: nil, length: nil, timing: nil, &on_success)
+      def perform(method, url, headers, _connections, body: nil, length: nil, timing: nil, on_error_chunk: nil, &on_success)
         raise ArgumentError, "a client transfer sends a String body of #{length} bytes" unless body.nil? || body.is_a?(String)
 
         @lock.synchronize do
-          reader = on_success && Reader.new(on_success, timing)
+          reader = on_success && Reader.new(on_success, timing, on_error_chunk)
           timing&.sending
           begin
             response = ApiClient.single_attempt do

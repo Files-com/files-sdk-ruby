@@ -14,7 +14,8 @@ module Files
     # 3xx (redirects are never followed) and a success that does not acknowledge the part. Each retry is a new
     # admission, within the caller's Files.max_network_retries, and never for a part whose instructions say
     # retry_parts: false. A 400 or 403 that says its URL has expired (expired_response?) is renewed instead, as one of
-    # those retries, as is a 403 for a URL whose stated expiry has passed.
+    # those retries, as is a 403 for a URL whose stated expiry has passed. A 409 that says a download's file changed
+    # since its URL was given (source_changed_response?) is that change, never retried with the same URL.
     module StorageRetry
       THROTTLE_STATUSES = [ 429, 503 ].freeze
       RETRY_STATUSES = [ 500, 502, 504 ].freeze
@@ -47,6 +48,9 @@ module Files
       EXPIRY_MARKERS = [ "request has expired", "<code>expiredtoken</code>", "signature not valid in the specified time frame" ].freeze
       # The type of the JSON error Files.com answers an expired download or upload URL of its own with.
       EXPIRED_TYPES = %w[download_request_expired upload_request_expired].freeze
+      # The type of the JSON error a Files.com download URL is refused with, as a 409, once its file has changed since
+      # the URL was given, such as a Files Agent file whose size no longer matches the size the URL was given for.
+      SOURCE_CHANGED_TYPE = "download_source_changed"
       # A body that begins, after JSON's white space, as a JSON object, array or string, well formed or not.
       JSON_START = /\A[ \t\r\n]*[\[{"]/
 
@@ -79,10 +83,24 @@ module Files
         end
         return false if truncated || body.bytesize > EXPIRY_SCAN_BYTES
 
-        error = JSON.parse(scanned.force_encoding(Encoding::UTF_8))
-        error.is_a?(Hash) && EXPIRED_TYPES.include?(error["type"])
+        EXPIRED_TYPES.include?(error_type(body))
+      end
+
+      # Whether a download URL was refused because its file changed since the URL was given: a 409 whose whole body,
+      # within EXPIRY_SCAN_BYTES, is a JSON object whose type is SOURCE_CHANGED_TYPE. Judged by that type alone, never
+      # by text inside the body, nor from a body truncated or longer than that; any other 409 is not.
+      def self.source_changed_response?(status, body, truncated: false)
+        return false unless status == 409 && body.is_a?(String) && !truncated && body.bytesize <= EXPIRY_SCAN_BYTES
+
+        error_type(body) == SOURCE_CHANGED_TYPE
+      end
+
+      # The type of the JSON error object that is the whole of body, or nil when body is not one.
+      def self.error_type(body)
+        error = JSON.parse(body.b.force_encoding(Encoding::UTF_8))
+        error["type"] if error.is_a?(Hash)
       rescue JSON::ParserError, EncodingError
-        false
+        nil
       end
 
       # Seconds to wait, never negative and never shortened. Infinity when the value cannot be scheduled.

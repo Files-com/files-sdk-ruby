@@ -24,15 +24,17 @@ RSpec.describe Files::File, "native helpers" do
     allow(Files::ApiClient).to receive(:default_conn).and_return(stubbed_api_client.conn)
   end
 
+  # A class call without a client makes the thread's default API client, which the thread keeps, from the stubbed
+  # default_conn: it is put back as it was, so later examples never send through these stubs.
   around do |example|
-    previous = [ Files.api_key, Files.max_network_retries, Thread.current[:files_api_client] ]
+    previous = [ Files.api_key, Files.max_network_retries, Thread.current[:files_api_client], Thread.current[:files_api_client_default_client] ]
     Files.api_key = "native-helper-fixture-key"
     Files.max_network_retries = 0
     example.run
   ensure
     gate.close
     servers.each(&:close)
-    Files.api_key, Files.max_network_retries, Thread.current[:files_api_client] = previous
+    Files.api_key, Files.max_network_retries, Thread.current[:files_api_client], Thread.current[:files_api_client_default_client] = previous
   end
 
   def active_client(client)

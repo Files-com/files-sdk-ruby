@@ -335,8 +335,22 @@ A download first asks for its opening range (8 MiB, or a quarter of
 `buffer_bytes` when that is less). Ranges are fetched at once only when
 storage answers with a strong ETag and exact `Content-Range` and
 `Content-Length`; each later range is requested with `If-Match` and must
-match exactly. A 412, or a whole response with another ETag, raises
-`Files::Transfer::VersionChangedError` before any of it is written. Ranges are
+match exactly. A 412, a whole response with another ETag, a newer
+`Last-Modified`, or storage's 409 whose whole JSON body, of at most 4 KiB, has
+the `type` `download_source_changed`, means the remote file changed, and is
+found before any of that response is written. Once the requests in flight have
+settled (a range of the old version still arriving stops at its next chunk),
+`download_file` then starts its file over from the first byte, with a
+new download URL from the API and the size, version and date storage answers
+with now, never keeping a byte or a version of the attempt before. Each such
+restart is one of `Files.max_network_retries`, counted for the whole download,
+apart from each request's own retries, however far it got, so a file that
+keeps changing fails; with 0 there is none. An IO
+you passed to `download_content` starts over only while nothing has been
+written to it. A cancellation or pause that came first is raised instead.
+Otherwise, and once the restarts are spent,
+`Files::Transfer::VersionChangedError` is raised. Any other 409 is refused as
+before. Ranges are
 written in order, and those waiting for an earlier one count against
 `buffer_bytes`. A download looks up its URL, and renews it, with the API
 options, credential, origin, workspace and settings it began with, from the
@@ -452,9 +466,11 @@ from a local file, a StringIO, or an IO you passed that can give them back
 Tempfile; an IO that cannot is refused. Anything after them is dropped only
 once storage's answer proves the version: as the first new bytes are written,
 or, when every byte was written before the pause, once storage answers for
-the file's last byte with that version. A download stops with
-`VersionChangedError` when storage no longer has its version, leaving the
-destination as it was, and an upload stops when a renewed part's instructions
+the file's last byte with that version. When storage no longer has its
+version, a download into a local file starts it over within
+`Files.max_network_retries`, as any download does when the remote file
+changes; a download into an IO, or one with no retries, stops with
+`VersionChangedError`, leaving the destination as it was. An upload stops when a renewed part's instructions
 differ. A download without a strong ETag resumes from its first byte, and its
 checkpoint is `nil` when it went to an IO that can neither start over nor say
 where its bytes began. A transfer paused before it started, or while it opened

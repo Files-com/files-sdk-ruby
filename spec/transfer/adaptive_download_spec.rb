@@ -51,10 +51,13 @@ RSpec.describe Files::File, "adaptive downloads" do
     TransferServer.response("206 Partial Content", { "ETag" => etag, "Content-Range" => "bytes #{first}-#{last}/#{content.bytesize}", "Content-Length" => body.bytesize }, body)
   end
 
-  # The API, made Files.base_url, answering each file lookup with a download URL on store.
-  def api_server(store)
+  # The API, made Files.base_url, answering each file lookup with a download URL on store, or on the store it returns
+  # when it is a callable, after calling on_lookup when given.
+  def api_server(store, on_lookup: nil)
     api = TransferServer.new(concurrent: true) do |_request|
-      body = JSON.generate(path: "report.bin", type: "file", download_uri: store.url("/objects/report.bin"))
+      on_lookup&.call
+      target = store.respond_to?(:call) ? store.call : store
+      body = JSON.generate(path: "report.bin", type: "file", download_uri: target.url("/objects/report.bin"))
       TransferServer.response("200 OK", { "Content-Type" => "application/json", "Content-Length" => body.bytesize }, body)
     end
     servers << api
@@ -879,6 +882,187 @@ RSpec.describe Files::File, "adaptive downloads" do
     end
   end
 
+  # The file as it is after the change: five full 64 KiB ranges and a short one, fewer bytes than before.
+  describe "a remote file that changes" do
+    let(:changed) { Random.new(9).bytes((5 * 65_536) + 123) }
+    let(:refused) { TransferServer.response("412 Precondition Failed", { "Content-Length" => 0 }) }
+
+    # Ranges after the opening one are refused as another version, with responses (default ones when nil).
+    def refusing_ranges(response = nil)
+      storage_server(answer: ->(request, default) { request.headers["if-match"] ? (response || refused) : default })
+    end
+
+    def conflict(type, body)
+      TransferServer.response("409 Conflict", { "Content-Type" => type, "Content-Length" => body.bytesize }, body)
+    end
+
+    # Four ranges of the old version are in flight when one of them is refused. A sibling's answer, its range body or
+    # the body of a 500, trickles in 256 bytes at a time, seconds from its end: its read stops at its next chunk, so the
+    # restart, which joins every request of the attempt first, asks for the new URL while that body is still unfinished.
+    # Nothing of the old version, its bytes or its date, reaches the new file.
+    { "206 range body" => nil, "500 error body" => "500 Internal Server Error" }.each do |label, error_status|
+      it "stops an obsolete #{label} still arriving, joins the attempt's requests, then starts a local file over with a new URL, size, version and date" do
+        Files.max_network_retries = 2
+        lock = Mutex.new
+        trickle = { started: false, finished: false }
+        finished_at_lookup = []
+        dated = ->(response, modified) { response.sub("\r\n", "\r\nLast-Modified: #{modified}\r\n") }
+        old = storage_server(answer: lambda { |request, default|
+          next dated.call(default, "Wed, 21 Oct 2015 07:28:00 GMT") unless request.headers["if-match"]
+
+          case request.headers["range"]
+          when "bytes=65536-131071"
+            wait_until { lock.synchronize { trickle[:started] } }
+            refused
+          when "bytes=131072-196607"
+            head, body = if error_status
+                           [ TransferServer.response(error_status, { "Content-Length" => 65_536 }).delete_suffix("\r\n\r\n"), ("e" * 65_536).b ]
+                         else
+                           default.split("\r\n\r\n", 2)
+                         end
+            pieces = (0...body.bytesize).step(256).map { |offset| body.byteslice(offset, 256) }
+            [ "#{head}\r\n\r\n#{pieces.shift}", -> { lock.synchronize { trickle[:started] = true } },
+              *pieces.flat_map { |piece| [ -> { sleep 0.02 }, piece ] }, -> { lock.synchronize { trickle[:finished] = true } } ]
+          else
+            default
+          end
+        }
+                            )
+        store = storage_server(changed, etag: "\"v2\"", answer: ->(_request, default) { dated.call(default, "Wed, 21 Oct 2015 07:28:01 GMT") })
+        api_server(store, on_lookup: -> { lock.synchronize { finished_at_lookup << trickle[:finished] } })
+
+        Files::Transfer::Job.open(**transfer, concurrency: 4) do |job|
+          Dir.mktmpdir do |dir|
+            local_path = File.join(dir, "report.bin")
+            remote_file(old).download_file(local_path, transfer: job)
+            expect(File.binread(local_path)).to eq(changed)
+          end
+          expect(job.diagnostics.values_at(:retries, :held_bytes, :requests)).to eq([ 1, 0, 0 ])
+        end
+
+        expect(finished_at_lookup).to eq([ false ])
+        expect(old.requests.size).to eq(5)
+        expect(store.requests.first.headers.values_at("range", "if-match", "if-unmodified-since")).to eq([ "bytes=0-65535", nil, nil ])
+        expect(store.requests.drop(1).map { |request| request.headers["if-match"] }.uniq).to eq([ "\"v2\"" ])
+      end
+    end
+
+    [ 0, 2 ].each do |retries|
+      it "raises VersionChangedError after exactly #{retries} restarts when the file has changed again on every attempt" do
+        Files.max_network_retries = retries
+        store = refusing_ranges
+        api = api_server(store)
+
+        Files::Transfer::Job.open(**transfer) do |job|
+          Dir.mktmpdir do |dir|
+            # Each attempt writes its opening range before it finds the change, and still counts.
+            expect { described_class.new(path: "report.bin").download_file(File.join(dir, "report.bin"), transfer: job) }
+              .to raise_error(Files::Transfer::VersionChangedError)
+          end
+          expect(job.diagnostics[:retries]).to eq(retries)
+        end
+        expect(api.requests.size).to eq(retries + 1)
+        expect(ranges(store).count("bytes=0-65535")).to eq(retries + 1)
+      end
+    end
+
+    it "starts over on storage's 409 download_source_changed, for an opening request into an IO not yet written to and for a range of a local file" do
+      Files.max_network_retries = 1
+      typed = conflict("application/json", JSON.generate(type: "download_source_changed", error: "The source file changed while it was being downloaded.", 'http-code': 409))
+
+      old = storage_server(answer: ->(_request, _default) { typed })
+      api = api_server(storage_server(changed, etag: "\"v2\""))
+      remote_file(old).download_content(sink, transfer: transfer)
+      expect(sink.string).to eq(changed)
+      expect([ old.requests.size, api.requests.size ]).to eq([ 1, 1 ])
+
+      old = refusing_ranges(typed)
+      api = api_server(storage_server(changed, etag: "\"v2\""))
+      Dir.mktmpdir do |dir|
+        local_path = File.join(dir, "report.bin")
+        remote_file(old).download_file(local_path, transfer: transfer)
+        expect(File.binread(local_path)).to eq(changed)
+      end
+      expect(api.requests.size).to eq(1)
+    end
+
+    it "fails on any other 409 without asking for a new URL" do
+      Files.max_network_retries = 2
+      [
+        conflict("application/json", JSON.generate(type: "processing-failure/conflict", error: "download_source_changed mentioned in another error", 'http-code': 409)),
+        conflict("text/plain", "download_source_changed")
+      ].each do |other|
+        store = refusing_ranges(other)
+        api = api_server(store)
+        Dir.mktmpdir do |dir|
+          expect { remote_file(store).download_file(File.join(dir, "report.bin"), transfer: transfer) }
+            .to raise_error(Files::APIError, "Transfer request failed") { |error| expect(error.http_status).to eq(409) }
+        end
+        expect(api.requests).to be_empty
+      end
+    end
+
+    it "starts over with the newer date as its baseline when storage ignores If-Unmodified-Since and answers a newer Last-Modified" do
+      Files.max_network_retries = 1
+      baseline = "Wed, 21 Oct 2015 07:28:00 GMT"
+      newer = "Wed, 21 Oct 2015 07:28:01 GMT"
+      store = storage_server(answer: lambda { |request, _default|
+        content, modified = store.requests.size == 1 ? [ payload, baseline ] : [ changed, newer ]
+        stored(content, request.headers["range"], "W/\"v1\"").sub("\r\n", "\r\nLast-Modified: #{modified}\r\n")
+      }
+                            )
+      api = api_server(store)
+
+      Dir.mktmpdir do |dir|
+        local_path = File.join(dir, "report.bin")
+        remote_file(store).download_file(local_path, transfer: transfer)
+        expect(File.binread(local_path)).to eq(changed)
+      end
+      expect(store.requests.map { |request| request.headers.values_at("range", "if-unmodified-since") })
+        .to eq([ [ "bytes=0-65535", nil ], [ nil, baseline ], [ "bytes=0-65535", nil ], [ nil, newer ] ])
+      expect(api.requests.size).to eq(1)
+    end
+
+    it "raises instead of starting over an IO it has written to, and closes it" do
+      Files.max_network_retries = 2
+      store = refusing_ranges
+      api = api_server(store)
+
+      expect { remote_file(store).download_content(sink, transfer: transfer) }.to raise_error(Files::Transfer::VersionChangedError)
+      expect(sink.string).to eq(payload.byteslice(0, 65_536))
+      expect(sink).to be_closed
+      expect(api.requests).to be_empty
+    end
+
+    it "starts nothing more when cancelled before the change is settled, or while the restart asks for its URL" do
+      Files.max_network_retries = 2
+      control = Files::Transfer::Control.new
+      store = storage_server(answer: lambda { |request, default|
+        next default unless request.headers["if-match"]
+
+        control.cancel
+        refused
+      }
+                            )
+      api = api_server(store)
+      Dir.mktmpdir do |dir|
+        expect { remote_file(store).download_file(File.join(dir, "report.bin"), transfer: transfer.merge(control: control)) }
+          .to raise_error(Files::Transfer::CancelledError)
+      end
+      expect(api.requests).to be_empty
+
+      control = Files::Transfer::Control.new
+      store = refusing_ranges
+      api = api_server(store, on_lookup: -> { control.cancel })
+      Dir.mktmpdir do |dir|
+        expect { remote_file(store).download_file(File.join(dir, "report.bin"), transfer: transfer.merge(control: control)) }
+          .to raise_error(Files::Transfer::CancelledError)
+      end
+      expect(api.requests.size).to eq(1)
+      expect(ranges(store).count("bytes=0-65535")).to eq(1)
+    end
+  end
+
   describe "refusals" do
     it "refuses a response from the Files.com web app before writing any of it, and closes the IO" do
       page = "<html>Sign in</html>"
@@ -1032,6 +1216,38 @@ RSpec.describe Files::File, "adaptive downloads" do
         changed = true
         expect { described_class.resume_download(paused.checkpoint, nil, {}, transfer: transfer) }.to raise_error(Files::Transfer::VersionChangedError)
       end
+    end
+
+    # The resume's own URL still serves the old version, which storage refuses: within its retries the local file
+    # starts over from its first byte, with a new URL and the new size, dropping the bytes the checkpoint vouched for.
+    it "starts a resumed local file over, with a new URL and size, when the version it paused with has changed" do
+      Files.max_network_retries = 1
+      changed = false
+      new_content = Random.new(9).bytes((5 * 65_536) + 123)
+      store, control = pause_after_first_range(lambda { |request, default|
+        changed && request.headers["if-match"] ? TransferServer.response("412 Precondition Failed", { "Content-Length" => 0 }) : default
+      }
+                                              )
+      fresh = storage_server(new_content, etag: "\"v2\"")
+      # The resume looks its URL up (the old one), and the restart a URL for the new version.
+      lookups = 0
+      api_server(-> { (lookups += 1) == 1 ? store : fresh })
+
+      Dir.mktmpdir do |dir|
+        local_path = File.join(dir, "report.bin")
+        paused = nil
+        expect { remote_file(store).download_file(local_path, transfer: transfer.merge(concurrency: 1, control: control)) }
+          .to raise_error(Files::Transfer::PausedError) { |error| paused = error }
+        changed = true
+        resumed_from = store.requests.size
+
+        described_class.resume_download(paused.checkpoint, nil, {}, transfer: transfer)
+
+        expect(File.binread(local_path)).to eq(new_content)
+        expect(store.requests.drop(resumed_from).map { |request| request.headers.values_at("range", "if-match") }).to eq([ [ "bytes=131072-196607", "\"v1\"" ] ])
+        expect(fresh.requests.first.headers.values_at("range", "if-match")).to eq([ "bytes=0-65535", nil ])
+      end
+      expect(lookups).to eq(2)
     end
 
     it "resumes into the same IO only" do
