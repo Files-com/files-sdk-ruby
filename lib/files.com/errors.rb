@@ -91,7 +91,6 @@ module Files
   class RequestParamsRequiredError < BadRequestError; end
   class SearchAllOnChildPathError < BadRequestError; end
   class UnrecognizedSortIndexError < BadRequestError; end
-  class UnsupportedCurrencyError < BadRequestError; end
   class UnsupportedHttpResponseFormatError < BadRequestError; end
   class UnsupportedMediaTypeError < BadRequestError; end
   class UserIdInvalidError < BadRequestError; end

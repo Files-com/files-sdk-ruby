@@ -604,7 +604,6 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`RequestParamsRequiredError`|  `BadRequestError` |
 |`SearchAllOnChildPathError`|  `BadRequestError` |
 |`UnrecognizedSortIndexError`|  `BadRequestError` |
-|`UnsupportedCurrencyError`|  `BadRequestError` |
 |`UnsupportedHttpResponseFormatError`|  `BadRequestError` |
 |`UnsupportedMediaTypeError`|  `BadRequestError` |
 |`UserIdInvalidError`|  `BadRequestError` |
