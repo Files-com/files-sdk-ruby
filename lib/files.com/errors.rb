@@ -90,6 +90,7 @@ module Files
   class RequestParamsInvalidError < BadRequestError; end
   class RequestParamsRequiredError < BadRequestError; end
   class SearchAllOnChildPathError < BadRequestError; end
+  class SearchQueryTooShortError < BadRequestError; end
   class UnrecognizedSortIndexError < BadRequestError; end
   class UnsupportedHttpResponseFormatError < BadRequestError; end
   class UnsupportedMediaTypeError < BadRequestError; end
@@ -235,6 +236,7 @@ module Files
   class RemoteServerErrorError < ProcessingFailureError; end
   class ResourceBelongsToParentSiteError < ProcessingFailureError; end
   class ResourceLockedError < ProcessingFailureError; end
+  class SearchTimedOutError < ProcessingFailureError; end
   class SubfolderLockedError < ProcessingFailureError; end
   class SyncInProgressError < ProcessingFailureError; end
   class TwoFactorAuthenticationCodeAlreadySentError < ProcessingFailureError; end

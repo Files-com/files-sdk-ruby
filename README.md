@@ -603,6 +603,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`RequestParamsInvalidError`|  `BadRequestError` |
 |`RequestParamsRequiredError`|  `BadRequestError` |
 |`SearchAllOnChildPathError`|  `BadRequestError` |
+|`SearchQueryTooShortError`|  `BadRequestError` |
 |`UnrecognizedSortIndexError`|  `BadRequestError` |
 |`UnsupportedHttpResponseFormatError`|  `BadRequestError` |
 |`UnsupportedMediaTypeError`|  `BadRequestError` |
@@ -740,6 +741,7 @@ Files::FolderAdminPermissionRequiredError -> Files::NotAuthorizedError -> Files:
 |`RemoteServerErrorError`|  `ProcessingFailureError` |
 |`ResourceBelongsToParentSiteError`|  `ProcessingFailureError` |
 |`ResourceLockedError`|  `ProcessingFailureError` |
+|`SearchTimedOutError`|  `ProcessingFailureError` |
 |`SubfolderLockedError`|  `ProcessingFailureError` |
 |`SyncInProgressError`|  `ProcessingFailureError` |
 |`TwoFactorAuthenticationCodeAlreadySentError`|  `ProcessingFailureError` |
