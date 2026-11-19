@@ -47,13 +47,13 @@ module Files
       @attributes[:field_type]
     end
 
-    # Options to display for radio and dropdown
+    # Options to display for radio, dropdown, and multi_select
     # @return [Array<String>, nil] the field value, or nil when absent.
     def options_for_select
       @attributes[:options_for_select]
     end
 
-    # Default option for radio and dropdown
+    # Default option for radio, dropdown, and multi_select
     # @return [String, nil] the field value, or nil when absent.
     def default_option
       @attributes[:default_option]
