@@ -1138,7 +1138,7 @@ module Files
       @attributes[:email_footer_custom_text]
     end
 
-    # Include this email in welcome emails if enabled
+    # Copy welcome emails to this address when the email contains neither a create-password link nor a password.
     # @return [Hash, nil] the field value, or nil when absent.
     def welcome_email_cc
       @attributes[:welcome_email_cc]
@@ -1227,7 +1227,7 @@ module Files
     # @option params [Boolean] ask_about_overwrites If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
     # @option params [Boolean] show_request_access_link Show request access link for users without access?  Currently unused.
     # @option params [Boolean] always_mkdir_parents Create parent directories if they do not exist during uploads?  This is primarily used to work around broken upload clients that assume servers will perform this step.
-    # @option params [String] welcome_email_cc Include this email in welcome emails if enabled
+    # @option params [String] welcome_email_cc Copy welcome emails to this address when the email contains neither a create-password link nor a password.
     # @option params [String] welcome_email_subject Include this email subject in welcome emails if enabled
     # @option params [String] welcome_custom_text Custom text send in user welcome email
     # @option params [String] language Site default language

@@ -82,7 +82,7 @@ module Files
       @attributes[:allow_user_creation] = value
     end
 
-    # When `true`, emails sent to Partner users are copied to the responsible User or Group.
+    # When `true`, the responsible User or Group receives eligible email copies for Partner Users without their own Responsible Party. Welcome emails trigger a separate onboarding notice. Password recovery links, email verification codes, and signed export links go only to the primary email address.
     # @return [Boolean, nil] the field value, or nil when absent.
     def cc_emails_to_responsible_party
       @attributes[:cc_emails_to_responsible_party]
@@ -299,7 +299,7 @@ module Files
     # @option params [Boolean] allow_credential_changes Allow Partner Admins to change or reset credentials for users belonging to this Partner.
     # @option params [Boolean] allow_providing_gpg_keys Allow Partner Admins to provide GPG keys.
     # @option params [Boolean] allow_user_creation Allow Partner Admins to create users.
-    # @option params [Boolean] cc_emails_to_responsible_party When `true`, emails sent to Partner users are copied to the responsible User or Group.
+    # @option params [Boolean] cc_emails_to_responsible_party When `true`, the responsible User or Group receives eligible email copies for Partner Users without their own Responsible Party. Welcome emails trigger a separate onboarding notice. Password recovery links, email verification codes, and signed export links go only to the primary email address.
     # @option params [String] notes Notes about this Partner.
     # @option params [Integer] partner_channel_template_id ID of the Partner Channel Template assigned to this Partner.
     # @option params [Integer] responsible_group_id ID of the Group responsible for this Partner.
@@ -450,7 +450,7 @@ module Files
     # @option params [Boolean] allow_credential_changes Allow Partner Admins to change or reset credentials for users belonging to this Partner.
     # @option params [Boolean] allow_providing_gpg_keys Allow Partner Admins to provide GPG keys.
     # @option params [Boolean] allow_user_creation Allow Partner Admins to create users.
-    # @option params [Boolean] cc_emails_to_responsible_party When `true`, emails sent to Partner users are copied to the responsible User or Group.
+    # @option params [Boolean] cc_emails_to_responsible_party When `true`, the responsible User or Group receives eligible email copies for Partner Users without their own Responsible Party. Welcome emails trigger a separate onboarding notice. Password recovery links, email verification codes, and signed export links go only to the primary email address.
     # @option params [String] notes Notes about this Partner.
     # @option params [Integer] partner_channel_template_id ID of the Partner Channel Template assigned to this Partner.
     # @option params [Integer] responsible_group_id ID of the Group responsible for this Partner.
@@ -499,7 +499,7 @@ module Files
     # @option params [Boolean] allow_credential_changes Allow Partner Admins to change or reset credentials for users belonging to this Partner.
     # @option params [Boolean] allow_providing_gpg_keys Allow Partner Admins to provide GPG keys.
     # @option params [Boolean] allow_user_creation Allow Partner Admins to create users.
-    # @option params [Boolean] cc_emails_to_responsible_party When `true`, emails sent to Partner users are copied to the responsible User or Group.
+    # @option params [Boolean] cc_emails_to_responsible_party When `true`, the responsible User or Group receives eligible email copies for Partner Users without their own Responsible Party. Welcome emails trigger a separate onboarding notice. Password recovery links, email verification codes, and signed export links go only to the primary email address.
     # @option params [String] notes Notes about this Partner.
     # @option params [Integer] partner_channel_template_id ID of the Partner Channel Template assigned to this Partner.
     # @option params [Integer] responsible_group_id ID of the Group responsible for this Partner.
