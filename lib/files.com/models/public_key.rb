@@ -140,7 +140,7 @@ module Files
       @attributes[:last_login_at] = value
     end
 
-    # Only returned when generating keys. Private key generated for the user.
+    # Available for 60 minutes after key creation, only to the API key or login session that requested generation.
     # @return [String, nil] the field value, or nil when absent.
     def generated_private_key
       @attributes[:generated_private_key]
