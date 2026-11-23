@@ -175,6 +175,12 @@ module Files
       @attributes[:bundle_expiration]
     end
 
+    # Maximum visitors per Share Link on this Site. Applies immediately to existing Share Links and across all Workspaces. Null disables the Site-wide cap.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def bundle_max_uses
+      @attributes[:bundle_max_uses]
+    end
+
     # Custom error message to show when bundle is not found.
     # @return [String, nil] the field value, or nil when absent.
     def bundle_not_found_message
@@ -1223,6 +1229,7 @@ module Files
     # @option params [String] reply_to_email Reply-to email for this site
     # @option params [Boolean] allow_bundle_names Are manual Bundle names allowed?
     # @option params [Integer] bundle_expiration Site-wide Bundle expiration in days
+    # @option params [Integer] bundle_max_uses Maximum visitors per Share Link on this Site. Applies immediately to existing Share Links and across all Workspaces. Null disables the Site-wide cap.
     # @option params [Boolean] welcome_email_enabled Will the welcome email be sent to new users?
     # @option params [Boolean] ask_about_overwrites If false, rename conflicting files instead of asking for overwrite confirmation.  Only applies to web interface.
     # @option params [Boolean] show_request_access_link Show request access link for users without access?  Currently unused.
@@ -1411,6 +1418,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: reply_to_email must be an String") if !params[:reply_to_email].nil? and !params[:reply_to_email].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: allow_bundle_names must be a single value, not #{params[:allow_bundle_names].class}") if [ Array, Hash ].any? { |klass| params[:allow_bundle_names].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: bundle_expiration must be an Integer") if !params[:bundle_expiration].nil? and !params[:bundle_expiration].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: bundle_max_uses must be an Integer") if !params[:bundle_max_uses].nil? and !params[:bundle_max_uses].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: welcome_email_enabled must be a single value, not #{params[:welcome_email_enabled].class}") if [ Array, Hash ].any? { |klass| params[:welcome_email_enabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: ask_about_overwrites must be a single value, not #{params[:ask_about_overwrites].class}") if [ Array, Hash ].any? { |klass| params[:ask_about_overwrites].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: show_request_access_link must be a single value, not #{params[:show_request_access_link].class}") if [ Array, Hash ].any? { |klass| params[:show_request_access_link].is_a?(klass) }

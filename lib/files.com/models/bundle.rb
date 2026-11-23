@@ -374,7 +374,7 @@ module Files
       @attributes[:effective_expires_at] = value
     end
 
-    # Maximum number of times bundle can be accessed
+    # Visitor limit configured for this Share Link. Null uses the Site-wide cap, if set. The configured limit cannot exceed the Site-wide cap.
     # @return [Integer, nil] the field value, or nil when absent.
     def max_uses
       @attributes[:max_uses]
@@ -385,6 +385,19 @@ module Files
     # @return [Integer, nil] the assigned value.
     def max_uses=(value)
       @attributes[:max_uses] = value
+    end
+
+    # Read-only visitor limit actually enforced for this Share Link. Uses the lower of the link limit and the Site-wide cap when both are set. Null means unlimited.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def effective_max_uses
+      @attributes[:effective_max_uses]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
+    def effective_max_uses=(value)
+      @attributes[:effective_max_uses] = value
     end
 
     # Internal name for identifying this Share Link.
@@ -765,7 +778,7 @@ module Files
     # @option params [String] expires_at Explicit Bundle expiration date/time. If not set, the site-wide expiration setting may apply.
     # @option params [Boolean] finalize_snapshot If true, finalize the snapshot of this bundle's contents. Note that `create_snapshot` must also be true.
     # @option params [Integer] inbox_id ID of the associated inbox, if available.
-    # @option params [Integer] max_uses Maximum number of times bundle can be accessed
+    # @option params [Integer] max_uses Visitor limit configured for this Share Link. Null uses the Site-wide cap, if set. The configured limit cannot exceed the Site-wide cap.
     # @option params [Integer] group_id Owning group ID. If set, members of this group can view, edit, and share this Share Link.
     # @option params [String] internal_name Internal name for identifying this Share Link.
     # @option params [String] note Bundle internal note
@@ -960,7 +973,7 @@ module Files
     # @option params [Boolean] dont_separate_submissions_by_folder Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     # @option params [String] expires_at Explicit Bundle expiration date/time. If not set, the site-wide expiration setting may apply.
     # @option params [Boolean] finalize_snapshot If true, finalize the snapshot of this bundle's contents. Note that `create_snapshot` must also be true.
-    # @option params [Integer] max_uses Maximum number of times bundle can be accessed
+    # @option params [Integer] max_uses Visitor limit configured for this Share Link. Null uses the Site-wide cap, if set. The configured limit cannot exceed the Site-wide cap.
     # @option params [Integer] group_id Owning group ID. If set, members of this group can view, edit, and share this Share Link.
     # @option params [String] internal_name Internal name for identifying this Share Link.
     # @option params [String] description Public description
@@ -1067,7 +1080,7 @@ module Files
     # @option params [String] expires_at Explicit Bundle expiration date/time. If not set, the site-wide expiration setting may apply.
     # @option params [Boolean] finalize_snapshot If true, finalize the snapshot of this bundle's contents. Note that `create_snapshot` must also be true.
     # @option params [Integer] inbox_id ID of the associated inbox, if available.
-    # @option params [Integer] max_uses Maximum number of times bundle can be accessed
+    # @option params [Integer] max_uses Visitor limit configured for this Share Link. Null uses the Site-wide cap, if set. The configured limit cannot exceed the Site-wide cap.
     # @option params [Integer] group_id Owning group ID. If set, members of this group can view, edit, and share this Share Link.
     # @option params [String] internal_name Internal name for identifying this Share Link.
     # @option params [String] note Bundle internal note
