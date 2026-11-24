@@ -987,15 +987,15 @@ module Files
 
     # Workspace ID the user should land in by default when more than one Workspace is available.
     # @return [Integer, nil] the field value, or nil when absent.
-    def default_workspace_id
-      @attributes[:default_workspace_id]
+    def preferred_workspace_id
+      @attributes[:preferred_workspace_id]
     end
 
     # Changes the local field value. Call {#save} to persist changes.
     # @param value [Integer, nil] the new field value.
     # @return [Integer, nil] the assigned value.
-    def default_workspace_id=(value)
-      @attributes[:default_workspace_id] = value
+    def preferred_workspace_id=(value)
+      @attributes[:preferred_workspace_id] = value
     end
 
     # Skip Welcome page in the UI?
@@ -1405,7 +1405,7 @@ module Files
     # @option params [Boolean] bypass_site_allowed_ips Allow this user to skip site-wide IP blacklists?
     # @option params [Boolean] dav_permission Can the user connect with WebDAV?
     # @option params [Integer] desktop_configuration_profile_id Desktop Configuration Profile ID assigned directly to this user, if any.
-    # @option params [Integer] default_workspace_id Workspace ID the user should land in by default when more than one Workspace is available.
+    # @option params [Integer] preferred_workspace_id Workspace ID the user should land in by default when more than one Workspace is available.
     # @option params [Boolean] disabled Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
     # @option params [String] filesystem_layout File system layout
     # @option params [Boolean] ftp_permission Can the user access with FTP/FTPS?
@@ -1484,7 +1484,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: bypass_site_allowed_ips must be a single value, not #{params[:bypass_site_allowed_ips].class}") if [ Array, Hash ].any? { |klass| params[:bypass_site_allowed_ips].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: dav_permission must be a single value, not #{params[:dav_permission].class}") if [ Array, Hash ].any? { |klass| params[:dav_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: default_workspace_id must be an Integer") if !params[:default_workspace_id].nil? and !params[:default_workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: preferred_workspace_id must be an Integer") if !params[:preferred_workspace_id].nil? and !params[:preferred_workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if !params[:filesystem_layout].nil? and !params[:filesystem_layout].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ftp_permission must be a single value, not #{params[:ftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:ftp_permission].is_a?(klass) }
@@ -1685,7 +1685,7 @@ module Files
     # @option params [Boolean] bypass_site_allowed_ips Allow this user to skip site-wide IP blacklists?
     # @option params [Boolean] dav_permission Can the user connect with WebDAV?
     # @option params [Integer] desktop_configuration_profile_id Desktop Configuration Profile ID assigned directly to this user, if any.
-    # @option params [Integer] default_workspace_id Workspace ID the user should land in by default when more than one Workspace is available.
+    # @option params [Integer] preferred_workspace_id Workspace ID the user should land in by default when more than one Workspace is available.
     # @option params [Boolean] disabled Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
     # @option params [String] filesystem_layout File system layout
     # @option params [Boolean] ftp_permission Can the user access with FTP/FTPS?
@@ -1759,7 +1759,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: bypass_site_allowed_ips must be a single value, not #{params[:bypass_site_allowed_ips].class}") if [ Array, Hash ].any? { |klass| params[:bypass_site_allowed_ips].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: dav_permission must be a single value, not #{params[:dav_permission].class}") if [ Array, Hash ].any? { |klass| params[:dav_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: default_workspace_id must be an Integer") if !params[:default_workspace_id].nil? and !params[:default_workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: preferred_workspace_id must be an Integer") if !params[:preferred_workspace_id].nil? and !params[:preferred_workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if !params[:filesystem_layout].nil? and !params[:filesystem_layout].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ftp_permission must be a single value, not #{params[:ftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:ftp_permission].is_a?(klass) }
@@ -1895,7 +1895,7 @@ module Files
     # @option params [Boolean] bypass_site_allowed_ips Allow this user to skip site-wide IP blacklists?
     # @option params [Boolean] dav_permission Can the user connect with WebDAV?
     # @option params [Integer] desktop_configuration_profile_id Desktop Configuration Profile ID assigned directly to this user, if any.
-    # @option params [Integer] default_workspace_id Workspace ID the user should land in by default when more than one Workspace is available.
+    # @option params [Integer] preferred_workspace_id Workspace ID the user should land in by default when more than one Workspace is available.
     # @option params [Boolean] disabled Is user disabled? Disabled users cannot log in, and do not count for billing purposes. Users can be automatically disabled after an inactivity period via a Site setting or schedule to be deactivated after specific date.
     # @option params [String] filesystem_layout File system layout
     # @option params [Boolean] ftp_permission Can the user access with FTP/FTPS?
@@ -1974,7 +1974,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: bypass_site_allowed_ips must be a single value, not #{params[:bypass_site_allowed_ips].class}") if [ Array, Hash ].any? { |klass| params[:bypass_site_allowed_ips].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: dav_permission must be a single value, not #{params[:dav_permission].class}") if [ Array, Hash ].any? { |klass| params[:dav_permission].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: desktop_configuration_profile_id must be an Integer") if !params[:desktop_configuration_profile_id].nil? and !params[:desktop_configuration_profile_id].is_a?(Integer)
-      raise InvalidParameterError.new("Bad parameter: default_workspace_id must be an Integer") if !params[:default_workspace_id].nil? and !params[:default_workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: preferred_workspace_id must be an Integer") if !params[:preferred_workspace_id].nil? and !params[:preferred_workspace_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: disabled must be a single value, not #{params[:disabled].class}") if [ Array, Hash ].any? { |klass| params[:disabled].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: filesystem_layout must be an String") if !params[:filesystem_layout].nil? and !params[:filesystem_layout].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: ftp_permission must be a single value, not #{params[:ftp_permission].class}") if [ Array, Hash ].any? { |klass| params[:ftp_permission].is_a?(klass) }

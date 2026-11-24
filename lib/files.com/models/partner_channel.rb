@@ -186,6 +186,19 @@ module Files
       @attributes[:from_partner_managed_folder_paths] = value
     end
 
+    # Form Field Sets attached to From Partner upload destinations.
+    # @return [Array<Hash>, nil] the field value, or nil when absent.
+    def from_partner_upload_forms
+      @attributes[:from_partner_upload_forms]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Hash>, nil] the new field value.
+    # @return [Array<Hash>, nil] the assigned value.
+    def from_partner_upload_forms=(value)
+      @attributes[:from_partner_upload_forms] = value
+    end
+
     # Resolved to-Partner subfolder name. Null when the direction is disabled or uses the Channel folder directly.
     # @return [String, nil] the field value, or nil when absent.
     def effective_to_partner_folder_name
@@ -258,6 +271,7 @@ module Files
     # @option params [Boolean] use_channel_root Use the Channel folder directly for a one-way exchange. Defaults to false. Cannot be changed after creation. Folder name overrides must be blank when enabled, and the Channel must remain one-way.
     # @option params [String] from_partner_folder_name Optional Channel-level from-Partner folder name override.
     # @option params [Array<String>] from_partner_managed_folder_paths Managed folder paths inside the from-Partner folder.
+    # @option params [Array<Hash>] from_partner_upload_forms Form Field Sets for From Partner upload destinations. Each entry has a `path` relative to the From Partner folder and a `form_field_set_id`. Use an empty `path` when the Channel has no managed folders. Providing this replaces all assignments, and an empty array removes them.
     # @option params [String] from_partner_route_path Optional route path for files uploaded by the Partner.
     # @option params [String] to_partner_folder_name Optional Channel-level to-Partner folder name override.
     # @option params [Array<String>] to_partner_managed_folder_paths Managed folder paths inside the to-Partner folder.
@@ -276,6 +290,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: use_channel_root must be a single value, not #{params[:use_channel_root].class}") if [ Array, Hash ].any? { |klass| params[:use_channel_root].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: from_partner_folder_name must be an String") if !params[:from_partner_folder_name].nil? and !params[:from_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_managed_folder_paths must be an Array") if !params[:from_partner_managed_folder_paths].nil? and !params[:from_partner_managed_folder_paths].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: from_partner_upload_forms must be an Array") if !params[:from_partner_upload_forms].nil? and !params[:from_partner_upload_forms].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: from_partner_route_path must be an String") if !params[:from_partner_route_path].nil? and !params[:from_partner_route_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: to_partner_folder_name must be an String") if !params[:to_partner_folder_name].nil? and !params[:to_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: to_partner_managed_folder_paths must be an Array") if !params[:to_partner_managed_folder_paths].nil? and !params[:to_partner_managed_folder_paths].is_a?(Array)
@@ -395,6 +410,7 @@ module Files
     # @option params [Boolean] use_channel_root Use the Channel folder directly for a one-way exchange. Defaults to false. Cannot be changed after creation. Folder name overrides must be blank when enabled, and the Channel must remain one-way.
     # @option params [String] from_partner_folder_name Optional Channel-level from-Partner folder name override.
     # @option params [Array<String>] from_partner_managed_folder_paths Managed folder paths inside the from-Partner folder.
+    # @option params [Array<Hash>] from_partner_upload_forms Form Field Sets for From Partner upload destinations. Each entry has a `path` relative to the From Partner folder and a `form_field_set_id`. Use an empty `path` when the Channel has no managed folders. Providing this replaces all assignments, and an empty array removes them.
     # @option params [String] from_partner_route_path Optional route path for files uploaded by the Partner.
     # @option params [String] to_partner_folder_name Optional Channel-level to-Partner folder name override.
     # @option params [Array<String>] to_partner_managed_folder_paths Managed folder paths inside the to-Partner folder.
@@ -412,6 +428,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: use_channel_root must be a single value, not #{params[:use_channel_root].class}") if [ Array, Hash ].any? { |klass| params[:use_channel_root].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: from_partner_folder_name must be an String") if !params[:from_partner_folder_name].nil? and !params[:from_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_managed_folder_paths must be an Array") if !params[:from_partner_managed_folder_paths].nil? and !params[:from_partner_managed_folder_paths].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: from_partner_upload_forms must be an Array") if !params[:from_partner_upload_forms].nil? and !params[:from_partner_upload_forms].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: from_partner_route_path must be an String") if !params[:from_partner_route_path].nil? and !params[:from_partner_route_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: to_partner_folder_name must be an String") if !params[:to_partner_folder_name].nil? and !params[:to_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: to_partner_managed_folder_paths must be an Array") if !params[:to_partner_managed_folder_paths].nil? and !params[:to_partner_managed_folder_paths].is_a?(Array)
@@ -434,6 +451,7 @@ module Files
     # @option params [Boolean] use_channel_root Use the Channel folder directly for a one-way exchange. Defaults to false. Cannot be changed after creation. Folder name overrides must be blank when enabled, and the Channel must remain one-way.
     # @option params [String] from_partner_folder_name Optional Channel-level from-Partner folder name override.
     # @option params [Array<String>] from_partner_managed_folder_paths Managed folder paths inside the from-Partner folder.
+    # @option params [Array<Hash>] from_partner_upload_forms Form Field Sets for From Partner upload destinations. Each entry has a `path` relative to the From Partner folder and a `form_field_set_id`. Use an empty `path` when the Channel has no managed folders. Providing this replaces all assignments, and an empty array removes them.
     # @option params [String] from_partner_route_path Optional route path for files uploaded by the Partner.
     # @option params [String] to_partner_folder_name Optional Channel-level to-Partner folder name override.
     # @option params [Array<String>] to_partner_managed_folder_paths Managed folder paths inside the to-Partner folder.
@@ -452,6 +470,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: use_channel_root must be a single value, not #{params[:use_channel_root].class}") if [ Array, Hash ].any? { |klass| params[:use_channel_root].is_a?(klass) }
       raise InvalidParameterError.new("Bad parameter: from_partner_folder_name must be an String") if !params[:from_partner_folder_name].nil? and !params[:from_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: from_partner_managed_folder_paths must be an Array") if !params[:from_partner_managed_folder_paths].nil? and !params[:from_partner_managed_folder_paths].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: from_partner_upload_forms must be an Array") if !params[:from_partner_upload_forms].nil? and !params[:from_partner_upload_forms].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: from_partner_route_path must be an String") if !params[:from_partner_route_path].nil? and !params[:from_partner_route_path].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: to_partner_folder_name must be an String") if !params[:to_partner_folder_name].nil? and !params[:to_partner_folder_name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: to_partner_managed_folder_paths must be an Array") if !params[:to_partner_managed_folder_paths].nil? and !params[:to_partner_managed_folder_paths].is_a?(Array)

@@ -121,7 +121,7 @@ module Files
       @attributes[:skip_company] = value
     end
 
-    # Form Field Set is in use by an active Inbox / Bundle / Inbox Registration / Bundle Registration
+    # Form Field Set is in use by an active Inbox / Bundle / Inbox Registration / Bundle Registration / Partner Channel upload destination
     # @return [Boolean, nil] the field value, or nil when absent.
     def in_use
       @attributes[:in_use]
