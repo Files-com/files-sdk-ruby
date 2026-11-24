@@ -212,6 +212,19 @@ module Files
       @attributes[:integration_centric_profile_id] = value
     end
 
+    # Custom Workspace a new Group member will use as their Preferred Workspace if they have no saved preference. The Group must have a Permission in that Workspace.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def preferred_workspace_id
+      @attributes[:preferred_workspace_id]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
+    def preferred_workspace_id=(value)
+      @attributes[:preferred_workspace_id] = value
+    end
+
     # Site ID
     # @return [Integer, nil] the field value, or nil when absent.
     def site_id
@@ -254,6 +267,7 @@ module Files
     # @option params [Integer] integration_centric_profile_id Integration Centric Profile ID assigned to this Group, if any. Users in the Group inherit it unless a direct per-user assignment overrides it.
     # @option params [String] allowed_ips A list of allowed IPs if applicable.  Newline delimited
     # @option params [String] name Group name.
+    # @option params [Integer] preferred_workspace_id Custom Workspace a new Group member will use as their Preferred Workspace if they have no saved preference. The Group must have a Permission in that Workspace.
     # @return [Array(Files::Response, Hash)] the response and persisted request options.
     # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
     # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
@@ -276,6 +290,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: preferred_workspace_id must be an Integer") if !params[:preferred_workspace_id].nil? and !params[:preferred_workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/groups/#{@attributes[:id]}", :patch, params, @options) { |reply| reply.require_object("Group") }
@@ -451,6 +466,7 @@ module Files
     # @option params [Integer] integration_centric_profile_id Integration Centric Profile ID assigned to this Group, if any. Users in the Group inherit it unless a direct per-user assignment overrides it.
     # @option params [String] allowed_ips A list of allowed IPs if applicable.  Newline delimited
     # @option params [String] name Group name.
+    # @option params [Integer] preferred_workspace_id Custom Workspace a new Group member will use as their Preferred Workspace if they have no saved preference. The Group must have a Permission in that Workspace.
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::Group] the returned record.
     # @raise [Files::MissingParameterError] if a required parameter is missing.
@@ -473,6 +489,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: integration_centric_profile_id must be an Integer") if !params[:integration_centric_profile_id].nil? and !params[:integration_centric_profile_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: allowed_ips must be an String") if !params[:allowed_ips].nil? and !params[:allowed_ips].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: preferred_workspace_id must be an Integer") if !params[:preferred_workspace_id].nil? and !params[:preferred_workspace_id].is_a?(Integer)
       raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
 
       response, options = Api.send_request("/groups/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Group") }
