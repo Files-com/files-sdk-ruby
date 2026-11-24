@@ -485,6 +485,19 @@ module Files
       @attributes[:schedule_days_of_week] = value
     end
 
+    # Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`. For v2 Automations, set this field in the Scheduled trigger's definition.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def schedule_interval_minutes
+      @attributes[:schedule_interval_minutes]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
+    def schedule_interval_minutes=(value)
+      @attributes[:schedule_interval_minutes] = value
+    end
+
     # Times of day to run in HH:MM format (24-hour). For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
     # @return [Array<String>, nil] the field value, or nil when absent.
     def schedule_times_of_day
@@ -682,7 +695,8 @@ module Files
     # @option params [String] group_ids A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the automation's schedule fields.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule` without `schedule_id`, a list of days of the week to run this automation. 0 is Sunday, 1 is Monday, etc.
-    # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format (24-hour). Required for `custom_schedule` without `schedule_id`. Optional for `daily` triggers; if not set, runs at midnight UTC.
+    # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`. For v2 Automations, set this field in the Scheduled trigger's definition.
+    # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format (24-hour). Required for `custom_schedule` without `schedule_id` or `schedule_interval_minutes`. For `daily` triggers, the default is midnight UTC.
     # @option params [String] schedule_time_zone Time zone for schedule fields. Optional for `custom_schedule` without `schedule_id` and for `daily`. If not set, times are interpreted as UTC.
     # @option params [String] holiday_region Skip automation on holidays in this region. Optional for `custom_schedule` without `schedule_id` and for `daily`.
     # @option params [Boolean] always_overwrite_size_matching_files Ordinarily, files with identical size in the source and destination will be skipped from copy operations to prevent wasted transfer.  If this flag is `true` we will overwrite the destination file always.  Note that this may cause large amounts of wasted transfer usage.  This setting has no effect unless `overwrite_files` is also set to `true`.
@@ -726,6 +740,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if !params[:group_ids].nil? and !params[:group_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
@@ -892,7 +907,8 @@ module Files
     # @option params [String] group_ids A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the automation's schedule fields.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule` without `schedule_id`, a list of days of the week to run this automation. 0 is Sunday, 1 is Monday, etc.
-    # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format (24-hour). Required for `custom_schedule` without `schedule_id`. Optional for `daily` triggers; if not set, runs at midnight UTC.
+    # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`. For v2 Automations, set this field in the Scheduled trigger's definition.
+    # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format (24-hour). Required for `custom_schedule` without `schedule_id` or `schedule_interval_minutes`. For `daily` triggers, the default is midnight UTC.
     # @option params [String] schedule_time_zone Time zone for schedule fields. Optional for `custom_schedule` without `schedule_id` and for `daily`. If not set, times are interpreted as UTC.
     # @option params [String] holiday_region Skip automation on holidays in this region. Optional for `custom_schedule` without `schedule_id` and for `daily`.
     # @option params [Boolean] always_overwrite_size_matching_files Ordinarily, files with identical size in the source and destination will be skipped from copy operations to prevent wasted transfer.  If this flag is `true` we will overwrite the destination file always.  Note that this may cause large amounts of wasted transfer usage.  This setting has no effect unless `overwrite_files` is also set to `true`.
@@ -934,6 +950,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if !params[:group_ids].nil? and !params[:group_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)
@@ -1020,7 +1037,8 @@ module Files
     # @option params [String] group_ids A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the automation's schedule fields.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule` without `schedule_id`, a list of days of the week to run this automation. 0 is Sunday, 1 is Monday, etc.
-    # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format (24-hour). Required for `custom_schedule` without `schedule_id`. Optional for `daily` triggers; if not set, runs at midnight UTC.
+    # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`. For v2 Automations, set this field in the Scheduled trigger's definition.
+    # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format (24-hour). Required for `custom_schedule` without `schedule_id` or `schedule_interval_minutes`. For `daily` triggers, the default is midnight UTC.
     # @option params [String] schedule_time_zone Time zone for schedule fields. Optional for `custom_schedule` without `schedule_id` and for `daily`. If not set, times are interpreted as UTC.
     # @option params [String] holiday_region Skip automation on holidays in this region. Optional for `custom_schedule` without `schedule_id` and for `daily`.
     # @option params [Boolean] always_overwrite_size_matching_files Ordinarily, files with identical size in the source and destination will be skipped from copy operations to prevent wasted transfer.  If this flag is `true` we will overwrite the destination file always.  Note that this may cause large amounts of wasted transfer usage.  This setting has no effect unless `overwrite_files` is also set to `true`.
@@ -1064,6 +1082,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if !params[:group_ids].nil? and !params[:group_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: holiday_region must be an String") if !params[:holiday_region].nil? and !params[:holiday_region].is_a?(String)

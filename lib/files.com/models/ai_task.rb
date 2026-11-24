@@ -225,6 +225,19 @@ module Files
       @attributes[:schedule_days_of_week] = value
     end
 
+    # Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def schedule_interval_minutes
+      @attributes[:schedule_interval_minutes]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
+    def schedule_interval_minutes=(value)
+      @attributes[:schedule_interval_minutes] = value
+    end
+
     # Times of day in HH:MM format for the AI Task schedule.
     # @return [Array<String>, nil] the field value, or nil when absent.
     def schedule_times_of_day
@@ -349,6 +362,7 @@ module Files
     # @option params [Array<Integer>] recurring_days If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`.
     # @option params [String] schedule_time_zone Time zone used by the AI Task schedule.
     # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the AI Task schedule.
     # @option params [String] source Source glob used with `path` for action-triggered AI Tasks.
@@ -376,6 +390,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if !params[:recurring_days].nil? and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if !params[:source].nil? and !params[:source].is_a?(String)
@@ -504,6 +519,7 @@ module Files
     # @option params [Array<Integer>] recurring_days If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`.
     # @option params [String] schedule_time_zone Time zone used by the AI Task schedule.
     # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the AI Task schedule.
     # @option params [String] source Source glob used with `path` for action-triggered AI Tasks.
@@ -528,6 +544,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if !params[:recurring_days].nil? and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if !params[:source].nil? and !params[:source].is_a?(String)
@@ -576,6 +593,7 @@ module Files
     # @option params [Array<Integer>] recurring_days If trigger is `daily`, this selects one or more day numbers inside a `week`, `month`, `quarter`, or `year` interval.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the AI Task's schedule fields.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, the 0-based weekdays used by the schedule.
+    # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`.
     # @option params [String] schedule_time_zone Time zone used by the AI Task schedule.
     # @option params [Array<String>] schedule_times_of_day Times of day in HH:MM format for the AI Task schedule.
     # @option params [String] source Source glob used with `path` for action-triggered AI Tasks.
@@ -603,6 +621,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if !params[:recurring_days].nil? and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: source must be an String") if !params[:source].nil? and !params[:source].is_a?(String)

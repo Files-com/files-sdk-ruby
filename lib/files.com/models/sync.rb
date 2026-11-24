@@ -380,6 +380,19 @@ module Files
       @attributes[:schedule_days_of_week] = value
     end
 
+    # Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def schedule_interval_minutes
+      @attributes[:schedule_interval_minutes]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
+    def schedule_interval_minutes=(value)
+      @attributes[:schedule_interval_minutes] = value
+    end
+
     # Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
     # @return [Array<String>, nil] the field value, or nil when absent.
     def schedule_times_of_day
@@ -488,6 +501,7 @@ module Files
     # @option params [Array<Integer>] recurring_days If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
+    # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`.
     # @option params [String] schedule_time_zone Time zone for the schedule. If not set, times are interpreted as UTC.
     # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
     # @option params [String] src_path Absolute source path for the sync
@@ -520,6 +534,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if !params[:recurring_days].nil? and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: src_path must be an String") if !params[:src_path].nil? and !params[:src_path].is_a?(String)
@@ -653,6 +668,7 @@ module Files
     # @option params [Array<Integer>] recurring_days If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
+    # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`.
     # @option params [String] schedule_time_zone Time zone for the schedule. If not set, times are interpreted as UTC.
     # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
     # @option params [String] src_path Absolute source path for the sync
@@ -683,6 +699,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if !params[:recurring_days].nil? and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: src_path must be an String") if !params[:src_path].nil? and !params[:src_path].is_a?(String)
@@ -754,6 +771,7 @@ module Files
     # @option params [Array<Integer>] recurring_days If trigger type is `daily`, this specifies one or more day numbers to run in one of the supported intervals: `week`, `month`, `quarter`, `year`.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the sync's schedule fields.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule`, Custom schedule description for when the sync should be run. 0-based days of the week. 0 is Sunday, 1 is Monday, etc.
+    # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`.
     # @option params [String] schedule_time_zone Time zone for the schedule. If not set, times are interpreted as UTC.
     # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format. For `custom_schedule`, run at these times on specified days of week. For `daily`, run at these times on the scheduled interval date.
     # @option params [String] src_path Absolute source path for the sync
@@ -786,6 +804,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: recurring_days must be an Array") if !params[:recurring_days].nil? and !params[:recurring_days].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_time_zone must be an String") if !params[:schedule_time_zone].nil? and !params[:schedule_time_zone].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: src_path must be an String") if !params[:src_path].nil? and !params[:src_path].is_a?(String)
