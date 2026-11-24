@@ -275,16 +275,10 @@ module Files
       @attributes[:display_on_login_page]
     end
 
-    # Username domain that can publicly discover this SSO provider on this site. Set after saving the provider. Set to null to turn off discovery.
+    # Username domain that can publicly discover this SSO provider on this site. Set to null to turn off discovery.
     # @return [String, nil] the field value, or nil when absent.
     def public_sso_domain
       @attributes[:public_sso_domain]
-    end
-
-    # This provider's DNS TXT value to publish at _files-sso.<domain> before enabling public SSO discovery for that domain.
-    # @return [String, nil] the field value, or nil when absent.
-    def public_sso_domain_dns_value
-      @attributes[:public_sso_domain_dns_value]
     end
 
     # LDAP host
