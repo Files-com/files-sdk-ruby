@@ -23,6 +23,24 @@ module Files
       @attributes[:id]
     end
 
+    # Automation run completion/failure date/time.
+    # @return [String, nil] the field value, or nil when absent.
+    def completed_at
+      @attributes[:completed_at]
+    end
+
+    # Automation run start date/time.
+    # @return [String, nil] the field value, or nil when absent.
+    def created_at
+      @attributes[:created_at]
+    end
+
+    # The status of the AutomationRun. One of `queued`, `running`, `success`, `partial_failure`, `failure`, `skipped`, or `canceled`.
+    # @return [String, nil] the field value, or nil when absent.
+    def status
+      @attributes[:status]
+    end
+
     # ID of the associated Automation.
     # @return [Integer, nil] the field value, or nil when absent.
     def automation_id
@@ -47,22 +65,22 @@ module Files
       @attributes[:workspace_id]
     end
 
+    # User who initiated a Shared Workflow run.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def initiating_user_id
+      @attributes[:initiating_user_id]
+    end
+
+    # Interface from which the Shared Workflow was started.
+    # @return [String, nil] the field value, or nil when absent.
+    def initiating_interface
+      @attributes[:initiating_interface]
+    end
+
     # Date/time at which cancellation was requested.
     # @return [String, nil] the field value, or nil when absent.
     def cancel_requested_at
       @attributes[:cancel_requested_at]
-    end
-
-    # Automation run completion/failure date/time.
-    # @return [String, nil] the field value, or nil when absent.
-    def completed_at
-      @attributes[:completed_at]
-    end
-
-    # Automation run start date/time.
-    # @return [String, nil] the field value, or nil when absent.
-    def created_at
-      @attributes[:created_at]
     end
 
     # If set, this automation will be retried at this date/time due to `failure` or `partial_failure`.
@@ -105,12 +123,6 @@ module Files
     # @return [Float, nil] the field value, or nil when absent.
     def runtime
       @attributes[:runtime]
-    end
-
-    # The status of the AutomationRun. One of `queued`, `running`, `success`, `partial_failure`, `failure`, `skipped`, or `canceled`.
-    # @return [String, nil] the field value, or nil when absent.
-    def status
-      @attributes[:status]
     end
 
     # Count of successful operations.

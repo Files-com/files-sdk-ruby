@@ -108,6 +108,19 @@ module Files
       @attributes[:workspace_id] = value
     end
 
+    # Shared Workflow for which the Snapshot was created.
+    # @return [Integer, nil] the field value, or nil when absent.
+    def shared_workflow_id
+      @attributes[:shared_workflow_id]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Integer, nil] the new field value.
+    # @return [Integer, nil] the assigned value.
+    def shared_workflow_id=(value)
+      @attributes[:shared_workflow_id] = value
+    end
+
     # An array of paths to add to the snapshot.
     # @return [Array<String>, nil] the field value, or nil when absent.
     def paths
@@ -268,6 +281,7 @@ module Files
     # @option params [String] name A name for the snapshot.
     # @option params [Array<String>] paths An array of paths to add to the snapshot.
     # @option params [Integer] workspace_id Workspace ID. `0` means the default workspace.
+    # @option params [Integer] shared_workflow_id Shared Workflow for which the Snapshot was created.
     # @param options [Hash] Request configuration; see {Files::Api.send_request}.
     # @return [Files::Snapshot] the returned record.
     # @raise [Files::MissingParameterError] if a required parameter is missing.
@@ -278,6 +292,7 @@ module Files
       raise InvalidParameterError.new("Bad parameter: name must be an String") if !params[:name].nil? and !params[:name].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: paths must be an Array") if !params[:paths].nil? and !params[:paths].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: workspace_id must be an Integer") if !params[:workspace_id].nil? and !params[:workspace_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: shared_workflow_id must be an Integer") if !params[:shared_workflow_id].nil? and !params[:shared_workflow_id].is_a?(Integer)
 
       response, options = Api.send_request("/snapshots", :post, params, options) { |reply| reply.require_object("Snapshot") }
       Snapshot.new(response.data, options)

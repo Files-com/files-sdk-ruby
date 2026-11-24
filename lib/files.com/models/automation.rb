@@ -537,6 +537,45 @@ module Files
       @attributes[:source] = value
     end
 
+    # Users who can start this Shared Workflow.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
+    def shared_trigger_user_ids
+      @attributes[:shared_trigger_user_ids]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
+    def shared_trigger_user_ids=(value)
+      @attributes[:shared_trigger_user_ids] = value
+    end
+
+    # Groups whose members can start this Shared Workflow.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
+    def shared_trigger_group_ids
+      @attributes[:shared_trigger_group_ids]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
+    def shared_trigger_group_ids=(value)
+      @attributes[:shared_trigger_group_ids] = value
+    end
+
+    # Partners whose users can start this Shared Workflow.
+    # @return [Array<Integer>, nil] the field value, or nil when absent.
+    def shared_trigger_partner_ids
+      @attributes[:shared_trigger_partner_ids]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Array<Integer>, nil] the new field value.
+    # @return [Array<Integer>, nil] the assigned value.
+    def shared_trigger_partner_ids=(value)
+      @attributes[:shared_trigger_partner_ids] = value
+    end
+
     # IDs of Syncs to run by this Automation.
     # @return [Array<Integer>, nil] the field value, or nil when absent.
     def sync_ids
@@ -694,6 +733,9 @@ module Files
     # @option params [String] user_ids A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     # @option params [String] group_ids A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the automation's schedule fields.
+    # @option params [Array<Integer>] shared_trigger_user_ids Users who can start this Shared Workflow.
+    # @option params [Array<Integer>] shared_trigger_group_ids Groups whose members can start this Shared Workflow.
+    # @option params [Array<Integer>] shared_trigger_partner_ids Partners whose users can start this Shared Workflow.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule` without `schedule_id`, a list of days of the week to run this automation. 0 is Sunday, 1 is Monday, etc.
     # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`. For v2 Automations, set this field in the Scheduled trigger's definition.
     # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format (24-hour). Required for `custom_schedule` without `schedule_id` or `schedule_interval_minutes`. For `daily` triggers, the default is midnight UTC.
@@ -739,6 +781,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if !params[:user_ids].nil? and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if !params[:group_ids].nil? and !params[:group_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: shared_trigger_user_ids must be an Array") if !params[:shared_trigger_user_ids].nil? and !params[:shared_trigger_user_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: shared_trigger_group_ids must be an Array") if !params[:shared_trigger_group_ids].nil? and !params[:shared_trigger_group_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: shared_trigger_partner_ids must be an Array") if !params[:shared_trigger_partner_ids].nil? and !params[:shared_trigger_partner_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
@@ -906,6 +951,9 @@ module Files
     # @option params [String] user_ids A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     # @option params [String] group_ids A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the automation's schedule fields.
+    # @option params [Array<Integer>] shared_trigger_user_ids Users who can start this Shared Workflow.
+    # @option params [Array<Integer>] shared_trigger_group_ids Groups whose members can start this Shared Workflow.
+    # @option params [Array<Integer>] shared_trigger_partner_ids Partners whose users can start this Shared Workflow.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule` without `schedule_id`, a list of days of the week to run this automation. 0 is Sunday, 1 is Monday, etc.
     # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`. For v2 Automations, set this field in the Scheduled trigger's definition.
     # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format (24-hour). Required for `custom_schedule` without `schedule_id` or `schedule_interval_minutes`. For `daily` triggers, the default is midnight UTC.
@@ -949,6 +997,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if !params[:user_ids].nil? and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if !params[:group_ids].nil? and !params[:group_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: shared_trigger_user_ids must be an Array") if !params[:shared_trigger_user_ids].nil? and !params[:shared_trigger_user_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: shared_trigger_group_ids must be an Array") if !params[:shared_trigger_group_ids].nil? and !params[:shared_trigger_group_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: shared_trigger_partner_ids must be an Array") if !params[:shared_trigger_partner_ids].nil? and !params[:shared_trigger_partner_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
@@ -1036,6 +1087,9 @@ module Files
     # @option params [String] user_ids A list of user IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     # @option params [String] group_ids A list of group IDs the automation is associated with. If sent as a string, it should be comma-delimited.
     # @option params [Integer] schedule_id If trigger is `custom_schedule`, the reusable Schedule used instead of the automation's schedule fields.
+    # @option params [Array<Integer>] shared_trigger_user_ids Users who can start this Shared Workflow.
+    # @option params [Array<Integer>] shared_trigger_group_ids Groups whose members can start this Shared Workflow.
+    # @option params [Array<Integer>] shared_trigger_partner_ids Partners whose users can start this Shared Workflow.
     # @option params [Array<Integer>] schedule_days_of_week If trigger is `custom_schedule` without `schedule_id`, a list of days of the week to run this automation. 0 is Sunday, 1 is Monday, etc.
     # @option params [Integer] schedule_interval_minutes Run every N minutes (1–59, subject to the Site plan minimum). Use by itself with `custom_schedule`. For v2 Automations, set this field in the Scheduled trigger's definition.
     # @option params [Array<String>] schedule_times_of_day Times of day to run in HH:MM format (24-hour). Required for `custom_schedule` without `schedule_id` or `schedule_interval_minutes`. For `daily` triggers, the default is midnight UTC.
@@ -1081,6 +1135,9 @@ module Files
       raise InvalidParameterError.new("Bad parameter: user_ids must be an String") if !params[:user_ids].nil? and !params[:user_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: group_ids must be an String") if !params[:group_ids].nil? and !params[:group_ids].is_a?(String)
       raise InvalidParameterError.new("Bad parameter: schedule_id must be an Integer") if !params[:schedule_id].nil? and !params[:schedule_id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: shared_trigger_user_ids must be an Array") if !params[:shared_trigger_user_ids].nil? and !params[:shared_trigger_user_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: shared_trigger_group_ids must be an Array") if !params[:shared_trigger_group_ids].nil? and !params[:shared_trigger_group_ids].is_a?(Array)
+      raise InvalidParameterError.new("Bad parameter: shared_trigger_partner_ids must be an Array") if !params[:shared_trigger_partner_ids].nil? and !params[:shared_trigger_partner_ids].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_days_of_week must be an Array") if !params[:schedule_days_of_week].nil? and !params[:schedule_days_of_week].is_a?(Array)
       raise InvalidParameterError.new("Bad parameter: schedule_interval_minutes must be an Integer") if !params[:schedule_interval_minutes].nil? and !params[:schedule_interval_minutes].is_a?(Integer)
       raise InvalidParameterError.new("Bad parameter: schedule_times_of_day must be an Array") if !params[:schedule_times_of_day].nil? and !params[:schedule_times_of_day].is_a?(Array)
