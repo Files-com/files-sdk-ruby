@@ -63,7 +63,7 @@ Files::DatabaseDestination.find(id)
 Files::DatabaseDestination.create(
   name: "Orders", 
   provider: "snowflake", 
-  config: "example", 
+  config: {"account_identifier":"value","database_name":"value","schema_name":"value","table_name":"value"}, 
   secret_id: 1, 
   workspace_id: 1
 )
@@ -86,7 +86,7 @@ Files::DatabaseDestination.create(
 Files::DatabaseDestination.update(id, 
   name: "Orders", 
   secret_id: 1, 
-  config: "example"
+  config: {"account_identifier":"value","database_name":"value","schema_name":"value","table_name":"value"}
 )
 ```
 
@@ -121,7 +121,7 @@ database_destination = Files::DatabaseDestination.find(id)
 database_destination.update(
   name: "Orders",
   secret_id: 1,
-  config: "example"
+  config: {"account_identifier":"value","database_name":"value","schema_name":"value","table_name":"value"}
 )
 ```
 
