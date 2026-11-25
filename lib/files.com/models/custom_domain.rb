@@ -82,7 +82,7 @@ module Files
       @attributes[:domain] = value
     end
 
-    # Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, or `unassigned` (not routing traffic). Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
+    # Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, `file_content`, or `unassigned` (not routing traffic). Each Site can have one File Content domain in its default workspace. It applies to the whole Site and uses the Site's existing dedicated HTTPS IPs. Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
     # @return [String, nil] the field value, or nil when absent.
     def destination
       @attributes[:destination]
@@ -177,7 +177,7 @@ module Files
     # @param params [Hash] API parameters, keyed by Symbol.
     # @option params [Boolean] available_to_all_workspaces Allow all workspaces to use this default-workspace Custom Domain.
     # @option params [Integer] workspace_id Workspace ID (0 for the default workspace).
-    # @option params [String] destination Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, or `unassigned` (not routing traffic). Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
+    # @option params [String] destination Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, `file_content`, or `unassigned` (not routing traffic). Each Site can have one File Content domain in its default workspace. It applies to the whole Site and uses the Site's existing dedicated HTTPS IPs. Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
     # @option params [Integer] folder_behavior_id Public Hosting behavior ID when this domain routes to a specific Public Hosting behavior.  Preserved as historical context when `destination` becomes `unassigned`.
     # @option params [Integer] ssl_certificate_id Current SSL certificate ID.
     # @option params [String] domain Customer-owned domain name.
@@ -308,7 +308,7 @@ module Files
     # @param params [Hash] API parameters, keyed by Symbol.
     # @option params [Boolean] available_to_all_workspaces Allow all workspaces to use this default-workspace Custom Domain.
     # @option params [Integer] workspace_id Workspace ID (0 for the default workspace).
-    # @option params [String] destination Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, or `unassigned` (not routing traffic). Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
+    # @option params [String] destination Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, `file_content`, or `unassigned` (not routing traffic). Each Site can have one File Content domain in its default workspace. It applies to the whole Site and uses the Site's existing dedicated HTTPS IPs. Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
     # @option params [Integer] folder_behavior_id Public Hosting behavior ID when this domain routes to a specific Public Hosting behavior.  Preserved as historical context when `destination` becomes `unassigned`.
     # @option params [Integer] ssl_certificate_id Current SSL certificate ID.
     # @option params [String] domain Required. Customer-owned domain name.
@@ -358,7 +358,7 @@ module Files
     # @param params [Hash] API parameters, keyed by Symbol.
     # @option params [Boolean] available_to_all_workspaces Allow all workspaces to use this default-workspace Custom Domain.
     # @option params [Integer] workspace_id Workspace ID (0 for the default workspace).
-    # @option params [String] destination Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, or `unassigned` (not routing traffic). Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
+    # @option params [String] destination Where this custom domain routes. Can be `site_alias`, `public_hosting`, `s3_endpoint`, `file_content`, or `unassigned` (not routing traffic). Each Site can have one File Content domain in its default workspace. It applies to the whole Site and uses the Site's existing dedicated HTTPS IPs. Set to `unassigned` automatically when a bound `public_hosting` folder behavior is deleted, and can be set manually via the API for any reason.
     # @option params [Integer] folder_behavior_id Public Hosting behavior ID when this domain routes to a specific Public Hosting behavior.  Preserved as historical context when `destination` becomes `unassigned`.
     # @option params [Integer] ssl_certificate_id Current SSL certificate ID.
     # @option params [String] domain Customer-owned domain name.

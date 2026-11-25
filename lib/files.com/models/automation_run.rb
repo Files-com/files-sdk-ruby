@@ -143,6 +143,12 @@ module Files
       @attributes[:definition]
     end
 
+    # Normalized application action metadata keyed by pinned action fingerprint.
+    # @return [Hash, nil] the field value, or nil when absent.
+    def application_actions
+      @attributes[:application_actions]
+    end
+
     # Status and execution stage for each node in this run. For performance reasons, this is not provided when listing Automation runs.
     # @return [Hash, nil] the field value, or nil when absent.
     def node_states

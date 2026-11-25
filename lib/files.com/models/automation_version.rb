@@ -71,6 +71,12 @@ module Files
       @attributes[:definition]
     end
 
+    # Normalized application action metadata keyed by pinned action fingerprint.
+    # @return [Hash, nil] the field value, or nil when absent.
+    def application_actions
+      @attributes[:application_actions]
+    end
+
     # Restore an Automation v2 definition as a new current version
     #
     # @param params [Hash] API parameters, keyed by Symbol.

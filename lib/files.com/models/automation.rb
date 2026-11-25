@@ -134,6 +134,19 @@ module Files
       @attributes[:definition] = value
     end
 
+    # Normalized application action metadata keyed by pinned action fingerprint.
+    # @return [Hash, nil] the field value, or nil when absent.
+    def application_actions
+      @attributes[:application_actions]
+    end
+
+    # Changes the local field value. Call {#save} to persist changes.
+    # @param value [Hash, nil] the new field value.
+    # @return [Hash, nil] the assigned value.
+    def application_actions=(value)
+      @attributes[:application_actions] = value
+    end
+
     # If set, this string in the destination path will be replaced with the value in `destination_replace_to`.
     # @return [String, nil] the field value, or nil when absent.
     def destination_replace_from
@@ -923,6 +936,53 @@ module Files
     # (see .find)
     def self.get(id, params = {}, options = {})
       find(id, params, options)
+    end
+
+    # List actions available for an Automation application
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @option params [String] application_key Required. Application key returned by the Automation applications list.
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.list_application_actions(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: application_key must be an String") if !params[:application_key].nil? and !params[:application_key].is_a?(String)
+      raise MissingParameterError.new("Parameter missing: application_key") if params[:application_key].nil?
+
+      list_options = options.dup
+      List.new(AutomationApplicationAction, params) do |page_params, &check_page|
+        response, page_options = Api.send_request("/automations/application_actions", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
+      end
+    end
+
+    # List applications available in the Automation builder
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] cursor Used for pagination.  When a list request has more records available, cursors are provided in the response headers `X-Files-Cursor-Next` and `X-Files-Cursor-Prev`.  Send one of those cursor value here to resume an existing list from the next available record.  Note: many of our SDKs have iterator methods that will automatically handle cursor-based pagination.
+    # @option params [Integer] per_page Number of records to show per page.  (Max: 10000, 1,000 or less is recommended).
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::List] a lazy first page; use #auto_paging_each to visit every page.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.list_applications(params = {}, options = {})
+      raise InvalidParameterError.new("Bad parameter: cursor must be an String") if !params[:cursor].nil? and !params[:cursor].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: per_page must be an Integer") if !params[:per_page].nil? and !params[:per_page].is_a?(Integer)
+
+      list_options = options.dup
+      List.new(AutomationApplication, params) do |page_params, &check_page|
+        response, page_options = Api.send_request("/automations/applications", :get, page_params, list_options, &check_page)
+        list_options = list_options.merge(page_options)
+        [ response, page_options ]
+      end
     end
 
     # Show the Automation v2 authoring schema and active node catalog
