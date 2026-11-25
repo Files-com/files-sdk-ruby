@@ -89,16 +89,28 @@ module Files
       @attributes[:outputs]
     end
 
-    # Materialized input items currently available, grouped by inlet.
+    # Available input items grouped by inlet. Resolve large values with item_refs and item_values.
     # @return [Hash, nil] the field value, or nil when absent.
     def input_items
       @attributes[:input_items]
     end
 
-    # Materialized output items grouped by outlet.
+    # Output items grouped by outlet. Resolve large values with item_refs and item_values.
     # @return [Hash, nil] the field value, or nil when absent.
     def output_items
       @attributes[:output_items]
+    end
+
+    # References with a path from the response root and a digest. Replace the null at each path with the value for that digest. Path segments are literal object keys or zero-based array indexes.
+    # @return [Array<Hash>, nil] the field value, or nil when absent.
+    def item_refs
+      @attributes[:item_refs]
+    end
+
+    # Ordered entries with a digest, a value, and optional item_refs relative to that value. References inside entries point to earlier entries in this array.
+    # @return [Array<Hash>, nil] the field value, or nil when absent.
+    def item_values
+      @attributes[:item_values]
     end
   end
 end

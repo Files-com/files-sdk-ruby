@@ -348,7 +348,7 @@ module Files
       @attributes[:deleted_at] = value
     end
 
-    # Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
+    # Do not create subfolders for files uploaded to this share. Upload-only Share Links with non-recursive folder access require this to be true. If omitted on create, the API sets it to true for those links. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     # @return [Boolean, nil] the field value, or nil when absent.
     def dont_separate_submissions_by_folder
       @attributes[:dont_separate_submissions_by_folder]
@@ -774,7 +774,7 @@ module Files
     # @option params [String] code Bundle code.  This code forms the end part of the Public URL.
     # @option params [Boolean] create_snapshot If true, create a snapshot of this bundle's contents.
     # @option params [String] description Public description
-    # @option params [Boolean] dont_separate_submissions_by_folder Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
+    # @option params [Boolean] dont_separate_submissions_by_folder Do not create subfolders for files uploaded to this share. Upload-only Share Links with non-recursive folder access require this to be true. If omitted on create, the API sets it to true for those links. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     # @option params [String] expires_at Explicit Bundle expiration date/time. If not set, the site-wide expiration setting may apply.
     # @option params [Boolean] finalize_snapshot If true, finalize the snapshot of this bundle's contents. Note that `create_snapshot` must also be true.
     # @option params [Integer] inbox_id ID of the associated inbox, if available.
@@ -970,7 +970,7 @@ module Files
     # @option params [Boolean] bypasses_site_expiration_rules If true, this Share Link bypasses site-wide expiration rules. Only site admins may set this.
     # @option params [Integer] form_field_set_id Id of Form Field Set to use with this bundle
     # @option params [Boolean] create_snapshot If true, create a snapshot of this bundle's contents.
-    # @option params [Boolean] dont_separate_submissions_by_folder Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
+    # @option params [Boolean] dont_separate_submissions_by_folder Do not create subfolders for files uploaded to this share. Upload-only Share Links with non-recursive folder access require this to be true. If omitted on create, the API sets it to true for those links. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     # @option params [String] expires_at Explicit Bundle expiration date/time. If not set, the site-wide expiration setting may apply.
     # @option params [Boolean] finalize_snapshot If true, finalize the snapshot of this bundle's contents. Note that `create_snapshot` must also be true.
     # @option params [Integer] max_uses Visitor limit configured for this Share Link. Null uses the Site-wide cap, if set. The configured limit cannot exceed the Site-wide cap.
@@ -1076,7 +1076,7 @@ module Files
     # @option params [String] code Bundle code.  This code forms the end part of the Public URL.
     # @option params [Boolean] create_snapshot If true, create a snapshot of this bundle's contents.
     # @option params [String] description Public description
-    # @option params [Boolean] dont_separate_submissions_by_folder Do not create subfolders for files uploaded to this share. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
+    # @option params [Boolean] dont_separate_submissions_by_folder Do not create subfolders for files uploaded to this share. Upload-only Share Links with non-recursive folder access require this to be true. If omitted on create, the API sets it to true for those links. Note: there are subtle security pitfalls with allowing anonymous uploads from multiple users to live in the same folder. We strongly discourage use of this option unless absolutely required.
     # @option params [String] expires_at Explicit Bundle expiration date/time. If not set, the site-wide expiration setting may apply.
     # @option params [Boolean] finalize_snapshot If true, finalize the snapshot of this bundle's contents. Note that `create_snapshot` must also be true.
     # @option params [Integer] inbox_id ID of the associated inbox, if available.
