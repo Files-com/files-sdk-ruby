@@ -380,6 +380,23 @@ Files::Bundle.update(id,
 
 ---
 
+## Update Bundle Path
+
+```
+Files::Bundle.update_bundle(id, path, 
+  recursive: true
+)
+```
+
+### Parameters
+
+* `id` (int64): Required - Bundle ID.
+* `path` (string): Required - Path to operate on.
+* `recursive` (boolean): Required - Allow access to subfolders content?
+
+
+---
+
 ## Delete Share Link
 
 ```
@@ -490,6 +507,25 @@ bundle.update(
 * `watermark_attachment_file` (file): Preview watermark image applied to all bundle items.
 * `watermark_value` (object): Preview watermark settings applied to all bundle items. Uses the same keys as Behavior.value
 * `workspace_id` (int64): Workspace ID. `0` means the default workspace.
+
+
+---
+
+## Update Bundle Path
+
+```
+bundle = Files::Bundle.find(id)
+
+bundle.update_bundle(
+  recursive: true
+)
+```
+
+### Parameters
+
+* `id` (int64): Required - Bundle ID.
+* `path` (string): Required - Path to operate on.
+* `recursive` (boolean): Required - Allow access to subfolders content?
 
 
 ---

@@ -846,6 +846,31 @@ module Files
       [ response, options ]
     end
 
+    # Update Bundle Path
+    #
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [String] path Required. Path to operate on.
+    # @option params [Boolean] recursive Required. Allow access to subfolders content?
+    # @return [Array(Files::Response, Hash)] the response and persisted request options.
+    # @raise [Files::MissingParameterError] if a required parameter or the current object primary key is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def update_bundle(params = {})
+      params = (params || {}).dup
+      params[:id] = @attributes[:id]
+      raise MissingParameterError.new("Current object doesn't have a id") unless @attributes[:id]
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+      raise MissingParameterError.new("Parameter missing: recursive") if params[:recursive].nil?
+
+      response, options = Api.send_request("/bundles/#{@attributes[:id]}/paths/#{@attributes[:path]}", :patch, params, @options)
+      @options = @options.merge(options)
+      [ response, options ]
+    end
+
     # Delete Share Link
     #
     # @param params [Hash] API parameters, keyed by Symbol.
@@ -1144,6 +1169,32 @@ module Files
 
       response, options = Api.send_request("/bundles/#{params[:id]}", :patch, params, options) { |reply| reply.require_object("Bundle") }
       Bundle.new(response.data, options)
+    end
+
+    # Update Bundle Path
+    #
+    # @param id [Integer] Bundle ID.
+    # @param path [String] Path to operate on.
+    # @param params [Hash] API parameters, keyed by Symbol.
+    # @option params [Boolean] recursive Required. Allow access to subfolders content?
+    # @param options [Hash] Request configuration; see {Files::Api.send_request}.
+    # @return [Files::BundlePath] the returned record.
+    # @raise [Files::MissingParameterError] if a required parameter is missing.
+    # @raise [Files::InvalidParameterError] if a parameter has an invalid Ruby type.
+    # @raise [Files::Error] if the API request fails.
+    def self.update_bundle(id, path, params = {}, options = {})
+      params = (params || {}).dup
+      params[:id] = id
+      params[:path] = path
+      raise InvalidParameterError.new("Bad parameter: id must be an Integer") if !params[:id].nil? and !params[:id].is_a?(Integer)
+      raise InvalidParameterError.new("Bad parameter: path must be an String") if !params[:path].nil? and !params[:path].is_a?(String)
+      raise InvalidParameterError.new("Bad parameter: recursive must be a single value, not #{params[:recursive].class}") if [ Array, Hash ].any? { |klass| params[:recursive].is_a?(klass) }
+      raise MissingParameterError.new("Parameter missing: id") if params[:id].nil?
+      raise MissingParameterError.new("Parameter missing: path") if params[:path].nil?
+      raise MissingParameterError.new("Parameter missing: recursive") if params[:recursive].nil?
+
+      response, options = Api.send_request("/bundles/#{params[:id]}/paths/#{params[:path]}", :patch, params, options) { |reply| reply.require_object("BundlePath") }
+      BundlePath.new(response.data, options)
     end
 
     # Delete Share Link
